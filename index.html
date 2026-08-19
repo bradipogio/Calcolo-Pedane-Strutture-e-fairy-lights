@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="it">
+
+<head>
+
+<meta charset="utf-8">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1"
+>
+
+<title>Planner tecnico</title>
+
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+
+  min-height:100vh;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:24px;
+
+  font-family:Arial,Helvetica,sans-serif;
+
+  background:#f3f4f6;
+  color:#171717;
+}
+
+.home{
+  width:min(760px,100%);
+
+  padding:28px;
+
+  background:white;
+
+  border-radius:14px;
+
+  box-shadow:0 2px 14px rgba(0,0,0,.12);
+}
+
+h1{
+  margin:0 0 6px;
+
+  font-size:29px;
+}
+
+.subtitle{
+  margin-bottom:28px;
+
+  color:#666;
+
+  font-size:14px;
+}
+
+.apps{
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
+  gap:14px;
+}
+
+.app{
+  min-height:180px;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+
+  padding:20px;
+
+  border:2px solid #222;
+  border-radius:11px;
+
+  color:#111;
+
+  text-decoration:none;
+
+  transition:
+    transform .12s ease,
+    box-shadow .12s ease;
+}
+
+.app:hover{
+  transform:translateY(-2px);
+
+  box-shadow:0 5px 14px rgba(0,0,0,.12);
+}
+
+.app-title{
+  font-size:22px;
+  font-weight:800;
+}
+
+.app-description{
+  margin-top:8px;
+
+  color:#666;
+
+  font-size:13px;
+  line-height:1.45;
+}
+
+.app-arrow{
+  margin-top:22px;
+
+  font-size:18px;
+  font-weight:800;
+}
+
+@media(max-width:600px){
+
+  .apps{
+    grid-template-columns:1fr;
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<main class="home">
+
+  <h1>
+    Planner tecnico
+  </h1>
+
+  <div class="subtitle">
+    Calcolo strutture, pedane e materiale di magazzino.
+  </div>
+
+
+  <div class="apps">
+
+
+    <a
+      class="app"
+      href="strutture.html"
+    >
+
+      <div>
+
+        <div class="app-title">
+          Strutture Fairy
+        </div>
+
+        <div class="app-description">
+          Strutture modulari, archi, traverse,
+          fairy lights e calcolo materiale.
+        </div>
+
+      </div>
+
+      <div class="app-arrow">
+        Apri →
+      </div>
+
+    </a>
+
+
+
+    <a
+      class="app"
+      href="pedane.html"
+    >
+
+      <div>
+
+        <div class="app-title">
+          Pedane
+        </div>
+
+        <div class="app-description">
+          Quadrotti 1×1, scacchiere,
+          pannelli gialli e disposizione strutturale.
+        </div>
+
+      </div>
+
+      <div class="app-arrow">
+        Apri →
+      </div>
+
+    </a>
+
+
+  </div>
+
+</main>
+
+
+</body>
+
+</html>
