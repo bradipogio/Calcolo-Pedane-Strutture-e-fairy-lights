@@ -7,18 +7,18 @@
 <title>Fairy Structure Planner</title>
 
 <style>
-* { box-sizing:border-box; }
+*{box-sizing:border-box}
 
-body {
+body{
   margin:0;
   font-family:Arial,Helvetica,sans-serif;
   background:#f3f4f6;
   color:#171717;
 }
 
-body.matrix-open { overflow:hidden; }
+body.matrix-open{overflow:hidden}
 
-header {
+header{
   height:56px;
   padding:0 20px;
   background:#111;
@@ -28,12 +28,12 @@ header {
   justify-content:space-between;
 }
 
-header h1 {
+header h1{
   margin:0;
   font-size:19px;
 }
 
-button {
+button{
   border:0;
   border-radius:6px;
   padding:8px 11px;
@@ -41,17 +41,17 @@ button {
   font-weight:bold;
 }
 
-.primary { background:#111; color:#fff; }
-.secondary { background:#e3e3e3; }
-.active-button { background:#111 !important; color:#fff !important; }
+.primary{background:#111;color:#fff}
+.secondary{background:#e3e3e3}
+.active-button{background:#111!important;color:#fff!important}
 
-.page {
+.page{
   max-width:1550px;
   margin:auto;
   padding:14px;
 }
 
-.card {
+.card{
   background:#fff;
   border-radius:10px;
   padding:14px;
@@ -59,42 +59,42 @@ button {
   box-shadow:0 1px 5px rgba(0,0,0,.1);
 }
 
-.workspace-header {
+.workspace-header{
   display:flex;
   align-items:baseline;
   gap:12px;
   margin-bottom:11px;
 }
 
-.workspace-header h2 {
+.workspace-header h2{
   margin:0;
   font-size:20px;
 }
 
-.workspace-header span {
+.workspace-header span{
   color:#777;
   font-size:13px;
 }
 
-.workspace-grid {
+.workspace-grid{
   display:grid;
-  grid-template-columns:255px 400px minmax(420px,1fr);
+  grid-template-columns:255px 420px minmax(420px,1fr);
   gap:12px;
 }
 
-.panel {
+.panel{
   border:1px solid #ddd;
   border-radius:8px;
   padding:11px;
   min-width:0;
 }
 
-.panel h3 {
+.panel h3{
   margin:0 0 9px;
   font-size:14px;
 }
 
-label {
+label{
   display:block;
   margin-top:8px;
   font-size:12px;
@@ -103,7 +103,7 @@ label {
 
 input[type=text],
 input[type=number],
-select {
+select{
   width:100%;
   margin-top:3px;
   padding:7px;
@@ -113,36 +113,36 @@ select {
   font-size:14px;
 }
 
-.two-cols {
+.two-cols{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:7px;
 }
 
-.checkbox-row {
+.checkbox-row{
   display:flex;
-  align-items:center;
   gap:7px;
+  align-items:center;
   margin-top:12px;
   font-size:13px;
 }
 
-.checkbox-row input { margin:0; }
+.checkbox-row input{margin:0}
 
-.actions {
+.actions{
   display:flex;
   flex-wrap:wrap;
   gap:6px;
   margin-top:12px;
 }
 
-.small {
+.small{
   font-size:11px;
   line-height:1.4;
   color:#666;
 }
 
-.config-line {
+.config-line{
   display:grid;
   grid-template-columns:100px 1fr;
   gap:6px;
@@ -150,46 +150,46 @@ select {
   align-items:center;
 }
 
-.config-line label { margin:0; }
+.config-line label{margin:0}
 
-.sections-control {
+.sections-control{
   display:grid;
   grid-template-columns:1fr 48px;
   gap:5px;
 }
 
-.auto-button {
+.auto-button{
   padding:6px;
   background:#ddd;
   font-size:10px;
 }
 
-.matrix-toolbar {
+.matrix-toolbar{
   display:flex;
-  align-items:center;
   flex-wrap:wrap;
+  align-items:center;
   gap:5px;
   margin:9px 0 6px;
 }
 
-.matrix-toolbar .spacer { flex:1; }
+.matrix-toolbar .spacer{flex:1}
 
-.matrix-button {
-  padding:5px 8px;
+.matrix-button{
+  padding:6px 8px;
   background:#e5e5e5;
   font-size:10px;
 }
 
-#matrixView {
+#matrixView{
   display:block;
   width:100%;
-  height:190px;
+  height:195px;
   background:#fafafa;
   border:1px solid #ddd;
   border-radius:6px;
 }
 
-#matrixPanel.matrix-fullscreen {
+#matrixPanel.matrix-fullscreen{
   position:fixed;
   inset:10px;
   z-index:20000;
@@ -198,41 +198,41 @@ select {
   box-shadow:0 0 0 100vmax rgba(0,0,0,.65);
 }
 
-#matrixPanel.matrix-fullscreen #matrixView {
+#matrixPanel.matrix-fullscreen #matrixView{
   height:calc(100vh - 190px);
 }
 
-.matrix-help {
-  min-height:29px;
+.matrix-help{
+  min-height:31px;
   margin-top:5px;
 }
 
-#viewer {
+#viewer{
   width:100%;
-  height:345px;
+  height:350px;
   overflow:hidden;
   border-radius:6px;
   background:#eef0f2;
 }
 
-.status {
+.status{
   margin-top:10px;
   padding-top:9px;
   border-top:1px solid #ddd;
   font-size:13px;
 }
 
-.good {
+.good{
   color:#08752a;
   font-weight:bold;
 }
 
-.bad {
+.bad{
   color:#b00020;
   font-weight:bold;
 }
 
-.warning {
+.warning{
   margin-top:6px;
   padding:7px;
   border:1px solid #ddc06a;
@@ -240,43 +240,43 @@ select {
   background:#fff3d2;
 }
 
-.results {
+.results{
   display:grid;
   grid-template-columns:1.2fr 1fr;
   gap:10px;
   margin-top:9px;
 }
 
-.result-box {
+.result-box{
   padding:9px;
   border:1px solid #ddd;
   border-radius:7px;
 }
 
-.result-box h3 {
+.result-box h3{
   margin:0 0 6px;
   font-size:13px;
 }
 
-table {
+table{
   width:100%;
   border-collapse:collapse;
 }
 
-th, td {
+th,td{
   padding:5px;
   border-bottom:1px solid #e6e6e6;
   text-align:left;
   font-size:12px;
 }
 
-.quick-data {
+.quick-data{
   display:flex;
   flex-wrap:wrap;
   gap:5px;
 }
 
-.chip {
+.chip{
   padding:5px 7px;
   border:1px solid #ddd;
   border-radius:5px;
@@ -284,38 +284,38 @@ th, td {
   font-size:11px;
 }
 
-.chip strong {
+.chip strong{
   display:block;
   margin-top:2px;
   font-size:13px;
 }
 
-.views {
+.views{
   display:grid;
   gap:11px;
 }
 
-.drawing {
+.drawing{
   padding:8px;
   border:1px solid #ccc;
   border-radius:7px;
 }
 
-.drawing-title {
+.drawing-title{
   margin-bottom:3px;
   font-size:13px;
   font-weight:bold;
 }
 
-.drawing svg {
+.drawing svg{
   display:block;
   width:100%;
   height:245px;
 }
 
-#print3d { display:none; }
+#print3d{display:none}
 
-#settingsModal {
+#settingsModal{
   display:none;
   position:fixed;
   inset:0;
@@ -325,9 +325,9 @@ th, td {
   background:rgba(0,0,0,.55);
 }
 
-#settingsModal.open { display:block; }
+#settingsModal.open{display:block}
 
-.modal-box {
+.modal-box{
   max-width:700px;
   margin:auto;
   padding:20px;
@@ -335,15 +335,15 @@ th, td {
   background:white;
 }
 
-.modal-head {
+.modal-head{
   display:flex;
   align-items:center;
   justify-content:space-between;
 }
 
-.modal-head h2 { margin:0; }
+.modal-head h2{margin:0}
 
-.stock-grid {
+.stock-grid{
   display:grid;
   grid-template-columns:1fr 90px;
   align-items:center;
@@ -351,45 +351,44 @@ th, td {
   margin-top:14px;
 }
 
-.stock-grid input { margin:0; }
+.stock-grid input{margin:0}
 
-.allocation {
+.allocation{
   padding:6px 0;
   border-bottom:1px solid #ddd;
   font-size:12px;
 }
 
-@media(max-width:1100px) {
-  .workspace-grid { grid-template-columns:1fr 1fr; }
-  .viewer-panel { grid-column:1 / -1; }
+@media(max-width:1120px){
+  .workspace-grid{grid-template-columns:1fr 1fr}
+  .viewer-panel{grid-column:1/-1}
 }
 
-@media(max-width:700px) {
-  .workspace-grid,
-  .results { grid-template-columns:1fr; }
+@media(max-width:700px){
+  .workspace-grid,.results{grid-template-columns:1fr}
 }
 
-@media print {
-  body { background:white; }
+@media print{
+  body{background:white}
 
   header,
   .no-print,
-  #viewer {
-    display:none !important;
+  #viewer{
+    display:none!important;
   }
 
-  .page {
+  .page{
     max-width:none;
     padding:0;
   }
 
-  .card {
+  .card{
     padding:5px 0;
     border:0;
     box-shadow:none;
   }
 
-  #print3d {
+  #print3d{
     display:block;
     width:100%;
     max-height:340px;
@@ -397,8 +396,8 @@ th, td {
     margin-bottom:10px;
   }
 
-  .drawing { break-inside:avoid; }
-  .drawing svg { height:210px; }
+  .drawing{break-inside:avoid}
+  .drawing svg{height:210px}
 }
 </style>
 
@@ -412,15 +411,11 @@ th, td {
 </script>
 </head>
 
-
 <body>
 
 <header>
   <h1>Fairy Structure Planner</h1>
-
-  <button id="openSettings" class="secondary no-print">
-    ⚙ Settings
-  </button>
+  <button id="openSettings" class="secondary no-print">⚙ Settings</button>
 </header>
 
 
@@ -432,7 +427,6 @@ th, td {
     <h2>Struttura</h2>
     <span id="titleSummary"></span>
   </div>
-
 
   <div class="workspace-grid">
 
@@ -448,24 +442,12 @@ th, td {
 
         <div>
           <label>Lunghezza</label>
-          <input
-            id="length"
-            type="number"
-            value="8"
-            min=".1"
-            step=".1"
-          >
+          <input id="length" type="number" value="8" min=".1" step=".1">
         </div>
 
         <div>
           <label>Larghezza modulo</label>
-          <input
-            id="width"
-            type="number"
-            value="5"
-            min=".1"
-            step=".1"
-          >
+          <input id="width" type="number" value="5" min=".1" step=".1">
         </div>
 
       </div>
@@ -476,6 +458,7 @@ th, td {
       </label>
 
       <div class="actions">
+
         <button id="commit" class="primary">
           Conferma carico
         </button>
@@ -483,11 +466,11 @@ th, td {
         <button id="print" class="secondary">
           Stampa
         </button>
+
       </div>
 
       <p class="small">
-        Ogni modifica aggiorna automaticamente
-        Matrix, conteggi e vista 3D.
+        Matrix, conteggi e 3D vengono aggiornati automaticamente.
       </p>
 
     </div>
@@ -504,17 +487,9 @@ th, td {
 
         <div class="sections-control">
 
-          <input
-            id="sections"
-            type="number"
-            min="2"
-            step="1"
-          >
+          <input id="sections" type="number" min="2" step="1">
 
-          <button
-            id="sectionsAuto"
-            class="auto-button active-button"
-          >
+          <button id="sectionsAuto" class="auto-button active-button">
             AUTO
           </button>
 
@@ -528,33 +503,13 @@ th, td {
         <label>Longitudinale</label>
 
         <select id="sideMethod">
-
           <option value="auto">Automatico</option>
-
-          <option value="fixed3">
-            Traverse 3 m
-          </option>
-
-          <option value="fixed4">
-            Traverse 4 m
-          </option>
-
-          <option value="tel1">
-            Telescopica 1 m
-          </option>
-
-          <option value="tel15">
-            Telescopica 1,5 m
-          </option>
-
-          <option value="tel3">
-            Telescopica 3 → 5,5 m
-          </option>
-
-          <option value="tel4">
-            Telescopica 4 → 7,5 m
-          </option>
-
+          <option value="fixed3">Traverse 3 m</option>
+          <option value="fixed4">Traverse 4 m</option>
+          <option value="tel1">Telescopica 1 m</option>
+          <option value="tel15">Telescopica 1,5 m</option>
+          <option value="tel3">Telescopica 3 → 5,5 m</option>
+          <option value="tel4">Telescopica 4 → 7,5 m</option>
         </select>
 
       </div>
@@ -565,35 +520,13 @@ th, td {
         <label>Superiore</label>
 
         <select id="topMethod">
-
-          <option value="auto">
-            Automatico
-          </option>
-
-          <option value="fixed3">
-            Traversa alta 3 m
-          </option>
-
-          <option value="fixed4">
-            Traversa alta 4 m
-          </option>
-
-          <option value="tel1">
-            Telescopica 1 m
-          </option>
-
-          <option value="tel15">
-            Telescopica 1,5 m
-          </option>
-
-          <option value="tel3">
-            Telescopica 3 → 5,5 m
-          </option>
-
-          <option value="tel4">
-            Telescopica 4 → 7,5 m
-          </option>
-
+          <option value="auto">Automatico</option>
+          <option value="fixed3">Traversa alta 3 m</option>
+          <option value="fixed4">Traversa alta 4 m</option>
+          <option value="tel1">Telescopica 1 m</option>
+          <option value="tel15">Telescopica 1,5 m</option>
+          <option value="tel3">Telescopica 3 → 5,5 m</option>
+          <option value="tel4">Telescopica 4 → 7,5 m</option>
         </select>
 
       </div>
@@ -601,33 +534,23 @@ th, td {
 
       <div class="matrix-toolbar">
 
-        <button
-          id="modePoints"
-          class="matrix-button active-button"
-        >
+        <button id="modePoints" class="matrix-button active-button">
           ● Punti
         </button>
 
-        <button
-          id="modeArch"
-          class="matrix-button"
-        >
+        <button id="modeArch" class="matrix-button">
           ⌒ Archi
         </button>
 
+        <button id="modeFairy" class="matrix-button">
+          💡 Fairy
+        </button>
+
+        <button id="modeLower" class="matrix-button">
+          H Bassi
+        </button>
+
         <div class="spacer"></div>
-
-        <button id="matrixMinus" class="matrix-button">
-          −
-        </button>
-
-        <button id="matrixFit" class="matrix-button">
-          Adatta
-        </button>
-
-        <button id="matrixPlus" class="matrix-button">
-          +
-        </button>
 
         <button id="matrixFullscreen" class="matrix-button">
           ⛶
@@ -638,7 +561,6 @@ th, td {
         </button>
 
       </div>
-
 
       <svg id="matrixView"></svg>
 
@@ -657,7 +579,7 @@ th, td {
       <div id="viewer"></div>
 
       <div class="small no-print">
-        Trascina per ruotare · rotella per zoom
+        Trascina per ruotare · rotella / trackpad per zoom
       </div>
 
     </div>
@@ -671,20 +593,13 @@ th, td {
   <div class="results">
 
     <div class="result-box">
-
       <h3>Materiale</h3>
-
       <div id="materialResult"></div>
-
     </div>
 
-
     <div class="result-box">
-
       <h3>Dati</h3>
-
       <div id="quickResult" class="quick-data"></div>
-
     </div>
 
   </div>
@@ -725,20 +640,14 @@ th, td {
 </div>
 
 
-
 <!-- SETTINGS -->
 <div id="settingsModal" class="no-print">
 
   <div class="modal-box">
 
     <div class="modal-head">
-
       <h2>Magazzino</h2>
-
-      <button id="closeSettings" class="secondary">
-        ×
-      </button>
-
+      <button id="closeSettings" class="secondary">×</button>
     </div>
 
     <p class="small">
@@ -774,20 +683,22 @@ th, td {
 <script type="module">
 
 import * as THREE from "three";
-
-import {
-  OrbitControls
-} from "three/addons/controls/OrbitControls.js";
+import { OrbitControls }
+from "three/addons/controls/OrbitControls.js";
 
 
 /* =========================================================
-   CONFIGURAZIONE
+   REGOLE
 ========================================================= */
 
 const HEIGHT = 2.5;
 const LOWER_HEIGHT = 1.20;
 
 const FAIRY_SPACING = 0.30;
+
+/*
+  Abbondanza per ciascun percorso fairy continuo.
+*/
 const FAIRY_SLACK = 0.20;
 
 const MATRIX_CELL = 54;
@@ -959,25 +870,33 @@ let remaining = {};
 let warehouseConfigured = false;
 
 let allocations = [];
-
 let currentPlan = null;
 
 let manualSections = null;
 let customLayout = false;
 
 let matrixMode = "points";
-let matrixZoom = 1;
 
-/*
-  Lunghezza di UNA campata.
-
-  Quando allarghi il Matrix a destra/sinistra,
-  manteniamo questa misura e cambiamo
-  automaticamente la lunghezza totale.
-*/
 let matrixBayLength = 4;
 
+/*
+  Verticali trasformate in arco.
+*/
 let archEdges = new Set();
+
+/*
+  Laterali SENZA traversa bassa.
+  Se non presente nel Set, la bassa esiste.
+*/
+let lowerOffEdges = new Set();
+
+/*
+  Laterali SENZA discesa fairy.
+
+  Se non presente nel Set,
+  la fairy può scendere lungo quel lato.
+*/
+let fairyOffEdges = new Set();
 
 let layout = makeDefaultLayout(3);
 
@@ -988,25 +907,44 @@ let controls;
 
 
 /* =========================================================
-   UTILITY
+   KEY EDGES
 ========================================================= */
 
-function closeEnough(a,b){
-  return Math.abs(a-b) < 0.001;
-}
-
-
-function edgeKey(r,c){
+function vKey(r,c){
   return `${r},${c}`;
 }
 
+function hKey(r,c){
+  return `${r},${c}`;
+}
 
-function parseEdgeKey(key){
+function parseKey(key){
 
   const [r,c] =
     key.split(",").map(Number);
 
   return {r,c};
+}
+
+
+/* =========================================================
+   UTILITY
+========================================================= */
+
+function closeEnough(a,b){
+  return Math.abs(a-b)<0.001;
+}
+
+
+function telFits(key,value){
+
+  const tel=TELESCOPICS[key];
+
+  return (
+    value>=tel.min-.001
+    &&
+    value<=tel.max+.001
+  );
 }
 
 
@@ -1025,22 +963,9 @@ function emptyRequirements(){
 function itemLabel(key){
 
   return (
-    ITEMS.find(item=>item.key===key)?.label
+    ITEMS.find(x=>x.key===key)?.label
     ||
     key
-  );
-}
-
-
-function telFits(key,value){
-
-  const tel=
-    TELESCOPICS[key];
-
-  return (
-    value >= tel.min-.001
-    &&
-    value <= tel.max+.001
   );
 }
 
@@ -1050,15 +975,6 @@ function telFits(key,value){
 ========================================================= */
 
 function makeDefaultLayout(sections){
-
-  /*
-      una casella vuota di margine:
-
-      ○ ○ ○ ○ ○
-      ○ ● ● ● ○
-      ○ ● ● ● ○
-      ○ ○ ○ ○ ○
-  */
 
   const rows=4;
   const cols=sections+2;
@@ -1073,14 +989,9 @@ function makeDefaultLayout(sections){
 
     nodes[1][c]=true;
     nodes[2][c]=true;
-
   }
 
-  return {
-    rows,
-    cols,
-    nodes
-  };
+  return {rows,cols,nodes};
 }
 
 
@@ -1091,6 +1002,11 @@ function cloneLayout(source){
     cols:source.cols,
     nodes:source.nodes.map(row=>[...row])
   };
+}
+
+
+function cloneSet(source){
+  return new Set(source);
 }
 
 
@@ -1128,42 +1044,117 @@ function activeBounds(target=layout){
 }
 
 
-/*
-  Numero delle sezioni longitudinali
-  comprese fra colonna attiva più a sinistra
-  e colonna attiva più a destra.
-*/
 function structuralSections(){
 
-  const bounds=
-    activeBounds(layout);
+  const b=activeBounds();
 
-  if(!bounds)
+  if(!b)
     return 2;
 
   return Math.max(
     2,
-    bounds.maxC-bounds.minC+1
+    b.maxC-b.minC+1
+  );
+}
+
+
+function horizontalExists(
+  target,
+  r,
+  c
+){
+
+  return (
+    r>=0
+    &&
+    r<target.rows
+    &&
+    c>=0
+    &&
+    c<target.cols-1
+    &&
+    target.nodes[r][c]
+    &&
+    target.nodes[r][c+1]
+  );
+}
+
+
+function verticalExists(
+  target,
+  r,
+  c
+){
+
+  return (
+    r>=0
+    &&
+    r<target.rows-1
+    &&
+    c>=0
+    &&
+    c<target.cols
+    &&
+    target.nodes[r][c]
+    &&
+    target.nodes[r+1][c]
   );
 }
 
 
 /* =========================================================
+   PULIZIA OVERRIDE
+========================================================= */
+
+function cleanOverrides(){
+
+  const cleanArches=new Set();
+
+  archEdges.forEach(key=>{
+
+    const {r,c}=parseKey(key);
+
+    if(verticalExists(layout,r,c))
+      cleanArches.add(key);
+  });
+
+  archEdges=cleanArches;
+
+
+  const cleanLower=new Set();
+
+  lowerOffEdges.forEach(key=>{
+
+    const {r,c}=parseKey(key);
+
+    if(horizontalExists(layout,r,c))
+      cleanLower.add(key);
+  });
+
+  lowerOffEdges=cleanLower;
+
+
+  const cleanFairy=new Set();
+
+  fairyOffEdges.forEach(key=>{
+
+    const {r,c}=parseKey(key);
+
+    if(horizontalExists(layout,r,c))
+      cleanFairy.add(key);
+  });
+
+  fairyOffEdges=cleanFairy;
+}
+
+
+/* =========================================================
    MATRIX ELASTICO
-
-   Tiene SEMPRE una sola riga/colonna vuota
-   attorno al contenuto.
-
-   Quindi:
-   - se arrivi al bordo, si espande
-   - se togli punti e restano due bordi vuoti,
-     si restringe
 ========================================================= */
 
 function normalizeMatrixMargin(){
 
-  const bounds=
-    activeBounds(layout);
+  const bounds=activeBounds(layout);
 
   if(!bounds){
 
@@ -1177,6 +1168,8 @@ function normalizeMatrixMargin(){
     };
 
     archEdges.clear();
+    lowerOffEdges.clear();
+    fairyOffEdges.clear();
 
     return;
   }
@@ -1189,18 +1182,8 @@ function normalizeMatrixMargin(){
     bounds.maxC-bounds.minC+1;
 
 
-  /*
-    1 margine sopra
-    1 sotto
-    1 sinistra
-    1 destra
-  */
-
-  const newRows=
-    activeRows+2;
-
-  const newCols=
-    activeCols+2;
+  const newRows=activeRows+2;
+  const newCols=activeCols+2;
 
 
   const nodes=
@@ -1210,15 +1193,10 @@ function normalizeMatrixMargin(){
     );
 
 
-  /*
-    Il primo punto attivo deve finire
-    sempre alla coordinata [1][1].
-  */
-
-  const rowShift=
+  const dr=
     1-bounds.minR;
 
-  const colShift=
+  const dc=
     1-bounds.minC;
 
 
@@ -1234,38 +1212,26 @@ function normalizeMatrixMargin(){
       c++
     ){
 
-      if(!layout.nodes[r][c])
-        continue;
+      if(layout.nodes[r][c]){
 
-      nodes[
-        r+rowShift
-      ][
-        c+colShift
-      ]=true;
-
+        nodes[r+dr][c+dc]=true;
+      }
     }
   }
 
 
   /*
-    Spostiamo anche gli archi
-    assieme ai pali.
+    SHIFT ARCHI
   */
 
-  const shiftedArches=
-    new Set();
-
+  const newArches=new Set();
 
   archEdges.forEach(key=>{
 
-    const {r,c}=
-      parseEdgeKey(key);
+    const {r,c}=parseKey(key);
 
-    const nr=
-      r+rowShift;
-
-    const nc=
-      c+colShift;
+    const nr=r+dr;
+    const nc=c+dc;
 
     if(
       nr>=0
@@ -1281,11 +1247,78 @@ function normalizeMatrixMargin(){
       nodes[nr+1][nc]
     ){
 
-      shiftedArches.add(
-        edgeKey(nr,nc)
+      newArches.add(
+        vKey(nr,nc)
       );
     }
+  });
 
+
+  /*
+    SHIFT LOWER OFF
+  */
+
+  const newLower=new Set();
+
+  lowerOffEdges.forEach(key=>{
+
+    const {r,c}=parseKey(key);
+
+    const nr=r+dr;
+    const nc=c+dc;
+
+    if(
+      nr>=0
+      &&
+      nr<newRows
+      &&
+      nc>=0
+      &&
+      nc<newCols-1
+      &&
+      nodes[nr][nc]
+      &&
+      nodes[nr][nc+1]
+    ){
+
+      newLower.add(
+        hKey(nr,nc)
+      );
+    }
+  });
+
+
+  /*
+    SHIFT FAIRY OFF
+  */
+
+  const newFairy=new Set();
+
+  fairyOffEdges.forEach(key=>{
+
+    const {r,c}=parseKey(key);
+
+    const nr=r+dr;
+    const nc=c+dc;
+
+    if(
+      nr>=0
+      &&
+      nr<newRows
+      &&
+      nc>=0
+      &&
+      nc<newCols-1
+      &&
+      nodes[nr][nc]
+      &&
+      nodes[nr][nc+1]
+    ){
+
+      newFairy.add(
+        hKey(nr,nc)
+      );
+    }
   });
 
 
@@ -1295,68 +1328,19 @@ function normalizeMatrixMargin(){
     nodes
   };
 
-  archEdges=
-    shiftedArches;
-}
-
-
-function cleanArchEdges(){
-
-  const clean=
-    new Set();
-
-  archEdges.forEach(key=>{
-
-    const {r,c}=
-      parseEdgeKey(key);
-
-    if(
-      r>=0
-      &&
-      r<layout.rows-1
-      &&
-      c>=0
-      &&
-      c<layout.cols
-      &&
-      layout.nodes[r][c]
-      &&
-      layout.nodes[r+1][c]
-    ){
-
-      clean.add(key);
-    }
-
-  });
-
-  archEdges=clean;
+  archEdges=newArches;
+  lowerOffEdges=newLower;
+  fairyOffEdges=newFairy;
 }
 
 
 /* =========================================================
-   MODIFICA MATRIX
-
-   REGOLA IMPORTANTE:
-
-   se aggiungi/togli una campata dal MATRIX,
-   la misura della campata resta uguale
-   e cambia la lunghezza totale.
-
-   Esempio:
-   8 m = 2 × 4 m
-
-   aggiungo una campata:
-   12 m = 3 × 4 m
+   MATRIX MODIFICATO
 ========================================================= */
 
 function matrixChanged(){
 
   customLayout=true;
-
-  /*
-    Conserviamo il passo PRIMA
-    di rifare il calcolo.
-  */
 
   const preservedBay=
     currentPlan?.geometry?.side?.bayLength
@@ -1364,23 +1348,21 @@ function matrixChanged(){
     matrixBayLength;
 
 
-  cleanArchEdges();
-
+  cleanOverrides();
   normalizeMatrixMargin();
 
 
-  const newSections=
+  const sections=
     structuralSections();
 
 
-  manualSections=
-    newSections;
+  manualSections=sections;
 
 
   document
     .getElementById("sections")
     .value=
-      newSections;
+      sections;
 
 
   document
@@ -1389,21 +1371,22 @@ function matrixChanged(){
     .remove("active-button");
 
 
+  /*
+    Cambiando il Matrix:
+    passo campata invariato,
+    cambia la lunghezza.
+  */
+
   if(
     Number.isFinite(preservedBay)
     &&
     preservedBay>0
   ){
 
-    matrixBayLength=
-      preservedBay;
-
+    matrixBayLength=preservedBay;
 
     const newLength=
-      preservedBay
-      *
-      (newSections-1);
-
+      preservedBay*(sections-1);
 
     document
       .getElementById("length")
@@ -1418,6 +1401,10 @@ function matrixChanged(){
 }
 
 
+/* =========================================================
+   TOGGLE MATRIX
+========================================================= */
+
 function toggleNode(r,c){
 
   layout.nodes[r][c]=
@@ -1429,45 +1416,60 @@ function toggleNode(r,c){
 
 function toggleArch(r,c){
 
-  if(
-    r<0
-    ||
-    r>=layout.rows-1
-    ||
-    !layout.nodes[r][c]
-    ||
-    !layout.nodes[r+1][c]
-  ){
+  if(!verticalExists(layout,r,c))
     return;
-  }
-
 
   customLayout=true;
 
-
-  const key=
-    edgeKey(r,c);
-
+  const key=vKey(r,c);
 
   if(archEdges.has(key))
     archEdges.delete(key);
   else
     archEdges.add(key);
 
+  scheduleCalculate();
+}
 
-  cleanArchEdges();
+
+function toggleLower(r,c){
+
+  if(!horizontalExists(layout,r,c))
+    return;
+
+  customLayout=true;
+
+  const key=hKey(r,c);
+
+  if(lowerOffEdges.has(key))
+    lowerOffEdges.delete(key);
+  else
+    lowerOffEdges.add(key);
+
+  scheduleCalculate();
+}
+
+
+function toggleFairy(r,c){
+
+  if(!horizontalExists(layout,r,c))
+    return;
+
+  customLayout=true;
+
+  const key=hKey(r,c);
+
+  if(fairyOffEdges.has(key))
+    fairyOffEdges.delete(key);
+  else
+    fairyOffEdges.add(key);
 
   scheduleCalculate();
 }
 
 
 /* =========================================================
-   CAMBIO NUMERO SEZIONI DAL CAMPO
-
-   Qui è diverso dal Matrix:
-   la LUNGHEZZA rimane uguale.
-
-   Cambierà quindi la misura delle campate.
+   CAMBIO SEZIONI MANUALE
 ========================================================= */
 
 function resampleColumns(newSections){
@@ -1482,14 +1484,13 @@ function resampleColumns(newSections){
   if(!customLayout){
 
     layout=
-      makeDefaultLayout(
-        newSections
-      );
+      makeDefaultLayout(newSections);
 
     archEdges.clear();
+    lowerOffEdges.clear();
+    fairyOffEdges.clear();
 
-    manualSections=
-      newSections;
+    manualSections=newSections;
 
     scheduleCalculate();
 
@@ -1504,11 +1505,11 @@ function resampleColumns(newSections){
   if(!bounds){
 
     layout=
-      makeDefaultLayout(
-        newSections
-      );
+      makeDefaultLayout(newSections);
 
     archEdges.clear();
+    lowerOffEdges.clear();
+    fairyOffEdges.clear();
 
     scheduleCalculate();
 
@@ -1531,33 +1532,30 @@ function resampleColumns(newSections){
     );
 
 
-  function mapColumn(oldColumn){
+  function mapColumn(oldC){
 
     if(oldSections<=1)
       return 1;
 
-
-    const relative=
+    const rel=
       (
-        oldColumn-bounds.minC
+        oldC-bounds.minC
       )
       /
-      (
-        oldSections-1
-      );
-
+      (oldSections-1);
 
     return (
-      1
-      +
+      1+
       Math.round(
-        relative
-        *
-        (newSections-1)
+        rel*(newSections-1)
       )
     );
   }
 
+
+  /*
+    Mappa tutti i nodi.
+  */
 
   for(let r=0;r<layout.rows;r++){
 
@@ -1570,24 +1568,52 @@ function resampleColumns(newSections){
       if(!layout.nodes[r][c])
         continue;
 
-      nodes[r][
-        mapColumn(c)
-      ]=true;
+      nodes[r][mapColumn(c)]=true;
     }
   }
 
 
-  const newArches=
-    new Set();
+  /*
+    Mantiene continui i vecchi
+    collegamenti longitudinali.
+  */
 
+  for(let r=0;r<layout.rows;r++){
+
+    for(
+      let c=bounds.minC;
+      c<bounds.maxC;
+      c++
+    ){
+
+      if(
+        !horizontalExists(layout,r,c)
+      ){
+        continue;
+      }
+
+      const a=mapColumn(c);
+      const b=mapColumn(c+1);
+
+      for(
+        let nc=Math.min(a,b);
+        nc<=Math.max(a,b);
+        nc++
+      ){
+
+        nodes[r][nc]=true;
+      }
+    }
+  }
+
+
+  const newArches=new Set();
 
   archEdges.forEach(key=>{
 
-    const {r,c}=
-      parseEdgeKey(key);
+    const {r,c}=parseKey(key);
 
-    const nc=
-      mapColumn(c);
+    const nc=mapColumn(c);
 
     if(
       nodes[r]?.[nc]
@@ -1596,10 +1622,63 @@ function resampleColumns(newSections){
     ){
 
       newArches.add(
-        edgeKey(r,nc)
+        vKey(r,nc)
       );
     }
   });
+
+
+  function remapHorizontalSet(oldSet){
+
+    const out=new Set();
+
+    oldSet.forEach(key=>{
+
+      const {r,c}=parseKey(key);
+
+      if(
+        !horizontalExists(layout,r,c)
+      ){
+        return;
+      }
+
+      const a=mapColumn(c);
+      const b=mapColumn(c+1);
+
+      for(
+        let nc=Math.min(a,b);
+        nc<Math.max(a,b);
+        nc++
+      ){
+
+        if(
+          nodes[r]?.[nc]
+          &&
+          nodes[r]?.[nc+1]
+        ){
+
+          out.add(
+            hKey(r,nc)
+          );
+        }
+      }
+    });
+
+    return out;
+  }
+
+
+  archEdges=newArches;
+
+  lowerOffEdges=
+    remapHorizontalSet(
+      lowerOffEdges
+    );
+
+  fairyOffEdges=
+    remapHorizontalSet(
+      fairyOffEdges
+    );
 
 
   layout={
@@ -1609,13 +1688,7 @@ function resampleColumns(newSections){
   };
 
 
-  archEdges=
-    newArches;
-
-
-  manualSections=
-    newSections;
-
+  manualSections=newSections;
 
   normalizeMatrixMargin();
 
@@ -1624,10 +1697,13 @@ function resampleColumns(newSections){
 
 
 /* =========================================================
-   STATISTICHE TOPOLOGIA
+   STATISTICHE
 ========================================================= */
 
-function layoutStats(target=layout){
+function layoutStats(
+  target=layout,
+  arches=archEdges
+){
 
   let nodes=0;
 
@@ -1644,27 +1720,26 @@ function layoutStats(target=layout){
 
 
       if(
-        c<target.cols-1
-        &&
-        target.nodes[r][c]
-        &&
-        target.nodes[r][c+1]
+        horizontalExists(
+          target,
+          r,
+          c
+        )
       ){
 
         horizontal.push({
           r,
-          c1:c,
-          c2:c+1
+          c
         });
       }
 
 
       if(
-        r<target.rows-1
-        &&
-        target.nodes[r][c]
-        &&
-        target.nodes[r+1][c]
+        verticalExists(
+          target,
+          r,
+          c
+        )
       ){
 
         vertical.push({
@@ -1672,24 +1747,23 @@ function layoutStats(target=layout){
           c
         });
       }
-
     }
   }
 
 
-  let arches=0;
+  let archCount=0;
 
 
   vertical.forEach(edge=>{
 
     if(
-      archEdges.has(
-        edgeKey(edge.r,edge.c)
+      arches.has(
+        vKey(edge.r,edge.c)
       )
     ){
-      arches++;
-    }
 
+      archCount++;
+    }
   });
 
 
@@ -1697,11 +1771,14 @@ function layoutStats(target=layout){
     nodes,
     horizontal,
     vertical,
-    horizontalEdges:horizontal.length,
-    verticalEdges:vertical.length,
-    arches,
+    horizontalEdges:
+      horizontal.length,
+    verticalEdges:
+      vertical.length,
+    arches:
+      archCount,
     normalVerticalEdges:
-      vertical.length-arches
+      vertical.length-archCount
   };
 }
 
@@ -1713,7 +1790,9 @@ function layoutStats(target=layout){
 function createStockInputs(){
 
   const root=
-    document.getElementById("stockInputs");
+    document.getElementById(
+      "stockInputs"
+    );
 
 
   const saved=
@@ -1732,7 +1811,6 @@ function createStockInputs(){
     remaining={
       ...warehouse
     };
-
   }
 
 
@@ -1742,14 +1820,18 @@ function createStockInputs(){
   ITEMS.forEach(item=>{
 
     const name=
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
     name.textContent=
       item.label;
 
 
     const input=
-      document.createElement("input");
+      document.createElement(
+        "input"
+      );
 
     input.type="number";
     input.min="0";
@@ -1764,7 +1846,6 @@ function createStockInputs(){
 
     root.appendChild(name);
     root.appendChild(input);
-
   });
 
 
@@ -1780,7 +1861,6 @@ function applyWarehouse(){
   ITEMS.forEach(item=>{
 
     warehouse[item.key]=
-
       Number(
         document
           .getElementById(
@@ -1788,9 +1868,7 @@ function applyWarehouse(){
           )
           .value
       )
-
       || 0;
-
   });
 
 
@@ -1806,9 +1884,7 @@ function applyWarehouse(){
     ...warehouse
   };
 
-
   allocations=[];
-
 
   renderRemaining();
   renderAllocations();
@@ -1851,20 +1927,17 @@ function renderRemaining(){
         </td>
       </tr>
     `;
-
   });
 
 
   html+="</table>";
 
-
-  root.innerHTML=
-    html;
+  root.innerHTML=html;
 }
 
 
 /* =========================================================
-   LONGITUDINALE
+   LONGITUDINALI
 ========================================================= */
 
 function makeSideCandidate(
@@ -1933,7 +2006,6 @@ function makeSideCandidate(
     bays,
     bayLength,
     tel,
-
     extension:
       Math.abs(
         bayLength-tel.nominal
@@ -1944,31 +2016,19 @@ function makeSideCandidate(
 
 function sideScore(candidate){
 
-  /*
-    Priorità alle traverse fisse.
-  */
-
   if(candidate.method.type==="fixed"){
 
     return (
       (
         candidate.method.size===4
-        ?
-        0
-        :
-        10
+        ? 0
+        : 10
       )
       +
       candidate.bays*.01
     );
   }
 
-
-  /*
-    Poi telescopiche.
-
-    Preferiamo campate circa 3-4 m.
-  */
 
   const idealDistance=
     Math.abs(
@@ -1978,10 +2038,12 @@ function sideScore(candidate){
 
   const longPenalty=
     candidate.bayLength>4.5
-      ?
-      (candidate.bayLength-4.5)*100
-      :
-      0;
+    ?
+    (
+      candidate.bayLength-4.5
+    )*100
+    :
+    0;
 
 
   return (
@@ -2010,10 +2072,10 @@ function buildSideCandidates(length){
 
   const methods=
     selected==="auto"
-      ?
-      Object.keys(SIDE_METHODS)
-      :
-      [selected];
+    ?
+    Object.keys(SIDE_METHODS)
+    :
+    [selected];
 
 
   const results=[];
@@ -2030,12 +2092,11 @@ function buildSideCandidates(length){
           manualSections
         );
 
-
       if(candidate)
         results.push(candidate);
     });
 
-  } else {
+  }else{
 
     for(
       let sections=2;
@@ -2052,12 +2113,10 @@ function buildSideCandidates(length){
             sections
           );
 
-
         if(candidate)
           results.push(candidate);
       });
     }
-
   }
 
 
@@ -2072,7 +2131,7 @@ function buildSideCandidates(length){
 
 
 /* =========================================================
-   SUPERIORE
+   SUPERIORI
 ========================================================= */
 
 function buildTopCandidates(width){
@@ -2087,10 +2146,10 @@ function buildTopCandidates(width){
 
   const methods=
     selected==="auto"
-      ?
-      Object.keys(TOP_METHODS)
-      :
-      [selected];
+    ?
+    Object.keys(TOP_METHODS)
+    :
+    [selected];
 
 
   const results=[];
@@ -2101,11 +2160,6 @@ function buildTopCandidates(width){
     const method=
       TOP_METHODS[key];
 
-
-    /*
-      Se è esattamente 3 o 4 m,
-      la traversa alta fissa vince.
-    */
 
     if(method.type==="fixed"){
 
@@ -2156,11 +2210,9 @@ function buildTopCandidates(width){
       tel,
       extension,
       score:
-        100
-        +
+        100+
         extension*10
     });
-
   });
 
 
@@ -2180,7 +2232,9 @@ function buildTopCandidates(width){
 function buildRequirements(
   side,
   top,
-  activeLayout
+  target,
+  arches,
+  lowerOff
 ){
 
   const req=
@@ -2189,14 +2243,10 @@ function buildRequirements(
 
   const stats=
     layoutStats(
-      activeLayout
+      target,
+      arches
     );
 
-
-  /*
-    Ogni punto:
-    1 palo + 1 base.
-  */
 
   req.pole=
     stats.nodes;
@@ -2206,17 +2256,34 @@ function buildRequirements(
 
 
   /*
-    Ogni collegamento orizzontale:
-    traversa ALTA + BASSA.
+    Tutte le orizzontali
+    hanno la traversa ALTA.
   */
+
+  const highCount=
+    stats.horizontal.length;
+
+
+  /*
+    La BASSA esiste solamente
+    se non è stata disattivata
+    con H nel Matrix.
+  */
+
+  const lowerCount=
+    stats.horizontal.filter(edge=>
+
+      !lowerOff.has(
+        hKey(edge.r,edge.c)
+      )
+
+    ).length;
+
 
   if(side.method.key==="fixed3"){
 
-    req.high3+=
-      stats.horizontalEdges;
-
-    req.low3+=
-      stats.horizontalEdges;
+    req.high3+=highCount;
+    req.low3+=lowerCount;
 
   }
 
@@ -2224,29 +2291,28 @@ function buildRequirements(
     side.method.key==="fixed4"
   ){
 
-    req.high4+=
-      stats.horizontalEdges;
-
-    req.low4+=
-      stats.horizontalEdges;
+    req.high4+=highCount;
+    req.low4+=lowerCount;
 
   }
 
-  else {
+  else{
 
     /*
-      Telescopica alta + bassa.
+      Stesso tipo telescopico:
+      alte + basse.
     */
 
     req[
       side.method.tel
     ]+=
-      stats.horizontalEdges*2;
+      highCount+
+      lowerCount;
   }
 
 
   /*
-    Archi.
+    ARCHI
   */
 
   req.arch+=
@@ -2254,7 +2320,7 @@ function buildRequirements(
 
 
   /*
-    Collegamenti trasversali NON arco.
+    TRASVERSALI NORMALI
   */
 
   const normalCount=
@@ -2271,23 +2337,18 @@ function buildRequirements(
 
     if(top.method.type==="fixed"){
 
-      /*
-        Viene preso dalle traverse ALTE.
-      */
-
       req[
         top.method.stockKey
       ]+=
         normalCount;
 
-    } else {
+    }else{
 
       req[
         top.method.tel
       ]+=
         normalCount;
     }
-
   }
 
 
@@ -2296,15 +2357,10 @@ function buildRequirements(
 
 
 /* =========================================================
-   MAGAZZINO / DEFICIT
+   DEFICIT
 ========================================================= */
 
-function deficitsFor(requirements){
-
-  /*
-    Se il magazzino non è ancora impostato,
-    permettiamo comunque di progettare.
-  */
+function deficitsFor(req){
 
   if(!warehouseConfigured)
     return [];
@@ -2313,7 +2369,7 @@ function deficitsFor(requirements){
   const deficits=[];
 
 
-  Object.entries(requirements)
+  Object.entries(req)
     .forEach(([key,needed])=>{
 
       if(!needed)
@@ -2335,7 +2391,6 @@ function deficitsFor(requirements){
             needed-available
         });
       }
-
     });
 
 
@@ -2344,7 +2399,7 @@ function deficitsFor(requirements){
 
 
 /* =========================================================
-   GEOMETRIA COMPLETA
+   GEOMETRIA
 ========================================================= */
 
 function geometryCandidates(
@@ -2353,9 +2408,7 @@ function geometryCandidates(
 ){
 
   const sides=
-    buildSideCandidates(
-      length
-    );
+    buildSideCandidates(length);
 
 
   const results=[];
@@ -2363,43 +2416,32 @@ function geometryCandidates(
 
   sides.forEach(side=>{
 
-    let candidateLayout;
-
-
-    if(customLayout){
-
-      candidateLayout=
-        cloneLayout(layout);
-
-    } else {
-
-      candidateLayout=
-        makeDefaultLayout(
-          side.sections
-        );
-    }
+    const candidateLayout=
+      customLayout
+      ?
+      cloneLayout(layout)
+      :
+      makeDefaultLayout(
+        side.sections
+      );
 
 
     const stats=
       layoutStats(
-        candidateLayout
+        candidateLayout,
+        archEdges
       );
 
 
-    /*
-      Se tutte le trasversali sono archi,
-      non serve scegliere barra superiore.
-    */
-
     const tops=
       stats.normalVerticalEdges>0
-        ?
-        buildTopCandidates(width)
-        :
-        [{
-          method:null,
-          score:0
-        }];
+      ?
+      buildTopCandidates(width)
+      :
+      [{
+        method:null,
+        score:0
+      }];
 
 
     tops.forEach(top=>{
@@ -2408,7 +2450,9 @@ function geometryCandidates(
         buildRequirements(
           side,
           top,
-          candidateLayout
+          candidateLayout,
+          archEdges,
+          lowerOffEdges
         );
 
 
@@ -2430,9 +2474,7 @@ function geometryCandidates(
           +
           (top?.score ?? 0)
       });
-
     });
-
   });
 
 
@@ -2441,10 +2483,8 @@ function geometryCandidates(
     if(a.score!==b.score)
       return a.score-b.score;
 
-
     return (
-      a.deficits.length
-      -
+      a.deficits.length-
       b.deficits.length
     );
   });
@@ -2455,7 +2495,7 @@ function geometryCandidates(
 
 
 /* =========================================================
-   FAIRY LIGHTS
+   FAIRY GEOMETRY
 ========================================================= */
 
 function cellExists(
@@ -2480,19 +2520,14 @@ function cellExists(
 }
 
 
-function calculateFairy(
+/*
+  C'è almeno un tunnel
+  nella campata longitudinale c?
+*/
+function bayHasFairyArea(
   target,
-  bayLength,
-  width
+  c
 ){
-
-  const runs=[];
-
-
-  /*
-    Ogni striscia continua di celle
-    è un tunnel.
-  */
 
   for(
     let r=0;
@@ -2500,100 +2535,587 @@ function calculateFairy(
     r++
   ){
 
-    let c=0;
-
-
-    while(c<target.cols-1){
-
-      if(
-        !cellExists(
-          target,
-          r,
-          c
-        )
-      ){
-
-        c++;
-        continue;
-      }
-
-
-      const start=c;
-
-
-      while(
-        c<target.cols-1
-        &&
-        cellExists(
-          target,
-          r,
-          c
-        )
-      ){
-
-        c++;
-      }
-
-
-      const end=c;
-
-      const bays=
-        end-start;
-
-      const length=
-        bays*bayLength;
-
-
-      const rows=
-        Math.ceil(
-          length/
-          FAIRY_SPACING
-        );
-
-
-      runs.push({
+    if(
+      cellExists(
+        target,
         r,
-        start,
-        bays,
-        length,
-        rows,
+        c
+      )
+    ){
+      return true;
+    }
+  }
 
-        actualSpacing:
-          length/rows
-      });
+  return false;
+}
 
+
+/*
+  Gruppi longitudinali continui
+  di campate utilizzabili.
+*/
+function fairyLongitudinalRuns(
+  target
+){
+
+  const runs=[];
+
+  let c=0;
+
+
+  while(c<target.cols-1){
+
+    if(
+      !bayHasFairyArea(
+        target,
+        c
+      )
+    ){
+
+      c++;
+      continue;
     }
 
+
+    const start=c;
+
+
+    while(
+      c<target.cols-1
+      &&
+      bayHasFairyArea(
+        target,
+        c
+      )
+    ){
+
+      c++;
+    }
+
+
+    runs.push({
+      start,
+      end:c,
+      bays:c-start
+    });
   }
 
 
-  /*
-    Per ora anche con arco
-    il calcolo fairy rimane
-    quello rettangolare.
-  */
+  return runs;
+}
 
-  const perU=
-    HEIGHT*2
+
+/*
+  FATTORE ARCO nel punto t
+  della campata.
+
+  0 = superiore completamente dritto
+  1 = arco completo
+
+  Se una sezione è dritta e quella
+  successiva è arco, la fairy passa
+  progressivamente da una forma all'altra.
+*/
+function archFactor(
+  r,
+  bay,
+  t,
+  arches
+){
+
+  const left=
+    arches.has(
+      vKey(r,bay)
+    )
+    ? 1
+    : 0;
+
+
+  const right=
+    arches.has(
+      vKey(r,bay+1)
+    )
+    ? 1
+    : 0;
+
+
+  return (
+    left*(1-t)
     +
-    width
-    +
-    FAIRY_SLACK;
+    right*t
+  );
+}
 
 
-  const rows=
-    runs.reduce(
-      (sum,run)=>sum+run.rows,
-      0
+/*
+  Segmento superiore tra
+  due file di pali.
+
+  factor 0:
+  linea dritta.
+
+  factor 1:
+  vero semicerchio.
+*/
+function topCurvePoints(
+  r,
+  width,
+  factor
+){
+
+  const points=[];
+
+  const radius=
+    width/2;
+
+  const centerZ=
+    (r+.5)*width;
+
+  const segments=18;
+
+
+  for(
+    let i=0;
+    i<=segments;
+    i++
+  ){
+
+    const theta=
+      Math.PI*
+      i/segments;
+
+
+    const z=
+      centerZ
+      -
+      radius*
+      Math.cos(theta);
+
+
+    const y=
+      HEIGHT
+      +
+      factor*
+      radius*
+      Math.sin(theta);
+
+
+    points.push({
+      y,
+      z
+    });
+  }
+
+
+  return points;
+}
+
+
+function polylineLength(points){
+
+  let length=0;
+
+
+  for(
+    let i=1;
+    i<points.length;
+    i++
+  ){
+
+    const dy=
+      points[i].y-
+      points[i-1].y;
+
+
+    const dz=
+      points[i].z-
+      points[i-1].z;
+
+
+    length+=
+      Math.hypot(dy,dz);
+  }
+
+
+  return length;
+}
+
+
+/*
+  Percorsi fairy trasversali
+  in un preciso punto X.
+
+  Può produrre più percorsi
+  se ci sono gruppi di tunnel separati.
+*/
+function buildFairyCrossSection(
+  target,
+  bay,
+  t,
+  width,
+  arches,
+  fairyOff
+){
+
+  const cellActive=[];
+
+
+  for(
+    let r=0;
+    r<target.rows-1;
+    r++
+  ){
+
+    cellActive[r]=
+      cellExists(
+        target,
+        r,
+        bay
+      );
+  }
+
+
+  const paths=[];
+
+  let r=0;
+
+
+  while(
+    r<target.rows-1
+  ){
+
+    if(!cellActive[r]){
+
+      r++;
+      continue;
+    }
+
+
+    const start=r;
+
+
+    while(
+      r<target.rows-1
+      &&
+      cellActive[r]
+    ){
+
+      r++;
+    }
+
+
+    const end=r-1;
+
+
+    /*
+      Celle da START a END.
+
+      Confini:
+      start
+      ...
+      end+1
+    */
+
+    const points=[];
+
+
+    const startZ=
+      start*width;
+
+
+    const startDescent=
+      !fairyOff.has(
+        hKey(start,bay)
+      );
+
+
+    if(startDescent){
+
+      points.push({
+        y:.04,
+        z:startZ
+      });
+    }
+
+
+    points.push({
+      y:HEIGHT,
+      z:startZ
+    });
+
+
+    for(
+      let cell=start;
+      cell<=end;
+      cell++
+    ){
+
+      const factor=
+        archFactor(
+          cell,
+          bay,
+          t,
+          arches
+        );
+
+
+      const curve=
+        topCurvePoints(
+          cell,
+          width,
+          factor
+        );
+
+
+      /*
+        Il primo punto coincide
+        con quello già presente.
+      */
+
+      for(
+        let i=1;
+        i<curve.length;
+        i++
+      ){
+
+        points.push(
+          curve[i]
+        );
+      }
+
+
+      /*
+        Se esiste un altro modulo
+        immediatamente dopo,
+        controlliamo se nel palo
+        intermedio la fairy deve
+        scendere e risalire.
+      */
+
+      if(cell<end){
+
+        const boundary=
+          cell+1;
+
+
+        const descent=
+          !fairyOff.has(
+            hKey(
+              boundary,
+              bay
+            )
+          );
+
+
+        if(descent){
+
+          const z=
+            boundary*width;
+
+
+          points.push({
+            y:.04,
+            z
+          });
+
+
+          points.push({
+            y:HEIGHT,
+            z
+          });
+        }
+      }
+    }
+
+
+    /*
+      Discesa finale.
+    */
+
+    const endBoundary=
+      end+1;
+
+
+    const endDescent=
+      !fairyOff.has(
+        hKey(
+          endBoundary,
+          bay
+        )
+      );
+
+
+    if(endDescent){
+
+      points.push({
+        y:.04,
+        z:
+          endBoundary*
+          width
+      });
+    }
+
+
+    paths.push({
+      points,
+      length:
+        polylineLength(points)
+        +
+        FAIRY_SLACK
+    });
+  }
+
+
+  return paths;
+}
+
+
+/* =========================================================
+   CALCOLO FAIRY COMPLETO
+========================================================= */
+
+function calculateFairy(
+  target,
+  bayLength,
+  width,
+  arches,
+  fairyOff
+){
+
+  const longitudinalRuns=
+    fairyLongitudinalRuns(
+      target
     );
 
 
+  const samples=[];
+
+  let totalMeters=0;
+  let totalPaths=0;
+
+
+  longitudinalRuns.forEach(run=>{
+
+    const runLength=
+      run.bays*
+      bayLength;
+
+
+    const stripCount=
+      Math.ceil(
+        runLength/
+        FAIRY_SPACING
+      );
+
+
+    const actualSpacing=
+      runLength/
+      stripCount;
+
+
+    for(
+      let i=0;
+      i<stripCount;
+      i++
+    ){
+
+      /*
+        Centro della fascia,
+        come nelle versioni precedenti.
+      */
+
+      const localX=
+        (i+.5)*
+        actualSpacing;
+
+
+      let bayOffset=
+        Math.floor(
+          localX/
+          bayLength
+        );
+
+
+      bayOffset=
+        Math.min(
+          run.bays-1,
+          bayOffset
+        );
+
+
+      const bay=
+        run.start+
+        bayOffset;
+
+
+      const withinBay=
+        localX-
+        bayOffset*
+        bayLength;
+
+
+      const t=
+        Math.max(
+          0,
+          Math.min(
+            1,
+            withinBay/
+            bayLength
+          )
+        );
+
+
+      const paths=
+        buildFairyCrossSection(
+          target,
+          bay,
+          t,
+          width,
+          arches,
+          fairyOff
+        );
+
+
+      paths.forEach(path=>{
+
+        totalMeters+=
+          path.length;
+
+        totalPaths++;
+
+
+        samples.push({
+
+          /*
+            X assoluta rispetto
+            alle colonne del Matrix.
+          */
+
+          x:
+            run.start*
+            bayLength
+            +
+            localX,
+
+          bay,
+          t,
+
+          points:
+            path.points,
+
+          length:
+            path.length
+        });
+      });
+    }
+  });
+
+
   return {
-    runs,
-    rows,
-    perU,
-    total:
-      rows*perU
+    samples,
+    paths:totalPaths,
+    total:totalMeters,
+    longitudinalRuns
   };
 }
 
@@ -2623,6 +3145,7 @@ function chooseFairyBaskets(required){
   const max100=
     remaining.fairy100 ?? 0;
 
+
   const max200=
     remaining.fairy200 ?? 0;
 
@@ -2643,7 +3166,8 @@ function chooseFairyBaskets(required){
     ){
 
       const meters=
-        a*100+b*200;
+        a*100+
+        b*200;
 
 
       if(meters<required)
@@ -2679,9 +3203,7 @@ function chooseFairyBaskets(required){
 
         best=candidate;
       }
-
     }
-
   }
 
 
@@ -2698,9 +3220,7 @@ function calculatePlan(){
   const length=
     Number(
       document
-        .getElementById(
-          "length"
-        )
+        .getElementById("length")
         .value
     );
 
@@ -2708,9 +3228,7 @@ function calculatePlan(){
   const width=
     Number(
       document
-        .getElementById(
-          "width"
-        )
+        .getElementById("width")
         .value
     );
 
@@ -2722,6 +3240,9 @@ function calculatePlan(){
   ){
     return;
   }
+
+
+  cleanOverrides();
 
 
   const candidates=
@@ -2737,9 +3258,7 @@ function calculatePlan(){
 
 
     document
-      .getElementById(
-        "status"
-      )
+      .getElementById("status")
       .innerHTML=`
 
         <div class="bad">
@@ -2747,10 +3266,6 @@ function calculatePlan(){
           con la combinazione scelta.
         </div>
 
-        <div class="warning">
-          Controlla il tipo di barra longitudinale,
-          il numero di sezioni oppure la larghezza.
-        </div>
       `;
 
 
@@ -2778,15 +3293,6 @@ function calculatePlan(){
     candidates[0];
 
 
-  /*
-    Memorizziamo sempre
-    la misura reale della campata.
-
-    È ciò che permette di aggiungere
-    colonne dal Matrix senza ottenere
-    il vecchio errore.
-  */
-
   matrixBayLength=
     geometry.side.bayLength;
 
@@ -2803,9 +3309,7 @@ function calculatePlan(){
   if(manualSections===null){
 
     document
-      .getElementById(
-        "sections"
-      )
+      .getElementById("sections")
       .value=
         geometry.side.sections;
   }
@@ -2835,7 +3339,9 @@ function calculatePlan(){
       calculateFairy(
         layout,
         geometry.side.bayLength,
-        width
+        width,
+        archEdges,
+        fairyOffEdges
       );
 
 
@@ -2855,13 +3361,11 @@ function calculatePlan(){
         requirements.fairy200=
           baskets.fairy200;
 
-      } else {
+      }else{
 
         fairyAvailable=false;
       }
-
     }
-
   }
 
 
@@ -2890,6 +3394,19 @@ function calculatePlan(){
     layout:
       cloneLayout(layout),
 
+    archEdges:
+      cloneSet(archEdges),
+
+    lowerOffEdges:
+      cloneSet(
+        lowerOffEdges
+      ),
+
+    fairyOffEdges:
+      cloneSet(
+        fairyOffEdges
+      ),
+
     requirements,
     deficits,
 
@@ -2913,28 +3430,56 @@ function renderAll(){
   renderSummary();
   renderMatrix();
   render3D(currentPlan);
-  renderTechnicalViews(currentPlan);
+  renderTechnicalViews(
+    currentPlan
+  );
 }
 
 
 /* =========================================================
-   RISULTATI
+   SUMMARY
 ========================================================= */
 
 function renderSummary(){
 
-  const plan=
-    currentPlan;
-
-
-  const side=
-    plan.geometry.side;
-
+  const plan=currentPlan;
 
   const stats=
     layoutStats(
-      plan.layout
+      plan.layout,
+      plan.archEdges
     );
+
+
+  const lowerCount=
+    stats.horizontal.filter(edge=>
+
+      !plan.lowerOffEdges.has(
+        hKey(
+          edge.r,
+          edge.c
+        )
+      )
+
+    ).length;
+
+
+  const removedLower=
+    stats.horizontalEdges-
+    lowerCount;
+
+
+  const fairyDisabled=
+    stats.horizontal.filter(edge=>
+
+      plan.fairyOffEdges.has(
+        hKey(
+          edge.r,
+          edge.c
+        )
+      )
+
+    ).length;
 
 
   document
@@ -2956,7 +3501,7 @@ function renderSummary(){
       </span>
 
       <span class="small">
-        · imposta il magazzino per controllare la disponibilità
+        · imposta il magazzino per controllare il carico
       </span>
     `;
 
@@ -2976,7 +3521,7 @@ function renderSummary(){
 
   }
 
-  else {
+  else{
 
     status=`
       <span class="bad">
@@ -2992,12 +3537,12 @@ function renderSummary(){
       `;
 
 
-      plan.deficits.forEach(deficit=>{
+      plan.deficits.forEach(d=>{
 
         status+=`
-          ${deficit.label}:
+          ${d.label}:
           mancano
-          <strong>${deficit.missing}</strong>
+          <strong>${d.missing}</strong>
           &nbsp;
         `;
       });
@@ -3009,7 +3554,11 @@ function renderSummary(){
     }
 
 
-    if(!plan.fairyAvailable){
+    if(
+      plan.fairyEnabled
+      &&
+      !plan.fairyAvailable
+    ){
 
       status+=`
         <div class="warning">
@@ -3021,16 +3570,12 @@ function renderSummary(){
         </div>
       `;
     }
-
   }
 
 
   document
-    .getElementById(
-      "status"
-    )
-    .innerHTML=
-      status;
+    .getElementById("status")
+    .innerHTML=status;
 
 
   let rows="";
@@ -3039,7 +3584,9 @@ function renderSummary(){
   ITEMS.forEach(item=>{
 
     const quantity=
-      plan.requirements[item.key]
+      plan.requirements[
+        item.key
+      ]
       || 0;
 
 
@@ -3051,7 +3598,9 @@ function renderSummary(){
       <tr>
         <td>${item.label}</td>
         <td>
-          <strong>${quantity}</strong>
+          <strong>
+            ${quantity}
+          </strong>
         </td>
       </tr>
     `;
@@ -3063,11 +3612,13 @@ function renderSummary(){
       "materialResult"
     )
     .innerHTML=`
+
       <table>
         <tbody>
           ${rows}
         </tbody>
       </table>
+
     `;
 
 
@@ -3079,18 +3630,19 @@ function renderSummary(){
     fairyData=`
 
       <div class="chip">
-        U fairy
+        Percorsi fairy
         <strong>
-          ${plan.fairy.rows}
+          ${plan.fairy.paths}
         </strong>
       </div>
 
       <div class="chip">
-        Fairy
+        Fairy totale
         <strong>
           ${plan.fairy.total.toFixed(1)} m
         </strong>
       </div>
+
     `;
 
 
@@ -3106,6 +3658,7 @@ function renderSummary(){
             ${plan.baskets.fairy200}×200
           </strong>
         </div>
+
       `;
     }
   }
@@ -3120,21 +3673,14 @@ function renderSummary(){
       <div class="chip">
         Sezioni
         <strong>
-          ${side.sections}
-        </strong>
-      </div>
-
-      <div class="chip">
-        Campate
-        <strong>
-          ${side.bays}
+          ${plan.geometry.side.sections}
         </strong>
       </div>
 
       <div class="chip">
         Campata
         <strong>
-          ${side.bayLength.toFixed(2)} m
+          ${plan.geometry.side.bayLength.toFixed(2)} m
         </strong>
       </div>
 
@@ -3146,16 +3692,30 @@ function renderSummary(){
       </div>
 
       <div class="chip">
-        Trasversali
+        Archi
         <strong>
-          ${stats.normalVerticalEdges}
+          ${stats.arches}
         </strong>
       </div>
 
       <div class="chip">
-        Archi
+        Traverse basse
         <strong>
-          ${stats.arches}
+          ${lowerCount}
+        </strong>
+      </div>
+
+      <div class="chip">
+        Basse rimosse
+        <strong>
+          ${removedLower}
+        </strong>
+      </div>
+
+      <div class="chip">
+        Discese fairy OFF
+        <strong>
+          ${fairyDisabled}
         </strong>
       </div>
 
@@ -3172,10 +3732,12 @@ function matrixCoordinates(r,c){
 
   return {
     x:
-      42+c*MATRIX_CELL,
+      42+
+      c*MATRIX_CELL,
 
     y:
-      35+r*MATRIX_CELL
+      35+
+      r*MATRIX_CELL
   };
 }
 
@@ -3193,8 +3755,8 @@ function renderMatrix(){
     Math.max(
       420,
       84+
-      (layout.cols-1)
-      *MATRIX_CELL
+      (layout.cols-1)*
+      MATRIX_CELL
     );
 
 
@@ -3202,35 +3764,19 @@ function renderMatrix(){
     Math.max(
       190,
       70+
-      (layout.rows-1)
-      *MATRIX_CELL
+      (layout.rows-1)*
+      MATRIX_CELL
     );
 
 
-  const viewWidth=
-    baseWidth/matrixZoom;
-
-
-  const viewHeight=
-    baseHeight/matrixZoom;
-
-
-  const centerX=
-    baseWidth/2;
-
-
-  const centerY=
-    baseHeight/2;
-
+  /*
+    Adattamento automatico:
+    niente zoom manuale.
+  */
 
   svg.setAttribute(
     "viewBox",
-    `
-      ${centerX-viewWidth/2}
-      ${centerY-viewHeight/2}
-      ${viewWidth}
-      ${viewHeight}
-    `
+    `0 0 ${baseWidth} ${baseHeight}`
   );
 
 
@@ -3246,26 +3792,24 @@ function renderMatrix(){
     for(let c=0;c<layout.cols;c++){
 
       const p=
-        matrixCoordinates(
-          r,c
-        );
+        matrixCoordinates(r,c);
 
 
       if(c<layout.cols-1){
 
-        const p2=
+        const q=
           matrixCoordinates(
-            r,c+1
+            r,
+            c+1
           );
-
 
         html+=`
           <line
             x1="${p.x}"
             y1="${p.y}"
-            x2="${p2.x}"
-            y2="${p2.y}"
-            stroke="#e2e2e2"
+            x2="${q.x}"
+            y2="${q.y}"
+            stroke="#e3e3e3"
             stroke-width="1"
           />
         `;
@@ -3274,31 +3818,32 @@ function renderMatrix(){
 
       if(r<layout.rows-1){
 
-        const p2=
+        const q=
           matrixCoordinates(
-            r+1,c
+            r+1,
+            c
           );
-
 
         html+=`
           <line
             x1="${p.x}"
             y1="${p.y}"
-            x2="${p2.x}"
-            y2="${p2.y}"
-            stroke="#e2e2e2"
+            x2="${q.x}"
+            y2="${q.y}"
+            stroke="#e3e3e3"
             stroke-width="1"
           />
         `;
       }
-
     }
-
   }
 
 
   const stats=
-    layoutStats();
+    layoutStats(
+      layout,
+      archEdges
+    );
 
 
   /*
@@ -3310,16 +3855,20 @@ function renderMatrix(){
     const a=
       matrixCoordinates(
         edge.r,
-        edge.c1
+        edge.c
       );
 
 
     const b=
       matrixCoordinates(
         edge.r,
-        edge.c2
+        edge.c+1
       );
 
+
+    /*
+      Barra strutturale sempre visibile.
+    */
 
     html+=`
       <line
@@ -3333,6 +3882,148 @@ function renderMatrix(){
       />
     `;
 
+
+    /*
+      MODALITÀ FAIRY
+    */
+
+    if(matrixMode==="fairy"){
+
+      const enabled=
+        !fairyOffEdges.has(
+          hKey(
+            edge.r,
+            edge.c
+          )
+        );
+
+
+      html+=`
+        <line
+          x1="${a.x}"
+          y1="${a.y}"
+          x2="${b.x}"
+          y2="${b.y}"
+          stroke="${
+            enabled
+            ?
+            "#e3a400"
+            :
+            "#aaa"
+          }"
+          stroke-width="9"
+          opacity=".45"
+          stroke-linecap="round"
+          ${
+            enabled
+            ?
+            ""
+            :
+            `stroke-dasharray="6 5"`
+          }
+        />
+      `;
+
+
+      html+=`
+        <text
+          x="${(a.x+b.x)/2}"
+          y="${a.y-8}"
+          text-anchor="middle"
+          font-family="Arial"
+          font-size="15"
+        >
+          ${enabled ? "💡" : "×"}
+        </text>
+      `;
+    }
+
+
+    /*
+      MODALITÀ H
+    */
+
+    if(matrixMode==="lower"){
+
+      const enabled=
+        !lowerOffEdges.has(
+          hKey(
+            edge.r,
+            edge.c
+          )
+        );
+
+
+      html+=`
+        <line
+          x1="${a.x}"
+          y1="${a.y}"
+          x2="${b.x}"
+          y2="${b.y}"
+          stroke="${
+            enabled
+            ?
+            "#2b7a3d"
+            :
+            "#aaa"
+          }"
+          stroke-width="9"
+          opacity=".38"
+          stroke-linecap="round"
+          ${
+            enabled
+            ?
+            ""
+            :
+            `stroke-dasharray="6 5"`
+          }
+        />
+      `;
+
+
+      html+=`
+        <text
+          x="${(a.x+b.x)/2}"
+          y="${a.y-8}"
+          text-anchor="middle"
+          font-family="Arial"
+          font-size="13"
+          font-weight="bold"
+          fill="${
+            enabled
+            ?
+            "#1d6a31"
+            :
+            "#888"
+          }"
+        >
+          ${enabled ? "H" : "H×"}
+        </text>
+      `;
+    }
+
+
+    if(
+      matrixMode==="fairy"
+      ||
+      matrixMode==="lower"
+    ){
+
+      html+=`
+        <line
+          class="horizontal-hit"
+          data-r="${edge.r}"
+          data-c="${edge.c}"
+          x1="${a.x}"
+          y1="${a.y}"
+          x2="${b.x}"
+          y2="${b.y}"
+          stroke="transparent"
+          stroke-width="24"
+          style="cursor:pointer"
+        />
+      `;
+    }
   });
 
 
@@ -3357,7 +4048,7 @@ function renderMatrix(){
 
 
     const key=
-      edgeKey(
+      vKey(
         edge.r,
         edge.c
       );
@@ -3373,17 +4064,13 @@ function renderMatrix(){
         a.x+20;
 
 
-      const midY=
-        (a.y+b.y)/2;
-
-
       html+=`
         <path
           d="
             M ${a.x} ${a.y}
             Q
             ${controlX}
-            ${midY}
+            ${(a.y+b.y)/2}
             ${b.x}
             ${b.y}
           "
@@ -3394,7 +4081,7 @@ function renderMatrix(){
         />
       `;
 
-    } else {
+    }else{
 
       html+=`
         <line
@@ -3422,17 +4109,16 @@ function renderMatrix(){
           x2="${b.x}"
           y2="${b.y}"
           stroke="transparent"
-          stroke-width="22"
+          stroke-width="24"
           style="cursor:pointer"
         />
       `;
     }
-
   });
 
 
   /*
-    PUNTI
+    NODI
   */
 
   for(let r=0;r<layout.rows;r++){
@@ -3440,9 +4126,7 @@ function renderMatrix(){
     for(let c=0;c<layout.cols;c++){
 
       const p=
-        matrixCoordinates(
-          r,c
-        );
+        matrixCoordinates(r,c);
 
 
       const active=
@@ -3457,22 +4141,37 @@ function renderMatrix(){
           cx="${p.x}"
           cy="${p.y}"
           r="${active ? 7 : 4.5}"
-          fill="${active ? "#111" : "#fff"}"
-          stroke="${active ? "#111" : "#aaa"}"
+          fill="${
+            active
+            ?
+            "#111"
+            :
+            "#fff"
+          }"
+          stroke="${
+            active
+            ?
+            "#111"
+            :
+            "#aaa"
+          }"
           stroke-width="2"
           style="
-            cursor:
-            ${matrixMode==="points" ? "pointer" : "default"}
+            cursor:${
+              matrixMode==="points"
+              ?
+              "pointer"
+              :
+              "default"
+            }
           "
         />
       `;
     }
-
   }
 
 
-  svg.innerHTML=
-    html;
+  svg.innerHTML=html;
 
 
   if(matrixMode==="points"){
@@ -3488,12 +4187,15 @@ function renderMatrix(){
           ()=>{
 
             toggleNode(
-              Number(node.dataset.r),
-              Number(node.dataset.c)
+              Number(
+                node.dataset.r
+              ),
+              Number(
+                node.dataset.c
+              )
             );
           }
         );
-
       });
   }
 
@@ -3511,60 +4213,123 @@ function renderMatrix(){
           ()=>{
 
             toggleArch(
-              Number(edge.dataset.r),
-              Number(edge.dataset.c)
+              Number(
+                edge.dataset.r
+              ),
+              Number(
+                edge.dataset.c
+              )
             );
           }
         );
+      });
+  }
 
+
+  if(
+    matrixMode==="fairy"
+    ||
+    matrixMode==="lower"
+  ){
+
+    svg
+      .querySelectorAll(
+        ".horizontal-hit"
+      )
+      .forEach(edge=>{
+
+        edge.addEventListener(
+          "click",
+          ()=>{
+
+            const r=
+              Number(
+                edge.dataset.r
+              );
+
+            const c=
+              Number(
+                edge.dataset.c
+              );
+
+
+            if(matrixMode==="fairy")
+              toggleFairy(r,c);
+            else
+              toggleLower(r,c);
+          }
+        );
       });
   }
 }
 
 
+/* =========================================================
+   MATRIX MODE
+========================================================= */
+
 function setMatrixMode(mode){
 
-  matrixMode=
-    mode;
+  matrixMode=mode;
 
 
-  document
-    .getElementById(
-      "modePoints"
-    )
-    .classList
-    .toggle(
-      "active-button",
-      mode==="points"
-    );
+  const buttons={
+    points:"modePoints",
+    arch:"modeArch",
+    fairy:"modeFairy",
+    lower:"modeLower"
+  };
 
 
-  document
-    .getElementById(
-      "modeArch"
-    )
-    .classList
-    .toggle(
-      "active-button",
-      mode==="arch"
-    );
+  Object.entries(buttons)
+    .forEach(([key,id])=>{
+
+      document
+        .getElementById(id)
+        .classList
+        .toggle(
+          "active-button",
+          key===mode
+        );
+    });
+
+
+  let help="";
+
+
+  if(mode==="points"){
+
+    help=
+      "PUNTI: aggiungi o togli palo + base. Il Matrix si espande e si restringe automaticamente.";
+
+  }
+
+  else if(mode==="arch"){
+
+    help=
+      "ARCHI: clicca una traversa blu per sostituirla con un arco. Clicca di nuovo per tornare alla traversa normale.";
+
+  }
+
+  else if(mode==="fairy"){
+
+    help=
+      "FAIRY: clicca un laterale. Giallo = la fairy scende su quel lato. Grigio = nessuna discesa. La fairy può continuare sopra verso il modulo successivo.";
+
+  }
+
+  else if(mode==="lower"){
+
+    help=
+      "H: clicca un laterale per mettere o togliere la traversa bassa. La traversa alta rimane sempre.";
+  }
 
 
   document
     .getElementById(
       "matrixHelp"
     )
-    .textContent=
-
-      mode==="points"
-
-      ?
-
-      "PUNTI: clicca per aggiungere o togliere palo + base. Il Matrix si espande e si restringe automaticamente."
-
-      :
-
-      "ARCHI: clicca una traversa blu per sostituirla con un arco. Clicca di nuovo per tornare alla traversa normale.";
+    .textContent=help;
 
 
   renderMatrix();
@@ -3627,8 +4392,7 @@ function init3D(){
     );
 
 
-  controls.enableDamping=
-    true;
+  controls.enableDamping=true;
 
 
   window.addEventListener(
@@ -3650,22 +4414,15 @@ function resize3D(){
       );
 
 
-  const width=
-    container.clientWidth;
-
-
-  const height=
-    container.clientHeight;
-
-
   renderer.setSize(
-    width,
-    height
+    container.clientWidth,
+    container.clientHeight
   );
 
 
   camera.aspect=
-    width/height;
+    container.clientWidth/
+    container.clientHeight;
 
 
   camera.updateProjectionMatrix();
@@ -3707,9 +4464,7 @@ function cylinderBetween(
 
   const direction=
     new THREE.Vector3()
-      .subVectors(
-        b,a
-      );
+      .subVectors(b,a);
 
 
   const length=
@@ -3770,9 +4525,7 @@ function drawArch3D(
 
 
   const radius=
-    Math.abs(
-      z2-z1
-    )/2;
+    Math.abs(z2-z1)/2;
 
 
   const segments=24;
@@ -3787,21 +4540,20 @@ function drawArch3D(
   ){
 
     const theta=
-      Math.PI
-      -
-      (i/segments)
-      *Math.PI;
+      Math.PI-
+      (i/segments)*
+      Math.PI;
 
 
     const point=
       new THREE.Vector3(
         x,
         HEIGHT+
-        Math.sin(theta)
-        *radius,
+        Math.sin(theta)*
+        radius,
         centerZ+
-        Math.cos(theta)
-        *radius
+        Math.cos(theta)*
+        radius
       );
 
 
@@ -3862,34 +4614,36 @@ function render3D(plan){
     plan.geometry.side.bayLength;
 
 
-  const moduleWidth=
+  const width=
     plan.width;
 
 
   const xForCol=
     c=>
-      (c-bounds.minC)
-      *bay;
+      (c-bounds.minC)*
+      bay;
 
 
   const zForRow=
     r=>
-      (r-bounds.minR)
-      *moduleWidth;
+      (r-bounds.minR)*
+      width;
 
 
   const totalLength=
     (
-      bounds.maxC-bounds.minC
-    )
-    *bay;
+      bounds.maxC-
+      bounds.minC
+    )*
+    bay;
 
 
   const totalWidth=
     (
-      bounds.maxR-bounds.minR
-    )
-    *moduleWidth;
+      bounds.maxR-
+      bounds.minR
+    )*
+    width;
 
 
   scene.add(
@@ -3960,12 +4714,8 @@ function render3D(plan){
         continue;
 
 
-      const x=
-        xForCol(c);
-
-
-      const z=
-        zForRow(r);
+      const x=xForCol(c);
+      const z=zForRow(r);
 
 
       cylinderBetween(
@@ -3996,12 +4746,14 @@ function render3D(plan){
 
       scene.add(base);
     }
-
   }
 
 
   const stats=
-    layoutStats(target);
+    layoutStats(
+      target,
+      plan.archEdges
+    );
 
 
   /*
@@ -4011,54 +4763,61 @@ function render3D(plan){
   stats.horizontal.forEach(edge=>{
 
     const x1=
-      xForCol(
-        edge.c1
-      );
+      xForCol(edge.c);
 
 
     const x2=
-      xForCol(
-        edge.c2
-      );
+      xForCol(edge.c+1);
 
 
     const z=
-      zForRow(
-        edge.r
-      );
+      zForRow(edge.r);
 
+
+    /*
+      ALTA sempre.
+    */
 
     cylinderBetween(
       new THREE.Vector3(
-        x1,
-        HEIGHT,
-        z
+        x1,HEIGHT,z
       ),
       new THREE.Vector3(
-        x2,
-        HEIGHT,
-        z
+        x2,HEIGHT,z
       ),
       .036,
       highMat
     );
 
 
-    cylinderBetween(
-      new THREE.Vector3(
-        x1,
-        LOWER_HEIGHT,
-        z
-      ),
-      new THREE.Vector3(
-        x2,
-        LOWER_HEIGHT,
-        z
-      ),
-      .036,
-      lowMat
-    );
+    /*
+      BASSA solo se H attiva.
+    */
 
+    if(
+      !plan.lowerOffEdges.has(
+        hKey(
+          edge.r,
+          edge.c
+        )
+      )
+    ){
+
+      cylinderBetween(
+        new THREE.Vector3(
+          x1,
+          LOWER_HEIGHT,
+          z
+        ),
+        new THREE.Vector3(
+          x2,
+          LOWER_HEIGHT,
+          z
+        ),
+        .036,
+        lowMat
+      );
+    }
   });
 
 
@@ -4069,26 +4828,20 @@ function render3D(plan){
   stats.vertical.forEach(edge=>{
 
     const x=
-      xForCol(
-        edge.c
-      );
+      xForCol(edge.c);
 
 
     const z1=
-      zForRow(
-        edge.r
-      );
+      zForRow(edge.r);
 
 
     const z2=
-      zForRow(
-        edge.r+1
-      );
+      zForRow(edge.r+1);
 
 
     const isArch=
-      archEdges.has(
-        edgeKey(
+      plan.archEdges.has(
+        vKey(
           edge.r,
           edge.c
         )
@@ -4104,7 +4857,7 @@ function render3D(plan){
         archMat
       );
 
-    } else {
+    }else{
 
       cylinderBetween(
         new THREE.Vector3(
@@ -4121,12 +4874,14 @@ function render3D(plan){
         topMat
       );
     }
-
   });
 
 
   /*
     FAIRY
+
+    Usa ESATTAMENTE gli stessi
+    percorsi usati nel conteggio.
   */
 
   if(
@@ -4137,80 +4892,36 @@ function render3D(plan){
 
     const fairyMaterial=
       new THREE.LineBasicMaterial({
-        color:0xd49200
+        color:0xd59500
       });
 
 
-    plan.fairy.runs.forEach(run=>{
+    plan.fairy.samples
+      .forEach(sample=>{
 
-      const z1=
-        zForRow(
-          run.r
-        );
-
-
-      const z2=
-        zForRow(
-          run.r+1
-        );
-
-
-      const startX=
-        xForCol(
-          run.start
-        );
-
-
-      const spacing=
-        run.length/
-        run.rows;
-
-
-      for(
-        let i=0;
-        i<run.rows;
-        i++
-      ){
+        /*
+          sample.x usa le coordinate
+          assolute delle colonne Matrix.
+        */
 
         const x=
-          startX
-          +
-          (i+.5)
-          *spacing;
+          sample.x-
+          bounds.minC*
+          bay;
 
 
-        const points=[
+        const points=
+          sample.points.map(p=>
 
-          new THREE.Vector3(
-            x,
-            .04,
-            z1
-          ),
+            new THREE.Vector3(
+              x,
+              p.y,
+              p.z-
+              bounds.minR*
+              width
+            )
 
-          new THREE.Vector3(
-            x,
-            HEIGHT,
-            z1
-          ),
-
-          new THREE.Vector3(
-            x,
-            HEIGHT-.17,
-            (z1+z2)/2
-          ),
-
-          new THREE.Vector3(
-            x,
-            HEIGHT,
-            z2
-          ),
-
-          new THREE.Vector3(
-            x,
-            .04,
-            z2
-          )
-        ];
+          );
 
 
         const geometry=
@@ -4226,9 +4937,7 @@ function render3D(plan){
             fairyMaterial
           )
         );
-      }
-
-    });
+      });
   }
 
 
@@ -4237,10 +4946,10 @@ function render3D(plan){
       totalLength*.75,
       4
     ),
-    HEIGHT*2.8,
+    HEIGHT*2.9,
     Math.max(
       totalWidth*1.5,
-      moduleWidth*1.8,
+      width*1.8,
       5
     )
   );
@@ -4342,7 +5051,11 @@ function svgTag(
     />
 
     ${svgText(
-      x,y,text,anchor,11.5
+      x,
+      y,
+      text,
+      anchor,
+      11.5
     )}
   `;
 }
@@ -4367,10 +5080,9 @@ function renderTechnicalViews(plan){
 function renderTopView(plan){
 
   const svg=
-    document
-      .getElementById(
-        "topView"
-      );
+    document.getElementById(
+      "topView"
+    );
 
 
   svg.setAttribute(
@@ -4388,7 +5100,10 @@ function renderTopView(plan){
 
 
   const stats=
-    layoutStats(target);
+    layoutStats(
+      target,
+      plan.archEdges
+    );
 
 
   if(!bounds){
@@ -4400,6 +5115,7 @@ function renderTopView(plan){
 
   const left=160;
   const right=900;
+
   const top=45;
   const bottom=230;
 
@@ -4407,14 +5123,16 @@ function renderTopView(plan){
   const colSpan=
     Math.max(
       1,
-      bounds.maxC-bounds.minC
+      bounds.maxC-
+      bounds.minC
     );
 
 
   const rowSpan=
     Math.max(
       1,
-      bounds.maxR-bounds.minR
+      bounds.maxR-
+      bounds.minR
     );
 
 
@@ -4431,15 +5149,17 @@ function renderTopView(plan){
   const xForCol=
     c=>
       left+
-      (c-bounds.minC)
-      *dx;
+      (
+        c-bounds.minC
+      )*dx;
 
 
   const yForRow=
     r=>
       top+
-      (r-bounds.minR)
-      *dy;
+      (
+        r-bounds.minR
+      )*dy;
 
 
   let html="";
@@ -4447,42 +5167,39 @@ function renderTopView(plan){
 
   stats.horizontal.forEach(edge=>{
 
-    html+=
-      svgLine(
-        xForCol(edge.c1),
-        yForRow(edge.r),
-        xForCol(edge.c2),
-        yForRow(edge.r),
-        4
-      );
+    html+=svgLine(
+      xForCol(edge.c),
+      yForRow(edge.r),
+      xForCol(edge.c+1),
+      yForRow(edge.r),
+      4
+    );
   });
 
 
   stats.vertical.forEach(edge=>{
 
     const isArch=
-      archEdges.has(
-        edgeKey(
+      plan.archEdges.has(
+        vKey(
           edge.r,
           edge.c
         )
       );
 
 
-    html+=
-      svgLine(
-        xForCol(edge.c),
-        yForRow(edge.r),
-        xForCol(edge.c),
-        yForRow(edge.r+1),
-        isArch ? 5 : 4,
-        isArch
-          ?
-          "#c36e00"
-          :
-          "#28658c"
-      );
-
+    html+=svgLine(
+      xForCol(edge.c),
+      yForRow(edge.r),
+      xForCol(edge.c),
+      yForRow(edge.r+1),
+      isArch ? 5 : 4,
+      isArch
+      ?
+      "#c36e00"
+      :
+      "#28658c"
+    );
   });
 
 
@@ -4503,13 +5220,8 @@ function renderTopView(plan){
         />
       `;
     }
-
   }
 
-
-  /*
-    LABEL LONGITUDINALE
-  */
 
   if(stats.horizontal.length){
 
@@ -4519,47 +5231,38 @@ function renderTopView(plan){
 
     const x=
       (
-        xForCol(edge.c1)
+        xForCol(edge.c)
         +
-        xForCol(edge.c2)
+        xForCol(edge.c+1)
       )/2;
 
 
     const label=
       plan.geometry.side.method.type==="fixed"
-
       ?
-
       `Traversa ${plan.geometry.side.method.size} m`
-
       :
-
       `${plan.geometry.side.method.label} · ${plan.geometry.side.bayLength.toFixed(2)} m`;
 
 
-    html+=
-      svgTag(
-        x,
-        yForRow(edge.r)-13,
-        label
-      );
+    html+=svgTag(
+      x,
+      yForRow(edge.r)-13,
+      label
+    );
   }
 
-
-  /*
-    LABEL SUPERIORE NORMALE:
-    fuori sulla sinistra.
-  */
 
   const normalEdge=
     stats.vertical.find(edge=>
 
-      !archEdges.has(
-        edgeKey(
+      !plan.archEdges.has(
+        vKey(
           edge.r,
           edge.c
         )
       )
+
     );
 
 
@@ -4579,35 +5282,31 @@ function renderTopView(plan){
 
     const label=
       plan.geometry.top.method.type==="fixed"
-
       ?
-
       `Superiore ${plan.geometry.top.method.size} m`
-
       :
-
       `${plan.geometry.top.method.label} · ${plan.width.toFixed(2)} m`;
 
 
-    html+=
-      svgTag(
-        left-16,
-        y,
-        label,
-        "end"
-      );
+    html+=svgTag(
+      left-16,
+      y,
+      label,
+      "end"
+    );
   }
 
 
   const firstArch=
     stats.vertical.find(edge=>
 
-      archEdges.has(
-        edgeKey(
+      plan.archEdges.has(
+        vKey(
           edge.r,
           edge.c
         )
       )
+
     );
 
 
@@ -4621,26 +5320,23 @@ function renderTopView(plan){
       )/2;
 
 
-    html+=
-      svgTag(
-        left-16,
-        y+27,
-        "ARCO",
-        "end"
-      );
+    html+=svgTag(
+      left-16,
+      y+27,
+      "ARCO",
+      "end"
+    );
   }
 
 
-  html+=
-    svgText(
-      500,
-      270,
-      `Vista dall'alto · modulo trasversale ${plan.width.toFixed(2)} m`
-    );
+  html+=svgText(
+    500,
+    270,
+    `Vista dall'alto · modulo ${plan.width.toFixed(2)} m`
+  );
 
 
-  svg.innerHTML=
-    html;
+  svg.innerHTML=html;
 }
 
 
@@ -4651,10 +5347,9 @@ function renderTopView(plan){
 function renderSideView(plan){
 
   const svg=
-    document
-      .getElementById(
-        "sideView"
-      );
+    document.getElementById(
+      "sideView"
+    );
 
 
   svg.setAttribute(
@@ -4691,9 +5386,11 @@ function renderSideView(plan){
     ){
 
       if(
-        target.nodes[r][c]
-        &&
-        target.nodes[r][c+1]
+        horizontalExists(
+          target,
+          r,
+          c
+        )
       ){
 
         selectedRow=r;
@@ -4722,22 +5419,25 @@ function renderSideView(plan){
 
   const left=150;
   const right=900;
+
   const top=43;
   const ground=235;
 
 
   const lowerY=
-    ground
-    -
-    (LOWER_HEIGHT/HEIGHT)
-    *
+    ground-
+    (
+      LOWER_HEIGHT/
+      HEIGHT
+    )*
     (ground-top);
 
 
   const colSpan=
     Math.max(
       1,
-      bounds.maxC-bounds.minC
+      bounds.maxC-
+      bounds.minC
     );
 
 
@@ -4749,11 +5449,14 @@ function renderSideView(plan){
   const xForCol=
     c=>
       left+
-      (c-bounds.minC)
-      *dx;
+      (
+        c-bounds.minC
+      )*dx;
 
 
   let html="";
+  let firstHigh=null;
+  let firstLower=null;
 
 
   for(
@@ -4775,11 +5478,12 @@ function renderSideView(plan){
       xForCol(c);
 
 
-    html+=
-      svgLine(
-        x,ground,
-        x,top
-      );
+    html+=svgLine(
+      x,
+      ground,
+      x,
+      top
+    );
 
 
     html+=`
@@ -4794,9 +5498,6 @@ function renderSideView(plan){
   }
 
 
-  let firstEdge=null;
-
-
   for(
     let c=bounds.minC;
     c<bounds.maxC;
@@ -4804,13 +5505,11 @@ function renderSideView(plan){
   ){
 
     if(
-      !target.nodes[
-        selectedRow
-      ][c]
-      ||
-      !target.nodes[
-        selectedRow
-      ][c+1]
+      !horizontalExists(
+        target,
+        selectedRow,
+        c
+      )
     ){
       continue;
     }
@@ -4824,119 +5523,118 @@ function renderSideView(plan){
       xForCol(c+1);
 
 
-    html+=
-      svgLine(
-        x1,top,
-        x2,top
-      );
+    html+=svgLine(
+      x1,
+      top,
+      x2,
+      top
+    );
 
 
-    html+=
-      svgLine(
-        x1,lowerY,
-        x2,lowerY
-      );
+    if(!firstHigh){
+
+      firstHigh={x1,x2};
+    }
 
 
-    if(!firstEdge){
+    if(
+      !plan.lowerOffEdges.has(
+        hKey(
+          selectedRow,
+          c
+        )
+      )
+    ){
 
-      firstEdge={
+      html+=svgLine(
         x1,
-        x2
-      };
+        lowerY,
+        x2,
+        lowerY
+      );
+
+
+      if(!firstLower){
+
+        firstLower={x1,x2};
+      }
     }
   }
 
 
-  if(firstEdge){
+  const lengthText=
+    plan.geometry.side.method.type==="fixed"
+    ?
+    `${plan.geometry.side.method.size} m`
+    :
+    `${plan.geometry.side.bayLength.toFixed(2)} m`;
 
-    const middle=
+
+  if(firstHigh){
+
+    html+=svgTag(
       (
-        firstEdge.x1
-        +
-        firstEdge.x2
-      )/2;
+        firstHigh.x1+
+        firstHigh.x2
+      )/2,
+      top-12,
+      `ALTA · ${lengthText}`
+    );
+  }
 
 
-    const lengthText=
-      plan.geometry.side.method.type==="fixed"
+  if(firstLower){
 
-      ?
-
-      `${plan.geometry.side.method.size} m`
-
-      :
-
-      `${plan.geometry.side.bayLength.toFixed(2)} m`;
-
-
-    html+=
-      svgTag(
-        middle,
-        top-12,
-        `ALTA · ${lengthText}`
-      );
-
-
-    html+=
-      svgTag(
-        middle,
-        lowerY+29,
-        `BASSA · ${lengthText}`
-      );
+    html+=svgTag(
+      (
+        firstLower.x1+
+        firstLower.x2
+      )/2,
+      lowerY+29,
+      `BASSA · ${lengthText}`
+    );
   }
 
 
   const firstPole=
     target.nodes[
       selectedRow
-    ]
-    .findIndex(Boolean);
+    ].findIndex(Boolean);
 
 
   if(firstPole>=0){
 
     const x=
-      xForCol(firstPole);
-
-
-    /*
-      Palo a sinistra.
-    */
-
-    html+=
-      svgTag(
-        x-18,
-        135,
-        "PALO · 2,5 m",
-        "end"
+      xForCol(
+        firstPole
       );
 
 
-    /*
-      Base a destra.
-    */
-
-    html+=
-      svgTag(
-        x+18,
-        ground+27,
-        "BASE",
-        "start"
-      );
-  }
-
-
-  html+=
-    svgText(
-      500,
-      271,
-      `Campata longitudinale ${plan.geometry.side.bayLength.toFixed(2)} m`
+    html+=svgTag(
+      x-18,
+      135,
+      "PALO · 2,5 m",
+      "end"
     );
 
 
-  svg.innerHTML=
-    html;
+    html+=svgTag(
+      x+18,
+      ground+27,
+      "BASE",
+      "start"
+    );
+  }
+
+
+  html+=svgText(
+    500,
+    271,
+    `Campata longitudinale ${plan.geometry.side.bayLength.toFixed(2)} m`
+  );
+
+
+  svg.innerHTML=html;
 }
 
 
@@ -4947,10 +5645,9 @@ function renderSideView(plan){
 function renderFrontView(plan){
 
   const svg=
-    document
-      .getElementById(
-        "frontView"
-      );
+    document.getElementById(
+      "frontView"
+    );
 
 
   svg.setAttribute(
@@ -4987,9 +5684,11 @@ function renderFrontView(plan){
     ){
 
       if(
-        target.nodes[r][c]
-        &&
-        target.nodes[r+1][c]
+        verticalExists(
+          target,
+          r,
+          c
+        )
       ){
 
         selectedCol=c;
@@ -5030,17 +5729,22 @@ function renderFrontView(plan){
         selectedCol
       ]
     ){
+
       activeRows.push(r);
     }
   }
 
 
   const minR=
-    Math.min(...activeRows);
+    Math.min(
+      ...activeRows
+    );
 
 
   const maxR=
-    Math.max(...activeRows);
+    Math.max(
+      ...activeRows
+    );
 
 
   const rowSpan=
@@ -5052,6 +5756,7 @@ function renderFrontView(plan){
 
   const left=210;
   const right=790;
+
   const top=90;
   const ground=250;
 
@@ -5062,12 +5767,14 @@ function renderFrontView(plan){
       (
         (r-minR)/
         rowSpan
-      )
-      *
+      )*
       (right-left);
 
 
   let html="";
+
+  let firstNormal=null;
+  let firstArch=null;
 
 
   activeRows.forEach(r=>{
@@ -5076,11 +5783,12 @@ function renderFrontView(plan){
       xForRow(r);
 
 
-    html+=
-      svgLine(
-        x,ground,
-        x,top
-      );
+    html+=svgLine(
+      x,
+      ground,
+      x,
+      top
+    );
 
 
     html+=`
@@ -5095,10 +5803,6 @@ function renderFrontView(plan){
   });
 
 
-  let firstNormal=null;
-  let firstArch=null;
-
-
   for(
     let r=minR;
     r<maxR;
@@ -5106,9 +5810,11 @@ function renderFrontView(plan){
   ){
 
     if(
-      !target.nodes[r][selectedCol]
-      ||
-      !target.nodes[r+1][selectedCol]
+      !verticalExists(
+        target,
+        r,
+        selectedCol
+      )
     ){
       continue;
     }
@@ -5122,14 +5828,16 @@ function renderFrontView(plan){
       xForRow(r+1);
 
 
-    const key=
-      edgeKey(
-        r,
-        selectedCol
+    const isArch=
+      plan.archEdges.has(
+        vKey(
+          r,
+          selectedCol
+        )
       );
 
 
-    if(archEdges.has(key)){
+    if(isArch){
 
       const middle=
         (x1+x2)/2;
@@ -5161,52 +5869,37 @@ function renderFrontView(plan){
       `;
 
 
-      if(!firstArch){
+      if(!firstArch)
+        firstArch={x1,x2};
 
-        firstArch={
-          x1,
-          x2
-        };
-      }
+    }else{
 
-    } else {
-
-      html+=
-        svgLine(
-          x1,top,
-          x2,top,
-          4,
-          "#185275"
-        );
+      html+=svgLine(
+        x1,
+        top,
+        x2,
+        top,
+        4,
+        "#185275"
+      );
 
 
-      if(!firstNormal){
-
-        firstNormal={
-          x1,
-          x2
-        };
-      }
+      if(!firstNormal)
+        firstNormal={x1,x2};
     }
-
   }
 
 
   if(firstArch){
 
-    const middle=
+    html+=svgTag(
       (
         firstArch.x1+
         firstArch.x2
-      )/2;
-
-
-    html+=
-      svgTag(
-        middle,
-        26,
-        "ARCO"
-      );
+      )/2,
+      26,
+      "ARCO"
+    );
   }
 
 
@@ -5216,67 +5909,54 @@ function renderFrontView(plan){
     plan.geometry.top?.method
   ){
 
-    const middle=
-      (
-        firstNormal.x1+
-        firstNormal.x2
-      )/2;
-
-
     const label=
       plan.geometry.top.method.type==="fixed"
-
       ?
-
       `Traversa alta ${plan.geometry.top.method.size} m`
-
       :
-
       `${plan.geometry.top.method.label} · ${plan.width.toFixed(2)} m`;
 
 
-    html+=
-      svgTag(
-        middle,
-        top-13,
-        label
-      );
+    html+=svgTag(
+      (
+        firstNormal.x1+
+        firstNormal.x2
+      )/2,
+      top-13,
+      label
+    );
   }
 
 
-  html+=
-    svgTag(
-      left-17,
-      170,
-      "PALO · 2,5 m",
-      "end"
-    );
+  html+=svgTag(
+    left-17,
+    170,
+    "PALO · 2,5 m",
+    "end"
+  );
 
 
-  html+=
-    svgTag(
-      left+17,
-      ground+26,
-      "BASE",
-      "start"
-    );
+  html+=svgTag(
+    left+17,
+    ground+26,
+    "BASE",
+    "start"
+  );
 
 
-  html+=
-    svgText(
-      500,
-      292,
-      `Modulo trasversale ${plan.width.toFixed(2)} m`
-    );
+  html+=svgText(
+    500,
+    292,
+    `Modulo trasversale ${plan.width.toFixed(2)} m`
+  );
 
 
-  svg.innerHTML=
-    html;
+  svg.innerHTML=html;
 }
 
 
 /* =========================================================
-   CONFERMA CARICO
+   CONFERMA
 ========================================================= */
 
 function commitPlan(){
@@ -5318,13 +5998,10 @@ function commitPlan(){
   Object.entries(
     currentPlan.requirements
   )
-  .forEach(([key,quantity])=>{
+  .forEach(([key,qty])=>{
 
-    if(quantity){
-
-      remaining[key]-=
-        quantity;
-    }
+    if(qty)
+      remaining[key]-=qty;
   });
 
 
@@ -5355,10 +6032,9 @@ function commitPlan(){
 function renderAllocations(){
 
   const root=
-    document
-      .getElementById(
-        "allocations"
-      );
+    document.getElementById(
+      "allocations"
+    );
 
 
   if(!allocations.length){
@@ -5371,26 +6047,25 @@ function renderAllocations(){
 
 
   root.innerHTML=
-    allocations
-      .map(
-        (item,index)=>`
+    allocations.map(
+      (item,index)=>`
 
-          <div class="allocation">
+        <div class="allocation">
 
-            <strong>
-              ${index+1}. ${item.name}
-            </strong>
+          <strong>
+            ${index+1}. ${item.name}
+          </strong>
 
-            ·
+          ·
 
-            ${item.length}
-            ×
-            ${item.width} m
+          ${item.length}
+          ×
+          ${item.width} m
 
-          </div>
-        `
-      )
-      .join("");
+        </div>
+
+      `
+    ).join("");
 }
 
 
@@ -5461,23 +6136,21 @@ function closeSettings(){
 
 
 /* =========================================================
-   MATRIX FULLSCREEN
+   FULLSCREEN MATRIX
 ========================================================= */
 
 function toggleMatrixFullscreen(){
 
   const panel=
-    document
-      .getElementById(
-        "matrixPanel"
-      );
+    document.getElementById(
+      "matrixPanel"
+    );
 
 
   const opening=
-    !panel.classList
-      .contains(
-        "matrix-fullscreen"
-      );
+    !panel.classList.contains(
+      "matrix-fullscreen"
+    );
 
 
   panel.classList.toggle(
@@ -5486,12 +6159,10 @@ function toggleMatrixFullscreen(){
   );
 
 
-  document.body
-    .classList
-    .toggle(
-      "matrix-open",
-      opening
-    );
+  document.body.classList.toggle(
+    "matrix-open",
+    opening
+  );
 
 
   document
@@ -5514,10 +6185,7 @@ function toggleMatrixFullscreen(){
 
 
 /* =========================================================
-   RICALCOLO IMMEDIATO
-
-   requestAnimationFrame evita l'accumulo
-   di timer se clicchi velocemente.
+   AUTO CALCULATE
 ========================================================= */
 
 let calculateFrame=null;
@@ -5548,9 +6216,7 @@ function scheduleCalculate(){
 ========================================================= */
 
 document
-  .getElementById(
-    "openSettings"
-  )
+  .getElementById("openSettings")
   .addEventListener(
     "click",
     openSettings
@@ -5558,9 +6224,7 @@ document
 
 
 document
-  .getElementById(
-    "closeSettings"
-  )
+  .getElementById("closeSettings")
   .addEventListener(
     "click",
     closeSettings
@@ -5568,9 +6232,7 @@ document
 
 
 document
-  .getElementById(
-    "closeSettings2"
-  )
+  .getElementById("closeSettings2")
   .addEventListener(
     "click",
     closeSettings
@@ -5578,9 +6240,7 @@ document
 
 
 document
-  .getElementById(
-    "applyStock"
-  )
+  .getElementById("applyStock")
   .addEventListener(
     "click",
     applyWarehouse
@@ -5588,9 +6248,7 @@ document
 
 
 document
-  .getElementById(
-    "commit"
-  )
+  .getElementById("commit")
   .addEventListener(
     "click",
     commitPlan
@@ -5598,18 +6256,12 @@ document
 
 
 document
-  .getElementById(
-    "print"
-  )
+  .getElementById("print")
   .addEventListener(
     "click",
     printReport
   );
 
-
-/*
-  INPUT PRINCIPALI
-*/
 
 [
   "projectName",
@@ -5658,9 +6310,8 @@ document
 
 
 /*
-  SEZIONI SCRITTE MANUALMENTE:
-
-  lunghezza totale NON cambia.
+  NUMERO SEZIONI MANUALE:
+  lunghezza totale rimane uguale.
 */
 
 document
@@ -5707,9 +6358,7 @@ document
 
 
 /*
-  AUTO:
-
-  ritorna al tunnel standard automatico.
+  AUTO SEZIONI
 */
 
 document
@@ -5721,10 +6370,11 @@ document
     ()=>{
 
       manualSections=null;
-
       customLayout=false;
 
       archEdges.clear();
+      lowerOffEdges.clear();
+      fairyOffEdges.clear();
 
 
       document
@@ -5770,60 +6420,27 @@ document
   );
 
 
-/*
-  ZOOM MATRIX
-*/
-
 document
   .getElementById(
-    "matrixPlus"
+    "modeFairy"
   )
   .addEventListener(
     "click",
-    ()=>{
-
-      matrixZoom=
-        Math.min(
-          2.5,
-          matrixZoom*1.25
-        );
-
-      renderMatrix();
-    }
+    ()=>setMatrixMode(
+      "fairy"
+    )
   );
 
 
 document
   .getElementById(
-    "matrixMinus"
+    "modeLower"
   )
   .addEventListener(
     "click",
-    ()=>{
-
-      matrixZoom=
-        Math.max(
-          .45,
-          matrixZoom/1.25
-        );
-
-      renderMatrix();
-    }
-  );
-
-
-document
-  .getElementById(
-    "matrixFit"
-  )
-  .addEventListener(
-    "click",
-    ()=>{
-
-      matrixZoom=1;
-
-      renderMatrix();
-    }
+    ()=>setMatrixMode(
+      "lower"
+    )
   );
 
 
@@ -5838,7 +6455,7 @@ document
 
 
 /*
-  RESET MATRIX
+  RESET
 */
 
 document
@@ -5850,12 +6467,11 @@ document
     ()=>{
 
       customLayout=false;
-
       manualSections=null;
 
       archEdges.clear();
-
-      matrixZoom=1;
+      lowerOffEdges.clear();
+      fairyOffEdges.clear();
 
 
       document
@@ -5879,7 +6495,7 @@ document
 
 
 /*
-  ESC chiude fullscreen Matrix.
+  ESC chiude fullscreen.
 */
 
 window.addEventListener(
@@ -5891,17 +6507,15 @@ window.addEventListener(
 
 
     const panel=
-      document
-        .getElementById(
-          "matrixPanel"
-        );
+      document.getElementById(
+        "matrixPanel"
+      );
 
 
     if(
-      panel.classList
-        .contains(
-          "matrix-fullscreen"
-        )
+      panel.classList.contains(
+        "matrix-fullscreen"
+      )
     ){
 
       toggleMatrixFullscreen();
@@ -5911,7 +6525,7 @@ window.addEventListener(
 
 
 /* =========================================================
-   AVVIO
+   START
 ========================================================= */
 
 createStockInputs();
