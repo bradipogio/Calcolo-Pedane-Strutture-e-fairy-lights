@@ -1,13 +1,23 @@
 <!doctype html>
 <html lang="it">
+
 <head>
+
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1"
+>
 
 <title>Fairy Structure Planner</title>
 
+
 <style>
-*{box-sizing:border-box}
+
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
@@ -16,28 +26,39 @@ body{
   color:#171717;
 }
 
+body.matrix-open{
+  overflow:hidden;
+}
+
+
 header{
-  height:58px;
-  padding:0 22px;
+  height:56px;
   background:#111;
   color:white;
+
   display:flex;
   align-items:center;
   justify-content:space-between;
+
+  padding:0 20px;
 }
+
 
 header h1{
   margin:0;
-  font-size:20px;
+  font-size:19px;
 }
+
 
 button{
   border:0;
   border-radius:6px;
-  padding:9px 12px;
+  padding:8px 11px;
+
   cursor:pointer;
   font-weight:bold;
 }
+
 
 .primary{
   background:#111;
@@ -45,13 +66,14 @@ button{
 }
 
 .secondary{
-  background:#e4e4e4;
+  background:#e3e3e3;
 }
 
-.settings-btn{
-  background:#333;
-  color:white;
+.active-button{
+  background:#111 !important;
+  color:white !important;
 }
+
 
 .page{
   max-width:1550px;
@@ -59,324 +81,544 @@ button{
   padding:14px;
 }
 
+
 .card{
   background:white;
   border-radius:10px;
+
   padding:14px;
   margin-bottom:14px;
-  box-shadow:0 1px 5px rgba(0,0,0,.10);
+
+  box-shadow:0 1px 5px rgba(0,0,0,.1);
 }
 
-.workspace-title{
+
+.workspace-header{
   display:flex;
   align-items:baseline;
   gap:12px;
-  margin-bottom:12px;
+
+  margin-bottom:11px;
 }
 
-.workspace-title h2{
+
+.workspace-header h2{
   margin:0;
   font-size:20px;
 }
 
-.workspace-title span{
-  font-size:13px;
+
+.workspace-header span{
   color:#777;
+  font-size:13px;
 }
+
 
 .workspace-grid{
+
   display:grid;
-  grid-template-columns:270px 390px 1fr;
+
+  grid-template-columns:
+    255px
+    400px
+    minmax(420px,1fr);
+
   gap:12px;
-  align-items:stretch;
 }
 
+
 .panel{
+
   border:1px solid #ddd;
   border-radius:8px;
-  padding:12px;
+
+  padding:11px;
+
   min-width:0;
 }
 
+
 .panel h3{
-  margin:0 0 10px;
-  font-size:15px;
+
+  margin:0 0 9px;
+
+  font-size:14px;
 }
 
+
 label{
+
   display:block;
+
+  margin-top:8px;
+
   font-size:12px;
   font-weight:bold;
-  margin-top:9px;
 }
+
 
 input[type=text],
 input[type=number],
 select{
+
   width:100%;
-  padding:8px;
-  margin-top:3px;
+
   border:1px solid #bbb;
   border-radius:5px;
+
+  padding:7px;
+
+  margin-top:3px;
+
   font-size:14px;
-  background:white;
 }
 
-.dimensions{
+
+.two-cols{
+
   display:grid;
+
   grid-template-columns:1fr 1fr;
-  gap:8px;
+
+  gap:7px;
 }
 
-.check-row{
+
+.checkbox-row{
+
   display:flex;
-  align-items:center;
+
   gap:7px;
+  align-items:center;
+
   margin-top:12px;
+
   font-size:13px;
 }
 
-.check-row input{
+
+.checkbox-row input{
   margin:0;
 }
 
+
 .actions{
+
   display:flex;
-  gap:7px;
   flex-wrap:wrap;
-  margin-top:13px;
+
+  gap:6px;
+
+  margin-top:12px;
 }
+
 
 .small{
+
   font-size:11px;
-  color:#666;
   line-height:1.4;
+
+  color:#666;
 }
 
-.config-row{
+
+.config-line{
+
   display:grid;
-  grid-template-columns:105px 1fr;
-  gap:7px;
-  align-items:end;
+
+  grid-template-columns:100px 1fr;
+
+  gap:6px;
+
+  margin-bottom:6px;
+
+  align-items:center;
 }
 
-.section-control{
+
+.config-line label{
+  margin:0;
+}
+
+
+.sections-control{
+
   display:grid;
-  grid-template-columns:1fr 52px;
+
+  grid-template-columns:1fr 48px;
+
   gap:5px;
 }
 
-.auto-btn{
-  padding:8px 5px;
+
+.auto-button{
+
+  font-size:10px;
+
+  padding:6px;
+
   background:#ddd;
-  font-size:11px;
 }
 
-.auto-btn.active{
-  background:#111;
-  color:white;
-}
 
 .matrix-toolbar{
+
   display:flex;
-  justify-content:space-between;
+
   align-items:center;
-  margin-top:11px;
-  margin-bottom:5px;
+
+  gap:5px;
+
+  margin-top:9px;
+  margin-bottom:6px;
+
+  flex-wrap:wrap;
 }
 
-.matrix-toolbar strong{
-  font-size:12px;
+
+.matrix-toolbar .spacer{
+  flex:1;
 }
+
+
+.matrix-button{
+
+  padding:5px 8px;
+
+  font-size:10px;
+
+  background:#e5e5e5;
+}
+
+
+#matrixPanel.matrix-fullscreen{
+
+  position:fixed;
+
+  inset:10px;
+
+  z-index:20000;
+
+  background:white;
+
+  box-shadow:
+    0 0 0 100vmax
+    rgba(0,0,0,.65);
+
+  padding:16px;
+}
+
+
+#matrixPanel.matrix-fullscreen #matrixView{
+
+  height:calc(100vh - 180px);
+}
+
 
 #matrixView{
+
+  display:block;
+
   width:100%;
-  height:190px;
+  height:188px;
+
+  background:#fafafa;
+
   border:1px solid #ddd;
   border-radius:6px;
-  background:#fafafa;
-  display:block;
+
+  touch-action:none;
 }
+
+
+.matrix-help{
+
+  min-height:29px;
+
+  margin-top:5px;
+}
+
 
 #viewer{
+
   width:100%;
-  height:355px;
-  background:#eef0f2;
+  height:345px;
+
   border-radius:6px;
+
   overflow:hidden;
+
+  background:#eef0f2;
 }
 
-.status-line{
-  margin-top:11px;
-  padding-top:10px;
+
+.status{
+
   border-top:1px solid #ddd;
+
+  padding-top:9px;
+  margin-top:10px;
+
   font-size:13px;
 }
 
+
 .good{
+
   color:#08752a;
   font-weight:bold;
 }
 
+
 .bad{
+
   color:#b00020;
   font-weight:bold;
 }
 
+
 .warning{
-  margin-top:7px;
-  padding:8px;
-  border:1px solid #dfc36e;
-  background:#fff3d2;
+
+  margin-top:6px;
+
+  padding:7px;
+
+  border:1px solid #ddc06a;
   border-radius:6px;
+
+  background:#fff3d2;
 }
 
-.compact-results{
+
+.results{
+
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  margin-top:10px;
+
+  grid-template-columns:1.2fr 1fr;
+
+  gap:10px;
+
+  margin-top:9px;
 }
+
 
 .result-box{
+
   border:1px solid #ddd;
   border-radius:7px;
-  padding:10px;
-}
 
-.result-box h3{
-  margin:0 0 7px;
-  font-size:14px;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-}
-
-th,td{
-  text-align:left;
-  padding:5px 6px;
-  border-bottom:1px solid #e5e5e5;
-  font-size:12px;
-}
-
-.quick-data{
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px;
-}
-
-.chip{
-  border:1px solid #ddd;
-  border-radius:5px;
-  padding:6px 8px;
-  font-size:12px;
-  background:#fafafa;
-}
-
-.chip strong{
-  display:block;
-  margin-top:2px;
-  font-size:14px;
-}
-
-.views{
-  display:grid;
-  gap:12px;
-}
-
-.drawing{
-  border:1px solid #ccc;
-  border-radius:7px;
   padding:9px;
 }
 
-.drawing-title{
+
+.result-box h3{
+
+  margin:0 0 6px;
+
   font-size:13px;
-  font-weight:bold;
-  margin-bottom:4px;
 }
 
-.drawing svg{
+
+table{
+
   width:100%;
-  height:250px;
-  display:block;
+
+  border-collapse:collapse;
 }
+
+
+th,
+td{
+
+  text-align:left;
+
+  padding:5px;
+
+  border-bottom:1px solid #e6e6e6;
+
+  font-size:12px;
+}
+
+
+.quick-data{
+
+  display:flex;
+  flex-wrap:wrap;
+
+  gap:5px;
+}
+
+
+.chip{
+
+  padding:5px 7px;
+
+  border:1px solid #ddd;
+  border-radius:5px;
+
+  background:#fafafa;
+
+  font-size:11px;
+}
+
+
+.chip strong{
+
+  display:block;
+
+  margin-top:2px;
+
+  font-size:13px;
+}
+
+
+.views{
+
+  display:grid;
+
+  gap:11px;
+}
+
+
+.drawing{
+
+  padding:8px;
+
+  border:1px solid #ccc;
+  border-radius:7px;
+}
+
+
+.drawing-title{
+
+  margin-bottom:3px;
+
+  font-size:13px;
+  font-weight:bold;
+}
+
+
+.drawing svg{
+
+  display:block;
+
+  width:100%;
+  height:245px;
+}
+
 
 #print3d{
   display:none;
-  width:100%;
 }
 
-#modal{
+
+#settingsModal{
+
   display:none;
+
   position:fixed;
   inset:0;
-  z-index:9999;
-  background:rgba(0,0,0,.55);
+
+  z-index:30000;
+
   padding:30px;
+
   overflow:auto;
+
+  background:rgba(0,0,0,.55);
 }
 
-#modal.open{
+
+#settingsModal.open{
   display:block;
 }
 
+
 .modal-box{
-  max-width:720px;
+
+  max-width:700px;
+
   margin:auto;
-  background:white;
+
   padding:20px;
+
   border-radius:10px;
+
+  background:white;
 }
 
+
 .modal-head{
+
   display:flex;
-  justify-content:space-between;
+
   align-items:center;
+  justify-content:space-between;
 }
+
 
 .modal-head h2{
   margin:0;
 }
 
+
 .stock-grid{
+
   display:grid;
+
   grid-template-columns:1fr 90px;
-  gap:6px 10px;
+
   align-items:center;
-  margin-top:15px;
+
+  gap:6px 10px;
+
+  margin-top:14px;
 }
+
 
 .stock-grid input{
   margin:0;
 }
 
+
 .allocation{
+
   padding:6px 0;
+
   border-bottom:1px solid #ddd;
+
   font-size:12px;
 }
 
+
 @media(max-width:1100px){
+
   .workspace-grid{
+
     grid-template-columns:1fr 1fr;
   }
 
   .viewer-panel{
+
     grid-column:1 / -1;
   }
+
 }
+
 
 @media(max-width:700px){
+
   .workspace-grid,
-  .compact-results{
+  .results{
+
     grid-template-columns:1fr;
   }
+
 }
 
+
 @media print{
+
   body{
     background:white;
   }
@@ -384,1050 +626,2307 @@ th,td{
   header,
   .no-print,
   #viewer{
-    display:none!important;
+
+    display:none !important;
   }
 
   .page{
-    padding:0;
+
     max-width:none;
+    padding:0;
   }
 
   .card{
+
     box-shadow:none;
-    border:0;
+
     padding:5px 0;
+
+    border:0;
   }
 
   #print3d{
+
     display:block;
-    max-height:330px;
+
+    width:100%;
+
+    max-height:340px;
+
     object-fit:contain;
+
     margin-bottom:10px;
   }
 
   .drawing{
+
     break-inside:avoid;
   }
 
   .drawing svg{
+
     height:210px;
   }
+
 }
+
 </style>
 
+
 <script type="importmap">
+
 {
   "imports":{
-    "three":"https://cdn.jsdelivr.net/npm/three/build/three.module.js",
-    "three/addons/":"https://cdn.jsdelivr.net/npm/three/examples/jsm/"
+    "three":
+    "https://cdn.jsdelivr.net/npm/three/build/three.module.js",
+
+    "three/addons/":
+    "https://cdn.jsdelivr.net/npm/three/examples/jsm/"
   }
 }
+
 </script>
+
 </head>
+
 
 <body>
 
+
 <header>
-  <h1>Fairy Structure Planner</h1>
+
+  <h1>
+    Fairy Structure Planner
+  </h1>
+
 
   <button
     id="openSettings"
-    class="settings-btn no-print"
+    class="secondary no-print"
   >
     ⚙ Settings
   </button>
+
 </header>
+
+
 
 <div class="page">
 
-  <div class="card">
 
-    <div class="workspace-title">
-      <h2>Struttura</h2>
-      <span id="titleSummary"></span>
-    </div>
+<div class="card">
 
-    <div class="workspace-grid">
 
-      <!-- =========================================
-           NUOVA STRUTTURA
-      ========================================== -->
+  <div class="workspace-header">
 
-      <div class="panel no-print">
-
-        <h3>Nuova struttura</h3>
-
-        <label>Nome evento</label>
-        <input
-          id="projectName"
-          type="text"
-          value="Struttura 1"
-        >
-
-        <div class="dimensions">
-
-          <div>
-            <label>Lunghezza</label>
-            <input
-              id="length"
-              type="number"
-              value="8"
-              min=".1"
-              step=".1"
-            >
-          </div>
-
-          <div>
-            <label>Larghezza modulo</label>
-            <input
-              id="width"
-              type="number"
-              value="5"
-              min=".1"
-              step=".1"
-            >
-          </div>
-
-        </div>
-
-        <label class="check-row">
-          <input
-            id="fairyEnabled"
-            type="checkbox"
-            checked
-          >
-          Fairy lights
-        </label>
-
-        <div class="actions">
-
-          <button
-            id="commit"
-            class="primary"
-          >
-            Conferma carico
-          </button>
-
-          <button
-            id="print"
-            class="secondary"
-          >
-            Stampa
-          </button>
-
-        </div>
-
-        <p class="small">
-          Tutto viene ricalcolato automaticamente.
-        </p>
-
-      </div>
-
-
-      <!-- =========================================
-           SCHEMA
-      ========================================== -->
-
-      <div class="panel no-print">
-
-        <h3>Schema struttura</h3>
-
-        <div class="config-row">
-
-          <label style="margin:0">
-            Sezioni
-          </label>
-
-          <div class="section-control">
-
-            <input
-              id="sections"
-              type="number"
-              min="2"
-              step="1"
-            >
-
-            <button
-              id="sectionsAuto"
-              class="auto-btn active"
-            >
-              AUTO
-            </button>
-
-          </div>
-
-        </div>
-
-
-        <div class="config-row">
-
-          <label style="margin:0">
-            Longitudinale
-          </label>
-
-          <select id="sideMethod">
-
-            <option value="auto">
-              Automatico
-            </option>
-
-            <option value="fixed3">
-              Traverse 3 m
-            </option>
-
-            <option value="fixed4">
-              Traverse 4 m
-            </option>
-
-            <option value="tel1">
-              Telescopica 1 m
-            </option>
-
-            <option value="tel15">
-              Telescopica 1,5 m
-            </option>
-
-            <option value="tel3">
-              Telescopica 3 → 5,5 m
-            </option>
-
-            <option value="tel4">
-              Telescopica 4 → 7,5 m
-            </option>
-
-          </select>
-
-        </div>
-
-
-        <div class="config-row">
-
-          <label style="margin:0">
-            Superiore
-          </label>
-
-          <select id="topMethod">
-
-            <option value="auto">
-              Automatico
-            </option>
-
-            <option value="fixed3">
-              Traversa alta 3 m
-            </option>
-
-            <option value="fixed4">
-              Traversa alta 4 m
-            </option>
-
-            <option value="tel1">
-              Telescopica 1 m
-            </option>
-
-            <option value="tel15">
-              Telescopica 1,5 m
-            </option>
-
-            <option value="tel3">
-              Telescopica 3 → 5,5 m
-            </option>
-
-            <option value="tel4">
-              Telescopica 4 → 7,5 m
-            </option>
-
-          </select>
-
-        </div>
-
-
-        <div class="matrix-toolbar">
-
-          <strong>Vista dall'alto</strong>
-
-          <button
-            id="resetMatrix"
-            class="secondary"
-            style="padding:5px 8px;font-size:10px"
-          >
-            Ripristina tunnel
-          </button>
-
-        </div>
-
-        <svg id="matrixView"></svg>
-
-        <div class="small">
-          Clicca un punto per aggiungere o togliere un palo.
-          I collegamenti tra punti adiacenti vengono creati
-          automaticamente.
-        </div>
-
-      </div>
-
-
-      <!-- =========================================
-           3D
-      ========================================== -->
-
-      <div class="panel viewer-panel">
-
-        <h3>Vista 3D</h3>
-
-        <div id="viewer"></div>
-
-        <div class="small no-print">
-          Trascina per ruotare · rotella per zoom
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- =========================================
-         RISULTATO COMPATTO
-    ========================================== -->
-
-    <div
-      id="status"
-      class="status-line"
-    ></div>
-
-    <div class="compact-results">
-
-      <div class="result-box">
-
-        <h3>Materiale</h3>
-
-        <div id="materialResult"></div>
-
-      </div>
-
-      <div class="result-box">
-
-        <h3>Dati</h3>
-
-        <div
-          id="quickResult"
-          class="quick-data"
-        ></div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- immagine 3d utilizzata solo in stampa -->
-
-  <img id="print3d">
-
-
-  <!-- =========================================
-       DISEGNI TECNICI
-  ========================================== -->
-
-  <div class="card">
-
-    <h2 style="margin:0 0 10px;font-size:17px">
-      Disegni tecnici
+    <h2>
+      Struttura
     </h2>
 
-    <div class="views">
+    <span id="titleSummary"></span>
 
-      <div class="drawing">
+  </div>
 
-        <div class="drawing-title">
-          PIANTA
+
+
+  <div class="workspace-grid">
+
+
+    <!-- ===================================================
+         INPUT
+    ==================================================== -->
+
+    <div class="panel no-print">
+
+
+      <h3>
+        Nuova struttura
+      </h3>
+
+
+      <label>
+        Nome evento
+      </label>
+
+      <input
+        id="projectName"
+        type="text"
+        value="Struttura 1"
+      >
+
+
+      <div class="two-cols">
+
+
+        <div>
+
+          <label>
+            Lunghezza
+          </label>
+
+          <input
+            id="length"
+            type="number"
+            value="8"
+            min=".1"
+            step=".1"
+          >
+
         </div>
 
-        <svg id="topView"></svg>
+
+        <div>
+
+          <label>
+            Larghezza modulo
+          </label>
+
+          <input
+            id="width"
+            type="number"
+            value="5"
+            min=".1"
+            step=".1"
+          >
+
+        </div>
+
 
       </div>
 
 
-      <div class="drawing">
+      <label class="checkbox-row">
 
-        <div class="drawing-title">
-          LATERALE
-        </div>
+        <input
+          id="fairyEnabled"
+          type="checkbox"
+          checked
+        >
 
-        <svg id="sideView"></svg>
+        Fairy lights
+
+      </label>
+
+
+      <div class="actions">
+
+        <button
+          id="commit"
+          class="primary"
+        >
+          Conferma carico
+        </button>
+
+
+        <button
+          id="print"
+          class="secondary"
+        >
+          Stampa
+        </button>
 
       </div>
 
 
-      <div class="drawing">
+      <p class="small">
+        Ogni modifica aggiorna immediatamente
+        schema, conteggi e 3D.
+      </p>
 
-        <div class="drawing-title">
-          FRONTALE
+
+    </div>
+
+
+
+    <!-- ===================================================
+         MATRIX
+    ==================================================== -->
+
+    <div
+      id="matrixPanel"
+      class="panel no-print"
+    >
+
+
+      <h3>
+        Schema struttura
+      </h3>
+
+
+      <div class="config-line">
+
+        <label>
+          Sezioni
+        </label>
+
+
+        <div class="sections-control">
+
+          <input
+            id="sections"
+            type="number"
+            min="2"
+            step="1"
+          >
+
+          <button
+            id="sectionsAuto"
+            class="auto-button active-button"
+          >
+            AUTO
+          </button>
+
         </div>
 
-        <svg id="frontView"></svg>
+      </div>
 
+
+
+      <div class="config-line">
+
+        <label>
+          Longitudinale
+        </label>
+
+        <select id="sideMethod">
+
+          <option value="auto">
+            Automatico
+          </option>
+
+          <option value="fixed3">
+            Traverse 3 m
+          </option>
+
+          <option value="fixed4">
+            Traverse 4 m
+          </option>
+
+          <option value="tel1">
+            Telescopica 1 m
+          </option>
+
+          <option value="tel15">
+            Telescopica 1,5 m
+          </option>
+
+          <option value="tel3">
+            Telescopica 3 → 5,5 m
+          </option>
+
+          <option value="tel4">
+            Telescopica 4 → 7,5 m
+          </option>
+
+        </select>
+
+      </div>
+
+
+
+      <div class="config-line">
+
+        <label>
+          Superiore
+        </label>
+
+        <select id="topMethod">
+
+          <option value="auto">
+            Automatico
+          </option>
+
+          <option value="fixed3">
+            Traversa alta 3 m
+          </option>
+
+          <option value="fixed4">
+            Traversa alta 4 m
+          </option>
+
+          <option value="tel1">
+            Telescopica 1 m
+          </option>
+
+          <option value="tel15">
+            Telescopica 1,5 m
+          </option>
+
+          <option value="tel3">
+            Telescopica 3 → 5,5 m
+          </option>
+
+          <option value="tel4">
+            Telescopica 4 → 7,5 m
+          </option>
+
+        </select>
+
+      </div>
+
+
+
+      <div class="matrix-toolbar">
+
+
+        <button
+          id="modePoints"
+          class="matrix-button active-button"
+        >
+          ● Punti
+        </button>
+
+
+        <button
+          id="modeArch"
+          class="matrix-button"
+        >
+          ⌒ Archi
+        </button>
+
+
+        <div class="spacer"></div>
+
+
+        <button
+          id="matrixMinus"
+          class="matrix-button"
+          title="Zoom indietro"
+        >
+          −
+        </button>
+
+
+        <button
+          id="matrixFit"
+          class="matrix-button"
+        >
+          Adatta
+        </button>
+
+
+        <button
+          id="matrixPlus"
+          class="matrix-button"
+          title="Zoom avanti"
+        >
+          +
+        </button>
+
+
+        <button
+          id="matrixFullscreen"
+          class="matrix-button"
+          title="Tutto schermo"
+        >
+          ⛶
+        </button>
+
+
+        <button
+          id="resetMatrix"
+          class="matrix-button"
+        >
+          Reset
+        </button>
+
+
+      </div>
+
+
+      <svg id="matrixView"></svg>
+
+
+      <div
+        id="matrixHelp"
+        class="matrix-help small"
+      >
+        Clicca i punti per aggiungere o togliere pali.
+      </div>
+
+
+    </div>
+
+
+
+    <!-- ===================================================
+         3D
+    ==================================================== -->
+
+    <div class="panel viewer-panel">
+
+      <h3>
+        Vista 3D
+      </h3>
+
+      <div id="viewer"></div>
+
+      <div class="small no-print">
+        Trascina per ruotare · rotella per zoom
       </div>
 
     </div>
 
+
   </div>
+
+
+
+  <!-- =====================================================
+       RISULTATI
+  ====================================================== -->
+
+  <div
+    id="status"
+    class="status"
+  ></div>
+
+
+  <div class="results">
+
+
+    <div class="result-box">
+
+      <h3>
+        Materiale
+      </h3>
+
+      <div id="materialResult"></div>
+
+    </div>
+
+
+
+    <div class="result-box">
+
+      <h3>
+        Dati
+      </h3>
+
+      <div
+        id="quickResult"
+        class="quick-data"
+      ></div>
+
+    </div>
+
+
+  </div>
+
 
 </div>
 
 
-<!-- =========================================
+
+<img id="print3d">
+
+
+
+<!-- =======================================================
+     DISEGNI TECNICI
+======================================================== -->
+
+<div class="card">
+
+
+  <h2
+    style="
+      margin:0 0 8px;
+      font-size:17px
+    "
+  >
+    Disegni tecnici
+  </h2>
+
+
+  <div class="views">
+
+
+    <div class="drawing">
+
+      <div class="drawing-title">
+        PIANTA
+      </div>
+
+      <svg id="topView"></svg>
+
+    </div>
+
+
+
+    <div class="drawing">
+
+      <div class="drawing-title">
+        LATERALE
+      </div>
+
+      <svg id="sideView"></svg>
+
+    </div>
+
+
+
+    <div class="drawing">
+
+      <div class="drawing-title">
+        FRONTALE
+      </div>
+
+      <svg id="frontView"></svg>
+
+    </div>
+
+
+  </div>
+
+
+</div>
+
+
+</div>
+
+
+
+<!-- =======================================================
      SETTINGS
-========================================= -->
+======================================================== -->
 
 <div
-  id="modal"
+  id="settingsModal"
   class="no-print"
 >
 
-  <div class="modal-box">
+<div class="modal-box">
 
-    <div class="modal-head">
 
-      <h2>Magazzino</h2>
+  <div class="modal-head">
 
-      <button
-        id="closeSettings"
-        class="secondary"
-      >
-        ×
-      </button>
+    <h2>
+      Magazzino
+    </h2>
 
-    </div>
-
-    <p class="small">
-      Quantità disponibili all'inizio della giornata.
-    </p>
-
-    <div
-      id="stockInputs"
-      class="stock-grid"
-    ></div>
-
-    <div class="actions">
-
-      <button
-        id="applyStock"
-        class="primary"
-      >
-        Salva / nuova giornata
-      </button>
-
-      <button
-        id="closeSettings2"
-        class="secondary"
-      >
-        Chiudi
-      </button>
-
-    </div>
-
-    <h3>Residuo</h3>
-
-    <div id="remainingStock"></div>
-
-    <h3>Carichi confermati</h3>
-
-    <div id="allocations">
-      Nessuno.
-    </div>
+    <button
+      id="closeSettings"
+      class="secondary"
+    >
+      ×
+    </button>
 
   </div>
 
+
+  <p class="small">
+    Quantità disponibili all'inizio della giornata.
+  </p>
+
+
+  <div
+    id="stockInputs"
+    class="stock-grid"
+  ></div>
+
+
+  <div class="actions">
+
+    <button
+      id="applyStock"
+      class="primary"
+    >
+      Salva / nuova giornata
+    </button>
+
+    <button
+      id="closeSettings2"
+      class="secondary"
+    >
+      Chiudi
+    </button>
+
+  </div>
+
+
+  <h3>
+    Residuo
+  </h3>
+
+  <div id="remainingStock"></div>
+
+
+  <h3>
+    Carichi confermati
+  </h3>
+
+  <div id="allocations">
+    Nessuno.
+  </div>
+
+
 </div>
+
+</div>
+
 
 
 <script type="module">
 
-import * as THREE from "three";
+
+import * as THREE
+from "three";
+
 
 import {
   OrbitControls
-} from "three/addons/controls/OrbitControls.js";
+}
+from "three/addons/controls/OrbitControls.js";
+
 
 
 /* =========================================================
-   COSTANTI
+   REGOLE
 ========================================================= */
 
+
 const HEIGHT = 2.5;
+
 const LOWER_HEIGHT = 1.20;
 
-const FAIRY_SPACING = 0.30;
-const FAIRY_SLACK = 0.20;
+const FAIRY_SPACING = .30;
 
-const MATRIX_ROWS = 6;
+const FAIRY_SLACK = .20;
+
+
+const MATRIX_CELL = 54;
+
 
 
 const TELESCOPICS = {
 
+
   tel1:{
+
     key:"tel1",
+
     label:"Telescopica 1 m",
+
     nominal:1,
+
     min:1,
+
     max:1
+
   },
+
 
   tel15:{
+
     key:"tel15",
+
     label:"Telescopica 1,5 m",
+
     nominal:1.5,
+
     min:1.5,
+
     max:1.5
+
   },
+
 
   tel3:{
+
     key:"tel3",
+
     label:"Telescopica 3 → 5,5 m",
+
     nominal:3,
+
     min:3,
+
     max:5.5
+
   },
 
+
   tel4:{
+
     key:"tel4",
+
     label:"Telescopica 4 → 7,5 m",
+
     nominal:4,
+
     min:4,
+
     max:7.5
+
   }
 
+
 };
+
 
 
 const ITEMS = [
 
-  {key:"high3",label:"Traversa alta 3 m"},
-  {key:"low3", label:"Traversa bassa 3 m"},
 
-  {key:"high4",label:"Traversa alta 4 m"},
-  {key:"low4", label:"Traversa bassa 4 m"},
+  {
+    key:"high3",
+    label:"Traversa alta 3 m"
+  },
 
-  {key:"tel1", label:"Telescopica 1 m"},
-  {key:"tel15",label:"Telescopica 1,5 m"},
-  {key:"tel3", label:"Telescopica 3 → 5,5 m"},
-  {key:"tel4", label:"Telescopica 4 → 7,5 m"},
 
-  {key:"pole",label:"Palo 2,5 m"},
-  {key:"base",label:"Base palo"},
+  {
+    key:"low3",
+    label:"Traversa bassa 3 m"
+  },
 
-  {key:"fairy100",label:"Cesta fairy 100 m"},
-  {key:"fairy200",label:"Cesta fairy 200 m"}
+
+  {
+    key:"high4",
+    label:"Traversa alta 4 m"
+  },
+
+
+  {
+    key:"low4",
+    label:"Traversa bassa 4 m"
+  },
+
+
+  {
+    key:"tel1",
+    label:"Telescopica 1 m"
+  },
+
+
+  {
+    key:"tel15",
+    label:"Telescopica 1,5 m"
+  },
+
+
+  {
+    key:"tel3",
+    label:"Telescopica 3 → 5,5 m"
+  },
+
+
+  {
+    key:"tel4",
+    label:"Telescopica 4 → 7,5 m"
+  },
+
+
+  {
+    key:"arch",
+    label:"Arco"
+  },
+
+
+  {
+    key:"pole",
+    label:"Palo 2,5 m"
+  },
+
+
+  {
+    key:"base",
+    label:"Base palo"
+  },
+
+
+  {
+    key:"fairy100",
+    label:"Cesta fairy 100 m"
+  },
+
+
+  {
+    key:"fairy200",
+    label:"Cesta fairy 200 m"
+  }
+
 
 ];
 
 
+
 const SIDE_METHODS = {
 
+
   fixed3:{
+
     key:"fixed3",
+
     type:"fixed",
+
     size:3,
+
     label:"Traverse 3 m"
+
   },
+
 
   fixed4:{
+
     key:"fixed4",
+
     type:"fixed",
+
     size:4,
+
     label:"Traverse 4 m"
+
   },
+
 
   tel1:{
+
     key:"tel1",
+
     type:"tel",
+
     tel:"tel1",
+
     label:"Telescopica 1 m"
+
   },
+
 
   tel15:{
+
     key:"tel15",
+
     type:"tel",
+
     tel:"tel15",
+
     label:"Telescopica 1,5 m"
+
   },
+
 
   tel3:{
+
     key:"tel3",
+
     type:"tel",
+
     tel:"tel3",
+
     label:"Telescopica 3 → 5,5 m"
+
   },
 
+
   tel4:{
+
     key:"tel4",
+
     type:"tel",
+
     tel:"tel4",
+
     label:"Telescopica 4 → 7,5 m"
+
   }
 
+
 };
+
 
 
 const TOP_METHODS = {
 
+
   fixed3:{
+
     key:"fixed3",
+
     type:"fixed",
+
     size:3,
+
     stockKey:"high3",
+
     label:"Traversa alta 3 m"
+
   },
+
 
   fixed4:{
+
     key:"fixed4",
+
     type:"fixed",
+
     size:4,
+
     stockKey:"high4",
+
     label:"Traversa alta 4 m"
+
   },
+
 
   tel1:{
+
     key:"tel1",
+
     type:"tel",
+
     tel:"tel1",
+
     label:"Telescopica 1 m"
+
   },
+
 
   tel15:{
+
     key:"tel15",
+
     type:"tel",
+
     tel:"tel15",
+
     label:"Telescopica 1,5 m"
+
   },
+
 
   tel3:{
+
     key:"tel3",
+
     type:"tel",
+
     tel:"tel3",
+
     label:"Telescopica 3 → 5,5 m"
+
   },
 
+
   tel4:{
+
     key:"tel4",
+
     type:"tel",
+
     tel:"tel4",
+
     label:"Telescopica 4 → 7,5 m"
+
   }
 
+
 };
+
 
 
 /* =========================================================
    STATO
 ========================================================= */
 
+
 let warehouse = {};
+
 let remaining = {};
+
 let allocations = [];
 
+
 let currentPlan = null;
+
 
 let manualSections = null;
 
 let customLayout = false;
 
-let layout = {
-  rows:MATRIX_ROWS,
-  cols:3,
-  nodes:[]
-};
+
+let matrixMode = "points";
+
+let matrixZoom = 1;
+
+
+let archEdges =
+  new Set();
+
+
+let layout =
+  makeDefaultLayout(3);
+
 
 let scene;
+
 let camera;
+
 let renderer;
+
 let controls;
+
 
 
 /* =========================================================
    UTILITY
 ========================================================= */
 
+
 function closeEnough(a,b){
+
   return Math.abs(a-b) < .001;
+
+}
+
+
+function edgeKey(r,c){
+
+  /*
+    Collegamento verticale:
+
+    (r,c)
+      |
+    (r+1,c)
+  */
+
+  return `${r},${c}`;
+
+}
+
+
+function parseEdgeKey(key){
+
+  const [r,c] =
+    key
+    .split(",")
+    .map(Number);
+
+
+  return {r,c};
+
 }
 
 
 function emptyRequirements(){
 
-  const r={};
+  const result = {};
 
-  ITEMS.forEach(i=>{
-    r[i.key]=0;
+
+  ITEMS.forEach(item=>{
+
+    result[item.key] = 0;
+
   });
 
-  return r;
+
+  return result;
+
 }
 
 
 function itemLabel(key){
 
   return (
-    ITEMS.find(i=>i.key===key)?.label
+
+    ITEMS.find(
+      item=>item.key===key
+    )?.label
+
     ||
+
     key
+
   );
+
 }
 
 
-function telFits(key,length){
+function telFits(
+  key,
+  value
+){
 
-  const t=TELESCOPICS[key];
+  const tel =
+    TELESCOPICS[key];
+
 
   return (
-    length >= t.min-.001
+
+    value >=
+    tel.min-.001
+
     &&
-    length <= t.max+.001
+
+    value <=
+    tel.max+.001
+
   );
+
 }
+
+
+
+/* =========================================================
+   LAYOUT
+========================================================= */
+
+
+function makeDefaultLayout(
+  sections
+){
+
+  /*
+    Lasciamo già un bordo vuoto
+    tutto intorno.
+
+       ○ ○ ○ ○ ○
+       ○ ● ● ● ○
+       ○ ● ● ● ○
+       ○ ○ ○ ○ ○
+  */
+
+
+  const rows = 4;
+
+  const cols =
+    sections + 2;
+
+
+  const nodes =
+    Array.from(
+
+      {length:rows},
+
+      ()=>
+        Array(cols)
+        .fill(false)
+
+    );
+
+
+  for(
+    let c=1;
+    c<=sections;
+    c++
+  ){
+
+    nodes[1][c] = true;
+
+    nodes[2][c] = true;
+
+  }
+
+
+  return {
+
+    rows,
+
+    cols,
+
+    nodes
+
+  };
+
+}
+
 
 
 function cloneLayout(source){
 
   return {
-    rows:source.rows,
-    cols:source.cols,
-    nodes:source.nodes.map(row=>[...row])
+
+    rows:
+      source.rows,
+
+    cols:
+      source.cols,
+
+    nodes:
+      source.nodes
+      .map(row=>[...row])
+
   };
+
 }
 
 
-/* =========================================================
-   MATRICE / TOPOLOGIA
-========================================================= */
 
-function makeDefaultLayout(cols){
+function activeBounds(
+  target = layout
+){
 
-  const nodes =
-    Array.from(
-      {length:MATRIX_ROWS},
-      ()=>Array(cols).fill(false)
-    );
+  let minR = Infinity;
 
-  const r1=2;
-  const r2=3;
+  let maxR = -Infinity;
 
-  for(let c=0;c<cols;c++){
-    nodes[r1][c]=true;
-    nodes[r2][c]=true;
-  }
+  let minC = Infinity;
 
-  return {
-    rows:MATRIX_ROWS,
-    cols,
-    nodes
-  };
-}
+  let maxC = -Infinity;
 
-
-function resizeCustomLayout(cols){
-
-  const old=layout;
-
-  const nodes =
-    Array.from(
-      {length:MATRIX_ROWS},
-      ()=>Array(cols).fill(false)
-    );
 
   for(
     let r=0;
-    r<MATRIX_ROWS;
+    r<target.rows;
     r++
   ){
 
     for(
       let c=0;
-      c<Math.min(old.cols,cols);
+      c<target.cols;
       c++
     ){
 
-      nodes[r][c]=old.nodes[r][c];
+      if(
+        !target.nodes[r][c]
+      ){
+
+        continue;
+
+      }
+
+
+      minR =
+        Math.min(minR,r);
+
+      maxR =
+        Math.max(maxR,r);
+
+      minC =
+        Math.min(minC,c);
+
+      maxC =
+        Math.max(maxC,c);
 
     }
 
   }
 
-  layout={
-    rows:MATRIX_ROWS,
-    cols,
-    nodes
-  };
-}
 
+  if(
+    minR === Infinity
+  ){
 
-function ensureLayout(cols){
-
-  if(!customLayout){
-
-    layout=makeDefaultLayout(cols);
-
-    return;
-  }
-
-  if(layout.cols!==cols){
-
-    resizeCustomLayout(cols);
-  }
-}
-
-
-function toggleMatrixNode(r,c){
-
-  customLayout=true;
-
-  manualSections=layout.cols;
-
-  document
-    .getElementById("sectionsAuto")
-    .classList.remove("active");
-
-  layout.nodes[r][c]=
-    !layout.nodes[r][c];
-
-  scheduleCalculate();
-}
-
-
-function resetMatrix(){
-
-  customLayout=false;
-
-  const cols =
-    currentPlan
-      ? currentPlan.geometry.side.sections
-      : Math.max(
-          2,
-          Number(
-            document.getElementById("sections").value
-          ) || 3
-        );
-
-  layout=makeDefaultLayout(cols);
-
-  scheduleCalculate();
-}
-
-
-function layoutStats(l){
-
-  let nodes=0;
-  let horizontalEdges=0;
-  let verticalEdges=0;
-
-  const horizontal=[];
-  const vertical=[];
-
-  for(let r=0;r<l.rows;r++){
-
-    for(let c=0;c<l.cols;c++){
-
-      if(l.nodes[r][c])
-        nodes++;
-
-      if(
-        c<l.cols-1
-        &&
-        l.nodes[r][c]
-        &&
-        l.nodes[r][c+1]
-      ){
-
-        horizontalEdges++;
-
-        horizontal.push({
-          r,
-          c1:c,
-          c2:c+1
-        });
-      }
-
-      if(
-        r<l.rows-1
-        &&
-        l.nodes[r][c]
-        &&
-        l.nodes[r+1][c]
-      ){
-
-        verticalEdges++;
-
-        vertical.push({
-          r1:r,
-          r2:r+1,
-          c
-        });
-      }
-
-    }
+    return null;
 
   }
+
 
   return {
-    nodes,
-    horizontalEdges,
-    verticalEdges,
-    horizontal,
-    vertical
+
+    minR,
+    maxR,
+    minC,
+    maxC
+
   };
+
 }
 
 
-/*
-  Celle-tunnel.
 
-  Una cella esiste quando sono presenti
-  i quattro pali ai suoi quattro angoli.
-*/
+function structuralSections(){
 
-function cellExists(l,r,c){
+  const bounds =
+    activeBounds();
 
-  return (
-    r < l.rows-1
-    &&
-    c < l.cols-1
 
-    &&
-    l.nodes[r][c]
-    &&
-    l.nodes[r+1][c]
-    &&
-    l.nodes[r][c+1]
-    &&
-    l.nodes[r+1][c+1]
+  if(!bounds){
+
+    return 2;
+
+  }
+
+
+  return Math.max(
+
+    2,
+
+    bounds.maxC
+    -
+    bounds.minC
+    +
+    1
+
   );
+
 }
+
+
+
+/* =========================================================
+   ESPANSIONE AUTOMATICA MATRIX
+========================================================= */
+
+
+function shiftArchEdges(
+  dr,
+  dc
+){
+
+  const shifted =
+    new Set();
+
+
+  archEdges.forEach(key=>{
+
+    const {r,c} =
+      parseEdgeKey(key);
+
+
+    shifted.add(
+
+      edgeKey(
+        r+dr,
+        c+dc
+      )
+
+    );
+
+  });
+
+
+  archEdges =
+    shifted;
+
+}
+
+
+
+function padLayout({
+
+  top=0,
+
+  bottom=0,
+
+  left=0,
+
+  right=0
+
+}){
+
+
+  const newRows =
+
+    layout.rows
+
+    +
+
+    top
+
+    +
+
+    bottom;
+
+
+  const newCols =
+
+    layout.cols
+
+    +
+
+    left
+
+    +
+
+    right;
+
+
+  const nodes =
+    Array.from(
+
+      {length:newRows},
+
+      ()=>
+        Array(newCols)
+        .fill(false)
+
+    );
+
+
+  for(
+    let r=0;
+    r<layout.rows;
+    r++
+  ){
+
+    for(
+      let c=0;
+      c<layout.cols;
+      c++
+    ){
+
+      nodes[
+        r+top
+      ][
+        c+left
+      ] =
+
+        layout.nodes[r][c];
+
+    }
+
+  }
+
+
+  layout = {
+
+    rows:newRows,
+
+    cols:newCols,
+
+    nodes
+
+  };
+
+
+  shiftArchEdges(
+    top,
+    left
+  );
+
+}
+
+
+
+function ensureMatrixMargin(){
+
+  const bounds =
+    activeBounds();
+
+
+  if(!bounds){
+
+    return;
+
+  }
+
+
+  const top =
+    bounds.minR===0
+    ? 1
+    : 0;
+
+
+  const bottom =
+    bounds.maxR===layout.rows-1
+    ? 1
+    : 0;
+
+
+  const left =
+    bounds.minC===0
+    ? 1
+    : 0;
+
+
+  const right =
+    bounds.maxC===layout.cols-1
+    ? 1
+    : 0;
+
+
+  if(
+    top ||
+    bottom ||
+    left ||
+    right
+  ){
+
+    padLayout({
+
+      top,
+      bottom,
+      left,
+      right
+
+    });
+
+  }
+
+}
+
+
+
+function cleanArchEdges(){
+
+  const clean =
+    new Set();
+
+
+  archEdges.forEach(key=>{
+
+    const {r,c} =
+      parseEdgeKey(key);
+
+
+    if(
+
+      r >= 0
+
+      &&
+
+      r <
+      layout.rows-1
+
+      &&
+
+      c >= 0
+
+      &&
+
+      c <
+      layout.cols
+
+      &&
+
+      layout.nodes[r][c]
+
+      &&
+
+      layout.nodes[r+1][c]
+
+    ){
+
+      clean.add(key);
+
+    }
+
+  });
+
+
+  archEdges =
+    clean;
+
+}
+
+
+
+/* =========================================================
+   MATRIX → STRUTTURA
+========================================================= */
+
+
+function matrixChanged(){
+
+  customLayout = true;
+
+
+  cleanArchEdges();
+
+  ensureMatrixMargin();
+
+
+  manualSections =
+    structuralSections();
+
+
+  document
+    .getElementById(
+      "sections"
+    )
+    .value =
+      manualSections;
+
+
+  document
+    .getElementById(
+      "sectionsAuto"
+    )
+    .classList
+    .remove(
+      "active-button"
+    );
+
+
+  scheduleCalculate();
+
+}
+
+
+
+function toggleNode(
+  r,
+  c
+){
+
+  layout.nodes[r][c] =
+    !layout.nodes[r][c];
+
+
+  matrixChanged();
+
+}
+
+
+
+function toggleArch(
+  r,
+  c
+){
+
+  if(
+
+    r < 0
+
+    ||
+
+    r >= layout.rows-1
+
+    ||
+
+    !layout.nodes[r][c]
+
+    ||
+
+    !layout.nodes[r+1][c]
+
+  ){
+
+    return;
+
+  }
+
+
+  customLayout = true;
+
+
+  const key =
+    edgeKey(r,c);
+
+
+  if(
+    archEdges.has(key)
+  ){
+
+    archEdges.delete(key);
+
+  }
+
+  else{
+
+    archEdges.add(key);
+
+  }
+
+
+  scheduleCalculate();
+
+}
+
+
+
+/* =========================================================
+   CAMBIO MANUALE NUMERO SEZIONI
+========================================================= */
+
+
+function resampleColumns(
+  newSections
+){
+
+  newSections =
+    Math.max(
+      2,
+      Math.round(newSections)
+    );
+
+
+  /*
+    Tunnel normale:
+    semplicemente ricostruiamo.
+  */
+
+  if(
+    !customLayout
+  ){
+
+    layout =
+      makeDefaultLayout(
+        newSections
+      );
+
+
+    archEdges.clear();
+
+
+    manualSections =
+      newSections;
+
+
+    scheduleCalculate();
+
+    return;
+
+  }
+
+
+  const bounds =
+    activeBounds();
+
+
+  if(!bounds){
+
+    layout =
+      makeDefaultLayout(
+        newSections
+      );
+
+
+    archEdges.clear();
+
+    return;
+
+  }
+
+
+  const oldSections =
+
+    bounds.maxC
+    -
+    bounds.minC
+    +
+    1;
+
+
+  /*
+    Una colonna vuota a destra
+    e a sinistra.
+  */
+
+  const newCols =
+    newSections + 2;
+
+
+  const nodes =
+    Array.from(
+
+      {length:layout.rows},
+
+      ()=>
+        Array(newCols)
+        .fill(false)
+
+    );
+
+
+  function mapColumn(
+    oldColumn
+  ){
+
+    if(
+      oldSections <= 1
+    ){
+
+      return 1;
+
+    }
+
+
+    const relative =
+
+      (
+        oldColumn
+        -
+        bounds.minC
+      )
+
+      /
+
+      (
+        oldSections
+        -
+        1
+      );
+
+
+    return (
+
+      1
+
+      +
+
+      Math.round(
+
+        relative
+
+        *
+
+        (
+          newSections
+          -
+          1
+        )
+
+      )
+
+    );
+
+  }
+
+
+
+  for(
+    let r=0;
+    r<layout.rows;
+    r++
+  ){
+
+    for(
+      let c=bounds.minC;
+      c<=bounds.maxC;
+      c++
+    ){
+
+      if(
+        layout.nodes[r][c]
+      ){
+
+        nodes[r][
+          mapColumn(c)
+        ] = true;
+
+      }
+
+    }
+
+  }
+
+
+
+  const newArchEdges =
+    new Set();
+
+
+  archEdges.forEach(key=>{
+
+    const {r,c} =
+      parseEdgeKey(key);
+
+
+    const nc =
+      mapColumn(c);
+
+
+    if(
+
+      nodes[r]?.[nc]
+
+      &&
+
+      nodes[r+1]?.[nc]
+
+    ){
+
+      newArchEdges.add(
+        edgeKey(r,nc)
+      );
+
+    }
+
+  });
+
+
+
+  layout = {
+
+    rows:
+      layout.rows,
+
+    cols:
+      newCols,
+
+    nodes
+
+  };
+
+
+  archEdges =
+    newArchEdges;
+
+
+  manualSections =
+    newSections;
+
+
+  ensureMatrixMargin();
+
+
+  scheduleCalculate();
+
+}
+
+
+
+/* =========================================================
+   CONTEGGIO COLLEGAMENTI
+========================================================= */
+
+
+function layoutStats(
+  target = layout
+){
+
+  let nodes = 0;
+
+  const horizontal = [];
+
+  const vertical = [];
+
+
+  for(
+    let r=0;
+    r<target.rows;
+    r++
+  ){
+
+    for(
+      let c=0;
+      c<target.cols;
+      c++
+    ){
+
+      if(
+        target.nodes[r][c]
+      ){
+
+        nodes++;
+
+      }
+
+
+      if(
+
+        c < target.cols-1
+
+        &&
+
+        target.nodes[r][c]
+
+        &&
+
+        target.nodes[r][c+1]
+
+      ){
+
+        horizontal.push({
+
+          r,
+
+          c1:c,
+
+          c2:c+1
+
+        });
+
+      }
+
+
+      if(
+
+        r < target.rows-1
+
+        &&
+
+        target.nodes[r][c]
+
+        &&
+
+        target.nodes[r+1][c]
+
+      ){
+
+        vertical.push({
+
+          r,
+
+          c
+
+        });
+
+      }
+
+    }
+
+  }
+
+
+  let arches = 0;
+
+
+  vertical.forEach(edge=>{
+
+    if(
+      archEdges.has(
+        edgeKey(
+          edge.r,
+          edge.c
+        )
+      )
+    ){
+
+      arches++;
+
+    }
+
+  });
+
+
+  return {
+
+    nodes,
+
+    horizontal,
+
+    vertical,
+
+    horizontalEdges:
+      horizontal.length,
+
+    verticalEdges:
+      vertical.length,
+
+    arches,
+
+    normalVerticalEdges:
+      vertical.length
+      -
+      arches
+
+  };
+
+}
+
 
 
 /* =========================================================
    MAGAZZINO
 ========================================================= */
 
+
 function createStockInputs(){
 
-  const root=
-    document.getElementById("stockInputs");
-
-  warehouse=
-    JSON.parse(
-      localStorage.getItem("fairyWarehouse")
-      ||
-      "{}"
+  const root =
+    document.getElementById(
+      "stockInputs"
     );
 
-  root.innerHTML="";
+
+  warehouse =
+
+    JSON.parse(
+
+      localStorage.getItem(
+        "fairyWarehouse"
+      )
+
+      ||
+
+      "{}"
+
+    );
+
+
+  root.innerHTML = "";
+
 
   ITEMS.forEach(item=>{
 
-    const name=
-      document.createElement("div");
 
-    name.textContent=item.label;
+    const name =
+      document.createElement(
+        "div"
+      );
 
-    const input=
-      document.createElement("input");
 
-    input.type="number";
-    input.min="0";
-    input.step="1";
+    name.textContent =
+      item.label;
 
-    input.value=
-      warehouse[item.key] ?? 0;
 
-    input.id=
-      "stock_"+item.key;
+    const input =
+      document.createElement(
+        "input"
+      );
 
-    root.appendChild(name);
-    root.appendChild(input);
+
+    input.type =
+      "number";
+
+
+    input.min =
+      "0";
+
+
+    input.step =
+      "1";
+
+
+    input.value =
+      warehouse[item.key]
+      ??
+      0;
+
+
+    input.id =
+      "stock_"
+      +
+      item.key;
+
+
+    root.appendChild(
+      name
+    );
+
+
+    root.appendChild(
+      input
+    );
 
   });
 
-  if(Object.keys(warehouse).length){
-    remaining={...warehouse};
+
+  if(
+    Object.keys(
+      warehouse
+    ).length
+  ){
+
+    remaining = {
+      ...warehouse
+    };
+
   }
 
+
   renderRemaining();
+
 }
+
 
 
 function applyWarehouse(){
 
-  warehouse={};
+  warehouse = {};
+
 
   ITEMS.forEach(item=>{
 
-    warehouse[item.key]=
+    warehouse[item.key] =
+
       Number(
-        document.getElementById(
-          "stock_"+item.key
-        ).value
-      ) || 0;
+
+        document
+        .getElementById(
+          "stock_"
+          +
+          item.key
+        )
+        .value
+
+      )
+
+      ||
+
+      0;
 
   });
 
+
   localStorage.setItem(
+
     "fairyWarehouse",
-    JSON.stringify(warehouse)
+
+    JSON.stringify(
+      warehouse
+    )
+
   );
 
-  remaining={...warehouse};
 
-  allocations=[];
+  remaining = {
+    ...warehouse
+  };
+
+
+  allocations = [];
+
 
   renderRemaining();
+
   renderAllocations();
 
   closeSettings();
 
   scheduleCalculate();
+
 }
+
 
 
 function renderRemaining(){
 
-  const root=
-    document.getElementById("remainingStock");
+  const root =
+    document.getElementById(
+      "remainingStock"
+    );
 
-  if(!Object.keys(remaining).length){
 
-    root.innerHTML=
+  if(
+    !Object.keys(
+      remaining
+    ).length
+  ){
+
+    root.innerHTML =
       "Magazzino non impostato.";
 
     return;
+
   }
 
-  let html="<table>";
+
+  let html =
+    "<table>";
+
 
   ITEMS.forEach(item=>{
 
-    html+=`
+    html += `
+
       <tr>
-        <td>${item.label}</td>
+
+        <td>
+          ${item.label}
+        </td>
+
         <td>
           <strong>
             ${remaining[item.key] ?? 0}
           </strong>
         </td>
+
       </tr>
+
     `;
 
   });
 
-  html+="</table>";
 
-  root.innerHTML=html;
+  html +=
+    "</table>";
+
+
+  root.innerHTML =
+    html;
+
 }
 
 
+
 /* =========================================================
-   LATO LONGITUDINALE
+   LONGITUDINALE
 ========================================================= */
+
 
 function makeSideCandidate(
   methodKey,
@@ -1435,137 +2934,252 @@ function makeSideCandidate(
   sections
 ){
 
-  if(sections<2)
+  if(
+    sections < 2
+  ){
+
     return null;
 
-  const method=
-    SIDE_METHODS[methodKey];
-
-  const bays=
-    sections-1;
-
-  const bayLength=
-    length/bays;
+  }
 
 
-  if(method.type==="fixed"){
+  const method =
+    SIDE_METHODS[
+      methodKey
+    ];
+
+
+  const bays =
+    sections - 1;
+
+
+  const bayLength =
+    length / bays;
+
+
+
+  if(
+    method.type ===
+    "fixed"
+  ){
 
     if(
+
       !closeEnough(
         bayLength,
         method.size
       )
+
     ){
+
       return null;
+
     }
 
+
     return {
+
       method,
+
       sections,
+
       bays,
+
       bayLength,
+
       extension:0
+
     };
+
   }
 
 
+
   if(
+
     !telFits(
       method.tel,
       bayLength
     )
+
   ){
+
     return null;
+
   }
 
 
-  const tel=
-    TELESCOPICS[method.tel];
+  const tel =
+    TELESCOPICS[
+      method.tel
+    ];
 
 
   return {
+
     method,
+
     sections,
+
     bays,
+
     bayLength,
+
     tel,
+
     extension:
       Math.abs(
-        bayLength-tel.nominal
+        bayLength
+        -
+        tel.nominal
       )
+
   };
+
 }
 
 
-function sideScore(c){
 
-  if(c.method.type==="fixed"){
+function sideScore(
+  candidate
+){
+
+  if(
+
+    candidate.method.type
+    ===
+    "fixed"
+
+  ){
 
     return (
-      c.method.size===4
-        ? 0
-        : 10
-    )
-    +
-    c.bays*.01;
+
+      (
+        candidate.method.size===4
+        ?
+        0
+        :
+        10
+      )
+
+      +
+
+      candidate.bays*.01
+
+    );
+
   }
 
 
-  const distance=
+  const idealDistance =
+
     Math.abs(
-      c.bayLength-3.5
+      candidate.bayLength
+      -
+      3.5
     );
 
-  const tooLong=
-    c.bayLength>4.5
-      ? (c.bayLength-4.5)*100
-      : 0;
+
+  const longPenalty =
+
+    candidate.bayLength > 4.5
+
+    ?
+
+    (
+      candidate.bayLength
+      -
+      4.5
+    ) * 100
+
+    :
+
+    0;
 
 
   return (
+
     1000
+
     +
-    distance*20
+
+    idealDistance * 20
+
     +
-    c.extension*5
+
+    candidate.extension * 5
+
     +
-    tooLong
+
+    longPenalty
+
     +
-    c.bays*.01
+
+    candidate.bays*.01
+
   );
+
 }
 
 
-function buildSideCandidates(length){
 
-  const selected=
-    document.getElementById(
+function buildSideCandidates(
+  length
+){
+
+  const selected =
+
+    document
+    .getElementById(
       "sideMethod"
-    ).value;
+    )
+    .value;
 
 
-  const methods=
-    selected==="auto"
-      ? Object.keys(SIDE_METHODS)
-      : [selected];
+  const methods =
+
+    selected === "auto"
+
+    ?
+
+    Object.keys(
+      SIDE_METHODS
+    )
+
+    :
+
+    [selected];
 
 
-  const result=[];
+  const results = [];
 
 
-  if(manualSections!==null){
+  if(
+    manualSections !== null
+  ){
 
     methods.forEach(method=>{
 
-      const c=
+      const candidate =
+
         makeSideCandidate(
+
           method,
+
           length,
+
           manualSections
+
         );
 
-      if(c)
-        result.push(c);
+
+      if(candidate){
+
+        results.push(
+          candidate
+        );
+
+      }
 
     });
 
@@ -1581,15 +3195,26 @@ function buildSideCandidates(length){
 
       methods.forEach(method=>{
 
-        const c=
+        const candidate =
+
           makeSideCandidate(
+
             method,
+
             length,
+
             sections
+
           );
 
-        if(c)
-          result.push(c);
+
+        if(candidate){
+
+          results.push(
+            candidate
+          );
+
+        }
 
       });
 
@@ -1598,111 +3223,164 @@ function buildSideCandidates(length){
   }
 
 
-  result.sort(
-    (a,b)=>sideScore(a)-sideScore(b)
+  results.sort(
+    (a,b)=>
+      sideScore(a)
+      -
+      sideScore(b)
   );
 
 
-  return result;
+  return results;
+
 }
 
 
+
 /* =========================================================
-   SUPERIORE
+   SUPERIORE NORMALE
 ========================================================= */
 
-function buildTopCandidates(width){
 
-  const selected=
-    document.getElementById(
+function buildTopCandidates(
+  width
+){
+
+  const selected =
+
+    document
+    .getElementById(
       "topMethod"
-    ).value;
+    )
+    .value;
 
 
-  const methods=
-    selected==="auto"
-      ? Object.keys(TOP_METHODS)
-      : [selected];
+  const methods =
+
+    selected === "auto"
+
+    ?
+
+    Object.keys(
+      TOP_METHODS
+    )
+
+    :
+
+    [selected];
 
 
-  const result=[];
+  const results = [];
 
 
   methods.forEach(key=>{
 
-    const method=
+    const method =
       TOP_METHODS[key];
 
 
-    if(method.type==="fixed"){
+
+    if(
+      method.type ===
+      "fixed"
+    ){
 
       if(
+
         !closeEnough(
           method.size,
           width
         )
+
       ){
+
         return;
+
       }
 
-      /*
-        FISSO vince sempre in automatico.
-      */
 
-      result.push({
+      results.push({
+
         method,
+
         score:0,
+
         extension:0
+
       });
 
+
       return;
+
     }
 
 
+
     if(
+
       !telFits(
         method.tel,
         width
       )
+
     ){
+
       return;
+
     }
 
 
-    const tel=
-      TELESCOPICS[method.tel];
+    const tel =
+      TELESCOPICS[
+        method.tel
+      ];
 
-    const extension=
+
+    const extension =
+
       Math.abs(
-        width-tel.nominal
+        width
+        -
+        tel.nominal
       );
 
 
-    result.push({
+    results.push({
+
       method,
+
       tel,
+
       extension,
+
       score:
         100
         +
         extension*10
+
     });
 
   });
 
 
-  result.sort(
-    (a,b)=>a.score-b.score
+  results.sort(
+    (a,b)=>
+      a.score
+      -
+      b.score
   );
 
 
-  return result;
+  return results;
+
 }
 
 
+
 /* =========================================================
-   MATERIALI DALLO SCHEMA
+   MATERIALI
 ========================================================= */
+
 
 function buildRequirements(
   side,
@@ -1710,207 +3388,239 @@ function buildRequirements(
   activeLayout
 ){
 
-  const req=
+  const req =
     emptyRequirements();
 
 
-  const stats=
-    layoutStats(activeLayout);
+  const stats =
+    layoutStats(
+      activeLayout
+    );
 
 
-  /*
-    Ogni punto:
-    palo + base.
-  */
 
-  req.pole=
-    stats.nodes;
-
-  req.base=
+  req.pole =
     stats.nodes;
 
 
+  req.base =
+    stats.nodes;
+
+
+
   /*
-    Ogni collegamento orizzontale:
-    ALTA + BASSA.
+    LONGITUDINALI:
+
+    ogni collegamento orizzontale
+    ha alta + bassa.
   */
 
   if(
-    side.method.key==="fixed3"
+    side.method.key ===
+    "fixed3"
   ){
 
     req.high3 +=
       stats.horizontalEdges;
+
 
     req.low3 +=
       stats.horizontalEdges;
 
   }
 
+
   else if(
-    side.method.key==="fixed4"
+    side.method.key ===
+    "fixed4"
   ){
 
     req.high4 +=
       stats.horizontalEdges;
+
 
     req.low4 +=
       stats.horizontalEdges;
 
   }
 
+
   else{
 
-    req[side.method.tel] +=
-      stats.horizontalEdges*2;
+    /*
+      una telescopica alta
+      +
+      una telescopica bassa.
+    */
+
+    req[
+      side.method.tel
+    ] +=
+
+      stats.horizontalEdges
+      *
+      2;
 
   }
+
 
 
   /*
-    Ogni collegamento verticale
-    nella PIANTA è solo superiore.
+    ARCHI
   */
 
-  if(top.method.type==="fixed"){
+  req.arch +=
+    stats.arches;
 
-    req[top.method.stockKey] +=
-      stats.verticalEdges;
 
-  }
 
-  else{
+  /*
+    TRASVERSALI SUPERIORI NORMALI
+  */
 
-    req[top.method.tel] +=
-      stats.verticalEdges;
+  const normalCount =
+    stats.normalVerticalEdges;
+
+
+  if(
+    normalCount > 0
+  ){
+
+    if(
+      top.method.type ===
+      "fixed"
+    ){
+
+      req[
+        top.method.stockKey
+      ] +=
+        normalCount;
+
+    }
+
+    else{
+
+      req[
+        top.method.tel
+      ] +=
+        normalCount;
+
+    }
 
   }
 
 
   return req;
+
 }
+
 
 
 /* =========================================================
    DEFICIT
 ========================================================= */
 
-function deficitsFor(req){
 
-  const deficits=[];
+function deficitsFor(
+  requirements
+){
 
-  Object.entries(req)
-    .forEach(([key,needed])=>{
+  const deficits = [];
 
-      if(!needed)
+
+  Object
+  .entries(
+    requirements
+  )
+  .forEach(
+    ([key,needed])=>{
+
+
+      if(!needed){
+
         return;
 
-      const available=
-        remaining[key] ?? 0;
+      }
 
-      if(needed>available){
+
+      const available =
+        remaining[key]
+        ??
+        0;
+
+
+      if(
+        needed >
+        available
+      ){
 
         deficits.push({
+
           key,
-          label:itemLabel(key),
+
+          label:
+            itemLabel(key),
+
           needed,
+
           available,
-          missing:needed-available
+
+          missing:
+            needed
+            -
+            available
+
         });
 
       }
 
-    });
+    }
+  );
+
 
   return deficits;
+
 }
+
 
 
 /* =========================================================
    CANDIDATI COMPLETI
 ========================================================= */
 
+
 function geometryCandidates(
   length,
   width
 ){
 
-  const sides=
-    buildSideCandidates(length);
+  const sides =
+    buildSideCandidates(
+      length
+    );
 
-  const tops=
-    buildTopCandidates(width);
 
-  const combinations=[];
+  const results = [];
 
 
   sides.forEach(side=>{
 
-    /*
-      Lo schema dipende dal numero di sezioni.
-    */
 
     let candidateLayout;
 
-    if(customLayout){
 
-      candidateLayout=
+    if(
+      customLayout
+    ){
+
+      candidateLayout =
         cloneLayout(layout);
-
-      if(
-        candidateLayout.cols
-        !==
-        side.sections
-      ){
-
-        /*
-          In pratica questo succede solo
-          se l'utente modifica le sezioni.
-        */
-
-        const old=layout;
-
-        const nodes=
-          Array.from(
-            {length:MATRIX_ROWS},
-            ()=>Array(side.sections).fill(false)
-          );
-
-        for(
-          let r=0;
-          r<MATRIX_ROWS;
-          r++
-        ){
-
-          for(
-            let c=0;
-            c<
-            Math.min(
-              old.cols,
-              side.sections
-            );
-            c++
-          ){
-
-            nodes[r][c]=
-              old.nodes[r][c];
-
-          }
-
-        }
-
-        candidateLayout={
-          rows:MATRIX_ROWS,
-          cols:side.sections,
-          nodes
-        };
-      }
 
     }
 
     else{
 
-      candidateLayout=
+      candidateLayout =
         makeDefaultLayout(
           side.sections
         );
@@ -1918,38 +3628,87 @@ function geometryCandidates(
     }
 
 
+    /*
+      Se tutte le trasversali
+      sono archi non ci serve
+      nessuna traversa superiore
+      normale.
+    */
+
+    const stats =
+      layoutStats(
+        candidateLayout
+      );
+
+
+    const tops =
+
+      stats.normalVerticalEdges > 0
+
+      ?
+
+      buildTopCandidates(
+        width
+      )
+
+      :
+
+      [{
+
+        method:null,
+
+        score:0
+
+      }];
+
+
     tops.forEach(top=>{
 
-      const requirements=
+
+      const requirements =
+
         buildRequirements(
+
           side,
+
           top,
+
           candidateLayout
+
         );
 
-      const deficits=
-        deficitsFor(requirements);
+
+      const deficits =
+        deficitsFor(
+          requirements
+        );
 
 
-      combinations.push({
+      results.push({
+
         side,
+
         top,
-        layout:candidateLayout,
+
+        layout:
+          candidateLayout,
+
         requirements,
+
         deficits,
 
-        /*
-          Preferiamo prima la geometria
-          corretta.
-
-          Il magazzino segnala poi
-          eventuali mancanze.
-        */
-
         score:
+
           sideScore(side)
+
           +
-          top.score
+
+          (
+            top?.score
+            ??
+            0
+          )
+
       });
 
     });
@@ -1957,80 +3716,147 @@ function geometryCandidates(
   });
 
 
-  combinations.sort((a,b)=>{
+  results.sort(
+    (a,b)=>{
 
-    if(a.score!==b.score)
-      return a.score-b.score;
+      if(
+        a.score !== b.score
+      ){
 
-    return (
-      a.deficits.length
-      -
-      b.deficits.length
-    );
-  });
+        return (
+          a.score
+          -
+          b.score
+        );
+
+      }
 
 
-  return combinations;
+      return (
+
+        a.deficits.length
+
+        -
+
+        b.deficits.length
+
+      );
+
+    }
+  );
+
+
+  return results;
+
 }
 
 
+
 /* =========================================================
-   FAIRY LIGHTS SU SCHEMA PERSONALIZZATO
+   CELLE / FAIRY
 ========================================================= */
 
+
+function cellExists(
+  target,
+  r,
+  c
+){
+
+  return (
+
+    r <
+    target.rows-1
+
+    &&
+
+    c <
+    target.cols-1
+
+    &&
+
+    target.nodes[r][c]
+
+    &&
+
+    target.nodes[r+1][c]
+
+    &&
+
+    target.nodes[r][c+1]
+
+    &&
+
+    target.nodes[r+1][c+1]
+
+  );
+
+}
+
+
+
 function calculateFairy(
-  activeLayout,
+  target,
   bayLength,
   width
 ){
 
-  const runs=[];
+  const runs = [];
 
 
   /*
-    Per ogni coppia di righe adiacenti
-    cerchiamo sequenze continue di
-    celle-tunnel.
+    Cerca tunnel continui
+    tra ogni coppia di file.
   */
 
   for(
     let r=0;
-    r<activeLayout.rows-1;
+    r<target.rows-1;
     r++
   ){
 
-    let c=0;
+    let c = 0;
 
 
     while(
-      c<activeLayout.cols-1
+      c <
+      target.cols-1
     ){
 
       if(
+
         !cellExists(
-          activeLayout,
+          target,
           r,
           c
         )
+
       ){
 
         c++;
 
         continue;
+
       }
 
 
-      const start=c;
+      const start =
+        c;
 
 
       while(
-        c<activeLayout.cols-1
+
+        c <
+        target.cols-1
+
         &&
+
         cellExists(
-          activeLayout,
+          target,
           r,
           c
         )
+
       ){
 
         c++;
@@ -2038,29 +3864,46 @@ function calculateFairy(
       }
 
 
-      const end=c;
+      const end =
+        c;
 
-      const bays=
+
+      const bays =
         end-start;
 
-      const length=
-        bays*bayLength;
 
-      const rows=
+      const length =
+        bays
+        *
+        bayLength;
+
+
+      const rows =
+
         Math.ceil(
-          length/FAIRY_SPACING
+
+          length
+          /
+          FAIRY_SPACING
+
         );
 
-      const actualSpacing=
-        length/rows;
 
       runs.push({
+
         r,
+
         start,
+
         bays,
+
         length,
+
         rows,
-        actualSpacing
+
+        actualSpacing:
+          length/rows
+
       });
 
     }
@@ -2068,60 +3911,108 @@ function calculateFairy(
   }
 
 
-  const perU=
+
+  /*
+    PER ORA:
+
+    anche con arco,
+    il metraggio fairy resta
+    il nostro calcolo U rettangolare.
+  */
+
+  const perU =
+
     HEIGHT*2
+
     +
+
     width
+
     +
+
     FAIRY_SLACK;
 
 
-  const totalRows=
+  const rows =
+
     runs.reduce(
-      (sum,run)=>sum+run.rows,
+
+      (
+        total,
+        run
+      )=>
+        total
+        +
+        run.rows,
+
       0
+
     );
 
 
-  const total=
-    totalRows*perU;
-
-
   return {
+
     runs,
+
+    rows,
+
     perU,
-    rows:totalRows,
-    total
+
+    total:
+      rows
+      *
+      perU
+
   };
+
 }
 
 
+
 /* =========================================================
-   CESTE FAIRY
+   CESTE
 ========================================================= */
 
-function chooseFairyBaskets(required){
 
-  if(required<=0){
+function chooseFairyBaskets(
+  required
+){
+
+  if(
+    required <= 0
+  ){
 
     return {
+
       fairy100:0,
+
       fairy200:0,
+
       meters:0,
+
       excess:0,
+
       baskets:0
+
     };
+
   }
 
 
-  const max100=
-    remaining.fairy100 ?? 0;
+  const max100 =
+    remaining.fairy100
+    ??
+    0;
 
-  const max200=
-    remaining.fairy200 ?? 0;
+
+  const max200 =
+    remaining.fairy200
+    ??
+    0;
 
 
-  let best=null;
+  let best =
+    null;
 
 
   for(
@@ -2136,40 +4027,66 @@ function chooseFairyBaskets(required){
       b++
     ){
 
-      const meters=
-        a*100+b*200;
+      const meters =
+        a*100
+        +
+        b*200;
 
 
-      if(meters<required)
+      if(
+        meters <
+        required
+      ){
+
         continue;
 
+      }
 
-      const candidate={
+
+      const candidate = {
+
         fairy100:a,
+
         fairy200:b,
+
         meters,
-        excess:meters-required,
-        baskets:a+b
+
+        excess:
+          meters-required,
+
+        baskets:
+          a+b
+
       };
 
 
       if(
+
         !best
+
         ||
-        candidate.excess<best.excess
+
+        candidate.excess <
+        best.excess
+
         ||
+
         (
           closeEnough(
             candidate.excess,
             best.excess
           )
+
           &&
-          candidate.baskets<
+
+          candidate.baskets <
           best.baskets
         )
+
       ){
 
-        best=candidate;
+        best =
+          candidate;
 
       }
 
@@ -2179,124 +4096,197 @@ function chooseFairyBaskets(required){
 
 
   return best;
+
 }
 
 
+
 /* =========================================================
-   CALCOLO
+   CALCOLO COMPLETO
 ========================================================= */
+
 
 function calculatePlan(){
 
-  const length=
+
+  const length =
+
     Number(
-      document.getElementById(
+
+      document
+      .getElementById(
         "length"
-      ).value
+      )
+      .value
+
     );
 
 
-  const width=
+  const width =
+
     Number(
-      document.getElementById(
+
+      document
+      .getElementById(
         "width"
-      ).value
+      )
+      .value
+
     );
 
 
   if(
-    !length
+
+    length <= 0
+
     ||
-    !width
-    ||
-    length<=0
-    ||
-    width<=0
+
+    width <= 0
+
   ){
+
     return;
+
   }
 
 
-  const candidates=
+
+  const candidates =
+
     geometryCandidates(
+
       length,
+
       width
+
     );
 
 
-  if(!candidates.length){
+  if(
+    !candidates.length
+  ){
 
-    currentPlan=null;
+    currentPlan =
+      null;
 
-    document.getElementById(
+
+    document
+    .getElementById(
       "status"
-    ).innerHTML=`
+    )
+    .innerHTML = `
 
       <div class="bad">
-        Configurazione non possibile.
+        Configurazione non possibile
+        con le barre selezionate.
       </div>
 
     `;
 
-    document.getElementById(
-      "materialResult"
-    ).innerHTML="";
 
-    document.getElementById(
+    document
+    .getElementById(
+      "materialResult"
+    )
+    .innerHTML =
+      "";
+
+
+    document
+    .getElementById(
       "quickResult"
-    ).innerHTML="";
+    )
+    .innerHTML =
+      "";
+
+
+    renderMatrix();
+
 
     return;
+
   }
 
 
-  const geometry=
+
+  const geometry =
     candidates[0];
 
 
-  layout=
-    cloneLayout(
-      geometry.layout
-    );
+  if(
+    !customLayout
+  ){
+
+    layout =
+      cloneLayout(
+        geometry.layout
+      );
+
+  }
 
 
-  if(manualSections===null){
+  if(
+    manualSections === null
+  ){
 
-    document.getElementById(
+    document
+    .getElementById(
       "sections"
-    ).value=
+    )
+    .value =
       geometry.side.sections;
 
   }
 
 
-  const fairyEnabled=
-    document.getElementById(
+
+  const fairyEnabled =
+
+    document
+    .getElementById(
       "fairyEnabled"
-    ).checked;
+    )
+    .checked;
 
 
-  const requirements={
+  const requirements = {
+
     ...geometry.requirements
+
   };
 
 
-  let fairy=null;
-  let baskets=null;
-  let fairyAvailable=true;
+  let fairy =
+    null;
 
 
-  if(fairyEnabled){
+  let baskets =
+    null;
 
-    fairy=
+
+  let fairyAvailable =
+    true;
+
+
+  if(
+    fairyEnabled
+  ){
+
+    fairy =
+
       calculateFairy(
+
         layout,
+
         geometry.side.bayLength,
+
         width
+
       );
 
 
-    baskets=
+    baskets =
+
       chooseFairyBaskets(
         fairy.total
       );
@@ -2304,62 +4294,87 @@ function calculatePlan(){
 
     if(baskets){
 
-      requirements.fairy100=
+      requirements.fairy100 =
         baskets.fairy100;
 
-      requirements.fairy200=
+
+      requirements.fairy200 =
         baskets.fairy200;
 
     }
 
     else{
 
-      fairyAvailable=false;
+      fairyAvailable =
+        false;
 
     }
 
   }
 
 
-  const deficits=
-    deficitsFor(requirements);
+
+  const deficits =
+    deficitsFor(
+      requirements
+    );
 
 
-  currentPlan={
+  currentPlan = {
+
 
     name:
-      document.getElementById(
+
+      document
+      .getElementById(
         "projectName"
-      ).value
+      )
+      .value
+
       ||
+
       "Struttura",
 
+
     length,
+
     width,
 
+
     geometry,
-    layout,
+
+    layout:
+      cloneLayout(layout),
+
 
     requirements,
+
     deficits,
 
+
     fairyEnabled,
+
     fairy,
+
     baskets,
+
     fairyAvailable
 
   };
 
 
-  renderEverything();
+  renderAll();
+
 }
 
 
+
 /* =========================================================
-   RENDER GENERALE
+   RENDER TUTTO
 ========================================================= */
 
-function renderEverything(){
+
+function renderAll(){
 
   renderSummary();
 
@@ -2372,92 +4387,126 @@ function renderEverything(){
   renderTechnicalViews(
     currentPlan
   );
+
 }
+
 
 
 /* =========================================================
    SUMMARY
 ========================================================= */
 
+
 function renderSummary(){
 
-  const p=currentPlan;
-
-  const side=
-    p.geometry.side;
-
-  const stats=
-    layoutStats(p.layout);
+  const plan =
+    currentPlan;
 
 
-  document.getElementById(
+  const side =
+    plan.geometry.side;
+
+
+  const stats =
+    layoutStats(
+      plan.layout
+    );
+
+
+  document
+  .getElementById(
     "titleSummary"
-  ).textContent=
-    `${p.name} · ${p.length} × ${p.width} m`;
+  )
+  .textContent =
+
+    `${plan.name} · ${plan.length} × ${plan.width} m`;
 
 
-  let status;
+
+  let status = "";
 
 
   if(
-    !p.deficits.length
+
+    !plan.deficits.length
+
     &&
-    p.fairyAvailable
+
+    plan.fairyAvailable
+
   ){
 
-    status=`
+    status = `
+
       <span class="good">
         ✓ Materiale disponibile
       </span>
+
     `;
 
   }
 
   else{
 
-    status=`
+    status = `
+
       <span class="bad">
         ⚠ Materiale insufficiente
       </span>
+
     `;
 
 
-    if(p.deficits.length){
+    if(
+      plan.deficits.length
+    ){
 
-      status+=`
-        <div class="warning">
-      `;
+      status +=
+        `<div class="warning">`;
 
-      p.deficits.forEach(d=>{
 
-        status+=`
-          ${d.label}:
+      plan.deficits
+      .forEach(deficit=>{
+
+        status += `
+
+          ${deficit.label}:
           mancano
-          <strong>${d.missing}</strong>
+
+          <strong>
+            ${deficit.missing}
+          </strong>
+
           &nbsp;
+
         `;
 
       });
 
-      status+=`
-        </div>
-      `;
+
+      status +=
+        `</div>`;
 
     }
 
 
     if(
-      p.fairyEnabled
-      &&
-      !p.fairyAvailable
+      !plan.fairyAvailable
     ){
 
-      status+=`
+      status += `
+
         <div class="warning">
+
           Fairy insufficienti:
           servono circa
-          ${p.fairy.total.toFixed(1)} m.
+
+          <strong>
+            ${plan.fairy.total.toFixed(1)} m
+          </strong>.
+
         </div>
+
       `;
 
     }
@@ -2465,39 +4514,67 @@ function renderSummary(){
   }
 
 
-  document.getElementById(
+  document
+  .getElementById(
     "status"
-  ).innerHTML=status;
+  )
+  .innerHTML =
+    status;
 
 
 
-  let rows="";
+  let rows =
+    "";
 
 
   ITEMS.forEach(item=>{
 
-    const qty=
-      p.requirements[item.key] || 0;
+    const quantity =
 
-    if(!qty)
+      plan.requirements[
+        item.key
+      ]
+
+      ||
+
+      0;
+
+
+    if(
+      !quantity
+    ){
+
       return;
 
+    }
 
-    rows+=`
+
+    rows += `
+
       <tr>
-        <td>${item.label}</td>
+
         <td>
-          <strong>${qty}</strong>
+          ${item.label}
         </td>
+
+        <td>
+          <strong>
+            ${quantity}
+          </strong>
+        </td>
+
       </tr>
+
     `;
 
   });
 
 
-  document.getElementById(
+  document
+  .getElementById(
     "materialResult"
-  ).innerHTML=`
+  )
+  .innerHTML = `
 
     <table>
       <tbody>
@@ -2509,41 +4586,60 @@ function renderSummary(){
 
 
 
-  let fairyData="";
+  let fairyData =
+    "";
 
 
-  if(p.fairyEnabled){
+  if(
+    plan.fairyEnabled
+  ){
 
-    fairyData=`
+    fairyData = `
 
       <div class="chip">
-        Fairy U
+
+        U fairy
+
         <strong>
-          ${p.fairy.rows}
+          ${plan.fairy.rows}
         </strong>
+
       </div>
 
+
       <div class="chip">
-        Fairy totali
+
+        Fairy
+
         <strong>
-          ${p.fairy.total.toFixed(1)} m
+          ${plan.fairy.total.toFixed(1)} m
         </strong>
+
       </div>
 
     `;
 
 
-    if(p.baskets){
+    if(
+      plan.baskets
+    ){
 
-      fairyData+=`
+      fairyData += `
 
         <div class="chip">
-          Carico fairy
+
+          Ceste
+
           <strong>
-            ${p.baskets.fairy100}×100
+
+            ${plan.baskets.fairy100}×100
+
             +
-            ${p.baskets.fairy200}×200
+
+            ${plan.baskets.fairy200}×200
+
           </strong>
+
         </div>
 
       `;
@@ -2553,84 +4649,213 @@ function renderSummary(){
   }
 
 
-  document.getElementById(
+
+  document
+  .getElementById(
     "quickResult"
-  ).innerHTML=`
+  )
+  .innerHTML = `
+
 
     <div class="chip">
+
       Sezioni
+
       <strong>
         ${side.sections}
       </strong>
+
     </div>
 
-    <div class="chip">
-      Campate
-      <strong>
-        ${side.bays}
-      </strong>
-    </div>
 
     <div class="chip">
+
       Campata
+
       <strong>
         ${side.bayLength.toFixed(2)} m
       </strong>
+
     </div>
 
+
     <div class="chip">
+
       Pali
+
       <strong>
         ${stats.nodes}
       </strong>
+
     </div>
+
+
+    <div class="chip">
+
+      Trasversali
+
+      <strong>
+        ${stats.normalVerticalEdges}
+      </strong>
+
+    </div>
+
+
+    <div class="chip">
+
+      Archi
+
+      <strong>
+        ${stats.arches}
+      </strong>
+
+    </div>
+
 
     ${fairyData}
 
   `;
+
 }
 
 
+
 /* =========================================================
-   MATRIX SVG
+   MATRIX RENDER
 ========================================================= */
+
+
+function matrixCoordinates(
+  r,
+  c
+){
+
+  return {
+
+    x:
+      42
+      +
+      c*MATRIX_CELL,
+
+    y:
+      35
+      +
+      r*MATRIX_CELL
+
+  };
+
+}
+
+
 
 function renderMatrix(){
 
-  const svg=
-    document.getElementById(
+
+  const svg =
+    document
+    .getElementById(
       "matrixView"
     );
 
 
+  const baseWidth =
+
+    Math.max(
+
+      420,
+
+      84
+
+      +
+
+      (
+        layout.cols-1
+      )
+
+      *
+      MATRIX_CELL
+
+    );
+
+
+  const baseHeight =
+
+    Math.max(
+
+      190,
+
+      70
+
+      +
+
+      (
+        layout.rows-1
+      )
+
+      *
+      MATRIX_CELL
+
+    );
+
+
+
+  const viewWidth =
+    baseWidth
+    /
+    matrixZoom;
+
+
+  const viewHeight =
+    baseHeight
+    /
+    matrixZoom;
+
+
+  const centerX =
+    baseWidth/2;
+
+
+  const centerY =
+    baseHeight/2;
+
+
   svg.setAttribute(
+
     "viewBox",
-    "0 0 430 210"
+
+    `${
+
+      centerX
+      -
+      viewWidth/2
+
+    } ${
+
+      centerY
+      -
+      viewHeight/2
+
+    } ${
+
+      viewWidth
+
+    } ${
+
+      viewHeight
+
+    }`
+
   );
 
 
-  const left=35;
-  const right=395;
 
-  const top=20;
-  const bottom=190;
+  let html =
+    "";
 
-
-  const dx=
-    layout.cols>1
-      ? (right-left)/(layout.cols-1)
-      : 0;
-
-
-  const dy=
-    (bottom-top)/(layout.rows-1);
-
-
-  let html="";
 
 
   /*
-    Griglia di riferimento
+    GRIGLIA LEGGERA
   */
 
   for(
@@ -2645,40 +4870,74 @@ function renderMatrix(){
       c++
     ){
 
-      const x=
-        left+c*dx;
+      const p =
+        matrixCoordinates(
+          r,
+          c
+        );
 
-      const y=
-        top+r*dy;
+
+      if(
+        c <
+        layout.cols-1
+      ){
+
+        const p2 =
+          matrixCoordinates(
+            r,
+            c+1
+          );
 
 
-      if(c<layout.cols-1){
+        html += `
 
-        html+=`
           <line
-            x1="${x}"
-            y1="${y}"
-            x2="${x+dx}"
-            y2="${y}"
-            stroke="#ddd"
+
+            x1="${p.x}"
+            y1="${p.y}"
+
+            x2="${p2.x}"
+            y2="${p2.y}"
+
+            stroke="#e2e2e2"
             stroke-width="1"
+
           />
+
         `;
+
       }
 
 
-      if(r<layout.rows-1){
+      if(
+        r <
+        layout.rows-1
+      ){
 
-        html+=`
+        const p2 =
+          matrixCoordinates(
+            r+1,
+            c
+          );
+
+
+        html += `
+
           <line
-            x1="${x}"
-            y1="${y}"
-            x2="${x}"
-            y2="${y+dy}"
-            stroke="#ddd"
+
+            x1="${p.x}"
+            y1="${p.y}"
+
+            x2="${p2.x}"
+            y2="${p2.y}"
+
+            stroke="#e2e2e2"
             stroke-width="1"
+
           />
+
         `;
+
       }
 
     }
@@ -2686,68 +4945,208 @@ function renderMatrix(){
   }
 
 
+
+  const stats =
+    layoutStats();
+
+
+
   /*
-    Collegamenti attivi
+    LONGITUDINALI
   */
 
-  const stats=
-    layoutStats(layout);
+  stats.horizontal
+  .forEach(edge=>{
+
+    const a =
+      matrixCoordinates(
+        edge.r,
+        edge.c1
+      );
 
 
-  stats.horizontal.forEach(e=>{
-
-    const x1=
-      left+e.c1*dx;
-
-    const x2=
-      left+e.c2*dx;
-
-    const y=
-      top+e.r*dy;
+    const b =
+      matrixCoordinates(
+        edge.r,
+        edge.c2
+      );
 
 
-    html+=`
+    html += `
+
       <line
-        x1="${x1}"
-        y1="${y}"
-        x2="${x2}"
-        y2="${y}"
+
+        x1="${a.x}"
+        y1="${a.y}"
+
+        x2="${b.x}"
+        y2="${b.y}"
+
         stroke="#222"
+
         stroke-width="4"
+
+        stroke-linecap="round"
+
       />
+
     `;
 
   });
 
-
-  stats.vertical.forEach(e=>{
-
-    const x=
-      left+e.c*dx;
-
-    const y1=
-      top+e.r1*dy;
-
-    const y2=
-      top+e.r2*dy;
-
-
-    html+=`
-      <line
-        x1="${x}"
-        y1="${y1}"
-        x2="${x}"
-        y2="${y2}"
-        stroke="#356d91"
-        stroke-width="4"
-      />
-    `;
-
-  });
 
 
   /*
-    Punti
+    TRASVERSALI / ARCHI
+  */
+
+  stats.vertical
+  .forEach(edge=>{
+
+
+    const a =
+      matrixCoordinates(
+        edge.r,
+        edge.c
+      );
+
+
+    const b =
+      matrixCoordinates(
+        edge.r+1,
+        edge.c
+      );
+
+
+    const key =
+      edgeKey(
+        edge.r,
+        edge.c
+      );
+
+
+    const isArch =
+      archEdges.has(key);
+
+
+    /*
+      L'arco viene disegnato
+      leggermente curvo nel matrix
+      solo per distinguerlo.
+    */
+
+    if(isArch){
+
+      const controlX =
+        a.x + 20;
+
+
+      const midY =
+        (
+          a.y
+          +
+          b.y
+        )/2;
+
+
+      html += `
+
+        <path
+
+          d="
+            M ${a.x} ${a.y}
+
+            Q
+            ${controlX}
+            ${midY}
+
+            ${b.x}
+            ${b.y}
+          "
+
+          fill="none"
+
+          stroke="#d57900"
+
+          stroke-width="5"
+
+          stroke-linecap="round"
+
+        />
+
+      `;
+
+    }
+
+    else{
+
+      html += `
+
+        <line
+
+          x1="${a.x}"
+          y1="${a.y}"
+
+          x2="${b.x}"
+          y2="${b.y}"
+
+          stroke="#28658c"
+
+          stroke-width="4"
+
+          stroke-linecap="round"
+
+        />
+
+      `;
+
+    }
+
+
+    /*
+      Area trasparente grossa
+      per cliccare facilmente
+      in modalità ARCHI.
+    */
+
+    if(
+      matrixMode ===
+      "arch"
+    ){
+
+      html += `
+
+        <line
+
+          class="arch-hit"
+
+          data-r="${edge.r}"
+          data-c="${edge.c}"
+
+          x1="${a.x}"
+          y1="${a.y}"
+
+          x2="${b.x}"
+          y2="${b.y}"
+
+          stroke="transparent"
+
+          stroke-width="22"
+
+          style="cursor:pointer"
+
+        />
+
+      `;
+
+    }
+
+  });
+
+
+
+  /*
+    NODI
   */
 
   for(
@@ -2762,29 +5161,67 @@ function renderMatrix(){
       c++
     ){
 
-      const x=
-        left+c*dx;
+      const p =
+        matrixCoordinates(
+          r,
+          c
+        );
 
-      const y=
-        top+r*dy;
 
-      const active=
+      const active =
         layout.nodes[r][c];
 
 
-      html+=`
+      html += `
+
         <circle
+
           class="matrix-node"
+
           data-r="${r}"
           data-c="${c}"
-          cx="${x}"
-          cy="${y}"
-          r="${active ? 8 : 5}"
-          fill="${active ? "#111" : "#fff"}"
-          stroke="${active ? "#111" : "#aaa"}"
+
+          cx="${p.x}"
+          cy="${p.y}"
+
+          r="${
+            active
+            ?
+            7
+            :
+            4.5
+          }"
+
+          fill="${
+            active
+            ?
+            "#111"
+            :
+            "#fff"
+          }"
+
+          stroke="${
+            active
+            ?
+            "#111"
+            :
+            "#aaa"
+          }"
+
           stroke-width="2"
-          style="cursor:pointer"
+
+          style="
+            cursor:${
+              matrixMode==="points"
+              ?
+              "pointer"
+              :
+              "default"
+            }
+          "
+
         />
+
       `;
 
     }
@@ -2792,27 +5229,34 @@ function renderMatrix(){
   }
 
 
-  svg.innerHTML=html;
+  svg.innerHTML =
+    html;
 
 
-  svg
+
+  if(
+    matrixMode ===
+    "points"
+  ){
+
+    svg
     .querySelectorAll(
       ".matrix-node"
     )
-    .forEach(circle=>{
+    .forEach(node=>{
 
-      circle.addEventListener(
+      node.addEventListener(
         "click",
         ()=>{
 
-          toggleMatrixNode(
+          toggleNode(
 
             Number(
-              circle.dataset.r
+              node.dataset.r
             ),
 
             Number(
-              circle.dataset.c
+              node.dataset.c
             )
 
           );
@@ -2821,39 +5265,148 @@ function renderMatrix(){
       );
 
     });
+
+  }
+
+
+
+  if(
+    matrixMode ===
+    "arch"
+  ){
+
+    svg
+    .querySelectorAll(
+      ".arch-hit"
+    )
+    .forEach(edge=>{
+
+      edge.addEventListener(
+        "click",
+        ()=>{
+
+          toggleArch(
+
+            Number(
+              edge.dataset.r
+            ),
+
+            Number(
+              edge.dataset.c
+            )
+
+          );
+
+        }
+      );
+
+    });
+
+  }
+
 }
 
 
+
 /* =========================================================
-   THREE JS
+   MATRIX MODE
 ========================================================= */
+
+
+function setMatrixMode(
+  mode
+){
+
+  matrixMode =
+    mode;
+
+
+  document
+  .getElementById(
+    "modePoints"
+  )
+  .classList.toggle(
+    "active-button",
+    mode==="points"
+  );
+
+
+  document
+  .getElementById(
+    "modeArch"
+  )
+  .classList.toggle(
+    "active-button",
+    mode==="arch"
+  );
+
+
+  document
+  .getElementById(
+    "matrixHelp"
+  )
+  .textContent =
+
+    mode === "points"
+
+    ?
+
+    "PUNTI: clicca un punto per aggiungere o togliere palo + base. Se raggiungi il bordo, la griglia si espande automaticamente."
+
+    :
+
+    "ARCHI: clicca un collegamento trasversale blu per sostituirlo con un arco. Clicca di nuovo l'arco per tornare alla traversa normale.";
+
+
+  renderMatrix();
+
+}
+
+
+
+/* =========================================================
+   THREE.JS
+========================================================= */
+
 
 function init3D(){
 
-  const container=
-    document.getElementById(
+
+  const container =
+
+    document
+    .getElementById(
       "viewer"
     );
 
 
-  renderer=
+  renderer =
+
     new THREE.WebGLRenderer({
+
       antialias:true,
+
       preserveDrawingBuffer:true
+
     });
 
 
   renderer.setPixelRatio(
+
     Math.min(
       window.devicePixelRatio,
       2
     )
+
   );
 
 
   renderer.setSize(
+
     container.clientWidth,
+
     container.clientHeight
+
   );
 
 
@@ -2862,49 +5415,85 @@ function init3D(){
   );
 
 
-  camera=
+
+  camera =
+
     new THREE.PerspectiveCamera(
+
       45,
-      container.clientWidth/
+
+      container.clientWidth
+      /
       container.clientHeight,
+
       .1,
+
       1000
+
     );
 
 
-  controls=
+
+  controls =
+
     new OrbitControls(
+
       camera,
+
       renderer.domElement
+
     );
 
 
-  controls.enableDamping=true;
+  controls.enableDamping =
+    true;
+
 
 
   window.addEventListener(
     "resize",
-    ()=>{
-
-      const w=
-        container.clientWidth;
-
-      const h=
-        container.clientHeight;
-
-
-      renderer.setSize(w,h);
-
-      camera.aspect=w/h;
-
-      camera.updateProjectionMatrix();
-
-    }
+    resize3D
   );
 
 
   animate();
+
 }
+
+
+
+function resize3D(){
+
+  const container =
+
+    document
+    .getElementById(
+      "viewer"
+    );
+
+
+  const width =
+    container.clientWidth;
+
+
+  const height =
+    container.clientHeight;
+
+
+  renderer.setSize(
+    width,
+    height
+  );
+
+
+  camera.aspect =
+    width/height;
+
+
+  camera.updateProjectionMatrix();
+
+}
+
 
 
 function animate(){
@@ -2914,16 +5503,21 @@ function animate(){
   );
 
 
-  if(controls)
-    controls.update();
+  controls?.update();
 
 
   if(
+
     scene
+
     &&
+
     camera
+
     &&
+
     renderer
+
   ){
 
     renderer.render(
@@ -2932,7 +5526,9 @@ function animate(){
     );
 
   }
+
 }
+
 
 
 function cylinderBetween(
@@ -2942,101 +5538,206 @@ function cylinderBetween(
   material
 ){
 
-  const dir=
+  const direction =
+
     new THREE.Vector3()
-      .subVectors(
-        b,
-        a
-      );
 
-
-  const length=
-    dir.length();
-
-
-  const geo=
-    new THREE.CylinderGeometry(
-      radius,
-      radius,
-      length,
-      10
+    .subVectors(
+      b,
+      a
     );
 
 
-  const mesh=
+  const length =
+    direction.length();
+
+
+  const geometry =
+
+    new THREE.CylinderGeometry(
+
+      radius,
+
+      radius,
+
+      length,
+
+      10
+
+    );
+
+
+  const mesh =
+
     new THREE.Mesh(
-      geo,
+
+      geometry,
+
       material
+
     );
 
 
   mesh.position
-    .addVectors(a,b)
-    .multiplyScalar(.5);
+
+    .addVectors(
+      a,
+      b
+    )
+
+    .multiplyScalar(
+      .5
+    );
 
 
   mesh.quaternion
+
     .setFromUnitVectors(
 
       new THREE.Vector3(
         0,1,0
       ),
 
-      dir
-        .clone()
-        .normalize()
+      direction
+      .clone()
+      .normalize()
 
     );
 
 
-  scene.add(mesh);
+  scene.add(
+    mesh
+  );
+
 
   return mesh;
+
 }
 
 
-function activeRowBounds(l){
 
-  let min=Infinity;
-  let max=-Infinity;
+/* =========================================================
+   ARCO 3D
+========================================================= */
 
 
-  for(let r=0;r<l.rows;r++){
+function drawArch3D(
+  x,
+  z1,
+  z2,
+  material
+){
 
-    if(
-      l.nodes[r].some(Boolean)
-    ){
+  /*
+    Semicerchio schematico.
 
-      min=Math.min(min,r);
-      max=Math.max(max,r);
+    Diametro =
+    larghezza del modulo.
+
+    Estremi =
+    cima dei due pali.
+  */
+
+  const centerZ =
+    (z1+z2)/2;
+
+
+  const radius =
+    Math.abs(
+      z2-z1
+    )/2;
+
+
+  const segments =
+    24;
+
+
+  let previous =
+    null;
+
+
+  for(
+    let i=0;
+    i<=segments;
+    i++
+  ){
+
+    const theta =
+
+      Math.PI
+
+      -
+
+      (
+        i/segments
+      )
+
+      *
+      Math.PI;
+
+
+    const point =
+
+      new THREE.Vector3(
+
+        x,
+
+        HEIGHT
+        +
+        Math.sin(theta)
+        *
+        radius,
+
+        centerZ
+        +
+        Math.cos(theta)
+        *
+        radius
+
+      );
+
+
+    if(previous){
+
+      cylinderBetween(
+
+        previous,
+
+        point,
+
+        .038,
+
+        material
+
+      );
+
     }
 
+
+    previous =
+      point;
+
   }
 
-
-  if(min===Infinity){
-
-    return {
-      min:0,
-      max:1
-    };
-  }
-
-
-  return {
-    min,
-    max
-  };
 }
 
 
-function render3D(plan){
 
-  scene=
+/* =========================================================
+   RENDER 3D
+========================================================= */
+
+
+function render3D(
+  plan
+){
+
+
+  scene =
     new THREE.Scene();
 
 
-  scene.background=
+  scene.background =
     new THREE.Color(
       0xf1f2f3
     );
@@ -3045,38 +5746,85 @@ function render3D(plan){
   scene.add(
 
     new THREE.HemisphereLight(
+
       0xffffff,
+
       0x777777,
+
       2.4
+
     )
 
   );
 
 
-  const l=
+
+  const target =
     plan.layout;
 
-  const bay=
+
+  const bounds =
+    activeBounds(
+      target
+    );
+
+
+  if(!bounds){
+
+    return;
+
+  }
+
+
+  const bay =
     plan.geometry.side.bayLength;
 
-  const width=
+
+  const moduleWidth =
     plan.width;
 
 
-  const bounds=
-    activeRowBounds(l);
+  const xForCol =
+    c=>
+      (
+        c-bounds.minC
+      )
+      *
+      bay;
 
 
-  const zForRow=
+  const zForRow =
     r=>
-      (r-bounds.min)*width;
+      (
+        r-bounds.minR
+      )
+      *
+      moduleWidth;
 
 
-  const totalWidth=
-    Math.max(
-      width,
-      (bounds.max-bounds.min)*width
-    );
+  const totalLength =
+
+    (
+      bounds.maxC
+      -
+      bounds.minC
+    )
+
+    *
+    bay;
+
+
+  const totalWidth =
+
+    (
+      bounds.maxR
+      -
+      bounds.minR
+    )
+
+    *
+    moduleWidth;
+
 
 
   scene.add(
@@ -3084,8 +5832,13 @@ function render3D(plan){
     new THREE.GridHelper(
 
       Math.max(
-        plan.length,
-        totalWidth
+
+        totalLength,
+
+        totalWidth,
+
+        4
+
       )*2,
 
       24
@@ -3095,68 +5848,94 @@ function render3D(plan){
   );
 
 
-  const poleMat=
+
+  const poleMat =
+
     new THREE.MeshStandardMaterial({
       color:0x292929
     });
 
 
-  const highMat=
+  const highMat =
+
     new THREE.MeshStandardMaterial({
       color:0x111111
     });
 
 
-  const lowMat=
+  const lowMat =
+
     new THREE.MeshStandardMaterial({
       color:0x555555
     });
 
 
-  const topMat=
+  const topMat =
+
     new THREE.MeshStandardMaterial({
-      color:0x174e72
+      color:0x185275
     });
 
 
-  const baseMat=
+  const archMat =
+
+    new THREE.MeshStandardMaterial({
+      color:0xb66300
+    });
+
+
+  const baseMat =
+
     new THREE.MeshStandardMaterial({
       color:0x222222
     });
 
 
-  const baseGeo=
+
+  const baseGeometry =
+
     new THREE.BoxGeometry(
+
       .34,
+
       .04,
+
       .34
+
     );
 
 
+
   /*
-    PALI
+    PALI + BASI
   */
 
   for(
     let r=0;
-    r<l.rows;
+    r<target.rows;
     r++
   ){
 
     for(
       let c=0;
-      c<l.cols;
+      c<target.cols;
       c++
     ){
 
-      if(!l.nodes[r][c])
+      if(
+        !target.nodes[r][c]
+      ){
+
         continue;
 
+      }
 
-      const x=
-        c*bay;
 
-      const z=
+      const x =
+        xForCol(c);
+
+
+      const z =
         zForRow(r);
 
 
@@ -3177,108 +5956,170 @@ function render3D(plan){
       );
 
 
-      const base=
+      const base =
         new THREE.Mesh(
-          baseGeo,
+
+          baseGeometry,
+
           baseMat
+
         );
 
 
       base.position.set(
+
         x,
+
         .02,
+
         z
+
       );
 
 
-      scene.add(base);
+      scene.add(
+        base
+      );
 
     }
 
   }
 
 
+
+  const stats =
+    layoutStats(
+      target
+    );
+
+
+
   /*
     LONGITUDINALI
   */
 
-  const stats=
-    layoutStats(l);
-
-
   stats.horizontal
-    .forEach(edge=>{
-
-      const x1=
-        edge.c1*bay;
-
-      const x2=
-        edge.c2*bay;
-
-      const z=
-        zForRow(edge.r);
+  .forEach(edge=>{
 
 
-      cylinderBetween(
-
-        new THREE.Vector3(
-          x1,
-          HEIGHT,
-          z
-        ),
-
-        new THREE.Vector3(
-          x2,
-          HEIGHT,
-          z
-        ),
-
-        .036,
-
-        highMat
-
+    const x1 =
+      xForCol(
+        edge.c1
       );
 
 
-      cylinderBetween(
-
-        new THREE.Vector3(
-          x1,
-          LOWER_HEIGHT,
-          z
-        ),
-
-        new THREE.Vector3(
-          x2,
-          LOWER_HEIGHT,
-          z
-        ),
-
-        .036,
-
-        lowMat
-
+    const x2 =
+      xForCol(
+        edge.c2
       );
 
-    });
+
+    const z =
+      zForRow(
+        edge.r
+      );
+
+
+    cylinderBetween(
+
+      new THREE.Vector3(
+        x1,
+        HEIGHT,
+        z
+      ),
+
+      new THREE.Vector3(
+        x2,
+        HEIGHT,
+        z
+      ),
+
+      .036,
+
+      highMat
+
+    );
+
+
+    cylinderBetween(
+
+      new THREE.Vector3(
+        x1,
+        LOWER_HEIGHT,
+        z
+      ),
+
+      new THREE.Vector3(
+        x2,
+        LOWER_HEIGHT,
+        z
+      ),
+
+      .036,
+
+      lowMat
+
+    );
+
+  });
+
 
 
   /*
-    SUPERIORI TRASVERSALI
+    TRASVERSALI / ARCHI
   */
 
   stats.vertical
-    .forEach(edge=>{
+  .forEach(edge=>{
 
-      const x=
-        edge.c*bay;
 
-      const z1=
-        zForRow(edge.r1);
+    const x =
+      xForCol(
+        edge.c
+      );
 
-      const z2=
-        zForRow(edge.r2);
 
+    const z1 =
+      zForRow(
+        edge.r
+      );
+
+
+    const z2 =
+      zForRow(
+        edge.r+1
+      );
+
+
+    const isArch =
+
+      archEdges.has(
+
+        edgeKey(
+          edge.r,
+          edge.c
+        )
+
+      );
+
+
+    if(isArch){
+
+      drawArch3D(
+
+        x,
+
+        z1,
+
+        z2,
+
+        archMat
+
+      );
+
+    }
+
+    else{
 
       cylinderBetween(
 
@@ -3300,7 +6141,10 @@ function render3D(plan){
 
       );
 
-    });
+    }
+
+  });
+
 
 
   /*
@@ -3313,112 +6157,148 @@ function render3D(plan){
     plan.fairy
   ){
 
-    const fairyMat=
+    const fairyMaterial =
+
       new THREE.LineBasicMaterial({
-        color:0xd49400
+        color:0xd49200
       });
 
 
     plan.fairy.runs
-      .forEach(run=>{
-
-        const z1=
-          zForRow(run.r);
-
-        const z2=
-          zForRow(run.r+1);
+    .forEach(run=>{
 
 
-        const runStart=
-          run.start*bay;
+      const z1 =
+        zForRow(
+          run.r
+        );
 
 
-        const spacing=
-          run.length/run.rows;
+      const z2 =
+        zForRow(
+          run.r+1
+        );
 
 
-        for(
-          let i=0;
-          i<run.rows;
-          i++
-        ){
-
-          const x=
-            runStart
-            +
-            (i+.5)*spacing;
+      const startX =
+        xForCol(
+          run.start
+        );
 
 
-          const points=[
-
-            new THREE.Vector3(
-              x,
-              .04,
-              z1
-            ),
-
-            new THREE.Vector3(
-              x,
-              HEIGHT,
-              z1
-            ),
-
-            new THREE.Vector3(
-              x,
-              HEIGHT-.18,
-              (z1+z2)/2
-            ),
-
-            new THREE.Vector3(
-              x,
-              HEIGHT,
-              z2
-            ),
-
-            new THREE.Vector3(
-              x,
-              .04,
-              z2
-            )
-
-          ];
+      const spacing =
+        run.length
+        /
+        run.rows;
 
 
-          const geo=
-            new THREE.BufferGeometry()
-              .setFromPoints(points);
+      for(
+        let i=0;
+        i<run.rows;
+        i++
+      ){
+
+        const x =
+
+          startX
+
+          +
+
+          (
+            i+.5
+          )
+
+          *
+          spacing;
 
 
-          scene.add(
+        const points = [
 
-            new THREE.Line(
-              geo,
-              fairyMat
-            )
 
+          new THREE.Vector3(
+            x,
+            .04,
+            z1
+          ),
+
+
+          new THREE.Vector3(
+            x,
+            HEIGHT,
+            z1
+          ),
+
+
+          new THREE.Vector3(
+            x,
+            HEIGHT-.17,
+            (z1+z2)/2
+          ),
+
+
+          new THREE.Vector3(
+            x,
+            HEIGHT,
+            z2
+          ),
+
+
+          new THREE.Vector3(
+            x,
+            .04,
+            z2
+          )
+
+
+        ];
+
+
+        const geometry =
+
+          new THREE.BufferGeometry()
+
+          .setFromPoints(
+            points
           );
 
-        }
 
-      });
+        scene.add(
+
+          new THREE.Line(
+
+            geometry,
+
+            fairyMaterial
+
+          )
+
+        );
+
+      }
+
+    });
 
   }
 
 
-  /*
-    NESSUNA LABEL 3D.
-  */
 
+  /*
+    CAMERA
+  */
 
   camera.position.set(
 
-    plan.length*.75,
+    Math.max(
+      totalLength*.75,
+      4
+    ),
 
-    HEIGHT*2.6,
+    HEIGHT*2.8,
 
     Math.max(
-      totalWidth*1.45,
-      plan.width*1.7
+      totalWidth*1.5,
+      moduleWidth*1.8,
+      5
     )
 
   );
@@ -3426,7 +6306,7 @@ function render3D(plan){
 
   controls.target.set(
 
-    plan.length/2,
+    totalLength/2,
 
     HEIGHT/2,
 
@@ -3436,51 +6316,76 @@ function render3D(plan){
 
 
   controls.update();
+
 }
 
 
+
 /* =========================================================
-   SVG UTILITY
+   SVG TECH
 ========================================================= */
+
 
 function svgLine(
   x1,y1,
   x2,y2,
-  width=3
+  width=3,
+  color="#111"
 ){
 
   return `
+
     <line
+
       x1="${x1}"
       y1="${y1}"
+
       x2="${x2}"
       y2="${y2}"
-      stroke="#111"
+
+      stroke="${color}"
+
       stroke-width="${width}"
+
     />
+
   `;
+
 }
+
 
 
 function svgText(
-  x,y,text,
+  x,
+  y,
+  text,
   anchor="middle",
-  size=14
+  size=13
 ){
 
   return `
+
     <text
+
       x="${x}"
       y="${y}"
+
       text-anchor="${anchor}"
+
       font-family="Arial"
+
       font-size="${size}"
+
       fill="#111"
+
     >
       ${text}
     </text>
+
   `;
+
 }
+
 
 
 function svgTag(
@@ -3490,192 +6395,326 @@ function svgTag(
   anchor="middle"
 ){
 
-  const width=
+  const width =
+
     Math.max(
-      76,
-      text.length*7
+      70,
+      text.length*6.8
     );
 
 
-  let rectX=x-width/2;
+  let rectX =
+    x-width/2;
 
 
-  if(anchor==="start")
-    rectX=x;
+  if(
+    anchor==="start"
+  ){
+
+    rectX =
+      x;
+
+  }
 
 
-  if(anchor==="end")
-    rectX=x-width;
+  if(
+    anchor==="end"
+  ){
+
+    rectX =
+      x-width;
+
+  }
 
 
   return `
 
     <rect
+
       x="${rectX}"
-      y="${y-17}"
+
+      y="${y-16}"
+
       width="${width}"
-      height="23"
+
+      height="22"
+
       rx="3"
+
       fill="white"
+
       stroke="#aaa"
+
     />
 
-    ${svgText(
-      x,
-      y,
-      text,
-      anchor,
-      12
-    )}
+
+    ${
+
+      svgText(
+        x,
+        y,
+        text,
+        anchor,
+        11.5
+      )
+
+    }
 
   `;
+
 }
+
 
 
 /* =========================================================
-   TECHNICAL VIEWS
+   VISTE TECNICHE
 ========================================================= */
 
-function renderTechnicalViews(plan){
+
+function renderTechnicalViews(
+  plan
+){
 
   renderTopView(plan);
+
   renderSideView(plan);
+
   renderFrontView(plan);
+
 }
+
 
 
 /* =========================================================
    PIANTA
 ========================================================= */
 
-function renderTopView(plan){
 
-  const svg=
-    document.getElementById(
+function renderTopView(
+  plan
+){
+
+
+  const svg =
+
+    document
+    .getElementById(
       "topView"
     );
 
 
   svg.setAttribute(
+
     "viewBox",
+
     "0 0 1000 280"
+
   );
 
 
-  const l=
+  const target =
     plan.layout;
 
-  const stats=
-    layoutStats(l);
 
-
-  const bounds=
-    activeRowBounds(l);
-
-
-  const activeRows=
-    Math.max(
-      1,
-      bounds.max-bounds.min
+  const bounds =
+    activeBounds(
+      target
     );
 
 
-  const left=150;
-  const right=900;
-
-  const top=50;
-  const bottom=230;
-
-
-  const dx=
-    l.cols>1
-      ? (right-left)/(l.cols-1)
-      : 0;
+  const stats =
+    layoutStats(
+      target
+    );
 
 
-  const dy=
-    activeRows>0
-      ? (bottom-top)/activeRows
-      : 0;
+  if(!bounds){
+
+    svg.innerHTML = "";
+
+    return;
+
+  }
 
 
-  const yForRow=
+
+  const left = 160;
+
+  const right = 900;
+
+  const top = 45;
+
+  const bottom = 230;
+
+
+  const colSpan =
+
+    Math.max(
+      1,
+      bounds.maxC
+      -
+      bounds.minC
+    );
+
+
+  const rowSpan =
+
+    Math.max(
+      1,
+      bounds.maxR
+      -
+      bounds.minR
+    );
+
+
+  const dx =
+    (right-left)
+    /
+    colSpan;
+
+
+  const dy =
+    (bottom-top)
+    /
+    rowSpan;
+
+
+  const xForCol =
+    c=>
+      left
+      +
+      (
+        c-bounds.minC
+      )*dx;
+
+
+  const yForRow =
     r=>
-      top+
-      (r-bounds.min)*dy;
+      top
+      +
+      (
+        r-bounds.minR
+      )*dy;
 
 
-  let html="";
+
+  let html = "";
 
 
-  /*
-    Collegamenti.
-  */
 
   stats.horizontal
-    .forEach(e=>{
+  .forEach(edge=>{
 
-      html+=svgLine(
+    html +=
+      svgLine(
 
-        left+e.c1*dx,
-        yForRow(e.r),
+        xForCol(edge.c1),
 
-        left+e.c2*dx,
-        yForRow(e.r),
+        yForRow(edge.r),
+
+        xForCol(edge.c2),
+
+        yForRow(edge.r),
 
         4
 
       );
 
-    });
+  });
+
 
 
   stats.vertical
-    .forEach(e=>{
+  .forEach(edge=>{
 
-      html+=`
+    const x =
+      xForCol(edge.c);
 
-        <line
-          x1="${left+e.c*dx}"
-          y1="${yForRow(e.r1)}"
-          x2="${left+e.c*dx}"
-          y2="${yForRow(e.r2)}"
-          stroke="#356d91"
-          stroke-width="4"
-        />
 
-      `;
+    const y1 =
+      yForRow(edge.r);
 
-    });
+
+    const y2 =
+      yForRow(edge.r+1);
+
+
+    const isArch =
+
+      archEdges.has(
+
+        edgeKey(
+          edge.r,
+          edge.c
+        )
+
+      );
+
+
+    html +=
+      svgLine(
+
+        x,
+        y1,
+
+        x,
+        y2,
+
+        isArch
+        ?
+        5
+        :
+        4,
+
+        isArch
+        ?
+        "#c36e00"
+        :
+        "#28658c"
+
+      );
+
+  });
+
 
 
   /*
-    Pali.
+    PALI
   */
 
   for(
     let r=0;
-    r<l.rows;
+    r<target.rows;
     r++
   ){
 
     for(
       let c=0;
-      c<l.cols;
+      c<target.cols;
       c++
     ){
 
-      if(!l.nodes[r][c])
+      if(
+        !target.nodes[r][c]
+      ){
+
         continue;
 
+      }
 
-      html+=`
+
+      html += `
 
         <circle
-          cx="${left+c*dx}"
+
+          cx="${xForCol(c)}"
+
           cy="${yForRow(r)}"
+
           r="5"
+
           fill="#111"
+
         />
 
       `;
@@ -3685,290 +6724,514 @@ function renderTopView(plan){
   }
 
 
+
   /*
-    Lato longitudinale.
+    LABEL LONGITUDINALE
   */
 
-  if(stats.horizontal.length){
+  if(
+    stats.horizontal.length
+  ){
 
-    const e=
+    const edge =
       stats.horizontal[0];
 
 
-    const x=
+    const x =
+
       (
-        left+e.c1*dx
+        xForCol(edge.c1)
+
         +
-        left+e.c2*dx
+
+        xForCol(edge.c2)
+
       )/2;
 
 
-    const text=
-      plan.geometry.side.method.type==="fixed"
+    const label =
 
-        ?
+      plan.geometry.side.method.type
+      ===
+      "fixed"
 
-        `Traversa ${plan.geometry.side.method.size} m`
+      ?
 
-        :
+      `Traversa ${plan.geometry.side.method.size} m`
 
-        `${plan.geometry.side.method.label} · ${plan.geometry.side.bayLength.toFixed(2)} m`;
+      :
+
+      `${plan.geometry.side.method.label} · ${plan.geometry.side.bayLength.toFixed(2)} m`;
 
 
-    html+=svgTag(
-      x,
-      yForRow(e.r)-15,
-      text
-    );
+    html +=
+
+      svgTag(
+
+        x,
+
+        yForRow(edge.r)-13,
+
+        label
+
+      );
 
   }
+
 
 
   /*
-    Trasversale:
-
-    LABEL SULLA SINISTRA DEL PEZZO,
-    non in mezzo alla struttura.
+    LABEL TRASVERSALE NORMALE
+    SEMPRE A SINISTRA.
   */
 
-  if(stats.vertical.length){
+  const normalEdge =
 
-    const e=
-      stats.vertical[0];
+    stats.vertical.find(edge=>
+
+      !archEdges.has(
+
+        edgeKey(
+          edge.r,
+          edge.c
+        )
+
+      )
+
+    );
 
 
-    const y=
+  if(
+    normalEdge
+    &&
+    plan.geometry.top?.method
+  ){
+
+    const y =
+
       (
-        yForRow(e.r1)
+        yForRow(normalEdge.r)
+
         +
-        yForRow(e.r2)
+
+        yForRow(normalEdge.r+1)
+
       )/2;
 
 
-    const text=
-      plan.geometry.top.method.type==="fixed"
+    const label =
 
-        ?
+      plan.geometry.top.method.type
+      ===
+      "fixed"
 
-        `Superiore ${plan.geometry.top.method.size} m`
+      ?
 
-        :
+      `Superiore ${plan.geometry.top.method.size} m`
 
-        `${plan.geometry.top.method.label} · ${plan.width.toFixed(2)} m`;
+      :
+
+      `${plan.geometry.top.method.label} · ${plan.width.toFixed(2)} m`;
 
 
-    html+=svgTag(
+    html +=
 
-      left-18,
+      svgTag(
 
-      y,
+        left-16,
 
-      text,
+        y,
 
-      "end"
+        label,
 
-    );
+        "end"
+
+      );
 
   }
 
 
-  html+=svgText(
-    500,
-    270,
-    `Vista dall'alto · ${plan.geometry.side.sections} sezioni`
-  );
+
+  /*
+    LABEL ARCO
+  */
+
+  const firstArch =
+
+    stats.vertical.find(edge=>
+
+      archEdges.has(
+
+        edgeKey(
+          edge.r,
+          edge.c
+        )
+
+      )
+
+    );
 
 
-  svg.innerHTML=html;
+  if(firstArch){
+
+    const y =
+
+      (
+        yForRow(firstArch.r)
+
+        +
+
+        yForRow(firstArch.r+1)
+
+      )/2;
+
+
+    html +=
+
+      svgTag(
+
+        left-16,
+
+        y+27,
+
+        "ARCO",
+
+        "end"
+
+      );
+
+  }
+
+
+
+  html +=
+
+    svgText(
+
+      500,
+
+      270,
+
+      `Vista dall'alto · modulo trasversale ${plan.width.toFixed(2)} m`
+
+    );
+
+
+  svg.innerHTML =
+    html;
+
 }
+
 
 
 /* =========================================================
    LATERALE
 ========================================================= */
 
-function renderSideView(plan){
 
-  const svg=
-    document.getElementById(
+function renderSideView(
+  plan
+){
+
+
+  const svg =
+
+    document
+    .getElementById(
       "sideView"
     );
 
 
   svg.setAttribute(
+
     "viewBox",
+
     "0 0 1000 280"
+
   );
 
 
-  const l=
+  const target =
     plan.layout;
 
 
+  const bounds =
+    activeBounds(
+      target
+    );
+
+
+  if(!bounds){
+
+    return;
+
+  }
+
+
+
   /*
-    Cerchiamo la prima riga che abbia
-    almeno un collegamento longitudinale.
+    Prendiamo la prima fila
+    con almeno una campata.
   */
 
-  let row=-1;
+  let selectedRow =
+    null;
 
 
-  for(let r=0;r<l.rows;r++){
+  for(
+    let r=bounds.minR;
+    r<=bounds.maxR;
+    r++
+  ){
 
-    for(let c=0;c<l.cols-1;c++){
+    for(
+      let c=bounds.minC;
+      c<bounds.maxC;
+      c++
+    ){
 
       if(
-        l.nodes[r][c]
+
+        target.nodes[r][c]
+
         &&
-        l.nodes[r][c+1]
+
+        target.nodes[r][c+1]
+
       ){
 
-        row=r;
+        selectedRow =
+          r;
 
         break;
+
       }
 
     }
 
-    if(row>=0)
+
+    if(
+      selectedRow !== null
+    ){
+
       break;
+
+    }
+
   }
 
 
-  if(row<0){
 
-    svg.innerHTML=
+  if(
+    selectedRow === null
+  ){
+
+    svg.innerHTML =
+
       svgText(
+
         500,
+
         140,
+
         "Nessun lato longitudinale"
+
       );
 
     return;
+
   }
 
 
-  const left=150;
-  const right=900;
 
-  const ground=235;
-  const top=40;
+  const left = 150;
+
+  const right = 900;
+
+  const top = 43;
+
+  const ground = 235;
 
 
-  const lowerY=
+  const lowerY =
+
     ground
+
     -
-    (LOWER_HEIGHT/HEIGHT)
+
+    (
+      LOWER_HEIGHT
+      /
+      HEIGHT
+    )
+
     *
-    (ground-top);
-
-
-  const dx=
-    (right-left)/
-    (l.cols-1);
-
-
-  let html="";
-
-
-  /*
-    Pali.
-  */
-
-  for(
-    let c=0;
-    c<l.cols;
-    c++
-  ){
-
-    if(!l.nodes[row][c])
-      continue;
-
-
-    const x=
-      left+c*dx;
-
-
-    html+=svgLine(
-      x,
-      ground,
-      x,
-      top
+    (
+      ground-top
     );
 
 
-    html+=`
+  const colSpan =
+
+    Math.max(
+      1,
+      bounds.maxC
+      -
+      bounds.minC
+    );
+
+
+  const dx =
+    (right-left)
+    /
+    colSpan;
+
+
+  const xForCol =
+    c=>
+      left
+      +
+      (
+        c-bounds.minC
+      )*dx;
+
+
+  let html = "";
+
+
+  /*
+    PALI
+  */
+
+  for(
+    let c=bounds.minC;
+    c<=bounds.maxC;
+    c++
+  ){
+
+    if(
+      !target.nodes[
+        selectedRow
+      ][c]
+    ){
+
+      continue;
+
+    }
+
+
+    const x =
+      xForCol(c);
+
+
+    html +=
+      svgLine(
+
+        x,
+        ground,
+
+        x,
+        top
+
+      );
+
+
+    html += `
+
       <rect
-        x="${x-10}"
+
+        x="${x-9}"
+
         y="${ground}"
-        width="20"
+
+        width="18"
+
         height="6"
+
         fill="#111"
+
       />
+
     `;
 
   }
 
 
-  /*
-    Alta + bassa.
-  */
 
-  let firstEdge=null;
+  let firstEdge =
+    null;
 
 
   for(
-    let c=0;
-    c<l.cols-1;
+    let c=bounds.minC;
+    c<bounds.maxC;
     c++
   ){
 
     if(
-      !l.nodes[row][c]
+
+      !target.nodes[
+        selectedRow
+      ][c]
+
       ||
-      !l.nodes[row][c+1]
+
+      !target.nodes[
+        selectedRow
+      ][c+1]
+
     ){
+
       continue;
+
     }
 
 
-    const x1=
-      left+c*dx;
-
-    const x2=
-      left+(c+1)*dx;
+    const x1 =
+      xForCol(c);
 
 
-    html+=svgLine(
-      x1,
-      top,
-      x2,
-      top
-    );
+    const x2 =
+      xForCol(c+1);
 
 
-    html+=svgLine(
-      x1,
-      lowerY,
-      x2,
-      lowerY
-    );
+    html +=
+
+      svgLine(
+        x1,
+        top,
+        x2,
+        top
+      );
+
+
+    html +=
+
+      svgLine(
+        x1,
+        lowerY,
+        x2,
+        lowerY
+      );
 
 
     if(!firstEdge){
 
-      firstEdge={
+      firstEdge = {
         x1,
         x2
       };
+
     }
 
   }
 
 
+
   if(firstEdge){
 
-    const mid=
+    const middle =
+
       (
         firstEdge.x1
         +
@@ -3976,113 +7239,174 @@ function renderSideView(plan){
       )/2;
 
 
-    const lengthText=
-      plan.geometry.side.method.type==="fixed"
+    const lengthText =
 
-        ?
+      plan.geometry.side.method.type
+      ===
+      "fixed"
 
-        `${plan.geometry.side.method.size} m`
+      ?
 
-        :
+      `${plan.geometry.side.method.size} m`
 
-        `${plan.geometry.side.bayLength.toFixed(2)} m`;
+      :
 
-
-    html+=svgTag(
-      mid,
-      top-13,
-      `ALTA · ${lengthText}`
-    );
+      `${plan.geometry.side.bayLength.toFixed(2)} m`;
 
 
-    html+=svgTag(
-      mid,
-      lowerY+30,
-      `BASSA · ${lengthText}`
-    );
+    html +=
+
+      svgTag(
+
+        middle,
+
+        top-12,
+
+        `ALTA · ${lengthText}`
+
+      );
+
+
+    html +=
+
+      svgTag(
+
+        middle,
+
+        lowerY+29,
+
+        `BASSA · ${lengthText}`
+
+      );
 
   }
+
 
 
   /*
     PALO:
-    a SINISTRA del primo palo.
+    sulla sinistra del riferimento.
   */
 
-  const firstPole=
-    l.nodes[row].findIndex(Boolean);
+  const firstPole =
+
+    target.nodes[
+      selectedRow
+    ]
+    .findIndex(Boolean);
 
 
-  if(firstPole>=0){
+  if(
+    firstPole >= 0
+  ){
 
-    const x=
-      left+firstPole*dx;
+    const x =
+      xForCol(
+        firstPole
+      );
 
 
-    html+=svgTag(
+    html +=
 
-      x-18,
+      svgTag(
 
-      135,
+        x-18,
 
-      "PALO · 2,5 m",
+        135,
 
-      "end"
+        "PALO · 2,5 m",
 
-    );
+        "end"
+
+      );
 
 
     /*
       BASE:
-      a DESTRA del palo.
+      sulla destra.
     */
 
-    html+=svgTag(
+    html +=
 
-      x+18,
+      svgTag(
 
-      ground+28,
+        x+18,
 
-      "BASE",
+        ground+27,
 
-      "start"
+        "BASE",
 
-    );
+        "start"
+
+      );
 
   }
 
 
-  html+=svgText(
-    500,
-    272,
-    `Lato longitudinale · campata ${plan.geometry.side.bayLength.toFixed(2)} m`
-  );
+
+  html +=
+
+    svgText(
+
+      500,
+
+      271,
+
+      `Campata longitudinale ${plan.geometry.side.bayLength.toFixed(2)} m`
+
+    );
 
 
-  svg.innerHTML=html;
+  svg.innerHTML =
+    html;
+
 }
+
 
 
 /* =========================================================
    FRONTALE
 ========================================================= */
 
-function renderFrontView(plan){
 
-  const svg=
-    document.getElementById(
+function renderFrontView(
+  plan
+){
+
+
+  const svg =
+
+    document
+    .getElementById(
       "frontView"
     );
 
 
   svg.setAttribute(
+
     "viewBox",
-    "0 0 1000 280"
+
+    "0 0 1000 300"
+
   );
 
 
-  const l=
+  const target =
     plan.layout;
+
+
+  const bounds =
+    activeBounds(
+      target
+    );
+
+
+  if(!bounds){
+
+    return;
+
+  }
+
 
 
   /*
@@ -4090,138 +7414,198 @@ function renderFrontView(plan){
     un collegamento trasversale.
   */
 
-  let column=-1;
+  let selectedCol =
+    null;
 
 
   for(
-    let c=0;
-    c<l.cols;
+    let c=bounds.minC;
+    c<=bounds.maxC;
     c++
   ){
 
     for(
-      let r=0;
-      r<l.rows-1;
+      let r=bounds.minR;
+      r<bounds.maxR;
       r++
     ){
 
       if(
-        l.nodes[r][c]
+
+        target.nodes[r][c]
+
         &&
-        l.nodes[r+1][c]
+
+        target.nodes[r+1][c]
+
       ){
 
-        column=c;
+        selectedCol =
+          c;
 
         break;
+
       }
 
     }
 
-    if(column>=0)
+
+    if(
+      selectedCol !== null
+    ){
+
       break;
-  }
 
-
-  if(column<0){
-
-    svg.innerHTML=
-      svgText(
-        500,
-        140,
-        "Nessuna sezione trasversale"
-      );
-
-    return;
-  }
-
-
-  const active=[];
-
-
-  for(
-    let r=0;
-    r<l.rows;
-    r++
-  ){
-
-    if(l.nodes[r][column]){
-      active.push(r);
     }
 
   }
 
 
-  const minR=
-    Math.min(...active);
 
-  const maxR=
-    Math.max(...active);
+  if(
+    selectedCol === null
+  ){
+
+    svg.innerHTML =
+
+      svgText(
+
+        500,
+
+        150,
+
+        "Nessuna sezione trasversale"
+
+      );
+
+    return;
+
+  }
 
 
-  const span=
+
+  const activeRows = [];
+
+
+  for(
+    let r=bounds.minR;
+    r<=bounds.maxR;
+    r++
+  ){
+
+    if(
+      target.nodes[r][
+        selectedCol
+      ]
+    ){
+
+      activeRows.push(r);
+
+    }
+
+  }
+
+
+
+  const minR =
+    Math.min(
+      ...activeRows
+    );
+
+
+  const maxR =
+    Math.max(
+      ...activeRows
+    );
+
+
+  const rowSpan =
+
     Math.max(
       1,
       maxR-minR
     );
 
 
-  const left=230;
-  const right=770;
+  const left = 210;
 
-  const ground=235;
-  const top=40;
+  const right = 790;
+
+  const top = 90;
+
+  const ground = 250;
 
 
-  const xForRow=
+  const xForRow =
     r=>
-      left+
+      left
+      +
       (
-        (r-minR)/span
+        (
+          r-minR
+        )
+        /
+        rowSpan
       )
       *
-      (right-left);
+      (
+        right-left
+      );
 
 
-  let html="";
+  let html = "";
 
 
-  /*
-    Pali.
-  */
 
-  active.forEach(r=>{
+  activeRows
+  .forEach(r=>{
 
-    const x=
+    const x =
       xForRow(r);
 
 
-    html+=svgLine(
-      x,
-      ground,
-      x,
-      top
-    );
+    html +=
+
+      svgLine(
+
+        x,
+        ground,
+
+        x,
+        top
+
+      );
 
 
-    html+=`
+    html += `
+
       <rect
-        x="${x-10}"
+
+        x="${x-9}"
+
         y="${ground}"
-        width="20"
+
+        width="18"
+
         height="6"
+
         fill="#111"
+
       />
+
     `;
 
   });
 
 
-  /*
-    Traverse superiori.
-  */
 
-  let firstEdge=null;
+  let firstNormal =
+    null;
+
+
+  let firstArch =
+    null;
+
 
 
   for(
@@ -4231,33 +7615,131 @@ function renderFrontView(plan){
   ){
 
     if(
-      l.nodes[r][column]
-      &&
-      l.nodes[r+1][column]
+
+      !target.nodes[r][
+        selectedCol
+      ]
+
+      ||
+
+      !target.nodes[r+1][
+        selectedCol
+      ]
+
     ){
 
-      const x1=
-        xForRow(r);
+      continue;
 
-      const x2=
-        xForRow(r+1);
+    }
 
 
-      html+=svgLine(
-        x1,
-        top,
-        x2,
-        top,
-        4
+    const x1 =
+      xForRow(r);
+
+
+    const x2 =
+      xForRow(r+1);
+
+
+    const key =
+      edgeKey(
+        r,
+        selectedCol
       );
 
 
-      if(!firstEdge){
+    if(
+      archEdges.has(key)
+    ){
 
-        firstEdge={
+      /*
+        Semicerchio schematico SVG.
+      */
+
+      const middle =
+        (x1+x2)/2;
+
+
+      const rise =
+
+        Math.min(
+
+          Math.abs(
+            x2-x1
+          )/2,
+
+          65
+
+        );
+
+
+      html += `
+
+        <path
+
+          d="
+            M ${x1} ${top}
+
+            Q
+            ${middle}
+            ${top-rise*2}
+
+            ${x2}
+            ${top}
+          "
+
+          fill="none"
+
+          stroke="#b66300"
+
+          stroke-width="5"
+
+        />
+
+      `;
+
+
+      if(!firstArch){
+
+        firstArch = {
+
           x1,
           x2
+
         };
+
+      }
+
+    }
+
+    else{
+
+      html +=
+
+        svgLine(
+
+          x1,
+          top,
+
+          x2,
+          top,
+
+          4,
+
+          "#185275"
+
+        );
+
+
+      if(!firstNormal){
+
+        firstNormal = {
+
+          x1,
+          x2
+
+        };
+
       }
 
     }
@@ -4265,115 +7747,204 @@ function renderFrontView(plan){
   }
 
 
-  if(firstEdge){
 
-    const mid=
+  if(firstArch){
+
+    const middle =
+
       (
-        firstEdge.x1
+        firstArch.x1
         +
-        firstEdge.x2
+        firstArch.x2
       )/2;
 
 
-    const text=
-      plan.geometry.top.method.type==="fixed"
+    html +=
 
-        ?
+      svgTag(
 
-        `Traversa alta ${plan.geometry.top.method.size} m`
+        middle,
 
-        :
+        26,
 
-        `${plan.geometry.top.method.label} · ${plan.width.toFixed(2)} m`;
+        "ARCO"
 
-
-    html+=svgTag(
-      mid,
-      top-14,
-      text
-    );
+      );
 
   }
 
 
-  html+=svgTag(
-    left-18,
-    135,
-    "PALO · 2,5 m",
-    "end"
-  );
+
+  if(
+    firstNormal
+    &&
+    plan.geometry.top?.method
+  ){
+
+    const middle =
+
+      (
+        firstNormal.x1
+        +
+        firstNormal.x2
+      )/2;
 
 
-  html+=svgTag(
-    left+18,
-    ground+28,
-    "BASE",
-    "start"
-  );
+    const label =
+
+      plan.geometry.top.method.type
+      ===
+      "fixed"
+
+      ?
+
+      `Traversa alta ${plan.geometry.top.method.size} m`
+
+      :
+
+      `${plan.geometry.top.method.label} · ${plan.width.toFixed(2)} m`;
 
 
-  html+=svgText(
-    500,
-    272,
-    `Vista frontale · modulo ${plan.width.toFixed(2)} m`
-  );
+    html +=
+
+      svgTag(
+
+        middle,
+
+        top-13,
+
+        label
+
+      );
+
+  }
 
 
-  svg.innerHTML=html;
+
+  /*
+    Palo e base fuori
+    dalla struttura.
+  */
+
+  html +=
+
+    svgTag(
+
+      left-17,
+
+      170,
+
+      "PALO · 2,5 m",
+
+      "end"
+
+    );
+
+
+  html +=
+
+    svgTag(
+
+      left+17,
+
+      ground+26,
+
+      "BASE",
+
+      "start"
+
+    );
+
+
+  html +=
+
+    svgText(
+
+      500,
+
+      292,
+
+      `Modulo trasversale ${plan.width.toFixed(2)} m`
+
+    );
+
+
+  svg.innerHTML =
+    html;
+
 }
 
 
+
 /* =========================================================
-   CONFERMA
+   CONFERMA CARICO
 ========================================================= */
+
 
 function commitPlan(){
 
-  if(!currentPlan){
+
+  if(
+    !currentPlan
+  ){
 
     alert(
       "Configurazione non valida."
     );
 
     return;
+
   }
 
 
   if(
+
     currentPlan.deficits.length
+
     ||
+
     !currentPlan.fairyAvailable
+
   ){
 
     alert(
-      "Il materiale non è sufficiente."
+      "Il materiale disponibile non è sufficiente."
     );
 
     return;
+
   }
 
 
-  Object.entries(
+
+  Object
+  .entries(
     currentPlan.requirements
   )
-  .forEach(([key,qty])=>{
+  .forEach(
+    ([key,quantity])=>{
 
-    if(qty){
+      if(quantity){
 
-      remaining[key]-=qty;
+        remaining[key] -=
+          quantity;
+
+      }
 
     }
-
-  });
+  );
 
 
   allocations.push({
 
-    name:currentPlan.name,
+    name:
+      currentPlan.name,
 
-    length:currentPlan.length,
+    length:
+      currentPlan.length,
 
-    width:currentPlan.width,
+    width:
+      currentPlan.width,
 
     requirements:{
       ...currentPlan.requirements
@@ -4383,65 +7954,80 @@ function commitPlan(){
 
 
   renderRemaining();
+
   renderAllocations();
 
   scheduleCalculate();
+
 }
+
 
 
 function renderAllocations(){
 
-  const root=
+  const root =
     document.getElementById(
       "allocations"
     );
 
 
-  if(!allocations.length){
+  if(
+    !allocations.length
+  ){
 
-    root.innerHTML=
+    root.innerHTML =
       "Nessuno.";
 
     return;
+
   }
 
 
-  root.innerHTML=
-    allocations.map(
-      (a,i)=>`
+  root.innerHTML =
+
+    allocations
+    .map(
+      (item,index)=>`
 
         <div class="allocation">
 
           <strong>
-            ${i+1}. ${a.name}
+            ${index+1}. ${item.name}
           </strong>
 
           ·
 
-          ${a.length}
+          ${item.length}
           ×
-          ${a.width} m
+          ${item.width} m
 
         </div>
 
       `
-    ).join("");
+    )
+    .join("");
+
 }
+
 
 
 /* =========================================================
    STAMPA
 ========================================================= */
 
+
 function printReport(){
 
-  if(!currentPlan){
+  if(
+    !currentPlan
+  ){
 
     alert(
       "Configurazione non valida."
     );
 
     return;
+
   }
 
 
@@ -4451,52 +8037,131 @@ function printReport(){
   );
 
 
-  document.getElementById(
+  document
+  .getElementById(
     "print3d"
-  ).src=
+  )
+  .src =
 
-    renderer.domElement
-      .toDataURL(
-        "image/png"
-      );
+    renderer
+    .domElement
+    .toDataURL(
+      "image/png"
+    );
 
 
   setTimeout(
     ()=>window.print(),
     100
   );
+
 }
+
 
 
 /* =========================================================
    SETTINGS
 ========================================================= */
 
+
 function openSettings(){
 
-  document.getElementById(
-    "modal"
-  ).classList.add(
+  document
+  .getElementById(
+    "settingsModal"
+  )
+  .classList
+  .add(
     "open"
   );
+
 }
 
 
 function closeSettings(){
 
-  document.getElementById(
-    "modal"
-  ).classList.remove(
+  document
+  .getElementById(
+    "settingsModal"
+  )
+  .classList
+  .remove(
     "open"
   );
+
 }
 
 
+
 /* =========================================================
-   AUTO RECALC
+   FULLSCREEN MATRIX
 ========================================================= */
 
-let calculateTimer=null;
+
+function toggleMatrixFullscreen(){
+
+  const panel =
+
+    document
+    .getElementById(
+      "matrixPanel"
+    );
+
+
+  const opening =
+
+    !panel
+    .classList
+    .contains(
+      "matrix-fullscreen"
+    );
+
+
+  panel
+  .classList
+  .toggle(
+    "matrix-fullscreen",
+    opening
+  );
+
+
+  document.body
+  .classList
+  .toggle(
+    "matrix-open",
+    opening
+  );
+
+
+  document
+  .getElementById(
+    "matrixFullscreen"
+  )
+  .textContent =
+
+    opening
+    ?
+    "×"
+    :
+    "⛶";
+
+
+  setTimeout(
+    renderMatrix,
+    20
+  );
+
+}
+
+
+
+/* =========================================================
+   AUTO CALCULATE
+========================================================= */
+
+
+let calculateTimer =
+  null;
 
 
 function scheduleCalculate(){
@@ -4506,73 +8171,86 @@ function scheduleCalculate(){
   );
 
 
-  calculateTimer=
+  calculateTimer =
+
     setTimeout(
       calculatePlan,
-      60
+      25
     );
+
 }
 
 
+
 /* =========================================================
-   EVENTS
+   EVENTI
 ========================================================= */
 
-document
-  .getElementById("openSettings")
-  .addEventListener(
-    "click",
-    openSettings
-  );
-
 
 document
-  .getElementById("closeSettings")
-  .addEventListener(
-    "click",
-    closeSettings
-  );
+.getElementById(
+  "openSettings"
+)
+.addEventListener(
+  "click",
+  openSettings
+);
 
 
 document
-  .getElementById("closeSettings2")
-  .addEventListener(
-    "click",
-    closeSettings
-  );
+.getElementById(
+  "closeSettings"
+)
+.addEventListener(
+  "click",
+  closeSettings
+);
 
 
 document
-  .getElementById("applyStock")
-  .addEventListener(
-    "click",
-    applyWarehouse
-  );
+.getElementById(
+  "closeSettings2"
+)
+.addEventListener(
+  "click",
+  closeSettings
+);
 
 
 document
-  .getElementById("commit")
-  .addEventListener(
-    "click",
-    commitPlan
-  );
+.getElementById(
+  "applyStock"
+)
+.addEventListener(
+  "click",
+  applyWarehouse
+);
 
 
 document
-  .getElementById("print")
-  .addEventListener(
-    "click",
-    printReport
-  );
+.getElementById(
+  "commit"
+)
+.addEventListener(
+  "click",
+  commitPlan
+);
 
 
 document
-  .getElementById("resetMatrix")
-  .addEventListener(
-    "click",
-    resetMatrix
-  );
+.getElementById(
+  "print"
+)
+.addEventListener(
+  "click",
+  printReport
+);
 
+
+
+/*
+  INPUT PRINCIPALI
+*/
 
 [
   "projectName",
@@ -4582,132 +8260,367 @@ document
 .forEach(id=>{
 
   document
-    .getElementById(id)
-    .addEventListener(
-      "input",
-      scheduleCalculate
-    );
+  .getElementById(id)
+  .addEventListener(
+    "input",
+    scheduleCalculate
+  );
 
 });
 
 
 document
-  .getElementById("fairyEnabled")
-  .addEventListener(
-    "change",
-    scheduleCalculate
-  );
+.getElementById(
+  "fairyEnabled"
+)
+.addEventListener(
+  "change",
+  scheduleCalculate
+);
 
 
 document
-  .getElementById("sideMethod")
-  .addEventListener(
-    "change",
-    scheduleCalculate
-  );
+.getElementById(
+  "sideMethod"
+)
+.addEventListener(
+  "change",
+  scheduleCalculate
+);
 
 
 document
-  .getElementById("topMethod")
-  .addEventListener(
-    "change",
-    scheduleCalculate
-  );
+.getElementById(
+  "topMethod"
+)
+.addEventListener(
+  "change",
+  scheduleCalculate
+);
 
+
+
+/*
+  SEZIONI MANUALI
+*/
 
 document
-  .getElementById("sections")
-  .addEventListener(
-    "input",
-    ()=>{
-
-      const value=
-        Number(
-          document.getElementById(
-            "sections"
-          ).value
-        );
+.getElementById(
+  "sections"
+)
+.addEventListener(
+  "input",
+  ()=>{
 
 
-      if(value>=2){
+    const value =
 
-        manualSections=
-          Math.round(value);
-
+      Number(
 
         document
-          .getElementById(
-            "sectionsAuto"
-          )
-          .classList.remove(
-            "active"
-          );
+        .getElementById(
+          "sections"
+        )
+        .value
+
+      );
 
 
-        if(customLayout){
+    if(
+      value < 2
+    ){
 
-          resizeCustomLayout(
-            manualSections
-          );
-        }
-
-
-        scheduleCalculate();
-
-      }
+      return;
 
     }
-  );
+
+
+    manualSections =
+      Math.round(value);
+
+
+    document
+    .getElementById(
+      "sectionsAuto"
+    )
+    .classList
+    .remove(
+      "active-button"
+    );
+
+
+    resampleColumns(
+      manualSections
+    );
+
+  }
+);
+
+
+
+/*
+  SEZIONI AUTO
+*/
+
+document
+.getElementById(
+  "sectionsAuto"
+)
+.addEventListener(
+  "click",
+  ()=>{
+
+
+    manualSections =
+      null;
+
+
+    customLayout =
+      false;
+
+
+    archEdges.clear();
+
+
+    document
+    .getElementById(
+      "sectionsAuto"
+    )
+    .classList
+    .add(
+      "active-button"
+    );
+
+
+    scheduleCalculate();
+
+  }
+);
+
+
+
+/*
+  MATRIX MODE
+*/
+
+document
+.getElementById(
+  "modePoints"
+)
+.addEventListener(
+  "click",
+  ()=>setMatrixMode(
+    "points"
+  )
+);
 
 
 document
-  .getElementById("sectionsAuto")
-  .addEventListener(
-    "click",
-    ()=>{
-
-      manualSections=null;
-
-      /*
-        Tornare in AUTO sulle sezioni
-        ripristina il tunnel standard.
-      */
-
-      customLayout=false;
+.getElementById(
+  "modeArch"
+)
+.addEventListener(
+  "click",
+  ()=>setMatrixMode(
+    "arch"
+  )
+);
 
 
-      document
-        .getElementById(
-          "sectionsAuto"
-        )
-        .classList.add(
-          "active"
-        );
+
+/*
+  MATRIX ZOOM
+*/
+
+document
+.getElementById(
+  "matrixPlus"
+)
+.addEventListener(
+  "click",
+  ()=>{
+
+    matrixZoom =
+
+      Math.min(
+        2.5,
+        matrixZoom*1.25
+      );
 
 
-      scheduleCalculate();
+    renderMatrix();
+
+  }
+);
+
+
+document
+.getElementById(
+  "matrixMinus"
+)
+.addEventListener(
+  "click",
+  ()=>{
+
+    matrixZoom =
+
+      Math.max(
+        .45,
+        matrixZoom/1.25
+      );
+
+
+    renderMatrix();
+
+  }
+);
+
+
+document
+.getElementById(
+  "matrixFit"
+)
+.addEventListener(
+  "click",
+  ()=>{
+
+    matrixZoom = 1;
+
+    renderMatrix();
+
+  }
+);
+
+
+document
+.getElementById(
+  "matrixFullscreen"
+)
+.addEventListener(
+  "click",
+  toggleMatrixFullscreen
+);
+
+
+
+/*
+  RESET MATRIX
+*/
+
+document
+.getElementById(
+  "resetMatrix"
+)
+.addEventListener(
+  "click",
+  ()=>{
+
+    customLayout =
+      false;
+
+
+    manualSections =
+      null;
+
+
+    archEdges.clear();
+
+
+    matrixZoom =
+      1;
+
+
+    document
+    .getElementById(
+      "sectionsAuto"
+    )
+    .classList
+    .add(
+      "active-button"
+    );
+
+
+    setMatrixMode(
+      "points"
+    );
+
+
+    scheduleCalculate();
+
+  }
+);
+
+
+
+/*
+  ESC CHIUDE MATRIX FULLSCREEN
+*/
+
+window
+.addEventListener(
+  "keydown",
+  event=>{
+
+    if(
+      event.key !==
+      "Escape"
+    ){
+
+      return;
 
     }
-  );
+
+
+    const panel =
+
+      document
+      .getElementById(
+        "matrixPanel"
+      );
+
+
+    if(
+      panel
+      .classList
+      .contains(
+        "matrix-fullscreen"
+      )
+    ){
+
+      toggleMatrixFullscreen();
+
+    }
+
+  }
+);
+
 
 
 /* =========================================================
    START
 ========================================================= */
 
+
 createStockInputs();
 
-layout=
-  makeDefaultLayout(3);
 
 init3D();
 
+
+setMatrixMode(
+  "points"
+);
+
+
 setTimeout(
   calculatePlan,
-  120
+  100
 );
+
 
 </script>
 
+
 </body>
+
 </html>
