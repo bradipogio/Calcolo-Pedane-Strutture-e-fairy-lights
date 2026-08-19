@@ -6,248 +6,259 @@
 <title>Fairy Structure Planner</title>
 
 <style>
-  * { box-sizing: border-box; }
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f3f4f6;
+  color:#161616;
+}
+header{
+  background:#111;
+  color:white;
+  padding:15px 22px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+header h1{margin:0;font-size:21px}
+button{
+  border:0;
+  border-radius:7px;
+  padding:10px 14px;
+  cursor:pointer;
+  font-weight:bold;
+}
+.primary{background:#111;color:white}
+.secondary{background:#ddd}
+.settings-btn{
+  background:#333;
+  color:white;
+  font-size:15px;
+}
+.page{
+  max-width:1400px;
+  margin:auto;
+  padding:18px;
+}
+.main-grid{
+  display:grid;
+  grid-template-columns:370px 1fr;
+  gap:18px;
+}
+.card{
+  background:white;
+  border-radius:10px;
+  padding:17px;
+  margin-bottom:18px;
+  box-shadow:0 1px 5px rgba(0,0,0,.10);
+}
+h2{margin:0 0 14px;font-size:18px}
+h3{margin:18px 0 8px;font-size:15px}
 
-  body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f3f4f6;
-    color: #171717;
+label{
+  display:block;
+  margin-top:11px;
+  font-size:13px;
+  font-weight:bold;
+}
+input[type=number],
+input[type=text],
+select{
+  width:100%;
+  padding:9px;
+  margin-top:4px;
+  border:1px solid #bbb;
+  border-radius:6px;
+  font-size:15px;
+  background:white;
+}
+.inline{
+  display:flex;
+  gap:8px;
+  align-items:end;
+}
+.inline > div{flex:1}
+
+.checkrow{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:12px;
+  font-size:14px;
+}
+.checkrow input{margin:0}
+
+.auto-row{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:8px;
+  align-items:end;
+}
+
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:15px;
+}
+
+#viewer{
+  height:500px;
+  width:100%;
+  background:#eceef0;
+  border-radius:8px;
+  overflow:hidden;
+}
+
+.good{
+  color:#08752a;
+  font-weight:bold;
+}
+.bad{
+  color:#b00020;
+  font-weight:bold;
+}
+.warning{
+  margin-top:10px;
+  padding:10px;
+  background:#fff1cb;
+  border:1px solid #dfc270;
+  border-radius:7px;
+}
+
+.metric-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+.metric{
+  border:1px solid #ddd;
+  border-radius:7px;
+  padding:10px;
+}
+.metric span{
+  display:block;
+  font-size:12px;
+  color:#555;
+}
+.metric strong{
+  display:block;
+  font-size:19px;
+  margin-top:4px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+th,td{
+  padding:8px;
+  border-bottom:1px solid #ddd;
+  text-align:left;
+}
+
+.views{
+  display:grid;
+  gap:13px;
+}
+.drawing{
+  border:1px solid #ccc;
+  border-radius:8px;
+  padding:10px;
+}
+.drawing-title{
+  font-weight:bold;
+  margin-bottom:6px;
+}
+.drawing svg{
+  width:100%;
+  height:270px;
+  display:block;
+}
+
+#allocations .allocation{
+  padding:8px 0;
+  border-bottom:1px solid #ddd;
+}
+
+#modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  background:rgba(0,0,0,.55);
+  padding:30px;
+  overflow:auto;
+}
+#modal.open{display:block}
+.modal-box{
+  max-width:700px;
+  margin:auto;
+  background:white;
+  border-radius:12px;
+  padding:20px;
+}
+.modal-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.modal-header h2{margin:0}
+.close-btn{
+  background:#eee;
+  font-size:18px;
+}
+.stock-grid{
+  display:grid;
+  grid-template-columns:1fr 100px;
+  gap:6px 10px;
+  align-items:center;
+  margin-top:15px;
+}
+.stock-grid input{margin:0}
+.small{
+  font-size:12px;
+  color:#666;
+}
+#remainingBadge{
+  font-size:12px;
+  opacity:.8;
+}
+#print3d{display:none;max-width:100%}
+
+@media(max-width:900px){
+  .main-grid{grid-template-columns:1fr}
+  .metric-grid{grid-template-columns:1fr 1fr}
+}
+
+@media print{
+  body{background:white}
+  header,.no-print,#viewer{display:none!important}
+  .page{padding:0;max-width:none}
+  .main-grid{display:block}
+  .card{
+    box-shadow:none;
+    border:0;
+    padding:5px 0;
+    break-inside:avoid;
   }
-
-  header {
-    padding: 18px 24px;
-    background: #111;
-    color: white;
+  #print3d{
+    display:block;
+    width:100%;
+    max-height:380px;
+    object-fit:contain;
   }
-
-  header h1 {
-    margin: 0;
-    font-size: 22px;
-  }
-
-  .page {
-    max-width: 1400px;
-    margin: auto;
-    padding: 20px;
-  }
-
-  .grid {
-    display: grid;
-    grid-template-columns: 360px 1fr;
-    gap: 18px;
-  }
-
-  .card {
-    background: white;
-    border-radius: 10px;
-    padding: 18px;
-    box-shadow: 0 1px 5px rgba(0,0,0,.12);
-    margin-bottom: 18px;
-  }
-
-  h2 {
-    margin-top: 0;
-    font-size: 18px;
-  }
-
-  h3 {
-    margin-bottom: 8px;
-  }
-
-  label {
-    display: block;
-    font-size: 13px;
-    font-weight: bold;
-    margin-top: 12px;
-  }
-
-  input[type="number"],
-  input[type="text"] {
-    width: 100%;
-    padding: 9px;
-    margin-top: 4px;
-    border: 1px solid #bbb;
-    border-radius: 5px;
-    font-size: 15px;
-  }
-
-  .stock-row {
-    display: grid;
-    grid-template-columns: 1fr 80px;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 7px;
-  }
-
-  .stock-row input {
-    margin: 0;
-  }
-
-  button {
-    padding: 10px 14px;
-    border: 0;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-top: 10px;
-  }
-
-  .primary {
-    background: #111;
-    color: white;
-  }
-
-  .secondary {
-    background: #ddd;
-  }
-
-  .danger {
-    background: #8b0000;
-    color: white;
-  }
-
-  .good {
-    color: #08752a;
-    font-weight: bold;
-  }
-
-  .bad {
-    color: #b00020;
-    font-weight: bold;
-  }
-
-  .warning {
-    background: #fff2cf;
-    border: 1px solid #e4c36d;
-    padding: 10px;
-    border-radius: 6px;
-    margin-top: 10px;
-  }
-
-  #viewer {
-    width: 100%;
-    height: 480px;
-    background: #e9eaec;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-
-  .result-grid {
-    display: grid;
-    grid-template-columns: repeat(2,minmax(0,1fr));
-    gap: 12px;
-  }
-
-  .number-box {
-    border: 1px solid #ddd;
-    border-radius: 7px;
-    padding: 12px;
-  }
-
-  .number-box strong {
-    display: block;
-    font-size: 21px;
-    margin-top: 3px;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  th, td {
-    text-align: left;
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
-  }
-
-  .views {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .drawing {
-    border: 1px solid #ccc;
-    border-radius: 7px;
-    padding: 10px;
-  }
-
-  .drawing svg {
-    display: block;
-    width: 100%;
-    height: 240px;
-  }
-
-  .drawing-title {
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-
-  #print3d {
-    display: none;
-    max-width: 100%;
-  }
-
-  @media (max-width: 900px) {
-    .grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  @media print {
-    body {
-      background: white;
-    }
-
-    header,
-    .no-print,
-    #viewer {
-      display: none !important;
-    }
-
-    .page,
-    .grid {
-      display: block;
-      max-width: none;
-      padding: 0;
-    }
-
-    .card {
-      box-shadow: none;
-      border: 0;
-      padding: 5px 0;
-      break-inside: avoid;
-    }
-
-    #print3d {
-      display: block;
-      width: 100%;
-      max-height: 350px;
-      object-fit: contain;
-      margin-bottom: 15px;
-    }
-
-    .drawing {
-      break-inside: avoid;
-    }
-
-    .drawing svg {
-      height: 190px;
-    }
-
-    h2 {
-      margin-top: 15px;
-    }
-  }
+  .drawing{break-inside:avoid}
+  .drawing svg{height:220px}
+}
 </style>
 
 <script type="importmap">
 {
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three/examples/jsm/"
+  "imports":{
+    "three":"https://cdn.jsdelivr.net/npm/three/build/three.module.js",
+    "three/addons/":"https://cdn.jsdelivr.net/npm/three/examples/jsm/"
   }
 }
 </script>
@@ -256,773 +267,1248 @@
 <body>
 
 <header>
-  <h1>Fairy Structure Planner</h1>
+  <div>
+    <h1>Fairy Structure Planner</h1>
+    <div id="remainingBadge">Magazzino</div>
+  </div>
+  <button class="settings-btn no-print" id="openSettings">
+    ⚙ Settings
+  </button>
 </header>
 
 <div class="page">
+<div class="main-grid">
 
-<div class="grid">
+<!-- =========================================
+     CONTROLLI
+========================================= -->
 
-  <!-- COLONNA SINISTRA -->
-  <div class="no-print">
+<div class="no-print">
 
-    <div class="card">
-      <h2>Magazzino del giorno</h2>
+  <div class="card">
+    <h2>Struttura</h2>
 
-      <div id="stockInputs"></div>
+    <label>Nome / evento</label>
+    <input id="projectName" type="text" value="Struttura 1">
 
-      <button class="primary" id="applyStock">
-        Imposta / azzera giornata
-      </button>
+    <div class="inline">
+      <div>
+        <label>Lunghezza</label>
+        <input id="length" type="number" value="8" min="0.1" step="0.1">
+      </div>
+      <div>
+        <label>Larghezza</label>
+        <input id="width" type="number" value="5" min="0.1" step="0.1">
+      </div>
     </div>
 
-    <div class="card">
-      <h2>Nuova struttura</h2>
+    <h3>Sezioni trasversali</h3>
 
-      <label>Nome evento / struttura</label>
-      <input id="projectName" type="text" value="Struttura 1">
+    <div class="auto-row">
+      <div>
+        <label>Numero sezioni</label>
+        <input id="sections" type="number" value="3" min="2" step="1">
+      </div>
 
-      <label>Lunghezza tunnel (m)</label>
-      <input id="length" type="number" min="0" step="0.1" value="8">
-
-      <label>Larghezza / profondità (m)</label>
-      <input id="width" type="number" min="0" step="0.1" value="5">
-
-      <label style="font-weight:normal;">
-        <input id="fairyEnabled" type="checkbox" checked>
-        Calcola fairy lights
+      <label class="checkrow">
+        <input id="sectionsAuto" type="checkbox" checked>
+        Auto
       </label>
-
-      <button class="primary" id="calculate">
-        Calcola anteprima
-      </button>
-
-      <button class="secondary" id="commit">
-        Conferma e scala magazzino
-      </button>
-
-      <button class="secondary" id="print">
-        Stampa scheda
-      </button>
     </div>
 
-    <div class="card">
-      <h2>Magazzino residuo</h2>
-      <div id="remainingStock">
-        Imposta prima il magazzino.
-      </div>
+    <div class="small">
+      Esempio: 3 sezioni = inizio + centro + fine = 2 campate.
     </div>
 
-    <div class="card">
-      <h2>Strutture già assegnate</h2>
-      <div id="allocations">
-        Nessuna.
-      </div>
-    </div>
+    <h3>Lati longitudinali</h3>
 
+    <label>Pezzo usato tra una sezione e l'altra</label>
+    <select id="sideMethod">
+      <option value="auto">Automatico</option>
+      <option value="fixed4">Traverse fisse 4 m</option>
+      <option value="fixed3">Traverse fisse 3 m</option>
+      <option value="tel1">Telescopica 1 m</option>
+      <option value="tel15">Telescopica 1,5 m</option>
+      <option value="tel3">Telescopica 3 → 5,5 m</option>
+      <option value="tel4">Telescopica 4 → 7,5 m</option>
+    </select>
+
+    <h3>Larghezza / superiore</h3>
+
+    <label>Telescopica tra lato destro e sinistro</label>
+    <select id="topTel">
+      <option value="auto">Automatica</option>
+      <option value="tel1">Telescopica 1 m</option>
+      <option value="tel15">Telescopica 1,5 m</option>
+      <option value="tel3">Telescopica 3 → 5,5 m</option>
+      <option value="tel4">Telescopica 4 → 7,5 m</option>
+    </select>
+
+    <label class="checkrow">
+      <input id="fairyEnabled" type="checkbox" checked>
+      Fairy lights
+    </label>
+
+    <div class="actions">
+      <button class="primary" id="calculate">Calcola</button>
+      <button class="secondary" id="commit">Conferma carico</button>
+      <button class="secondary" id="print">Stampa</button>
+    </div>
   </div>
 
-
-  <!-- COLONNA DESTRA -->
-  <div>
-
-    <div class="card">
-      <h2 id="reportTitle">Anteprima struttura</h2>
-
-      <div id="status"></div>
-
-      <div id="summary"></div>
-    </div>
-
-    <div class="card no-print">
-      <h2>Vista 3D interattiva</h2>
-      <div id="viewer"></div>
-      <p style="font-size:12px">
-        Mouse: trascina per ruotare, rotella per zoom.
-      </p>
-    </div>
-
-    <div class="card">
-      <h2>Vista 3D</h2>
-      <img id="print3d">
-      <div class="no-print" style="font-size:13px">
-        Nella stampa verrà inserita automaticamente una fotografia
-        dell'attuale prospettiva 3D.
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Disegni tecnici</h2>
-
-      <div class="views">
-
-        <div class="drawing">
-          <div class="drawing-title">PIANTA — vista dall'alto</div>
-          <svg id="topView"></svg>
-        </div>
-
-        <div class="drawing">
-          <div class="drawing-title">LATERALE — lato con traverse alte + basse</div>
-          <svg id="sideView"></svg>
-        </div>
-
-        <div class="drawing">
-          <div class="drawing-title">FRONTALE — ingresso / uscita aperti</div>
-          <svg id="frontView"></svg>
-        </div>
-
-      </div>
-    </div>
-
+  <div class="card">
+    <h2>Strutture assegnate</h2>
+    <div id="allocations">Nessuna.</div>
   </div>
 
 </div>
+
+
+<!-- =========================================
+     RISULTATO
+========================================= -->
+
+<div>
+
+  <div class="card">
+    <h2 id="reportTitle">Risultato</h2>
+    <div id="status"></div>
+    <div id="summary"></div>
+  </div>
+
+  <div class="card no-print">
+    <h2>Vista 3D</h2>
+    <div id="viewer"></div>
+    <div class="small">
+      Trascina per ruotare · rotella per zoom · tasto destro per spostare.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Vista 3D per stampa</h2>
+    <img id="print3d">
+    <div class="small no-print">
+      La prospettiva 3D corrente verrà catturata quando premi Stampa.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Disegni tecnici</h2>
+
+    <div class="views">
+      <div class="drawing">
+        <div class="drawing-title">PIANTA</div>
+        <svg id="topView"></svg>
+      </div>
+
+      <div class="drawing">
+        <div class="drawing-title">LATERALE</div>
+        <svg id="sideView"></svg>
+      </div>
+
+      <div class="drawing">
+        <div class="drawing-title">FRONTALE</div>
+        <svg id="frontView"></svg>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+
+<!-- =========================================
+     SETTINGS / MAGAZZINO
+========================================= -->
+
+<div id="modal" class="no-print">
+  <div class="modal-box">
+
+    <div class="modal-header">
+      <h2>Settings · Magazzino</h2>
+      <button class="close-btn" id="closeSettings">×</button>
+    </div>
+
+    <p class="small">
+      Queste sono le quantità disponibili all'inizio della giornata.
+      Confermando un carico vengono scalate dal residuo.
+    </p>
+
+    <div class="stock-grid" id="stockInputs"></div>
+
+    <div class="actions">
+      <button class="primary" id="applyStock">
+        Salva e azzera giornata
+      </button>
+      <button class="secondary" id="closeSettings2">
+        Chiudi
+      </button>
+    </div>
+
+    <h3>Residuo attuale</h3>
+    <div id="remainingStock"></div>
+
+  </div>
 </div>
 
 
 <script type="module">
 
-import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 
-/* =========================================================
-   CONFIGURAZIONE
-   ========================================================= */
+/* ============================================================
+   REGOLE
+============================================================ */
 
 const HEIGHT = 2.5;
-const LOWER_RAIL_HEIGHT = 1.20;
+const LOWER_HEIGHT = 1.20;
 
 const FAIRY_SPACING = 0.30;
-const FAIRY_SLACK_PER_U = 0.20;
+const FAIRY_SLACK = 0.20;
 
-const ITEMS = [
-  { key:"high3", label:"Traversa alta 3 m" },
-  { key:"low3",  label:"Traversa bassa 3 m" },
+/*
+  Per adesso 1 m e 1,5 m vengono considerate misure fisse.
+  Appena sappiamo la loro estensione reale basta cambiare min/max.
+*/
 
-  { key:"high4", label:"Traversa alta 4 m" },
-  { key:"low4",  label:"Traversa bassa 4 m" },
-
-  { key:"tel1",  label:"Telescopica 1 m" },
-  { key:"tel15", label:"Telescopica 1,5 m" },
-  { key:"tel3",  label:"Telescopica 3 → 5,5 m" },
-  { key:"tel4",  label:"Telescopica 4 → 7,5 m" },
-
-  { key:"pole", label:"Palo 2,5 m" },
-  { key:"base", label:"Base palo" },
-
-  { key:"fairy100", label:"Cesta fairy 100 m" },
-  { key:"fairy200", label:"Cesta fairy 200 m" }
-];
-
-
-const TELESCOPICS = [
-  {
+const TELESCOPICS = {
+  tel1: {
     key:"tel1",
     label:"Telescopica 1 m",
     nominal:1,
     min:1,
     max:1
   },
-  {
+
+  tel15: {
     key:"tel15",
     label:"Telescopica 1,5 m",
     nominal:1.5,
     min:1.5,
     max:1.5
   },
-  {
+
+  tel3: {
     key:"tel3",
     label:"Telescopica 3 → 5,5 m",
     nominal:3,
     min:3,
     max:5.5
   },
-  {
+
+  tel4: {
     key:"tel4",
     label:"Telescopica 4 → 7,5 m",
     nominal:4,
     min:4,
     max:7.5
   }
+};
+
+
+const ITEMS = [
+
+  {key:"high3",label:"Traversa alta 3 m"},
+  {key:"low3", label:"Traversa bassa 3 m"},
+
+  {key:"high4",label:"Traversa alta 4 m"},
+  {key:"low4", label:"Traversa bassa 4 m"},
+
+  {key:"tel1", label:"Telescopica 1 m"},
+  {key:"tel15",label:"Telescopica 1,5 m"},
+  {key:"tel3", label:"Telescopica 3 → 5,5 m"},
+  {key:"tel4", label:"Telescopica 4 → 7,5 m"},
+
+  {key:"pole",label:"Palo 2,5 m"},
+  {key:"base",label:"Base palo"},
+
+  {key:"fairy100",label:"Cesta fairy 100 m"},
+  {key:"fairy200",label:"Cesta fairy 200 m"}
 ];
 
 
-/* =========================================================
-   STATO
-   ========================================================= */
+const SIDE_METHODS = {
 
+  fixed3:{
+    key:"fixed3",
+    type:"fixed",
+    size:3,
+    label:"Traverse fisse 3 m"
+  },
+
+  fixed4:{
+    key:"fixed4",
+    type:"fixed",
+    size:4,
+    label:"Traverse fisse 4 m"
+  },
+
+  tel1:{
+    key:"tel1",
+    type:"tel",
+    tel:"tel1",
+    label:"Telescopica 1 m"
+  },
+
+  tel15:{
+    key:"tel15",
+    type:"tel",
+    tel:"tel15",
+    label:"Telescopica 1,5 m"
+  },
+
+  tel3:{
+    key:"tel3",
+    type:"tel",
+    tel:"tel3",
+    label:"Telescopica 3 → 5,5 m"
+  },
+
+  tel4:{
+    key:"tel4",
+    type:"tel",
+    tel:"tel4",
+    label:"Telescopica 4 → 7,5 m"
+  }
+
+};
+
+
+/* ============================================================
+   STATO
+============================================================ */
+
+let warehouse = {};
 let remaining = {};
-let currentPlan = null;
 let allocations = [];
 
-let renderer;
+let currentPlan = null;
+
 let scene;
 let camera;
+let renderer;
 let controls;
 
 
-/* =========================================================
-   MAGAZZINO
-   ========================================================= */
+/* ============================================================
+   UTILITY
+============================================================ */
 
-function createStockInputs() {
+function closeEnough(a,b){
+  return Math.abs(a-b) < 0.001;
+}
 
-  const root = document.getElementById("stockInputs");
+function emptyRequirements(){
+  const out={};
+  ITEMS.forEach(x=>out[x.key]=0);
+  return out;
+}
 
-  const saved =
-    JSON.parse(localStorage.getItem("fairyWarehouse") || "{}");
+function itemLabel(key){
+  return ITEMS.find(x=>x.key===key)?.label || key;
+}
 
-  root.innerHTML = "";
-
-  ITEMS.forEach(item => {
-
-    const row = document.createElement("div");
-    row.className = "stock-row";
-
-    const label = document.createElement("div");
-    label.textContent = item.label;
-
-    const input = document.createElement("input");
-    input.type = "number";
-    input.min = "0";
-    input.step = "1";
-    input.value = saved[item.key] ?? 0;
-    input.id = "stock_" + item.key;
-
-    row.appendChild(label);
-    row.appendChild(input);
-
-    root.appendChild(row);
-  });
+function telFits(telKey,length){
+  const t=TELESCOPICS[telKey];
+  return length >= t.min-0.001 &&
+         length <= t.max+0.001;
 }
 
 
-function applyWarehouse() {
+/* ============================================================
+   MAGAZZINO
+============================================================ */
 
-  const initial = {};
+function createStockInputs(){
 
-  ITEMS.forEach(item => {
-    initial[item.key] =
-      Number(document.getElementById("stock_" + item.key).value) || 0;
+  const root=document.getElementById("stockInputs");
+
+  warehouse=
+    JSON.parse(
+      localStorage.getItem("fairyWarehouse") || "{}"
+    );
+
+  root.innerHTML="";
+
+  ITEMS.forEach(item=>{
+
+    const name=document.createElement("div");
+    name.textContent=item.label;
+
+    const input=document.createElement("input");
+    input.type="number";
+    input.min="0";
+    input.step="1";
+    input.value=warehouse[item.key] ?? 0;
+    input.id="stock_"+item.key;
+
+    root.appendChild(name);
+    root.appendChild(input);
+
+  });
+
+  if(Object.keys(warehouse).length){
+    remaining={...warehouse};
+  }
+
+  renderRemaining();
+}
+
+
+function applyWarehouse(){
+
+  warehouse={};
+
+  ITEMS.forEach(item=>{
+    warehouse[item.key]=
+      Number(
+        document.getElementById("stock_"+item.key).value
+      ) || 0;
   });
 
   localStorage.setItem(
     "fairyWarehouse",
-    JSON.stringify(initial)
+    JSON.stringify(warehouse)
   );
 
-  remaining = { ...initial };
-  allocations = [];
-  currentPlan = null;
+  remaining={...warehouse};
+
+  allocations=[];
+  currentPlan=null;
 
   renderRemaining();
   renderAllocations();
 
-  document.getElementById("status").innerHTML =
-    `<div class="good">Magazzino impostato.</div>`;
+  document.getElementById("status").innerHTML=
+    `<div class="good">Magazzino aggiornato.</div>`;
 
-  document.getElementById("summary").innerHTML = "";
+  closeSettings();
+
+  autoCalculate();
 }
 
 
-function renderRemaining() {
+function renderRemaining(){
 
-  const root = document.getElementById("remainingStock");
+  const root=document.getElementById("remainingStock");
 
-  if (!Object.keys(remaining).length) {
-    root.innerHTML = "Magazzino non impostato.";
+  if(!Object.keys(remaining).length){
+    root.innerHTML="Magazzino non ancora impostato.";
     return;
   }
 
-  let html = "<table>";
+  let html="<table>";
 
-  ITEMS.forEach(item => {
-    html += `
+  ITEMS.forEach(item=>{
+
+    html+=`
       <tr>
         <td>${item.label}</td>
         <td><strong>${remaining[item.key] ?? 0}</strong></td>
       </tr>
     `;
+
   });
 
-  html += "</table>";
+  html+="</table>";
 
-  root.innerHTML = html;
+  root.innerHTML=html;
+
+  document.getElementById("remainingBadge").textContent=
+    `Magazzino · ${remaining.pole ?? 0} pali residui`;
 }
 
 
-/* =========================================================
-   CALCOLO STRUTTURA
-   ========================================================= */
+/* ============================================================
+   CANDIDATI LATERALI
+============================================================ */
 
-function isMultiple(value, size) {
-  const n = value / size;
-  return Math.abs(n - Math.round(n)) < 0.00001;
+function sideCandidate(methodKey,length,sections){
+
+  const method=SIDE_METHODS[methodKey];
+
+  if(!method || sections<2)
+    return null;
+
+  const bays=sections-1;
+
+  const bayLength=length/bays;
+
+
+  if(method.type==="fixed"){
+
+    if(!closeEnough(bayLength,method.size))
+      return null;
+
+    return {
+      method,
+      sections,
+      bays,
+      bayLength,
+      extension:0
+    };
+  }
+
+
+  const tel=TELESCOPICS[method.tel];
+
+  if(!telFits(method.tel,bayLength))
+    return null;
+
+
+  return {
+    method,
+    tel,
+    sections,
+    bays,
+    bayLength,
+    extension:
+      Math.abs(bayLength-tel.nominal)
+  };
+
 }
 
 
-function possibleTelescopics(width) {
+/*
+  Se il programma deve scegliere automaticamente,
+  cerchiamo una campata sensata.
 
-  return TELESCOPICS
-    .filter(t =>
-      width >= t.min - 0.0001 &&
-      width <= t.max + 0.0001
-    )
-    .sort((a,b) => {
+  Priorità:
+  1) traverse fisse
+  2) telescopiche
+  3) tra le telescopiche: campate circa 3-4 m
+  4) poca estensione
+  5) meno sezioni, a parità di resto
+*/
 
-      // Preferisce quella che deve estendersi meno.
-      const extensionA = Math.abs(width - a.nominal);
-      const extensionB = Math.abs(width - b.nominal);
+function sideScore(c){
 
-      return extensionA - extensionB;
+  if(c.method.type==="fixed"){
+
+    const fixedPriority =
+      c.method.size===4 ? 0 : 5;
+
+    return fixedPriority + c.bays*0.01;
+  }
+
+  const targetPenalty=
+    Math.abs(c.bayLength-3.5)*20;
+
+  const tooLongPenalty=
+    c.bayLength>4.5
+      ? (c.bayLength-4.5)*100
+      : 0;
+
+  return (
+    1000 +
+    targetPenalty +
+    tooLongPenalty +
+    c.extension*5 +
+    c.bays*0.01
+  );
+}
+
+
+function buildSideCandidates(
+  length,
+  manualSections,
+  selectedMethod
+){
+
+  let result=[];
+
+  const methods =
+    selectedMethod==="auto"
+      ? Object.keys(SIDE_METHODS)
+      : [selectedMethod];
+
+
+  if(manualSections){
+
+    methods.forEach(m=>{
+
+      const c=
+        sideCandidate(
+          m,
+          length,
+          manualSections
+        );
+
+      if(c)
+        result.push(c);
+
     });
-}
 
+  }else{
 
-function buildCandidates(length, width) {
+    /*
+      Cerchiamo fino a 100 sezioni.
+      In pratica sarà molto meno,
+      ma così il tool funziona anche su strutture lunghe.
+    */
 
-  const candidates = [];
+    for(let sections=2;sections<=100;sections++){
 
-  const baySizes = [4,3];
+      methods.forEach(m=>{
 
-  baySizes.forEach(bay => {
+        const c=
+          sideCandidate(
+            m,
+            length,
+            sections
+          );
 
-    if (!isMultiple(length, bay))
-      return;
+        if(c)
+          result.push(c);
 
-    const bays = Math.round(length / bay);
-
-    possibleTelescopics(width).forEach(tel => {
-
-      const req = {};
-
-      ITEMS.forEach(i => req[i.key] = 0);
-
-      req.pole = 2 * (bays + 1);
-      req.base = req.pole;
-
-      req["high" + bay] = 2 * bays;
-      req["low" + bay] = 2 * bays;
-
-      req[tel.key] = bays + 1;
-
-      candidates.push({
-        bay,
-        bays,
-        tel,
-        requirements:req
       });
 
+    }
+
+  }
+
+  result.sort(
+    (a,b)=>sideScore(a)-sideScore(b)
+  );
+
+  return result;
+}
+
+
+/* ============================================================
+   TELESCOPICA SUPERIORE
+============================================================ */
+
+function topCandidates(width,selected){
+
+  let keys;
+
+  if(selected==="auto")
+    keys=Object.keys(TELESCOPICS);
+  else
+    keys=[selected];
+
+
+  const candidates=[];
+
+  keys.forEach(key=>{
+
+    if(!telFits(key,width))
+      return;
+
+    const tel=TELESCOPICS[key];
+
+    candidates.push({
+      tel,
+      width,
+      extension:
+        Math.abs(width-tel.nominal)
     });
 
+  });
+
+
+  /*
+    Preferisce quella che si allunga meno.
+    Esempio larghezza 5:
+    tel3 richiede +2 m
+    tel4 richiede +1 m
+    => sceglie tel4.
+  */
+
+  candidates.sort((a,b)=>{
+
+    if(a.extension!==b.extension)
+      return a.extension-b.extension;
+
+    return b.tel.nominal-a.tel.nominal;
   });
 
   return candidates;
 }
 
 
-function structuralDeficits(candidate) {
+/* ============================================================
+   REQUISITI
+============================================================ */
 
-  const deficits = [];
+function buildRequirements(side,top){
 
-  for (const [key,needed] of
-       Object.entries(candidate.requirements)) {
+  const req=emptyRequirements();
 
-    if (!needed)
-      continue;
+  const sections=side.sections;
+  const bays=side.bays;
 
-    const have = remaining[key] || 0;
+  req.pole=sections*2;
+  req.base=sections*2;
 
-    if (needed > have) {
 
-      const item = ITEMS.find(i => i.key === key);
+  /*
+    Ogni campata ha due lati.
+
+    FISSA:
+    per ogni lato:
+      1 alta
+      1 bassa
+
+    quindi:
+      2 alte per campata
+      2 basse per campata
+  */
+
+  if(side.method.key==="fixed3"){
+    req.high3 += bays*2;
+    req.low3  += bays*2;
+  }
+
+  else if(side.method.key==="fixed4"){
+    req.high4 += bays*2;
+    req.low4  += bays*2;
+  }
+
+  /*
+    TELESCOPICA LATERALE:
+
+    per ogni campata:
+      lato sinistro alta+bassa = 2
+      lato destro alta+bassa   = 2
+
+    quindi 4 telescopiche per campata.
+  */
+
+  else{
+
+    req[side.method.tel] += bays*4;
+
+  }
+
+
+  /*
+    Una telescopica superiore
+    per ogni sezione trasversale.
+  */
+
+  req[top.tel.key] += sections;
+
+
+  return req;
+}
+
+
+function deficitsFor(req){
+
+  const deficits=[];
+
+  Object.entries(req).forEach(([key,needed])=>{
+
+    if(!needed)
+      return;
+
+    const have=remaining[key] ?? 0;
+
+    if(needed>have){
 
       deficits.push({
         key,
-        label:item.label,
+        label:itemLabel(key),
         needed,
         have,
         missing:needed-have
       });
+
     }
-  }
+
+  });
 
   return deficits;
 }
 
 
-function chooseCandidate(length,width) {
+/* ============================================================
+   COMBINAZIONE GEOMETRICA
+============================================================ */
 
-  const candidates = buildCandidates(length,width);
+function geometryCandidates(length,width){
 
-  if (!candidates.length)
-    return null;
+  const sectionsAuto=
+    document.getElementById("sectionsAuto").checked;
 
-  // Prima cerca una configurazione interamente disponibile.
-  const feasible = candidates.find(c =>
-    structuralDeficits(c).length === 0
-  );
+  const manualSections=
+    sectionsAuto
+      ? null
+      : Number(document.getElementById("sections").value);
 
-  if (feasible)
-    return feasible;
+  const selectedSide=
+    document.getElementById("sideMethod").value;
 
-  // Altrimenti restituisce comunque la soluzione geometricamente preferita
-  // per mostrare cosa manca.
-  return candidates[0];
+  const selectedTop=
+    document.getElementById("topTel").value;
+
+
+  const sides=
+    buildSideCandidates(
+      length,
+      manualSections,
+      selectedSide
+    );
+
+
+  const tops=
+    topCandidates(
+      width,
+      selectedTop
+    );
+
+
+  const combinations=[];
+
+  sides.forEach(side=>{
+
+    tops.forEach(top=>{
+
+      const requirements=
+        buildRequirements(side,top);
+
+      const deficits=
+        deficitsFor(requirements);
+
+      combinations.push({
+        side,
+        top,
+        requirements,
+        deficits,
+
+        score:
+          sideScore(side)
+          +
+          top.extension*2
+      });
+
+    });
+
+  });
+
+
+  combinations.sort((a,b)=>{
+
+    /*
+      Prima, se possibile,
+      una soluzione che sta nel magazzino.
+    */
+
+    const af=a.deficits.length===0 ? 0 : 1;
+    const bf=b.deficits.length===0 ? 0 : 1;
+
+    if(af!==bf)
+      return af-bf;
+
+    return a.score-b.score;
+  });
+
+
+  return combinations;
 }
 
 
-/* =========================================================
+/* ============================================================
    FAIRY LIGHTS
-   ========================================================= */
+============================================================ */
 
-function fairyCalculation(length,width) {
+function fairyCalculation(length,width){
 
-  const rows = Math.ceil(length / FAIRY_SPACING);
+  const rows=
+    Math.ceil(
+      length/FAIRY_SPACING
+    );
 
-  const actualSpacing = length / rows;
+  const realSpacing=
+    length/rows;
 
-  const uLength =
-    HEIGHT * 2 +
+  const perU=
+    HEIGHT*2 +
     width +
-    FAIRY_SLACK_PER_U;
+    FAIRY_SLACK;
 
-  const totalMeters =
-    rows * uLength;
+  const total=
+    rows*perU;
 
   return {
     rows,
-    actualSpacing,
-    uLength,
-    totalMeters
+    realSpacing,
+    perU,
+    total
   };
 }
 
 
-function chooseFairyBaskets(requiredMeters) {
+function chooseFairyBaskets(required){
 
-  const max100 = remaining.fairy100 || 0;
-  const max200 = remaining.fairy200 || 0;
+  const max100=remaining.fairy100 ?? 0;
+  const max200=remaining.fairy200 ?? 0;
 
-  let best = null;
+  let best=null;
 
-  for (let a=0; a<=max100; a++) {
+  for(let a=0;a<=max100;a++){
 
-    for (let b=0; b<=max200; b++) {
+    for(let b=0;b<=max200;b++){
 
-      const meters = a*100 + b*200;
+      const meters=a*100+b*200;
 
-      if (meters < requiredMeters)
+      if(meters<required)
         continue;
 
-      const excess = meters - requiredMeters;
-      const baskets = a+b;
-
-      const candidate = {
+      const candidate={
         fairy100:a,
         fairy200:b,
         meters,
-        excess,
-        baskets
+        excess:meters-required,
+        baskets:a+b
       };
 
-      if (
+      if(
         !best ||
-        candidate.excess < best.excess ||
+        candidate.excess<best.excess ||
         (
-          candidate.excess === best.excess &&
-          candidate.baskets < best.baskets
+          closeEnough(candidate.excess,best.excess)
+          &&
+          candidate.baskets<best.baskets
         )
-      ) {
-        best = candidate;
+      ){
+        best=candidate;
       }
+
     }
+
   }
 
   return best;
 }
 
 
-/* =========================================================
-   CALCOLA PIANO COMPLETO
-   ========================================================= */
+/* ============================================================
+   CALCOLO COMPLETO
+============================================================ */
 
-function calculatePlan() {
+function calculatePlan(){
 
-  if (!Object.keys(remaining).length) {
-    alert("Prima imposta il magazzino.");
-    return;
-  }
-
-  const length =
+  const length=
     Number(document.getElementById("length").value);
 
-  const width =
+  const width=
     Number(document.getElementById("width").value);
 
-  const name =
-    document.getElementById("projectName").value ||
-    "Struttura";
-
-  const fairyEnabled =
-    document.getElementById("fairyEnabled").checked;
-
-  if (length <= 0 || width <= 0) {
-    alert("Inserisci dimensioni valide.");
+  if(!length || !width || length<=0 || width<=0)
     return;
-  }
 
-  const candidate =
-    chooseCandidate(length,width);
 
-  if (!candidate) {
+  const candidates=
+    geometryCandidates(length,width);
 
-    currentPlan = null;
 
-    document.getElementById("status").innerHTML = `
+  if(!candidates.length){
+
+    currentPlan=null;
+
+    document.getElementById("status").innerHTML=
+      `
       <div class="bad">
-        Nessuna configurazione uniforme esatta.
+        Configurazione non possibile.
       </div>
 
       <div class="warning">
-        Con le regole attuali la lunghezza deve essere
-        divisibile interamente in campate tutte da 3 m
-        oppure tutte da 4 m, e la larghezza deve essere
-        raggiungibile con una telescopica disponibile.
+        La combinazione scelta di numero sezioni,
+        pezzo laterale e telescopica superiore
+        non raggiunge le misure richieste.
       </div>
-    `;
+      `;
 
-    document.getElementById("summary").innerHTML = "";
+    document.getElementById("summary").innerHTML="";
 
     return;
   }
 
 
-  const deficits =
-    structuralDeficits(candidate);
+  const geometry=candidates[0];
 
 
-  let fairy = null;
-  let fairyBaskets = null;
+  /*
+    Se sezioni automatiche,
+    aggiorniamo il numero visualizzato.
+  */
 
-  if (fairyEnabled) {
+  if(document.getElementById("sectionsAuto").checked){
 
-    fairy =
-      fairyCalculation(length,width);
+    document.getElementById("sections").value=
+      geometry.side.sections;
 
-    fairyBaskets =
-      chooseFairyBaskets(fairy.totalMeters);
-
-    if (fairyBaskets) {
-      candidate.requirements.fairy100 =
-        fairyBaskets.fairy100;
-
-      candidate.requirements.fairy200 =
-        fairyBaskets.fairy200;
-    }
   }
 
 
-  const fairyAvailable =
-    !fairyEnabled || !!fairyBaskets;
+  const fairyEnabled=
+    document.getElementById("fairyEnabled").checked;
 
-  currentPlan = {
-    name,
+
+  let fairy=null;
+  let fairyBaskets=null;
+
+  const requirements={
+    ...geometry.requirements
+  };
+
+
+  if(fairyEnabled){
+
+    fairy=
+      fairyCalculation(length,width);
+
+    fairyBaskets=
+      chooseFairyBaskets(fairy.total);
+
+    if(fairyBaskets){
+
+      requirements.fairy100=
+        fairyBaskets.fairy100;
+
+      requirements.fairy200=
+        fairyBaskets.fairy200;
+
+    }
+
+  }
+
+
+  /*
+    Ricalcoliamo deficit includendo
+    anche le ceste fairy.
+  */
+
+  const deficits=
+    deficitsFor(requirements);
+
+
+  currentPlan={
+
+    name:
+      document.getElementById("projectName").value
+      || "Struttura",
+
     length,
     width,
-    height:HEIGHT,
-    candidate,
+
+    geometry,
+
+    requirements,
+
     deficits,
+
     fairyEnabled,
     fairy,
-    fairyBaskets,
-    fairyAvailable
+    fairyBaskets
+
   };
 
 
   renderPlan();
   render3D(currentPlan);
   renderDrawings(currentPlan);
+
 }
 
 
-/* =========================================================
-   RISULTATI
-   ========================================================= */
+/* ============================================================
+   RENDER RISULTATI
+============================================================ */
 
-function renderPlan() {
+function renderPlan(){
 
-  const p = currentPlan;
+  const p=currentPlan;
+  const side=p.geometry.side;
+  const top=p.geometry.top;
 
-  document.getElementById("reportTitle").textContent =
-    p.name + " — " +
-    p.length + " × " + p.width + " m";
+  document.getElementById("reportTitle").textContent=
+    `${p.name} · ${p.length} × ${p.width} m`;
 
 
-  let status = "";
+  let status="";
 
-  if (p.deficits.length === 0 && p.fairyAvailable) {
 
-    status = `
-      <div class="good">
+  if(!p.deficits.length){
+
+    status=
+      `<div class="good">
         ✓ Configurazione realizzabile con il magazzino residuo
-      </div>
-    `;
+      </div>`;
 
-  } else {
+  }else{
 
-    status = `
-      <div class="bad">
-        ⚠ Materiale insufficiente
-      </div>
-    `;
+    status=
+      `<div class="bad">
+        ⚠ Configurazione geometricamente valida,
+        ma materiale insufficiente
+      </div>`;
 
-  }
+    status+=`<div class="warning"><strong>Manca:</strong><br>`;
 
-  if (p.deficits.length) {
+    p.deficits.forEach(d=>{
 
-    status += `<div class="warning"><strong>Manca:</strong><br>`;
+      status+=
+        `${d.label}: mancano <strong>${d.missing}</strong>
+         · servono ${d.needed}
+         · disponibili ${d.have}<br>`;
 
-    p.deficits.forEach(d => {
-      status += `
-        ${d.label}: mancano
-        <strong>${d.missing}</strong>
-        (servono ${d.needed}, disponibili ${d.have})<br>
-      `;
     });
 
-    status += "</div>";
+    status+="</div>";
   }
 
-  if (p.fairyEnabled && !p.fairyAvailable) {
 
-    const availableMeters =
-      (remaining.fairy100 || 0)*100 +
-      (remaining.fairy200 || 0)*200;
-
-    status += `
-      <div class="warning">
-        Fairy insufficienti.<br>
-        Richiesti circa:
-        <strong>${p.fairy.totalMeters.toFixed(1)} m</strong><br>
-
-        Disponibili nelle ceste:
-        <strong>${availableMeters} m</strong>
-      </div>
-    `;
-  }
-
-  document.getElementById("status").innerHTML = status;
+  document.getElementById("status").innerHTML=status;
 
 
-  const c = p.candidate;
+  let materialRows="";
 
-  let rows = "";
+  ITEMS.forEach(item=>{
 
-  ITEMS.forEach(item => {
+    const qty=p.requirements[item.key] || 0;
 
-    const qty = c.requirements[item.key] || 0;
+    if(qty){
 
-    if (qty > 0) {
-
-      rows += `
+      materialRows+=`
         <tr>
           <td>${item.label}</td>
           <td><strong>${qty}</strong></td>
         </tr>
       `;
+
     }
+
   });
 
 
-  let fairyHtml = "";
+  let lateralDescription;
 
-  if (p.fairyEnabled) {
+  if(side.method.type==="fixed"){
 
-    fairyHtml = `
+    lateralDescription=
+      `${side.method.label}`;
+
+  }else{
+
+    lateralDescription=
+      `${side.method.label}
+       regolata a ${side.bayLength.toFixed(2)} m`;
+
+  }
+
+
+  let fairyHtml="";
+
+  if(p.fairyEnabled){
+
+    fairyHtml=`
       <h3>Fairy lights</h3>
 
-      <div class="result-grid">
+      <div class="metric-grid">
 
-        <div class="number-box">
-          Numero U
+        <div class="metric">
+          <span>Numero U</span>
           <strong>${p.fairy.rows}</strong>
         </div>
 
-        <div class="number-box">
-          Passo reale
+        <div class="metric">
+          <span>Passo reale</span>
           <strong>
-            ${(p.fairy.actualSpacing*100).toFixed(1)} cm
+            ${(p.fairy.realSpacing*100).toFixed(1)} cm
           </strong>
         </div>
 
-        <div class="number-box">
-          Fairy per U
-          <strong>${p.fairy.uLength.toFixed(2)} m</strong>
+        <div class="metric">
+          <span>Metri per U</span>
+          <strong>${p.fairy.perU.toFixed(2)} m</strong>
         </div>
 
-        <div class="number-box">
-          Fairy totale
-          <strong>${p.fairy.totalMeters.toFixed(1)} m</strong>
+        <div class="metric">
+          <span>Fairy totale</span>
+          <strong>${p.fairy.total.toFixed(1)} m</strong>
         </div>
 
       </div>
     `;
 
-    if (p.fairyBaskets) {
 
-      fairyHtml += `
+    if(p.fairyBaskets){
+
+      fairyHtml+=`
         <p>
-          Carico fairy:
-          <strong>
-            ${p.fairyBaskets.fairy100} × 100 m
-            +
-            ${p.fairyBaskets.fairy200} × 200 m
-          </strong>
-
-          = ${p.fairyBaskets.meters} m
-
-          (${p.fairyBaskets.excess.toFixed(1)} m
-          di margine)
+          <strong>Carico fairy:</strong>
+          ${p.fairyBaskets.fairy100} × 100 m
+          +
+          ${p.fairyBaskets.fairy200} × 200 m
+          =
+          ${p.fairyBaskets.meters} m
         </p>
       `;
+
+    }else{
+
+      fairyHtml+=`
+        <div class="warning">
+          Le ceste fairy disponibili
+          non coprono ${p.fairy.total.toFixed(1)} m.
+        </div>
+      `;
+
     }
+
   }
 
 
-  document.getElementById("summary").innerHTML = `
+  document.getElementById("summary").innerHTML=`
 
     <h3>Geometria</h3>
 
-    <div class="result-grid">
+    <div class="metric-grid">
 
-      <div class="number-box">
-        Campate
-        <strong>${c.bays}</strong>
+      <div class="metric">
+        <span>Sezioni trasversali</span>
+        <strong>${side.sections}</strong>
       </div>
 
-      <div class="number-box">
-        Lunghezza campata
-        <strong>${c.bay} m</strong>
+      <div class="metric">
+        <span>Campate longitudinali</span>
+        <strong>${side.bays}</strong>
       </div>
 
-      <div class="number-box">
-        Sezioni trasversali
-        <strong>${c.bays + 1}</strong>
+      <div class="metric">
+        <span>Lunghezza campata</span>
+        <strong>${side.bayLength.toFixed(2)} m</strong>
       </div>
 
-      <div class="number-box">
-        Telescopica
-        <strong>${c.tel.label}</strong>
+      <div class="metric">
+        <span>Lato longitudinale</span>
+        <strong style="font-size:14px">
+          ${lateralDescription}
+        </strong>
+      </div>
+
+      <div class="metric">
+        <span>Superiore trasversale</span>
+        <strong style="font-size:14px">
+          ${top.tel.label}
+          · ${p.width.toFixed(2)} m
+        </strong>
+      </div>
+
+      <div class="metric">
+        <span>Pali / basi</span>
+        <strong>${side.sections*2}</strong>
       </div>
 
     </div>
 
-    <p>
-      Le ${c.tel.label} vengono regolate a
-      <strong>${p.width.toFixed(2)} m</strong>.
-    </p>
 
     <h3>Lista materiale</h3>
 
@@ -1030,12 +1516,12 @@ function renderPlan() {
       <thead>
         <tr>
           <th>Materiale</th>
-          <th>Quantità</th>
+          <th>Q.tà</th>
         </tr>
       </thead>
 
       <tbody>
-        ${rows}
+        ${materialRows}
       </tbody>
     </table>
 
@@ -1044,99 +1530,98 @@ function renderPlan() {
 }
 
 
-/* =========================================================
-   CONFERMA E SCALA MAGAZZINO
-   ========================================================= */
+/* ============================================================
+   CONFERMA
+============================================================ */
 
-function commitPlan() {
+function commitPlan(){
 
-  if (!currentPlan) {
-    alert("Prima calcola una struttura.");
+  if(!currentPlan){
+    alert("Calcola prima una struttura.");
     return;
   }
 
-  if (
-    currentPlan.deficits.length ||
-    !currentPlan.fairyAvailable
-  ) {
-    alert("Il materiale disponibile non è sufficiente.");
+  if(currentPlan.deficits.length){
+    alert("Il magazzino non è sufficiente.");
     return;
   }
 
-  const req =
-    currentPlan.candidate.requirements;
+  Object.entries(currentPlan.requirements)
+    .forEach(([key,qty])=>{
 
-  Object.entries(req).forEach(([key,qty]) => {
+      if(qty)
+        remaining[key]-=qty;
 
-    if (qty > 0)
-      remaining[key] -= qty;
+    });
 
-  });
 
   allocations.push({
+
     name:currentPlan.name,
     length:currentPlan.length,
     width:currentPlan.width,
-    requirements:{...req}
+
+    sections:
+      currentPlan.geometry.side.sections,
+
+    requirements:
+      {...currentPlan.requirements}
+
   });
+
 
   renderRemaining();
   renderAllocations();
 
-  document.getElementById("status").innerHTML += `
+  document.getElementById("status").innerHTML+=`
     <div class="good" style="margin-top:10px">
-      ✓ Struttura confermata e materiale scalato.
+      ✓ Carico confermato e scalato dal magazzino.
     </div>
   `;
-
-  currentPlan = null;
 }
 
 
-function renderAllocations() {
+function renderAllocations(){
 
-  const root =
-    document.getElementById("allocations");
+  const root=document.getElementById("allocations");
 
-  if (!allocations.length) {
-    root.innerHTML = "Nessuna.";
+  if(!allocations.length){
+    root.innerHTML="Nessuna.";
     return;
   }
 
-  let html = "";
+  root.innerHTML=
+    allocations
+      .map((a,i)=>`
+        <div class="allocation">
+          <strong>${i+1}. ${a.name}</strong><br>
+          ${a.length} × ${a.width} m
+          · ${a.sections} sezioni
+        </div>
+      `)
+      .join("");
 
-  allocations.forEach((a,i) => {
-
-    html += `
-      <div style="
-        border-bottom:1px solid #ddd;
-        padding:8px 0
-      ">
-        <strong>${i+1}. ${a.name}</strong><br>
-        ${a.length} × ${a.width} m
-      </div>
-    `;
-  });
-
-  root.innerHTML = html;
 }
 
 
-/* =========================================================
-   THREE.JS 3D
-   ========================================================= */
+/* ============================================================
+   THREE JS
+============================================================ */
 
-function initRenderer() {
+function init3D(){
 
-  const container =
-    document.getElementById("viewer");
+  const container=document.getElementById("viewer");
 
-  renderer = new THREE.WebGLRenderer({
-    antialias:true,
-    preserveDrawingBuffer:true
-  });
+  renderer=
+    new THREE.WebGLRenderer({
+      antialias:true,
+      preserveDrawingBuffer:true
+    });
 
-  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setPixelRatio(
+    Math.min(window.devicePixelRatio,2)
+  );
+
   renderer.setSize(
     container.clientWidth,
     container.clientHeight
@@ -1145,31 +1630,32 @@ function initRenderer() {
   container.appendChild(renderer.domElement);
 
 
-  camera = new THREE.PerspectiveCamera(
-    45,
-    container.clientWidth /
-    container.clientHeight,
-    0.1,
-    1000
-  );
+  camera=
+    new THREE.PerspectiveCamera(
+      45,
+      container.clientWidth/container.clientHeight,
+      0.1,
+      1000
+    );
 
-  controls =
+
+  controls=
     new OrbitControls(
       camera,
       renderer.domElement
     );
 
-  controls.enableDamping = true;
+  controls.enableDamping=true;
 
 
-  window.addEventListener("resize", () => {
+  window.addEventListener("resize",()=>{
 
-    const w = container.clientWidth;
-    const h = container.clientHeight;
+    const w=container.clientWidth;
+    const h=container.clientHeight;
 
     renderer.setSize(w,h);
 
-    camera.aspect = w/h;
+    camera.aspect=w/h;
     camera.updateProjectionMatrix();
 
   });
@@ -1179,158 +1665,258 @@ function initRenderer() {
 }
 
 
+function animate(){
+
+  requestAnimationFrame(animate);
+
+  if(controls)
+    controls.update();
+
+  if(scene && camera && renderer)
+    renderer.render(scene,camera);
+
+}
+
+
 function cylinderBetween(
-  start,
-  end,
-  radius,
-  material
-) {
+  a,b,radius,material
+){
 
-  const direction =
+  const dir=
     new THREE.Vector3()
-      .subVectors(end,start);
+      .subVectors(b,a);
 
-  const length =
-    direction.length();
+  const len=dir.length();
 
-  const geometry =
+  const geometry=
     new THREE.CylinderGeometry(
       radius,
       radius,
-      length,
+      len,
       10
     );
 
-  const mesh =
+  const mesh=
     new THREE.Mesh(
       geometry,
       material
     );
 
-  const midpoint =
-    new THREE.Vector3()
-      .addVectors(start,end)
-      .multiplyScalar(.5);
-
-  mesh.position.copy(midpoint);
+  mesh.position
+    .addVectors(a,b)
+    .multiplyScalar(.5);
 
   mesh.quaternion.setFromUnitVectors(
     new THREE.Vector3(0,1,0),
-    direction.clone().normalize()
+    dir.clone().normalize()
   );
 
   scene.add(mesh);
+
+  return mesh;
 }
 
 
-function render3D(plan) {
+/* ============================================================
+   LABEL 3D
+============================================================ */
 
-  scene = new THREE.Scene();
-  scene.background =
-    new THREE.Color(0xf0f1f2);
+function makeLabel(text,position,target){
+
+  const lines=text.split("\n");
+
+  const canvas=document.createElement("canvas");
+
+  canvas.width=700;
+  canvas.height=170;
+
+  const ctx=canvas.getContext("2d");
+
+  ctx.fillStyle="rgba(255,255,255,.95)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  ctx.strokeStyle="#222";
+  ctx.lineWidth=5;
+  ctx.strokeRect(3,3,canvas.width-6,canvas.height-6);
+
+  ctx.fillStyle="#111";
+  ctx.font="bold 34px Arial";
+  ctx.textAlign="center";
+  ctx.textBaseline="middle";
+
+  lines.forEach((line,i)=>{
+
+    ctx.fillText(
+      line,
+      canvas.width/2,
+      48+i*48
+    );
+
+  });
 
 
-  const light1 =
+  const texture=
+    new THREE.CanvasTexture(canvas);
+
+  texture.minFilter=THREE.LinearFilter;
+
+
+  const material=
+    new THREE.SpriteMaterial({
+      map:texture,
+      transparent:true,
+      depthTest:false
+    });
+
+
+  const sprite=
+    new THREE.Sprite(material);
+
+  sprite.position.copy(position);
+
+  sprite.scale.set(3.1,.75,1);
+
+  sprite.renderOrder=999;
+
+  scene.add(sprite);
+
+
+  /*
+    Callout: dalla label al pezzo.
+  */
+
+  if(target){
+
+    const geometry=
+      new THREE.BufferGeometry()
+        .setFromPoints([
+          position,
+          target
+        ]);
+
+    const line=
+      new THREE.Line(
+        geometry,
+        new THREE.LineBasicMaterial({
+          color:0x333333
+        })
+      );
+
+    scene.add(line);
+  }
+
+}
+
+
+/* ============================================================
+   RENDER 3D
+============================================================ */
+
+function render3D(plan){
+
+  scene=new THREE.Scene();
+
+  scene.background=
+    new THREE.Color(0xf0f1f3);
+
+
+  scene.add(
     new THREE.HemisphereLight(
       0xffffff,
       0x777777,
-      2.2
-    );
+      2.3
+    )
+  );
 
-  scene.add(light1);
+
+  const side=plan.geometry.side;
+  const sections=side.sections;
+  const bay=side.bayLength;
 
 
-  const grid =
+  const grid=
     new THREE.GridHelper(
-      Math.max(plan.length,plan.width) * 2,
+      Math.max(plan.length,plan.width)*2,
       20
     );
 
   scene.add(grid);
 
 
-  const metal =
+  const poleMat=
     new THREE.MeshStandardMaterial({
-      color:0x333333,
-      roughness:.55
+      color:0x333333
     });
 
-  const high =
+  const highMat=
     new THREE.MeshStandardMaterial({
-      color:0x222222
+      color:0x111111
     });
 
-  const low =
+  const lowMat=
     new THREE.MeshStandardMaterial({
-      color:0x555555
+      color:0x666666
+    });
+
+  const crossMat=
+    new THREE.MeshStandardMaterial({
+      color:0x1f4e79
     });
 
 
-  const stations =
-    plan.candidate.bays + 1;
+  /*
+    PALI + SEZIONI SUPERIORI
+  */
 
-  const bay =
-    plan.candidate.bay;
+  for(let i=0;i<sections;i++){
 
+    const x=i*bay;
 
-  // PALI + TELESCOPICHE TRASVERSALI
-  for (let i=0; i<stations; i++) {
-
-    const x = i * bay;
-
-    [0,plan.width].forEach(z => {
+    [0,plan.width].forEach(z=>{
 
       cylinderBetween(
         new THREE.Vector3(x,0,z),
         new THREE.Vector3(x,HEIGHT,z),
         .045,
-        metal
+        poleMat
       );
 
     });
 
 
-    // telescopica superiore
     cylinderBetween(
       new THREE.Vector3(x,HEIGHT,0),
       new THREE.Vector3(x,HEIGHT,plan.width),
-      .035,
-      high
+      .038,
+      crossMat
     );
 
   }
 
 
-  // TRAVERSE LUNGHE: ALTE E BASSE
-  for (let i=0; i<plan.candidate.bays; i++) {
+  /*
+    LATERALI
+  */
 
-    const x1 = i * bay;
-    const x2 = (i+1) * bay;
+  for(let i=0;i<side.bays;i++){
 
-    [0,plan.width].forEach(z => {
+    const x1=i*bay;
+    const x2=(i+1)*bay;
 
-      // alta
+    [0,plan.width].forEach(z=>{
+
       cylinderBetween(
         new THREE.Vector3(x1,HEIGHT,z),
         new THREE.Vector3(x2,HEIGHT,z),
-        .035,
-        high
+        .037,
+        highMat
       );
 
-      // bassa
       cylinderBetween(
-        new THREE.Vector3(
-          x1,
-          LOWER_RAIL_HEIGHT,
-          z
-        ),
-        new THREE.Vector3(
-          x2,
-          LOWER_RAIL_HEIGHT,
-          z
-        ),
-        .035,
-        low
+        new THREE.Vector3(x1,LOWER_HEIGHT,z),
+        new THREE.Vector3(x2,LOWER_HEIGHT,z),
+        .037,
+        lowMat
       );
 
     });
@@ -1338,76 +1924,263 @@ function render3D(plan) {
   }
 
 
-  // FAIRY
-  if (plan.fairyEnabled) {
+  /*
+    BASI
+  */
 
-    const fairyMaterial =
+  const baseGeometry=
+    new THREE.BoxGeometry(.36,.04,.36);
+
+  const baseMat=
+    new THREE.MeshStandardMaterial({
+      color:0x222222
+    });
+
+  for(let i=0;i<sections;i++){
+
+    const x=i*bay;
+
+    [0,plan.width].forEach(z=>{
+
+      const base=
+        new THREE.Mesh(
+          baseGeometry,
+          baseMat
+        );
+
+      base.position.set(
+        x,
+        .02,
+        z
+      );
+
+      scene.add(base);
+
+    });
+
+  }
+
+
+  /*
+    FAIRY
+  */
+
+  if(plan.fairyEnabled){
+
+    const fairyMat=
       new THREE.LineBasicMaterial({
-        color:0xd28b00
+        color:0xc48b00
       });
 
-    const spacing =
-      plan.fairy.actualSpacing;
+    const spacing=
+      plan.fairy.realSpacing;
 
-    for (let i=0; i<plan.fairy.rows; i++) {
 
-      // centrata dentro ogni fascia:
-      const x =
-        (i + .5) * spacing;
+    for(let i=0;i<plan.fairy.rows;i++){
 
-      const points = [
+      const x=
+        (i+.5)*spacing;
+
+      const points=[
 
         new THREE.Vector3(
-          x,
-          .03,
-          0
+          x,.05,0
         ),
 
         new THREE.Vector3(
-          x,
-          HEIGHT,
-          0
+          x,HEIGHT,0
         ),
 
         new THREE.Vector3(
-          x,
-          HEIGHT - .10,
-          plan.width/2
+          x,HEIGHT-.18,plan.width/2
         ),
 
         new THREE.Vector3(
-          x,
-          HEIGHT,
-          plan.width
+          x,HEIGHT,plan.width
         ),
 
         new THREE.Vector3(
-          x,
-          .03,
-          plan.width
+          x,.05,plan.width
         )
 
       ];
 
-      const geometry =
+      const geometry=
         new THREE.BufferGeometry()
           .setFromPoints(points);
 
-      const line =
+      scene.add(
         new THREE.Line(
           geometry,
-          fairyMaterial
-        );
+          fairyMat
+        )
+      );
 
-      scene.add(line);
     }
+
+  }
+
+
+  /*
+    LABEL: PALO
+  */
+
+  makeLabel(
+    "PALO\n2,50 m",
+
+    new THREE.Vector3(
+      -.8,
+      HEIGHT*.65,
+      -.8
+    ),
+
+    new THREE.Vector3(
+      0,
+      HEIGHT*.65,
+      0
+    )
+  );
+
+
+  /*
+    LABEL: BASE
+  */
+
+  makeLabel(
+    "BASE PALO",
+
+    new THREE.Vector3(
+      -.7,
+      .45,
+      .6
+    ),
+
+    new THREE.Vector3(
+      0,
+      .03,
+      0
+    )
+  );
+
+
+  /*
+    LABEL: TRASVERSALE SUPERIORE
+  */
+
+  makeLabel(
+
+    `${plan.geometry.top.tel.label}
+regolata ${plan.width.toFixed(2)} m`,
+
+    new THREE.Vector3(
+      0,
+      HEIGHT+1.05,
+      plan.width/2
+    ),
+
+    new THREE.Vector3(
+      0,
+      HEIGHT,
+      plan.width/2
+    )
+  );
+
+
+  /*
+    LABEL LATERALE:
+    una sola volta per tipo.
+  */
+
+  const representativeX=
+    bay/2;
+
+
+  if(side.method.type==="fixed"){
+
+    makeLabel(
+      `TRAVERSA ALTA
+${side.method.size.toFixed(0)} m`,
+
+      new THREE.Vector3(
+        representativeX,
+        HEIGHT+.85,
+        -.8
+      ),
+
+      new THREE.Vector3(
+        representativeX,
+        HEIGHT,
+        0
+      )
+    );
+
+
+    makeLabel(
+      `TRAVERSA BASSA
+${side.method.size.toFixed(0)} m`,
+
+      new THREE.Vector3(
+        representativeX,
+        LOWER_HEIGHT-.8,
+        -.8
+      ),
+
+      new THREE.Vector3(
+        representativeX,
+        LOWER_HEIGHT,
+        0
+      )
+    );
+
+  }else{
+
+    makeLabel(
+      `${side.method.label}
+laterale · ${side.bayLength.toFixed(2)} m
+ALTA + BASSA`,
+
+      new THREE.Vector3(
+        representativeX,
+        HEIGHT+.9,
+        -.9
+      ),
+
+      new THREE.Vector3(
+        representativeX,
+        HEIGHT,
+        0
+      )
+    );
+
+  }
+
+
+  if(plan.fairyEnabled){
+
+    makeLabel(
+      `FAIRY LIGHTS
+passo ${(plan.fairy.realSpacing*100).toFixed(1)} cm`,
+
+      new THREE.Vector3(
+        plan.length*.7,
+        HEIGHT+1.05,
+        plan.width*.75
+      ),
+
+      new THREE.Vector3(
+        plan.length*.7,
+        HEIGHT-.15,
+        plan.width*.75
+      )
+    );
+
   }
 
 
   camera.position.set(
-    plan.length * .75,
-    HEIGHT * 2.3,
-    plan.width * 1.8
+    plan.length*.72,
+    HEIGHT*2.7,
+    plan.width*2
   );
 
   controls.target.set(
@@ -1417,332 +2190,554 @@ function render3D(plan) {
   );
 
   controls.update();
+
 }
 
 
-function animate() {
+/* ============================================================
+   SVG UTILITY
+============================================================ */
 
-  requestAnimationFrame(animate);
+function svgDefs(){
 
-  if (controls)
-    controls.update();
-
-  if (renderer && scene && camera)
-    renderer.render(scene,camera);
+  return `
+    <defs>
+      <marker
+        id="arrow"
+        viewBox="0 0 10 10"
+        refX="9"
+        refY="5"
+        markerWidth="6"
+        markerHeight="6"
+        orient="auto-start-reverse"
+      >
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#222"/>
+      </marker>
+    </defs>
+  `;
 }
 
 
-/* =========================================================
-   SVG — VISTE ORTOGONALI
-   ========================================================= */
+function svgLine(x1,y1,x2,y2,width=3){
 
-function line(x1,y1,x2,y2,cls="") {
   return `
     <line
-      x1="${x1}" y1="${y1}"
-      x2="${x2}" y2="${y2}"
+      x1="${x1}"
+      y1="${y1}"
+      x2="${x2}"
+      y2="${y2}"
       stroke="#111"
-      stroke-width="3"
-      class="${cls}"
+      stroke-width="${width}"
     />
   `;
 }
 
 
-function text(x,y,value,anchor="middle") {
+function svgText(x,y,text,anchor="middle",size=16){
+
   return `
     <text
-      x="${x}" y="${y}"
-      font-size="17"
+      x="${x}"
+      y="${y}"
       text-anchor="${anchor}"
+      font-size="${size}"
       font-family="Arial"
+      fill="#111"
     >
-      ${value}
+      ${text}
     </text>
   `;
 }
 
 
-function renderDrawings(plan) {
+function arrowLabel(
+  tx,ty,
+  label,
+  px,py,
+  anchor="middle"
+){
 
+  return `
+    ${svgText(tx,ty,label,anchor,14)}
+
+    <line
+      x1="${tx}"
+      y1="${ty+5}"
+      x2="${px}"
+      y2="${py}"
+      stroke="#222"
+      stroke-width="1.5"
+      marker-end="url(#arrow)"
+    />
+  `;
+}
+
+
+/* ============================================================
+   DISEGNI
+============================================================ */
+
+function renderDrawings(plan){
   renderTop(plan);
   renderSide(plan);
   renderFront(plan);
 }
 
 
-function renderTop(plan) {
+function renderTop(plan){
 
-  const svg =
-    document.getElementById("topView");
+  const svg=document.getElementById("topView");
 
-  svg.setAttribute("viewBox","0 0 900 300");
+  svg.setAttribute(
+    "viewBox",
+    "0 0 1000 320"
+  );
 
-  const left = 70;
-  const right = 830;
+  const side=plan.geometry.side;
 
-  const top = 65;
-  const bottom = 225;
+  const left=100;
+  const right=900;
 
-  const usable = right-left;
+  const top=75;
+  const bottom=245;
 
-  let html = "";
+  const usable=right-left;
 
-  html += line(left,top,right,top);
-  html += line(left,bottom,right,bottom);
 
-  const stations =
-    plan.candidate.bays + 1;
+  let html=svgDefs();
 
-  for (let i=0;i<stations;i++) {
 
-    const x =
-      left +
-      (i/(stations-1))*usable;
+  /*
+    due lati longitudinali
+  */
 
-    // telescopica
-    html += line(x,top,x,bottom);
+  html+=svgLine(left,top,right,top);
+  html+=svgLine(left,bottom,right,bottom);
 
-    html += `
+
+  /*
+    sezioni trasversali
+  */
+
+  for(let i=0;i<side.sections;i++){
+
+    const x=
+      left+
+      (i/(side.sections-1))*usable;
+
+    html+=svgLine(
+      x,top,x,bottom,2
+    );
+
+    html+=`
       <circle cx="${x}" cy="${top}" r="5" fill="#111"/>
       <circle cx="${x}" cy="${bottom}" r="5" fill="#111"/>
     `;
+
   }
 
-  html += text(
-    450,
+
+  html+=svgText(
+    500,
     25,
-    `LUNGHEZZA ${plan.length} m — ${plan.candidate.bays} campate × ${plan.candidate.bay} m`
+    `${plan.length} m · ${side.bays} campate × ${side.bayLength.toFixed(2)} m`
   );
 
-  html += text(
-    450,
-    275,
-    `LARGHEZZA ${plan.width} m — ${stations} telescopiche ${plan.candidate.tel.label}`
+
+  /*
+    label laterale
+  */
+
+  const firstMid=
+    left+
+    usable/(side.bays*2);
+
+
+  const sideLabel=
+    side.method.type==="fixed"
+      ? `${side.method.label}`
+      : `${side.method.label} · ${side.bayLength.toFixed(2)} m`;
+
+
+  html+=arrowLabel(
+    firstMid,
+    48,
+    sideLabel,
+    firstMid,
+    top
   );
 
-  svg.innerHTML = html;
+
+  /*
+    label telescopica trasversale
+  */
+
+  html+=arrowLabel(
+    right-120,
+    292,
+    `${plan.geometry.top.tel.label} · ${plan.width.toFixed(2)} m`,
+    right,
+    (top+bottom)/2
+  );
+
+
+  html+=svgText(
+    500,
+    310,
+    `${side.sections} sezioni trasversali`
+  );
+
+
+  svg.innerHTML=html;
 }
 
 
-function renderSide(plan) {
+function renderSide(plan){
 
-  const svg =
-    document.getElementById("sideView");
+  const svg=document.getElementById("sideView");
 
-  svg.setAttribute("viewBox","0 0 900 300");
+  svg.setAttribute(
+    "viewBox",
+    "0 0 1000 320"
+  );
 
-  const left = 70;
-  const right = 830;
 
-  const ground = 240;
-  const top = 55;
+  const side=plan.geometry.side;
 
-  const lowY =
-    ground -
-    (LOWER_RAIL_HEIGHT / HEIGHT) *
+  const left=100;
+  const right=900;
+
+  const ground=265;
+  const top=65;
+
+  const lowerY=
+    ground-
+    (LOWER_HEIGHT/HEIGHT)*
     (ground-top);
 
-  const stations =
-    plan.candidate.bays + 1;
 
-  let html = "";
+  let html=svgDefs();
 
-  for (let i=0;i<stations;i++) {
 
-    const x =
-      left +
-      (i/(stations-1)) *
+  /*
+    pali
+  */
+
+  for(let i=0;i<side.sections;i++){
+
+    const x=
+      left+
+      (i/(side.sections-1))*
       (right-left);
 
-    html += line(
+    html+=svgLine(
       x,
       ground,
       x,
       top
     );
+
+    html+=`
+      <rect
+        x="${x-10}"
+        y="${ground}"
+        width="20"
+        height="6"
+        fill="#111"
+      />
+    `;
+
   }
 
-  // alta
-  html += line(
+
+  html+=svgLine(
+    left,top,right,top
+  );
+
+  html+=svgLine(
+    left,lowerY,right,lowerY
+  );
+
+
+  const representative=
+    left+
+    (right-left)/(side.bays*2);
+
+
+  if(side.method.type==="fixed"){
+
+    html+=arrowLabel(
+      representative,
+      30,
+      `Traversa alta ${side.method.size} m`,
+      representative,
+      top
+    );
+
+    html+=arrowLabel(
+      representative+170,
+      lowerY+55,
+      `Traversa bassa ${side.method.size} m`,
+      representative+170,
+      lowerY
+    );
+
+  }else{
+
+    html+=arrowLabel(
+      representative,
+      30,
+      `${side.method.label} · ${side.bayLength.toFixed(2)} m`,
+      representative,
+      top
+    );
+
+    html+=svgText(
+      representative+150,
+      lowerY+50,
+      "Stesso pezzo anche sulla traversa bassa",
+      "start",
+      13
+    );
+
+  }
+
+
+  html+=arrowLabel(
+    left-45,
+    155,
+    "Palo 2,5 m",
     left,
-    top,
-    right,
-    top
-  );
-
-  // bassa
-  html += line(
-    left,
-    lowY,
-    right,
-    lowY
-  );
-
-
-  html += text(
-    450,
-    25,
-    `LATO ${plan.length} m`
-  );
-
-  html += text(
-    450,
-    285,
-    `${stations} pali per coppia di lati: ${stations*2} pali totali`
-  );
-
-  html += text(
-    82,
-    top+18,
-    "2,5 m",
-    "start"
-  );
-
-  html += text(
-    82,
-    lowY-8,
-    "traversa bassa ~1,20 m",
-    "start"
-  );
-
-  svg.innerHTML = html;
-}
-
-
-function renderFront(plan) {
-
-  const svg =
-    document.getElementById("frontView");
-
-  svg.setAttribute("viewBox","0 0 900 300");
-
-  const left = 220;
-  const right = 680;
-
-  const ground = 245;
-  const top = 55;
-
-  let html = "";
-
-  html += line(
-    left,
-    ground,
-    left,
-    top
-  );
-
-  html += line(
-    right,
-    ground,
-    right,
-    top
-  );
-
-  // SOLO traversa alta / telescopica.
-  // Nessuna traversa bassa all'ingresso.
-  html += line(
-    left,
-    top,
-    right,
-    top
-  );
-
-  html += `
-    <circle cx="${left}" cy="${ground}" r="9" fill="#111"/>
-    <circle cx="${right}" cy="${ground}" r="9" fill="#111"/>
-  `;
-
-  html += text(
-    450,
-    25,
-    `INGRESSO APERTO — larghezza ${plan.width} m`
-  );
-
-  html += text(
-    450,
-    285,
-    `${plan.candidate.tel.label} regolata a ${plan.width} m`
-  );
-
-  html += text(
-    left-30,
     150,
-    "2,5 m",
     "end"
   );
 
-  svg.innerHTML = html;
+
+  html+=arrowLabel(
+    left+90,
+    305,
+    "Base palo",
+    left,
+    ground+3
+  );
+
+
+  html+=svgText(
+    500,
+    300,
+    `${side.bays} campate × ${side.bayLength.toFixed(2)} m = ${plan.length} m`
+  );
+
+
+  svg.innerHTML=html;
 }
 
 
-/* =========================================================
-   STAMPA
-   ========================================================= */
+function renderFront(plan){
 
-function printReport() {
+  const svg=document.getElementById("frontView");
 
-  if (!currentPlan) {
+  svg.setAttribute(
+    "viewBox",
+    "0 0 1000 320"
+  );
+
+
+  const left=260;
+  const right=740;
+
+  const ground=265;
+  const top=65;
+
+
+  let html=svgDefs();
+
+
+  html+=svgLine(
+    left,ground,left,top
+  );
+
+  html+=svgLine(
+    right,ground,right,top
+  );
+
+  html+=svgLine(
+    left,top,right,top
+  );
+
+
+  html+=`
+    <rect x="${left-12}" y="${ground}" width="24" height="7" fill="#111"/>
+    <rect x="${right-12}" y="${ground}" width="24" height="7" fill="#111"/>
+  `;
+
+
+  html+=arrowLabel(
+    500,
+    28,
+    `${plan.geometry.top.tel.label} · regolata ${plan.width.toFixed(2)} m`,
+    500,
+    top
+  );
+
+
+  html+=arrowLabel(
+    left-55,
+    160,
+    "Palo 2,5 m",
+    left,
+    160,
+    "end"
+  );
+
+
+  html+=svgText(
+    500,
+    300,
+    `INGRESSO / USCITA APERTI · larghezza ${plan.width.toFixed(2)} m`
+  );
+
+
+  svg.innerHTML=html;
+}
+
+
+/* ============================================================
+   PRINT
+============================================================ */
+
+function printReport(){
+
+  if(!currentPlan){
     alert("Calcola prima la struttura.");
     return;
   }
 
   renderer.render(scene,camera);
 
-  const image =
+  document.getElementById("print3d").src=
     renderer.domElement.toDataURL("image/png");
 
-  document.getElementById("print3d").src =
-    image;
-
-  setTimeout(() => {
-    window.print();
-  },150);
+  setTimeout(
+    ()=>window.print(),
+    120
+  );
 }
 
 
-/* =========================================================
+/* ============================================================
+   SETTINGS
+============================================================ */
+
+function openSettings(){
+  document.getElementById("modal")
+    .classList.add("open");
+}
+
+function closeSettings(){
+  document.getElementById("modal")
+    .classList.remove("open");
+}
+
+
+/* ============================================================
+   RICALCOLO AUTOMATICO
+============================================================ */
+
+let recalculationTimer=null;
+
+function autoCalculate(){
+
+  clearTimeout(recalculationTimer);
+
+  recalculationTimer=
+    setTimeout(()=>{
+
+      const l=
+        Number(document.getElementById("length").value);
+
+      const w=
+        Number(document.getElementById("width").value);
+
+      if(l>0 && w>0)
+        calculatePlan();
+
+    },120);
+
+}
+
+
+/* ============================================================
    EVENTI
-   ========================================================= */
+============================================================ */
 
-document
-  .getElementById("applyStock")
-  .addEventListener(
-    "click",
-    applyWarehouse
+document.getElementById("openSettings")
+  .addEventListener("click",openSettings);
+
+document.getElementById("closeSettings")
+  .addEventListener("click",closeSettings);
+
+document.getElementById("closeSettings2")
+  .addEventListener("click",closeSettings);
+
+document.getElementById("applyStock")
+  .addEventListener("click",applyWarehouse);
+
+document.getElementById("calculate")
+  .addEventListener("click",calculatePlan);
+
+document.getElementById("commit")
+  .addEventListener("click",commitPlan);
+
+document.getElementById("print")
+  .addEventListener("click",printReport);
+
+
+document.getElementById("sectionsAuto")
+  .addEventListener("change",e=>{
+
+    document.getElementById("sections").disabled=
+      e.target.checked;
+
+    autoCalculate();
+
+  });
+
+
+[
+  "length",
+  "width",
+  "sections",
+  "sideMethod",
+  "topTel",
+  "fairyEnabled"
+].forEach(id=>{
+
+  const el=document.getElementById(id);
+
+  el.addEventListener(
+    el.tagName==="SELECT" ? "change" : "input",
+    autoCalculate
   );
 
-
-document
-  .getElementById("calculate")
-  .addEventListener(
-    "click",
-    calculatePlan
-  );
+});
 
 
-document
-  .getElementById("commit")
-  .addEventListener(
-    "click",
-    commitPlan
-  );
+document.getElementById("fairyEnabled")
+  .addEventListener("change",autoCalculate);
 
 
-document
-  .getElementById("print")
-  .addEventListener(
-    "click",
-    printReport
-  );
-
-
-/* =========================================================
+/* ============================================================
    AVVIO
-   ========================================================= */
+============================================================ */
 
 createStockInputs();
-initRenderer();
+
+document.getElementById("sections").disabled=true;
+
+init3D();
+
+setTimeout(calculatePlan,200);
 
 </script>
 
