@@ -22,23 +22,35 @@
 
 body{
   margin:0;
-  font-family:Arial,Helvetica,sans-serif;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
   font-size:15px;
+
   background:#f3f4f6;
   color:#171717;
 }
 
 
+/* =========================================================
+   HEADER
+========================================================= */
+
 header{
   min-height:58px;
+
   padding:0 18px;
 
   background:#111;
-  color:#fff;
+  color:white;
 
   display:flex;
   align-items:center;
   justify-content:space-between;
+
   gap:12px;
 }
 
@@ -52,6 +64,7 @@ header{
 
 header h1{
   margin:0;
+
   font-size:20px;
 }
 
@@ -63,12 +76,13 @@ nav{
 
 
 nav a{
-  color:#ccc;
-  text-decoration:none;
-
   padding:7px 10px;
 
   border-radius:6px;
+
+  color:#ccc;
+
+  text-decoration:none;
 
   font-size:13px;
   font-weight:700;
@@ -86,6 +100,10 @@ nav a.active{
   color:#111;
 }
 
+
+/* =========================================================
+   BUTTONS
+========================================================= */
 
 button{
   border:0;
@@ -124,28 +142,38 @@ button:disabled{
 }
 
 
+/* =========================================================
+   PAGE
+========================================================= */
+
 .page{
   max-width:1550px;
+
   margin:auto;
+
   padding:14px;
 }
 
 
 .card{
+  margin-bottom:14px;
+
+  padding:14px;
+
   background:white;
 
   border-radius:10px;
 
-  padding:14px;
-  margin-bottom:14px;
-
-  box-shadow:0 1px 5px rgba(0,0,0,.1);
+  box-shadow:
+    0 1px 5px
+    rgba(0,0,0,.1);
 }
 
 
 .workspace-header{
   display:flex;
   align-items:baseline;
+
   gap:12px;
 
   margin-bottom:11px;
@@ -154,27 +182,39 @@ button:disabled{
 
 .workspace-header h2{
   margin:0;
+
   font-size:21px;
 }
 
 
 .workspace-header span{
   color:#777;
+
   font-size:14px;
 }
 
+
+/* =========================================================
+   PRIMA RIGA
+========================================================= */
 
 .workspace-grid{
   display:grid;
 
   grid-template-columns:
-    275px
-    minmax(390px,.95fr)
-    minmax(420px,1.05fr);
+    270px
+    minmax(360px,.95fr)
+    minmax(420px,1.12fr);
 
   gap:12px;
+
+  align-items:stretch;
 }
 
+
+/* =========================================================
+   PANNELLI
+========================================================= */
 
 .panel{
   min-width:0;
@@ -183,11 +223,14 @@ button:disabled{
 
   border:1px solid #ddd;
   border-radius:8px;
+
+  background:white;
 }
 
 
 .panel h3{
   margin:0 0 10px;
+
   font-size:15px;
 }
 
@@ -208,6 +251,7 @@ select{
   width:100%;
 
   margin-top:3px;
+
   padding:8px;
 
   border:1px solid #bbb;
@@ -221,7 +265,10 @@ select{
 
 .two-cols{
   display:grid;
-  grid-template-columns:1fr 1fr;
+
+  grid-template-columns:
+    1fr 1fr;
+
   gap:7px;
 }
 
@@ -229,6 +276,7 @@ select{
 .checkbox-row{
   display:flex;
   align-items:center;
+
   gap:7px;
 
   margin-top:12px;
@@ -246,6 +294,7 @@ select{
 .actions{
   display:flex;
   flex-wrap:wrap;
+
   gap:6px;
 
   margin-top:12px;
@@ -254,6 +303,7 @@ select{
 
 .small{
   color:#666;
+
   font-size:12px;
   line-height:1.45;
 }
@@ -261,6 +311,7 @@ select{
 
 .subpanel{
   margin-top:10px;
+
   padding:9px;
 
   border:1px solid #ddd;
@@ -277,26 +328,23 @@ select{
 
 .inline-selects{
   display:grid;
-  grid-template-columns:1fr 1fr;
+
+  grid-template-columns:
+    1fr 1fr;
+
   gap:7px;
 }
 
 
-.auto-info{
-  margin-top:4px;
-  color:#666;
-  font-size:11px;
-}
-
-
 /* =========================================================
-   PLAN PREVIEW
+   PREVIEW
 ========================================================= */
 
 .preview-toolbar{
   display:flex;
   align-items:center;
   justify-content:space-between;
+
   gap:8px;
 
   margin-bottom:7px;
@@ -305,16 +353,17 @@ select{
 
 .preview-toolbar span{
   color:#666;
+
   font-size:12px;
 }
 
 
 #deckPlan,
-#yellowPlan{
+#yellowPlanPreview{
   display:block;
 
   width:100%;
-  height:300px;
+  height:315px;
 
   border:1px solid #ddd;
   border-radius:6px;
@@ -326,11 +375,13 @@ select{
 .legend{
   display:flex;
   flex-wrap:wrap;
-  gap:10px;
 
-  margin-top:7px;
+  gap:12px;
+
+  margin-top:8px;
 
   color:#555;
+
   font-size:12px;
 }
 
@@ -338,13 +389,15 @@ select{
 .legend-item{
   display:flex;
   align-items:center;
+
   gap:5px;
 }
 
 
 .legend-box{
-  width:16px;
-  height:12px;
+  width:18px;
+  height:13px;
+
   border:1px solid #333;
 }
 
@@ -355,32 +408,9 @@ select{
 
 
 .legend-side{
-  background:#f0c729;
-  border:3px solid #b46b00;
-}
+  background:#ffd84a;
 
-
-/* =========================================================
-   3D
-========================================================= */
-
-#viewer{
-  width:100%;
-  height:370px;
-
-  overflow:hidden;
-
-  border-radius:6px;
-
-  background:#eef0f2;
-}
-
-
-.viewer-toolbar{
-  display:flex;
-  gap:6px;
-
-  margin-bottom:7px;
+  border:3px solid #8d3d00;
 }
 
 
@@ -401,18 +431,21 @@ select{
 
 .good{
   color:#08752a;
+
   font-weight:700;
 }
 
 
 .bad{
   color:#b00020;
+
   font-weight:700;
 }
 
 
 .warning{
   margin-top:7px;
+
   padding:8px;
 
   border:1px solid #ddc06a;
@@ -423,27 +456,34 @@ select{
 
 
 /* =========================================================
-   RESULTS
+   SECONDA RIGA
 ========================================================= */
 
 .results{
   display:grid;
 
   grid-template-columns:
-    minmax(0,1.55fr)
-    minmax(280px,.75fr);
+    minmax(330px,1.20fr)
+    minmax(250px,.72fr)
+    minmax(390px,1.08fr);
 
   gap:12px;
+
+  align-items:stretch;
 
   margin-top:12px;
 }
 
 
 .result-box{
+  min-width:0;
+
   padding:10px;
 
   border:1px solid #ddd;
   border-radius:7px;
+
+  background:white;
 }
 
 
@@ -455,7 +495,7 @@ select{
 
 
 /* =========================================================
-   MATERIAL
+   MATERIALE
 ========================================================= */
 
 .material-box{
@@ -471,6 +511,7 @@ select{
 
 .material-box.material-unavailable{
   border-color:#c40020;
+
   background:#fffafa;
 }
 
@@ -482,6 +523,7 @@ select{
 
 .material-list{
   display:grid;
+
   gap:4px;
 }
 
@@ -490,7 +532,9 @@ select{
   min-height:38px;
 
   display:grid;
-  grid-template-columns:52px 1fr;
+
+  grid-template-columns:
+    52px 1fr;
 
   gap:8px;
 
@@ -525,6 +569,7 @@ select{
 .material-name{
   font-size:14px;
   font-weight:700;
+
   line-height:1.25;
 }
 
@@ -587,11 +632,35 @@ select{
 
 
 /* =========================================================
-   TECH DRAWINGS
+   3D
+========================================================= */
+
+.viewer-toolbar{
+  display:flex;
+
+  gap:6px;
+}
+
+
+#viewer{
+  width:100%;
+  height:340px;
+
+  overflow:hidden;
+
+  border-radius:6px;
+
+  background:#eef0f2;
+}
+
+
+/* =========================================================
+   DRAWINGS
 ========================================================= */
 
 .drawings{
   display:grid;
+
   gap:12px;
 }
 
@@ -607,8 +676,8 @@ select{
 .drawing-title{
   margin-bottom:5px;
 
-  font-size:15px;
-  font-weight:700;
+  font-size:16px;
+  font-weight:800;
 }
 
 
@@ -616,7 +685,13 @@ select{
   display:block;
 
   width:100%;
-  height:360px;
+  height:390px;
+}
+
+
+#deckTechnical,
+#yellowPlanTechnical{
+  background:#fff;
 }
 
 
@@ -636,7 +711,8 @@ select{
 
   overflow:auto;
 
-  background:rgba(0,0,0,.55);
+  background:
+    rgba(0,0,0,.55);
 }
 
 
@@ -646,9 +722,10 @@ select{
 
 
 .modal-box{
-  max-width:720px;
+  max-width:760px;
 
   margin:auto;
+
   padding:20px;
 
   border-radius:10px;
@@ -672,7 +749,8 @@ select{
 .stock-grid{
   display:grid;
 
-  grid-template-columns:1fr 90px;
+  grid-template-columns:
+    1fr 90px;
 
   gap:7px 10px;
 
@@ -689,6 +767,7 @@ select{
 
 .settings-section{
   margin-top:20px;
+
   padding-top:14px;
 
   border-top:1px solid #ddd;
@@ -697,6 +776,7 @@ select{
 
 .settings-section h3{
   margin:0 0 8px;
+
   font-size:16px;
 }
 
@@ -719,6 +799,7 @@ select{
 
 .stock-table td:last-child{
   text-align:right;
+
   font-weight:700;
 }
 
@@ -742,11 +823,28 @@ select{
 }
 
 
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
 @media(max-width:1120px){
 
   .workspace-grid{
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:
+      1fr 1fr;
   }
+
+
+  .workspace-grid > :last-child{
+    grid-column:1/-1;
+  }
+
+
+  .results{
+    grid-template-columns:
+      1fr 1fr;
+  }
+
 
   .viewer-panel{
     grid-column:1/-1;
@@ -759,27 +857,47 @@ select{
 
   header{
     align-items:flex-start;
+
     padding:10px;
   }
+
 
   .header-left{
     flex-direction:column;
     align-items:flex-start;
+
     gap:7px;
   }
+
 
   .workspace-grid,
   .results{
     grid-template-columns:1fr;
   }
 
+
+  .workspace-grid > :last-child,
+  .viewer-panel{
+    grid-column:auto;
+  }
+
+
+  .quick-data{
+    grid-template-columns:1fr 1fr;
+  }
+
 }
 
+
+/* =========================================================
+   PDF
+========================================================= */
 
 @media print{
 
   body{
     background:white;
+
     font-size:13px;
   }
 
@@ -796,6 +914,7 @@ select{
 
   .page{
     max-width:none;
+
     padding:0;
   }
 
@@ -813,14 +932,22 @@ select{
     display:block;
 
     margin:0 0 12px;
+
     padding:0 0 8px;
 
     border-bottom:2px solid #000;
 
     font-size:28px;
     font-weight:800;
+
+    line-height:1.1;
   }
 
+
+  /*
+    PRIMA RIGA PDF:
+    3D GRANDE
+  */
 
   #print3d{
     display:block;
@@ -836,12 +963,18 @@ select{
   }
 
 
+  /*
+    SECONDA RIGA PDF:
+    MATERIALE + DATI
+
+    Il vero viewer 3D è no-print.
+  */
+
   .results{
     display:grid;
 
     grid-template-columns:
-      1.35fr
-      .85fr;
+      1.35fr .85fr;
 
     gap:10px;
 
@@ -851,8 +984,14 @@ select{
   }
 
 
+  .viewer-panel{
+    display:none !important;
+  }
+
+
   .material-box{
     border:3px solid #000;
+
     break-inside:avoid;
   }
 
@@ -865,7 +1004,8 @@ select{
   .material-row{
     min-height:34px;
 
-    grid-template-columns:48px 1fr;
+    grid-template-columns:
+      48px 1fr;
   }
 
 
@@ -876,13 +1016,32 @@ select{
   }
 
 
+  .material-name{
+    font-size:13px;
+  }
+
+
+  .chip.total-chip{
+    border:2px solid #000;
+  }
+
+
+  /*
+    DISEGNI TECNICI
+  */
+
   .drawing{
     break-inside:avoid;
   }
 
 
+  .drawing-title{
+    font-size:16px;
+  }
+
+
   .drawing svg{
-    height:320px;
+    height:350px;
   }
 
 }
@@ -912,7 +1071,9 @@ select{
 
 <header>
 
+
   <div class="header-left">
+
 
     <h1>
       Planner tecnico
@@ -922,6 +1083,10 @@ select{
     <nav>
 
       <a href="index.html">
+        Home
+      </a>
+
+      <a href="strutture.html">
         Strutture
       </a>
 
@@ -934,6 +1099,7 @@ select{
 
     </nav>
 
+
   </div>
 
 
@@ -943,6 +1109,7 @@ select{
   >
     ⚙ Settings
   </button>
+
 
 </header>
 
@@ -972,12 +1139,14 @@ select{
 
 
 
+  <!-- =====================================================
+       PRIMA RIGA
+  ====================================================== -->
+
   <div class="workspace-grid">
 
 
-    <!-- ===================================================
-         NEW DECK
-    ==================================================== -->
+    <!-- NUOVA PEDANA -->
 
     <div class="panel no-print">
 
@@ -996,6 +1165,7 @@ select{
         type="text"
         value="Pedana 1"
       >
+
 
 
       <div class="two-cols">
@@ -1043,6 +1213,7 @@ select{
         Colore quadrotti
       </label>
 
+
       <select id="singleColor">
 
         <option value="black">
@@ -1069,6 +1240,7 @@ select{
         >
 
         Scacchiera
+
       </label>
 
 
@@ -1078,6 +1250,7 @@ select{
         class="subpanel hidden"
       >
 
+
         <div class="inline-selects">
 
 
@@ -1086,6 +1259,7 @@ select{
             <label>
               Colore A
             </label>
+
 
             <select id="checkerA">
 
@@ -1106,11 +1280,13 @@ select{
           </div>
 
 
+
           <div>
 
             <label>
               Colore B
             </label>
+
 
             <select id="checkerB">
 
@@ -1133,6 +1309,7 @@ select{
 
         </div>
 
+
       </div>
 
 
@@ -1146,6 +1323,7 @@ select{
         >
 
         Pannelli gialli sotto
+
       </label>
 
 
@@ -1155,9 +1333,11 @@ select{
         class="subpanel"
       >
 
+
         <label>
           Orientamento pannelli
         </label>
+
 
         <select id="yellowOrientation">
 
@@ -1177,6 +1357,7 @@ select{
           </option>
 
         </select>
+
 
       </div>
 
@@ -1206,9 +1387,7 @@ select{
 
 
 
-    <!-- ===================================================
-         TOP PREVIEW
-    ==================================================== -->
+    <!-- PIANTA PEDANA -->
 
     <div class="panel">
 
@@ -1218,6 +1397,7 @@ select{
         <h3 style="margin:0">
           Pianta pedana
         </h3>
+
 
         <span>
           quadrotti 1 × 1 m
@@ -1242,35 +1422,55 @@ select{
 
 
 
-    <!-- ===================================================
-         3D
-    ==================================================== -->
+    <!-- PIANTA GIALLI -->
 
-    <div class="panel viewer-panel">
+    <div class="panel">
 
 
       <div class="preview-toolbar">
 
         <h3 style="margin:0">
-          Vista 3D
+          Pianta pannelli gialli
         </h3>
 
 
-        <div class="viewer-toolbar no-print">
-
-          <button
-            id="toggleDeck"
-            class="secondary"
-          >
-            Piano ON
-          </button>
-
-        </div>
+        <span>
+          larghezza 50 cm
+        </span>
 
       </div>
 
 
-      <div id="viewer"></div>
+      <svg id="yellowPlanPreview"></svg>
+
+
+      <div class="legend">
+
+
+        <div class="legend-item">
+
+          <span
+            class="legend-box legend-yellow"
+          ></span>
+
+          Normale
+
+        </div>
+
+
+
+        <div class="legend-item">
+
+          <span
+            class="legend-box legend-side"
+          ></span>
+
+          Laterale · bordo liscio
+
+        </div>
+
+
+      </div>
 
 
     </div>
@@ -1288,37 +1488,84 @@ select{
 
 
   <!-- =====================================================
-       RESULTS
+       SECONDA RIGA
   ====================================================== -->
 
   <div class="results">
 
 
+    <!-- MATERIALE -->
+
     <div class="result-box material-box">
+
 
       <h3>
         Materiale
       </h3>
+
 
       <div
         id="materialResult"
         class="material-list"
       ></div>
 
+
     </div>
 
 
 
+    <!-- DATI -->
+
     <div class="result-box">
+
 
       <h3>
         Dati pedana
       </h3>
 
+
       <div
         id="quickResult"
         class="quick-data"
       ></div>
+
+
+    </div>
+
+
+
+    <!-- 3D -->
+
+    <div class="result-box viewer-panel no-print">
+
+
+      <div class="preview-toolbar">
+
+
+        <h3 style="margin:0">
+          Vista 3D
+        </h3>
+
+
+        <div class="viewer-toolbar">
+
+
+          <button
+            id="toggleDeck"
+            class="secondary"
+          >
+            Piano ON
+          </button>
+
+
+        </div>
+
+
+      </div>
+
+
+      <div id="viewer"></div>
+
 
     </div>
 
@@ -1331,19 +1578,21 @@ select{
 
 
 <!-- =======================================================
-     TECHNICAL DRAWINGS
+     DISEGNI TECNICI
 ======================================================== -->
 
 <div class="card">
 
+
   <h2
     style="
       margin:0 0 9px;
-      font-size:18px
+      font-size:19px
     "
   >
     Disegni tecnici
   </h2>
+
 
 
   <div class="drawings">
@@ -1351,11 +1600,14 @@ select{
 
     <div class="drawing">
 
+
       <div class="drawing-title">
         PIANTA PEDANA
       </div>
 
+
       <svg id="deckTechnical"></svg>
+
 
     </div>
 
@@ -1366,18 +1618,23 @@ select{
       class="drawing"
     >
 
+
       <div class="drawing-title">
         PIANTA PANNELLI GIALLI
       </div>
 
-      <svg id="yellowPlan"></svg>
+
+      <svg id="yellowPlanTechnical"></svg>
 
 
       <div class="legend">
 
+
         <div class="legend-item">
 
-          <span class="legend-box legend-yellow"></span>
+          <span
+            class="legend-box legend-yellow"
+          ></span>
 
           Normale
 
@@ -1386,18 +1643,23 @@ select{
 
         <div class="legend-item">
 
-          <span class="legend-box legend-side"></span>
+          <span
+            class="legend-box legend-side"
+          ></span>
 
-          Laterale
+          Laterale · bordo liscio esterno
 
         </div>
 
+
       </div>
+
 
     </div>
 
 
   </div>
+
 
 </div>
 
@@ -1415,14 +1677,17 @@ select{
   class="no-print"
 >
 
+
 <div class="modal-box">
 
 
   <div class="modal-head">
 
+
     <h2>
-      Magazzino pedane
+      Magazzino
     </h2>
+
 
     <button
       id="closeSettings"
@@ -1430,6 +1695,7 @@ select{
     >
       ×
     </button>
+
 
   </div>
 
@@ -1444,12 +1710,14 @@ select{
 
   <div class="actions">
 
+
     <button
       id="applyStock"
       class="primary"
     >
       Salva / nuova giornata
     </button>
+
 
     <button
       id="closeSettings2"
@@ -1458,17 +1726,21 @@ select{
       Chiudi
     </button>
 
+
   </div>
 
 
 
   <div class="settings-section">
+
 
     <h3>
       Residuo
     </h3>
 
+
     <div id="remainingStock"></div>
+
 
   </div>
 
@@ -1476,18 +1748,22 @@ select{
 
   <div class="settings-section">
 
+
     <h3>
       Carichi confermati
     </h3>
+
 
     <div id="allocations">
       Nessuno.
     </div>
 
+
   </div>
 
 
 </div>
+
 
 </div>
 
@@ -1506,14 +1782,32 @@ import {
 from "three/addons/controls/OrbitControls.js";
 
 
+import {
+
+  SHARED_ITEMS,
+
+  getSharedState,
+
+  startSharedDay,
+
+  commitSharedLoad
+
+}
+from "./storage.js";
+
+
 
 /* =========================================================
    CONSTANTS
 ========================================================= */
 
-const YELLOW_WIDTH = .5;
+const YELLOW_WIDTH =
+  .5;
 
-const YELLOW_LENGTHS = [4,2,1];
+
+const YELLOW_LENGTHS =
+  [4,2,1];
+
 
 
 const ITEMS = [
@@ -1576,27 +1870,40 @@ const ITEMS = [
 ];
 
 
+
 const COLOR_INFO = {
 
 
   black:{
+
     label:"Nero",
+
     css:"#181818",
+
     three:0x181818
+
   },
 
 
   white:{
+
     label:"Bianco",
+
     css:"#f6f6f2",
+
     three:0xf2f2ec
+
   },
 
 
   wood:{
+
     label:"Legno",
+
     css:"#a77746",
+
     three:0xa77746
+
   }
 
 
@@ -1608,18 +1915,22 @@ const COLOR_INFO = {
    STATE
 ========================================================= */
 
-let warehouse={};
+let warehouse = {};
 
-let remaining={};
+let remaining = {};
 
-let allocations=[];
+let allocations = [];
 
-let warehouseConfigured=false;
+let warehouseConfigured =
+  false;
 
 
-let currentPlan=null;
+let currentPlan =
+  null;
 
-let lastCommittedSignature=null;
+
+let lastCommittedSignature =
+  null;
 
 
 let renderer;
@@ -1631,45 +1942,67 @@ let camera;
 let controls;
 
 
-let cameraUserAdjusted=false;
+let cameraUserAdjusted =
+  false;
 
-let hasRendered3D=false;
+
+let hasRendered3D =
+  false;
 
 
-let showDeck=true;
+let showDeck =
+  true;
 
 
 
 /* =========================================================
-   BASIC UTILS
+   UTILS
 ========================================================= */
 
-function itemLabel(key){
+function itemLabel(
+  key
+){
 
   return (
-    ITEMS.find(
-      item=>item.key===key
+
+    SHARED_ITEMS.find(
+      item=>
+        item.key===key
     )?.label
+
     ||
+
+    ITEMS.find(
+      item=>
+        item.key===key
+    )?.label
+
+    ||
+
     key
+
   );
+
 }
 
 
 
 function emptyRequirements(){
 
-  const result={};
+  const result = {};
 
 
   ITEMS.forEach(item=>{
 
-    result[item.key]=0;
+    result[
+      item.key
+    ] = 0;
 
   });
 
 
   return result;
+
 }
 
 
@@ -1678,15 +2011,26 @@ function colorStockKey(
   color
 ){
 
-  if(color==="black")
+  if(
+    color==="black"
+  ){
+
     return "deckBlack";
 
+  }
 
-  if(color==="white")
+
+  if(
+    color==="white"
+  ){
+
     return "deckWhite";
+
+  }
 
 
   return "deckWood";
+
 }
 
 
@@ -1696,10 +2040,17 @@ function validIntegerDimension(
 ){
 
   return (
-    Number.isInteger(value)
+
+    Number.isInteger(
+      value
+    )
+
     &&
+
     value>=1
+
   );
+
 }
 
 
@@ -1708,109 +2059,41 @@ function uniqueCount(
   sequence
 ){
 
-  return new Set(sequence).size;
+  return new Set(
+    sequence
+  ).size;
+
 }
 
 
 
 /* =========================================================
-   STORAGE
+   SHARED STORAGE
 ========================================================= */
 
-const STORAGE_KEY=
-  "pedanePlannerState_v1";
+function syncSharedStorage(){
+
+  const state =
+    getSharedState();
 
 
-function loadPersistentState(){
-
-  const saved=
-    localStorage.getItem(
-      STORAGE_KEY
-    );
+  warehouse = {
+    ...state.warehouse
+  };
 
 
-  if(!saved)
-    return;
+  remaining = {
+    ...state.remaining
+  };
 
 
-  try{
-
-    const data=
-      JSON.parse(saved);
-
-
-    if(data.warehouse){
-
-      warehouse={
-        ...data.warehouse
-      };
+  allocations = [
+    ...state.allocations
+  ];
 
 
-      warehouseConfigured=true;
-
-    }
-
-
-    if(data.remaining){
-
-      remaining={
-        ...data.remaining
-      };
-
-    }
-
-    else if(warehouseConfigured){
-
-      remaining={
-        ...warehouse
-      };
-
-    }
-
-
-    if(
-      Array.isArray(
-        data.allocations
-      )
-    ){
-
-      allocations=
-        data.allocations;
-
-    }
-
-  }
-
-  catch(error){
-
-    console.warn(
-      "Impossibile leggere il salvataggio pedane.",
-      error
-    );
-
-  }
-
-}
-
-
-
-function persistState(){
-
-  localStorage.setItem(
-
-    STORAGE_KEY,
-
-    JSON.stringify({
-
-      warehouse,
-
-      remaining,
-
-      allocations
-
-    })
-
-  );
+  warehouseConfigured =
+    state.configured;
 
 }
 
@@ -1822,46 +2105,130 @@ function persistState(){
 
 function createStockInputs(){
 
-  const root=
-    document.getElementById(
-      "stockInputs"
-    );
+  syncSharedStorage();
 
 
-  root.innerHTML="";
+  const root =
+    document
+      .getElementById(
+        "stockInputs"
+      );
 
 
-  ITEMS.forEach(item=>{
+  root.innerHTML =
+    "";
 
-    const label=
+
+  let lastGroup =
+    null;
+
+
+  SHARED_ITEMS.forEach(item=>{
+
+
+    if(
+      item.group !==
+      lastGroup
+    ){
+
+      const title =
+        document.createElement(
+          "div"
+        );
+
+
+      title.style.gridColumn =
+        "1 / -1";
+
+
+      title.style.marginTop =
+
+        lastGroup
+        ?
+        "12px"
+        :
+        "0";
+
+
+      title.style.paddingTop =
+
+        lastGroup
+        ?
+        "10px"
+        :
+        "0";
+
+
+      title.style.borderTop =
+
+        lastGroup
+        ?
+        "1px solid #ddd"
+        :
+        "0";
+
+
+      title.style.fontWeight =
+        "800";
+
+
+      title.textContent =
+        item.group;
+
+
+      root.appendChild(
+        title
+      );
+
+
+      lastGroup =
+        item.group;
+
+    }
+
+
+
+    const label =
       document.createElement(
         "div"
       );
 
 
-    label.textContent=
+    label.textContent =
       item.label;
 
 
-    const input=
+    const input =
       document.createElement(
         "input"
       );
 
 
-    input.type="number";
-
-    input.min="0";
-
-    input.step="1";
-
-    input.id=
-      "stock_"+item.key;
+    input.type =
+      "number";
 
 
-    input.value=
-      warehouse[item.key]
+    input.min =
+      "0";
+
+
+    input.step =
+      "1";
+
+
+    input.id =
+      "stock_" +
+      item.key;
+
+
+    input.value =
+
+      warehouse[
+        item.key
+      ]
+
       ??
+
       0;
 
 
@@ -1879,14 +2246,20 @@ function createStockInputs(){
 
 
 
+/* =========================================================
+   APPLY WAREHOUSE
+========================================================= */
+
 function applyWarehouse(){
 
-  warehouse={};
+  const stock = {};
 
 
-  ITEMS.forEach(item=>{
+  SHARED_ITEMS.forEach(item=>{
 
-    warehouse[item.key]=
+    stock[
+      item.key
+    ] =
 
       Math.max(
 
@@ -1898,7 +2271,8 @@ function applyWarehouse(){
 
             document
               .getElementById(
-                "stock_"+item.key
+                "stock_" +
+                item.key
               )
               .value
 
@@ -1915,19 +2289,35 @@ function applyWarehouse(){
   });
 
 
-  remaining={
-    ...warehouse
+
+  const state =
+    startSharedDay(
+      stock
+    );
+
+
+  warehouse = {
+    ...state.warehouse
   };
 
 
-  warehouseConfigured=true;
-
-  allocations=[];
-
-  lastCommittedSignature=null;
+  remaining = {
+    ...state.remaining
+  };
 
 
-  persistState();
+  allocations = [
+    ...state.allocations
+  ];
+
+
+  warehouseConfigured =
+    true;
+
+
+  lastCommittedSignature =
+    null;
+
 
   renderRemaining();
 
@@ -1941,17 +2331,27 @@ function applyWarehouse(){
 
 
 
+/* =========================================================
+   REMAINING
+========================================================= */
+
 function renderRemaining(){
 
-  const root=
-    document.getElementById(
-      "remainingStock"
-    );
+  syncSharedStorage();
 
 
-  if(!warehouseConfigured){
+  const root =
+    document
+      .getElementById(
+        "remainingStock"
+      );
 
-    root.textContent=
+
+  if(
+    !warehouseConfigured
+  ){
+
+    root.textContent =
       "Magazzino non impostato.";
 
     return;
@@ -1959,31 +2359,78 @@ function renderRemaining(){
   }
 
 
-  root.innerHTML=`
+  let html =
 
-    <table class="stock-table">
+    `<table class="stock-table">`;
 
-      ${
-        ITEMS.map(item=>`
 
-          <tr>
+  let lastGroup =
+    null;
 
-            <td>
-              ${item.label}
-            </td>
 
-            <td>
-              ${remaining[item.key] ?? 0}
-            </td>
+  SHARED_ITEMS.forEach(item=>{
 
-          </tr>
 
-        `).join("")
-      }
+    if(
+      item.group !==
+      lastGroup
+    ){
 
-    </table>
+      html += `
 
-  `;
+        <tr>
+
+          <td
+
+            colspan="2"
+
+            style="
+              padding-top:12px;
+              font-weight:800;
+              border-bottom:2px solid #222;
+            "
+
+          >
+            ${item.group}
+          </td>
+
+        </tr>
+
+      `;
+
+
+      lastGroup =
+        item.group;
+
+    }
+
+
+
+    html += `
+
+      <tr>
+
+        <td>
+          ${item.label}
+        </td>
+
+        <td>
+          ${remaining[item.key] ?? 0}
+        </td>
+
+      </tr>
+
+    `;
+
+  });
+
+
+  html +=
+    `</table>`;
+
+
+  root.innerHTML =
+    html;
 
 }
 
@@ -1998,7 +2445,8 @@ function calculateDeckColors(
   width
 ){
 
-  const checker=
+  const checker =
+
     document
       .getElementById(
         "checkerEnabled"
@@ -2006,18 +2454,26 @@ function calculateDeckColors(
       .checked;
 
 
-  const cells=[];
+  const cells = [];
 
-  const counts={
+
+  const counts = {
+
     black:0,
+
     white:0,
+
     wood:0
+
   };
 
 
-  if(!checker){
+  if(
+    !checker
+  ){
 
-    const color=
+    const color =
+
       document
         .getElementById(
           "singleColor"
@@ -2038,9 +2494,13 @@ function calculateDeckColors(
       ){
 
         cells.push({
+
           x,
+
           y,
+
           color
+
         });
 
 
@@ -2052,9 +2512,11 @@ function calculateDeckColors(
 
   }
 
+
   else{
 
-    const colorA=
+    const colorA =
+
       document
         .getElementById(
           "checkerA"
@@ -2062,7 +2524,8 @@ function calculateDeckColors(
         .value;
 
 
-    const colorB=
+    const colorB =
+
       document
         .getElementById(
           "checkerB"
@@ -2082,7 +2545,7 @@ function calculateDeckColors(
         x++
       ){
 
-        const color=
+        const color =
 
           (
             (x+y)%2===0
@@ -2098,9 +2561,13 @@ function calculateDeckColors(
 
 
         cells.push({
+
           x,
+
           y,
+
           color
+
         });
 
 
@@ -2114,8 +2581,11 @@ function calculateDeckColors(
 
 
   return {
+
     cells,
+
     counts
+
   };
 
 }
@@ -2123,23 +2593,24 @@ function calculateDeckColors(
 
 
 /* =========================================================
-   YELLOW PANEL PATTERNS
+   PATTERN GIALLI
 ========================================================= */
-
-/*
-  Numero minimo di pezzi usando 4 / 2 / 1.
-*/
 
 function minimumPieceCount(
   length
 ){
 
-  const dp=
-    Array(length+1)
-      .fill(Infinity);
+  const dp =
+    Array(
+      length+1
+    )
+    .fill(
+      Infinity
+    );
 
 
-  dp[0]=0;
+  dp[0] =
+    0;
 
 
   for(
@@ -2148,14 +2619,24 @@ function minimumPieceCount(
     i++
   ){
 
-    for(const piece of YELLOW_LENGTHS){
+    for(
+      const piece
+      of
+      YELLOW_LENGTHS
+    ){
 
-      if(i-piece>=0){
+      if(
+        i-piece>=0
+      ){
 
-        dp[i]=
+        dp[i] =
+
           Math.min(
+
             dp[i],
+
             dp[i-piece]+1
+
           );
 
       }
@@ -2166,43 +2647,37 @@ function minimumPieceCount(
 
 
   return dp[length];
+
 }
 
 
 
-/*
-  Genera sequenze possibili con:
-  minimo pezzi oppure massimo minimo + 1.
-
-  È sufficiente per ottenere, per esempio:
-
-  8m:
-  [4,4]
-  alternato con
-  [2,4,2]
-*/
+/* =========================================================
+   GENERA COMBINAZIONI
+========================================================= */
 
 function generatePanelPatterns(
   length
 ){
 
-  const minPieces=
+  const minPieces =
     minimumPieceCount(
       length
     );
 
 
-  const maxPieces=
+  const maxPieces =
     minPieces+1;
 
 
-  const results=[];
+  const results = [];
 
-  const signatures=
+  const signatures =
     new Set();
 
 
-  const MAX_RESULTS=2500;
+  const MAX_RESULTS =
+    2500;
 
 
   function dfs(
@@ -2211,7 +2686,8 @@ function generatePanelPatterns(
   ){
 
     if(
-      results.length>=MAX_RESULTS
+      results.length >=
+      MAX_RESULTS
     ){
 
       return;
@@ -2219,13 +2695,16 @@ function generatePanelPatterns(
     }
 
 
-    if(sum===length){
+    if(
+      sum===length
+    ){
 
       if(
-        sequence.length<=maxPieces
+        sequence.length <=
+        maxPieces
       ){
 
-        const signature=
+        const signature =
           sequence.join(",");
 
 
@@ -2256,8 +2735,11 @@ function generatePanelPatterns(
 
     if(
       sum>length
+
       ||
-      sequence.length>=maxPieces
+
+      sequence.length >=
+      maxPieces
     ){
 
       return;
@@ -2265,21 +2747,27 @@ function generatePanelPatterns(
     }
 
 
-    /*
-      4 prima per privilegiare
-      naturalmente pezzi lunghi.
-    */
+    for(
+      const piece
+      of
+      [4,2,1]
+    ){
 
-    for(const piece of [4,2,1]){
+      if(
+        sum+piece <=
+        length
+      ){
 
-      if(sum+piece<=length){
+        sequence.push(
+          piece
+        );
 
-        sequence.push(piece);
 
         dfs(
           sum+piece,
           sequence
         );
+
 
         sequence.pop();
 
@@ -2296,35 +2784,41 @@ function generatePanelPatterns(
   );
 
 
-  /*
-    Sicurezza.
-  */
-
-  if(!results.length){
+  if(
+    !results.length
+  ){
 
     results.push(
-      Array(length).fill(1)
+
+      Array(
+        length
+      )
+      .fill(1)
+
     );
 
   }
 
 
   return results;
+
 }
 
 
 
 /* =========================================================
-   JOINTS
+   GIUNTE
 ========================================================= */
 
 function sequenceJoints(
   sequence
 ){
 
-  const joints=[];
+  const joints = [];
 
-  let sum=0;
+
+  let sum =
+    0;
 
 
   for(
@@ -2333,16 +2827,19 @@ function sequenceJoints(
     i++
   ){
 
-    sum+=
+    sum +=
       sequence[i];
 
 
-    joints.push(sum);
+    joints.push(
+      sum
+    );
 
   }
 
 
   return joints;
+
 }
 
 
@@ -2363,15 +2860,19 @@ function alignedJointCount(
   }
 
 
-  const a=
+  const a =
+
     new Set(
+
       sequenceJoints(
         sequenceA
       )
+
     );
 
 
-  let count=0;
+  let count =
+    0;
 
 
   for(
@@ -2382,19 +2883,27 @@ function alignedJointCount(
     )
   ){
 
-    if(a.has(joint))
+    if(
+      a.has(
+        joint
+      )
+    ){
+
       count++;
+
+    }
 
   }
 
 
   return count;
+
 }
 
 
 
 /* =========================================================
-   CHOOSE STAGGERED STRIPS
+   STRISCE SFALSATE
 ========================================================= */
 
 function buildYellowStrips(
@@ -2402,16 +2911,17 @@ function buildYellowStrips(
   stripCount
 ){
 
-  const patterns=
+  const patterns =
     generatePanelPatterns(
       stripLength
     );
 
 
-  const strips=[];
+  const strips = [];
 
 
-  let totalAligned=0;
+  let totalAligned =
+    0;
 
 
   for(
@@ -2420,13 +2930,20 @@ function buildYellowStrips(
     row++
   ){
 
-    const previous=
-      strips[row-1]?.sequence
+    const previous =
+
+      strips[
+        row-1
+      ]
+      ?.sequence
+
       ??
+
       null;
 
 
-    let best=null;
+    let best =
+      null;
 
 
     for(
@@ -2435,25 +2952,22 @@ function buildYellowStrips(
       p++
     ){
 
-      const sequence=
+      const sequence =
         patterns[p];
 
 
-      const aligned=
+      const aligned =
+
         alignedJointCount(
+
           previous,
+
           sequence
+
         );
 
 
-      /*
-        Alterniamo leggermente
-        la preferenza per evitare che
-        a parità di punteggio venga
-        scelta sempre la stessa sequenza.
-      */
-
-      const edgeBias=
+      const edgeBias =
 
         row%2===0
 
@@ -2465,10 +2979,19 @@ function buildYellowStrips(
 
         (
           patterns.length-p
-        )*.000001;
+        )
+        *
+        .000001;
 
 
-      const score=
+      /*
+        Priorità:
+        1) giunte sfalsate
+        2) pochi pezzi
+        3) pochi formati
+      */
+
+      const score =
 
         aligned*10000
 
@@ -2478,7 +3001,9 @@ function buildYellowStrips(
 
         +
 
-        uniqueCount(sequence)
+        uniqueCount(
+          sequence
+        )
 
         +
 
@@ -2487,14 +3012,21 @@ function buildYellowStrips(
 
       if(
         !best
+
         ||
-        score<best.score
+
+        score <
+        best.score
       ){
 
-        best={
+        best = {
+
           sequence,
+
           aligned,
+
           score
+
         };
 
       }
@@ -2502,36 +3034,42 @@ function buildYellowStrips(
     }
 
 
+
     strips.push({
 
-      index:row,
+      index:
+        row,
+
 
       sequence:[
         ...best.sequence
       ],
 
-      /*
-        Prima e ultima fascia:
-        laterale.
-      */
 
       lateral:
+
         row===0
+
         ||
-        row===stripCount-1
+
+        row===
+        stripCount-1
 
     });
 
 
-    totalAligned+=
+    totalAligned +=
       best.aligned;
 
   }
 
 
   return {
+
     strips,
+
     totalAligned
+
   };
 
 }
@@ -2539,31 +3077,43 @@ function buildYellowStrips(
 
 
 /* =========================================================
-   YELLOW REQUIREMENTS
+   REQUIREMENTS GIALLI
 ========================================================= */
 
 function requirementsFromYellow(
   yellow
 ){
 
-  const req={
+  const req = {
 
     yellowNormal4:0,
+
     yellowNormal2:0,
+
     yellowNormal1:0,
 
     yellowSide4:0,
+
     yellowSide2:0,
+
     yellowSide1:0
 
   };
 
 
-  for(const strip of yellow.strips){
+  for(
+    const strip
+    of
+    yellow.strips
+  ){
 
-    for(const piece of strip.sequence){
+    for(
+      const piece
+      of
+      strip.sequence
+    ){
 
-      const prefix=
+      const prefix =
 
         strip.lateral
 
@@ -2586,12 +3136,13 @@ function requirementsFromYellow(
 
 
   return req;
+
 }
 
 
 
 /* =========================================================
-   YELLOW ORIENTATION
+   ORIENTAMENTO GIALLI
 ========================================================= */
 
 function calculateYellowOrientation(
@@ -2605,85 +3156,96 @@ function calculateYellowOrientation(
   let stripCount;
 
 
-  if(orientation==="length"){
+  if(
+    orientation===
+    "length"
+  ){
 
-    /*
-      Pannelli lunghi sull'asse
-      della LUNGHEZZA.
-
-      Fasce da 50 cm
-      lungo la larghezza.
-    */
-
-    stripLength=
+    stripLength =
       length;
 
 
-    stripCount=
+    stripCount =
+
       Math.round(
-        width/
+
+        width /
         YELLOW_WIDTH
+
       );
 
   }
+
 
   else{
 
-    /*
-      Pannelli lunghi sull'asse
-      della LARGHEZZA.
-
-      Fasce da 50 cm
-      lungo la lunghezza.
-    */
-
-    stripLength=
+    stripLength =
       width;
 
 
-    stripCount=
+    stripCount =
+
       Math.round(
-        length/
+
+        length /
         YELLOW_WIDTH
+
       );
 
   }
 
 
-  const arrangement=
+
+  const arrangement =
+
     buildYellowStrips(
+
       stripLength,
+
       stripCount
+
     );
 
 
-  const requirements=
+
+  const requirements =
+
     requirementsFromYellow(
       arrangement
     );
 
 
-  const totalPieces=
+
+  const totalPieces =
 
     Object.values(
       requirements
     )
     .reduce(
-      (sum,value)=>
+      (
+        sum,
+        value
+      )=>
+
         sum+value,
+
       0
+
     );
 
 
-  const distinctSizes=
+
+  const distinctSizes =
 
     Object.values(
       requirements
     )
     .filter(
-      value=>value>0
+      value=>
+        value>0
     )
     .length;
+
 
 
   return {
@@ -2707,6 +3269,7 @@ function calculateYellowOrientation(
     distinctSizes
 
   };
+
 }
 
 
@@ -2719,30 +3282,52 @@ function deficitsFor(
   requirements
 ){
 
-  if(!warehouseConfigured)
+  if(
+    !warehouseConfigured
+  ){
+
     return [];
 
+  }
 
-  const deficits=[];
+
+  const deficits = [];
 
 
   Object.entries(
     requirements
   )
   .forEach(
-    ([key,needed])=>{
+    (
+      [
+        key,
+        needed
+      ]
+    )=>{
 
-      if(needed<=0)
+
+      if(
+        needed<=0
+      ){
+
         return;
 
+      }
 
-      const available=
+
+      const available =
+
         remaining[key]
+
         ??
+
         0;
 
 
-      if(needed>available){
+      if(
+        needed>
+        available
+      ){
 
         deficits.push({
 
@@ -2765,12 +3350,13 @@ function deficitsFor(
 
 
   return deficits;
+
 }
 
 
 
 /* =========================================================
-   AUTO ORIENTATION
+   SCEGLI ORIENTAMENTO
 ========================================================= */
 
 function chooseYellowLayout(
@@ -2778,7 +3364,8 @@ function chooseYellowLayout(
   width
 ){
 
-  const setting=
+  const setting =
+
     document
       .getElementById(
         "yellowOrientation"
@@ -2786,71 +3373,98 @@ function chooseYellowLayout(
       .value;
 
 
-  const candidates=
+  const candidates =
 
     setting==="auto"
 
     ?
 
     [
-      calculateYellowOrientation(
-        length,
-        width,
-        "length"
-      ),
 
       calculateYellowOrientation(
+
         length,
+
         width,
+
+        "length"
+
+      ),
+
+
+      calculateYellowOrientation(
+
+        length,
+
+        width,
+
         "width"
+
       )
+
     ]
 
     :
 
     [
+
       calculateYellowOrientation(
+
         length,
+
         width,
+
         setting
+
       )
+
     ];
 
 
-  for(const candidate of candidates){
 
-    candidate.deficits=
-      deficitsFor(
-        candidate.requirements
-      );
+  candidates.forEach(
+    candidate=>{
 
 
-    candidate.missing=
+      candidate.deficits =
 
-      candidate.deficits
-      .reduce(
-        (sum,item)=>
-          sum+
-          item.missing,
-        0
-      );
+        deficitsFor(
+          candidate.requirements
+        );
 
-  }
+
+      candidate.missing =
+
+        candidate.deficits
+        .reduce(
+          (
+            sum,
+            item
+          )=>
+
+            sum+
+            item.missing,
+
+          0
+        );
+
+  });
+
 
 
   candidates.sort(
-    (a,b)=>{
+    (
+      a,
+      b
+    )=>{
 
 
-      /*
-        Se il magazzino è impostato,
-        prima cerchiamo una soluzione
-        realmente caricabile.
-      */
+      if(
+        warehouseConfigured
+      ){
 
-      if(warehouseConfigured){
+        const aBad =
 
-        const aBad=
           a.deficits.length
           ?
           1
@@ -2858,7 +3472,8 @@ function chooseYellowLayout(
           0;
 
 
-        const bBad=
+        const bBad =
+
           b.deficits.length
           ?
           1
@@ -2866,58 +3481,79 @@ function chooseYellowLayout(
           0;
 
 
-        if(aBad!==bBad)
-          return aBad-bBad;
+        if(
+          aBad!==bBad
+        ){
+
+          return (
+            aBad-bBad
+          );
+
+        }
 
 
-        if(a.missing!==b.missing)
-          return a.missing-b.missing;
+        if(
+          a.missing!==
+          b.missing
+        ){
+
+          return (
+            a.missing-
+            b.missing
+          );
+
+        }
 
       }
 
 
-      /*
-        PRIORITÀ STRUTTURALE:
-        evitare giunte allineate.
-      */
 
       if(
-        a.alignedJoints!==
+        a.alignedJoints !==
         b.alignedJoints
       ){
 
         return (
-          a.alignedJoints-
+
+          a.alignedJoints
+
+          -
+
           b.alignedJoints
+
         );
 
       }
 
 
-      /*
-        Poi meno pezzi.
-      */
 
       if(
-        a.totalPieces!==
+        a.totalPieces !==
         b.totalPieces
       ){
 
         return (
-          a.totalPieces-
+
+          a.totalPieces
+
+          -
+
           b.totalPieces
+
         );
 
       }
 
 
-      /*
-        Poi meno tipi da caricare.
-      */
 
       return (
-        a.distinctSizes-
+
+        a.distinctSizes
+
+        -
+
         b.distinctSizes
+
       );
 
     }
@@ -2925,37 +3561,52 @@ function chooseYellowLayout(
 
 
   return candidates[0];
+
 }
 
 
 
 /* =========================================================
-   MAIN PLAN
+   MAIN CALC
 ========================================================= */
 
 function calculatePlan(){
 
-  const length=
+  /*
+    In caso l'altro planner abbia
+    appena scaricato materiale.
+  */
+
+  syncSharedStorage();
+
+
+  const length =
+
     Number(
+
       document
         .getElementById(
           "length"
         )
         .value
+
     );
 
 
-  const width=
+  const width =
+
     Number(
+
       document
         .getElementById(
           "width"
         )
         .value
+
     );
 
 
-  const name=
+  const name =
 
     document
       .getElementById(
@@ -2968,7 +3619,7 @@ function calculatePlan(){
     "Pedana";
 
 
-  const valid=
+  const valid =
 
     validIntegerDimension(
       length
@@ -2981,9 +3632,11 @@ function calculatePlan(){
     );
 
 
-  if(!valid){
+  if(
+    !valid
+  ){
 
-    currentPlan={
+    currentPlan = {
 
       valid:false,
 
@@ -3004,31 +3657,33 @@ function calculatePlan(){
 
 
 
-  const deck=
+  const deck =
+
     calculateDeckColors(
       length,
       width
     );
 
 
-  const requirements=
+  const requirements =
     emptyRequirements();
 
 
-  requirements.deckBlack=
+
+  requirements.deckBlack =
     deck.counts.black;
 
 
-  requirements.deckWhite=
+  requirements.deckWhite =
     deck.counts.white;
 
 
-  requirements.deckWood=
+  requirements.deckWood =
     deck.counts.wood;
 
 
 
-  const yellowEnabled=
+  const yellowEnabled =
 
     document
       .getElementById(
@@ -3037,15 +3692,22 @@ function calculatePlan(){
       .checked;
 
 
-  let yellow=null;
+  let yellow =
+    null;
 
 
-  if(yellowEnabled){
+  if(
+    yellowEnabled
+  ){
 
-    yellow=
+    yellow =
+
       chooseYellowLayout(
+
         length,
+
         width
+
       );
 
 
@@ -3053,9 +3715,14 @@ function calculatePlan(){
       yellow.requirements
     )
     .forEach(
-      ([key,value])=>{
+      (
+        [
+          key,
+          value
+        ]
+      )=>{
 
-        requirements[key]+=
+        requirements[key] +=
           value;
 
       }
@@ -3064,13 +3731,16 @@ function calculatePlan(){
   }
 
 
-  const deficits=
+
+  const deficits =
+
     deficitsFor(
       requirements
     );
 
 
-  currentPlan={
+
+  currentPlan = {
 
     valid:true,
 
@@ -3115,11 +3785,14 @@ function renderInvalidPlan(){
     .getElementById(
       "status"
     )
-    .innerHTML=`
+    .innerHTML = `
 
       <span class="bad">
-        Lunghezza e larghezza devono essere numeri interi:
-        i quadrotti misurano 1 × 1 m.
+
+        Lunghezza e larghezza devono essere
+        numeri interi: i quadrotti misurano
+        1 × 1 m.
+
       </span>
 
     `;
@@ -3129,42 +3802,56 @@ function renderInvalidPlan(){
     .getElementById(
       "materialResult"
     )
-    .innerHTML="";
+    .innerHTML =
+      "";
 
 
   document
     .getElementById(
       "quickResult"
     )
-    .innerHTML="";
+    .innerHTML =
+      "";
 
 
   document
     .getElementById(
       "deckPlan"
     )
-    .innerHTML="";
+    .innerHTML =
+      "";
 
 
   document
     .getElementById(
       "deckTechnical"
     )
-    .innerHTML="";
+    .innerHTML =
+      "";
 
 
   document
     .getElementById(
-      "yellowPlan"
+      "yellowPlanPreview"
     )
-    .innerHTML="";
+    .innerHTML =
+      "";
+
+
+  document
+    .getElementById(
+      "yellowPlanTechnical"
+    )
+    .innerHTML =
+      "";
 
 
   document
     .getElementById(
       "commit"
     )
-    .disabled=true;
+    .disabled =
+      true;
 
 }
 
@@ -3191,19 +3878,21 @@ function renderAll(){
 
 
 /* =========================================================
-   ORIENTATION AUTO LABEL
+   AUTO LABEL
 ========================================================= */
 
 function updateOrientationAutoLabel(){
 
-  const option=
+  const option =
+
     document
       .getElementById(
         "orientationAutoOption"
       );
 
 
-  const select=
+  const select =
+
     document
       .getElementById(
         "yellowOrientation"
@@ -3211,10 +3900,11 @@ function updateOrientationAutoLabel(){
 
 
   if(
-    select.value!=="auto"
+    select.value !==
+    "auto"
   ){
 
-    option.textContent=
+    option.textContent =
       "Automatico";
 
     return;
@@ -3223,10 +3913,11 @@ function updateOrientationAutoLabel(){
 
 
   if(
-    !currentPlan?.yellow
+    !currentPlan
+      ?.yellow
   ){
 
-    option.textContent=
+    option.textContent =
       "Automatico";
 
     return;
@@ -3234,9 +3925,12 @@ function updateOrientationAutoLabel(){
   }
 
 
-  option.textContent=
+  option.textContent =
 
-    currentPlan.yellow.orientation==="length"
+    currentPlan
+      .yellow
+      .orientation ===
+    "length"
 
     ?
 
@@ -3256,7 +3950,7 @@ function updateOrientationAutoLabel(){
 
 function renderSummary(){
 
-  const plan=
+  const plan =
     currentPlan;
 
 
@@ -3264,7 +3958,7 @@ function renderSummary(){
     .getElementById(
       "titleSummary"
     )
-    .textContent=
+    .textContent =
 
       `${plan.name} · ${plan.length} × ${plan.width} m`;
 
@@ -3273,17 +3967,20 @@ function renderSummary(){
     .getElementById(
       "printEventTitle"
     )
-    .textContent=
+    .textContent =
       plan.name;
 
 
 
-  let status="";
+  let status =
+    "";
 
 
-  if(!warehouseConfigured){
+  if(
+    !warehouseConfigured
+  ){
 
-    status=`
+    status = `
 
       <span class="good">
         ✓ Geometria valida
@@ -3297,11 +3994,12 @@ function renderSummary(){
 
   }
 
+
   else if(
     !plan.deficits.length
   ){
 
-    status=`
+    status = `
 
       <span class="good">
         ✓ Materiale disponibile
@@ -3311,9 +4009,10 @@ function renderSummary(){
 
   }
 
+
   else{
 
-    status=`
+    status = `
 
       <span class="bad">
         ⚠ Materiale insufficiente
@@ -3345,7 +4044,7 @@ function renderSummary(){
     .getElementById(
       "status"
     )
-    .innerHTML=
+    .innerHTML =
       status;
 
 
@@ -3360,26 +4059,42 @@ function renderSummary(){
       "material-unavailable",
 
       warehouseConfigured
+
       &&
+
       plan.deficits.length>0
 
     );
 
 
 
-  const materialHtml=
+  /*
+    MATERIALE
+  */
+
+  const materialHtml =
 
     ITEMS
     .map(item=>{
 
-      const quantity=
-        plan.requirements[item.key]
+      const quantity =
+
+        plan.requirements[
+          item.key
+        ]
+
         ||
+
         0;
 
 
-      if(!quantity)
+      if(
+        !quantity
+      ){
+
         return "";
+
+      }
 
 
       return `
@@ -3406,12 +4121,23 @@ function renderSummary(){
     .getElementById(
       "materialResult"
     )
-    .innerHTML=
-      materialHtml;
+    .innerHTML =
+
+      materialHtml
+
+      ||
+
+      `<div class="small">
+        Nessun materiale.
+      </div>`;
 
 
 
-  const checker=
+  /*
+    FINITURA
+  */
+
+  const checker =
 
     document
       .getElementById(
@@ -3423,9 +4149,11 @@ function renderSummary(){
   let floorText;
 
 
-  if(checker){
+  if(
+    checker
+  ){
 
-    floorText=
+    floorText =
 
       `${
         COLOR_INFO[
@@ -3447,9 +4175,10 @@ function renderSummary(){
 
   }
 
+
   else{
 
-    floorText=
+    floorText =
 
       COLOR_INFO[
         document
@@ -3463,43 +4192,39 @@ function renderSummary(){
 
 
 
-  const orientationText=
+  const orientationText =
 
     plan.yellowEnabled
 
     ?
 
     (
-      plan.yellow.orientation==="length"
+      plan
+        .yellow
+        .orientation ===
+      "length"
+
       ?
-      "Lungo lunghezza"
+
+      "Lunghezza"
+
       :
-      "Lungo larghezza"
+
+      "Larghezza"
     )
 
     :
 
     "—";
 
-
-  const alignedText=
-
-    plan.yellowEnabled
-
-    ?
-
-    plan.yellow.alignedJoints
-
-    :
-
-    "—";
 
 
   document
     .getElementById(
       "quickResult"
     )
-    .innerHTML=`
+    .innerHTML = `
+
 
       <div class="chip total-chip">
 
@@ -3561,13 +4286,21 @@ function renderSummary(){
         Gialli
 
         <strong>
+
           ${
             plan.yellowEnabled
+
             ?
-            plan.yellow.totalPieces
+
+            plan
+              .yellow
+              .totalPieces
+
             :
+
             0
           }
+
         </strong>
 
       </div>
@@ -3586,10 +4319,24 @@ function renderSummary(){
 
       <div class="chip wide-chip">
 
-        Giunte allineate tra fasce
+        Giunte allineate
 
         <strong>
-          ${alignedText}
+
+          ${
+            plan.yellowEnabled
+
+            ?
+
+            plan
+              .yellow
+              .alignedJoints
+
+            :
+
+            "—"
+          }
+
         </strong>
 
       </div>
@@ -3602,7 +4349,8 @@ function renderSummary(){
     .getElementById(
       "yellowDrawingBox"
     )
-    .style.display=
+    .style
+    .display =
 
       plan.yellowEnabled
 
@@ -3615,7 +4363,9 @@ function renderSummary(){
       "none";
 
 
-  const signature=
+
+  const signature =
+
     planSignature(
       plan
     );
@@ -3625,9 +4375,9 @@ function renderSummary(){
     .getElementById(
       "commit"
     )
-    .disabled=
+    .disabled =
 
-      signature===
+      signature ===
       lastCommittedSignature;
 
 }
@@ -3635,15 +4385,21 @@ function renderSummary(){
 
 
 /* =========================================================
-   PLAN SIGNATURE
+   SIGNATURE
 ========================================================= */
 
 function planSignature(
   plan
 ){
 
-  if(!plan?.valid)
+  if(
+    !plan
+      ?.valid
+  ){
+
     return "";
+
+  }
 
 
   return JSON.stringify({
@@ -3661,6 +4417,7 @@ function planSignature(
       plan.requirements,
 
     checker:
+
       document
         .getElementById(
           "checkerEnabled"
@@ -3668,6 +4425,7 @@ function planSignature(
         .checked,
 
     color:
+
       document
         .getElementById(
           "singleColor"
@@ -3675,6 +4433,7 @@ function planSignature(
         .value,
 
     colorA:
+
       document
         .getElementById(
           "checkerA"
@@ -3682,6 +4441,7 @@ function planSignature(
         .value,
 
     colorB:
+
       document
         .getElementById(
           "checkerB"
@@ -3692,7 +4452,8 @@ function planSignature(
       plan.yellowEnabled,
 
     orientation:
-      plan.yellow?.orientation
+      plan.yellow
+        ?.orientation
 
   });
 
@@ -3701,7 +4462,7 @@ function planSignature(
 
 
 /* =========================================================
-   DECK SVG
+   DECK SVG MARKUP
 ========================================================= */
 
 function deckSvgMarkup(
@@ -3709,45 +4470,87 @@ function deckSvgMarkup(
   heightPx
 ){
 
-  const plan=
+  const plan =
     currentPlan;
 
 
-  const margin=28;
+  const margin =
+    widthPx>=900
+    ?
+    62
+    :
+    35;
 
 
-  const scale=
+  const dimensionFont =
+
+    widthPx>=900
+
+    ?
+
+    25
+
+    :
+
+    18;
+
+
+  const scale =
 
     Math.min(
 
-      (widthPx-margin*2)/
+      (
+        widthPx-
+        margin*2
+      )
+      /
       plan.length,
 
-      (heightPx-margin*2)/
+      (
+        heightPx-
+        margin*2
+      )
+      /
       plan.width
 
     );
 
 
-  const totalW=
+  const totalW =
+
     plan.length*
     scale;
 
 
-  const totalH=
+  const totalH =
+
     plan.width*
     scale;
 
 
-  const originX=
-    (widthPx-totalW)/2;
+  const originX =
+
+    (
+      widthPx-
+      totalW
+    )
+    /
+    2;
 
 
-  const originY=
-    (heightPx-totalH)/2;
+  const originY =
+
+    (
+      heightPx-
+      totalH
+    )
+    /
+    2;
 
 
-  let html="";
+  let html =
+    "";
+
 
 
   for(
@@ -3756,13 +4559,14 @@ function deckSvgMarkup(
     plan.deck.cells
   ){
 
-    const color=
+    const color =
+
       COLOR_INFO[
         cell.color
       ];
 
 
-    html+=`
+    html += `
 
       <rect
 
@@ -3786,7 +4590,13 @@ function deckSvgMarkup(
 
         stroke="#444"
 
-        stroke-width="1.4"
+        stroke-width="${
+          widthPx>=900
+          ?
+          2
+          :
+          1.4
+        }"
 
       />
 
@@ -3796,34 +4606,61 @@ function deckSvgMarkup(
 
 
 
-  html+=`
+  html += `
 
     <text
+
       x="${widthPx/2}"
-      y="${originY-8}"
+
+      y="${originY-12}"
+
       text-anchor="middle"
-      font-family="Arial"
-      font-size="14"
-      font-weight="700"
+
+      font-family="
+        Arial,
+        Helvetica,
+        sans-serif
+      "
+
+      font-size="${dimensionFont}"
+
+      font-weight="800"
+
+      fill="#111"
+
     >
       ${plan.length.toFixed(2)} m
     </text>
 
 
     <text
-      x="${originX-10}"
+
+      x="${originX-15}"
+
       y="${heightPx/2}"
+
       text-anchor="middle"
-      font-family="Arial"
-      font-size="14"
-      font-weight="700"
+
+      font-family="
+        Arial,
+        Helvetica,
+        sans-serif
+      "
+
+      font-size="${dimensionFont}"
+
+      font-weight="800"
+
+      fill="#111"
+
       transform="
         rotate(
           -90
-          ${originX-10}
+          ${originX-15}
           ${heightPx/2}
         )
       "
+
     >
       ${plan.width.toFixed(2)} m
     </text>
@@ -3832,13 +4669,19 @@ function deckSvgMarkup(
 
 
   return html;
+
 }
 
 
 
+/* =========================================================
+   DECK PREVIEW
+========================================================= */
+
 function renderDeckPlan(){
 
-  const svg=
+  const svg =
+
     document
       .getElementById(
         "deckPlan"
@@ -3846,24 +4689,36 @@ function renderDeckPlan(){
 
 
   svg.setAttribute(
+
     "viewBox",
+
     "0 0 700 430"
+
   );
 
 
-  svg.innerHTML=
+  svg.innerHTML =
+
     deckSvgMarkup(
+
       700,
+
       430
+
     );
 
 }
 
 
 
+/* =========================================================
+   DECK TECHNICAL
+========================================================= */
+
 function renderDeckTechnical(){
 
-  const svg=
+  const svg =
+
     document
       .getElementById(
         "deckTechnical"
@@ -3871,15 +4726,22 @@ function renderDeckTechnical(){
 
 
   svg.setAttribute(
+
     "viewBox",
-    "0 0 1000 520"
+
+    "0 0 1000 540"
+
   );
 
 
-  svg.innerHTML=
+  svg.innerHTML =
+
     deckSvgMarkup(
+
       1000,
-      520
+
+      540
+
     );
 
 }
@@ -3887,310 +4749,791 @@ function renderDeckTechnical(){
 
 
 /* =========================================================
-   YELLOW SVG
+   YELLOW MARKUP
 ========================================================= */
 
-function renderYellowPlan(){
-
-  const svg=
-    document
-      .getElementById(
-        "yellowPlan"
-      );
-
-
-  svg.setAttribute(
-    "viewBox",
-    "0 0 1000 520"
-  );
-
+function yellowPlanMarkup(
+  widthPx,
+  heightPx,
+  technical=false
+){
 
   if(
     !currentPlan.yellowEnabled
   ){
 
-    svg.innerHTML="";
+    return `
 
-    return;
+      <text
+
+        x="${widthPx/2}"
+
+        y="${heightPx/2}"
+
+        text-anchor="middle"
+
+        font-family="
+          Arial,
+          Helvetica,
+          sans-serif
+        "
+
+        font-size="${
+          technical
+          ?
+          24
+          :
+          18
+        }"
+
+        font-weight="700"
+
+        fill="#777"
+
+      >
+        Pannelli gialli non utilizzati
+      </text>
+
+    `;
 
   }
 
 
-  const plan=
+
+  const plan =
     currentPlan;
 
 
-  const yellow=
+  const yellow =
     plan.yellow;
 
 
-  const margin=45;
+  const margin =
+
+    technical
+    ?
+    78
+    :
+    48;
 
 
-  const scale=
+  const scale =
 
     Math.min(
 
-      (1000-margin*2)/
+      (
+        widthPx-
+        margin*2
+      )
+      /
       plan.length,
 
-      (520-margin*2)/
+      (
+        heightPx-
+        margin*2
+      )
+      /
       plan.width
 
     );
 
 
-  const originX=
-    (1000-plan.length*scale)/2;
+  const originX =
+
+    (
+      widthPx-
+      plan.length*
+      scale
+    )
+    /
+    2;
 
 
-  const originY=
-    (520-plan.width*scale)/2;
+  const originY =
+
+    (
+      heightPx-
+      plan.width*
+      scale
+    )
+    /
+    2;
 
 
-  let html="";
+
+  const pieceFont =
+
+    technical
+    ?
+    23
+    :
+    17;
 
 
-  yellow.strips.forEach(strip=>{
+  const titleFont =
 
-    let offset=0;
-
-
-    strip.sequence.forEach(
-      (
-        piece,
-        pieceIndex
-      )=>{
+    technical
+    ?
+    22
+    :
+    16;
 
 
-        let x;
+  const lateralFont =
 
-        let y;
-
-        let w;
-
-        let h;
-
-
-        if(
-          yellow.orientation==="length"
-        ){
-
-          x=
-            originX+
-            offset*
-            scale;
+    technical
+    ?
+    19
+    :
+    14;
 
 
-          y=
-            originY+
-            strip.index*
-            YELLOW_WIDTH*
-            scale;
+  let html =
+    "";
 
 
-          w=
-            piece*
-            scale;
+
+  yellow.strips
+  .forEach(strip=>{
 
 
-          h=
-            YELLOW_WIDTH*
-            scale;
-
-        }
-
-        else{
-
-          x=
-            originX+
-            strip.index*
-            YELLOW_WIDTH*
-            scale;
+    let offset =
+      0;
 
 
-          y=
-            originY+
-            offset*
-            scale;
+    strip.sequence
+    .forEach(piece=>{
 
 
-          w=
-            YELLOW_WIDTH*
-            scale;
+      let x;
+
+      let y;
+
+      let w;
+
+      let h;
 
 
-          h=
-            piece*
-            scale;
+      if(
+        yellow.orientation ===
+        "length"
+      ){
 
-        }
+        x =
+
+          originX
+
+          +
+
+          offset*
+          scale;
 
 
-        html+=`
+        y =
 
-          <rect
+          originY
 
-            x="${x}"
-            y="${y}"
+          +
 
-            width="${w}"
-            height="${h}"
+          strip.index*
+          YELLOW_WIDTH*
+          scale;
 
-            fill="#f0c729"
 
-            stroke="${
-              strip.lateral
+        w =
+
+          piece*
+          scale;
+
+
+        h =
+
+          YELLOW_WIDTH*
+          scale;
+
+      }
+
+
+      else{
+
+        x =
+
+          originX
+
+          +
+
+          strip.index*
+          YELLOW_WIDTH*
+          scale;
+
+
+        y =
+
+          originY
+
+          +
+
+          offset*
+          scale;
+
+
+        w =
+
+          YELLOW_WIDTH*
+          scale;
+
+
+        h =
+
+          piece*
+          scale;
+
+      }
+
+
+
+      /*
+        LATERALE:
+        colore diverso e bordo
+        più evidente.
+      */
+
+      html += `
+
+        <rect
+
+          x="${x}"
+
+          y="${y}"
+
+          width="${w}"
+
+          height="${h}"
+
+          fill="${
+            strip.lateral
+            ?
+            "#ffd84a"
+            :
+            "#f0c729"
+          }"
+
+          stroke="${
+            strip.lateral
+            ?
+            "#8d3d00"
+            :
+            "#6b5a00"
+          }"
+
+          stroke-width="${
+            strip.lateral
+
+            ?
+
+            (
+              technical
               ?
-              "#a95e00"
+              5
               :
-              "#725e00"
+              3.5
+            )
+
+            :
+
+            (
+              technical
+              ?
+              2
+              :
+              1.4
+            )
+          }"
+
+        />
+
+      `;
+
+
+
+      /*
+        MISURA PEZZO
+      */
+
+      if(
+        w>28
+
+        &&
+
+        h>18
+      ){
+
+        html += `
+
+          <text
+
+            x="${
+              x+
+              w/2
             }"
+
+            y="${
+              y+
+              h/2+
+              pieceFont*.34
+            }"
+
+            text-anchor="middle"
+
+            font-family="
+              Arial,
+              Helvetica,
+              sans-serif
+            "
+
+            font-size="${pieceFont}"
+
+            font-weight="800"
+
+            fill="#111"
+
+          >
+            ${piece} m
+          </text>
+
+        `;
+
+      }
+
+
+      offset +=
+        piece;
+
+    });
+
+
+
+    /*
+      BORDO LISCIO ESTERNO
+      del laterale.
+    */
+
+    if(
+      strip.lateral
+    ){
+
+      if(
+        yellow.orientation ===
+        "length"
+      ){
+
+        const outerY =
+
+          strip.index===0
+
+          ?
+
+          originY
+
+          :
+
+          originY+
+          plan.width*
+          scale;
+
+
+        html += `
+
+          <line
+
+            x1="${originX}"
+
+            y1="${outerY}"
+
+            x2="${
+              originX+
+              plan.length*
+              scale
+            }"
+
+            y2="${outerY}"
+
+            stroke="#712d00"
 
             stroke-width="${
-              strip.lateral
+              technical
               ?
-              3
+              11
               :
-              1.5
+              8
             }"
+
+            stroke-linecap="round"
 
           />
 
         `;
 
+      }
 
 
-        /*
-          Lunghezza pezzo.
-        */
+      else{
 
-        if(
-          w>38
-          &&
-          h>22
-        ){
+        const outerX =
 
-          html+=`
+          strip.index===0
 
-            <text
+          ?
 
-              x="${x+w/2}"
-              y="${y+h/2+4}"
+          originX
 
-              text-anchor="middle"
+          :
 
-              font-family="Arial"
-
-              font-size="12"
-
-              font-weight="700"
-
-            >
-              ${piece}m
-            </text>
-
-          `;
-
-        }
+          originX+
+          plan.length*
+          scale;
 
 
+        html += `
 
-        /*
-          L sui laterali.
-        */
+          <line
 
-        if(
-          strip.lateral
-          &&
-          w>22
-          &&
-          h>18
-        ){
+            x1="${outerX}"
 
-          html+=`
+            y1="${originY}"
 
-            <text
+            x2="${outerX}"
 
-              x="${x+8}"
-              y="${y+14}"
+            y2="${
+              originY+
+              plan.width*
+              scale
+            }"
 
-              font-family="Arial"
+            stroke="#712d00"
 
-              font-size="11"
+            stroke-width="${
+              technical
+              ?
+              11
+              :
+              8
+            }"
 
-              font-weight="800"
+            stroke-linecap="round"
 
-              fill="#8b4300"
+          />
 
-            >
-              L
-            </text>
-
-          `;
-
-        }
-
-
-        offset+=
-          piece;
+        `;
 
       }
-    );
+
+    }
 
   });
 
 
 
-  html+=`
+  /*
+    LABEL LATERALE
+  */
+
+  if(
+    yellow.orientation ===
+    "length"
+  ){
+
+    html += `
+
+      <text
+
+        x="${widthPx/2}"
+
+        y="${originY-13}"
+
+        text-anchor="middle"
+
+        font-family="
+          Arial,
+          Helvetica,
+          sans-serif
+        "
+
+        font-size="${lateralFont}"
+
+        font-weight="900"
+
+        fill="#712d00"
+
+      >
+        LATERALE · BORDO LISCIO
+      </text>
+
+
+      <text
+
+        x="${widthPx/2}"
+
+        y="${
+          originY+
+          plan.width*
+          scale+
+          lateralFont+
+          8
+        }"
+
+        text-anchor="middle"
+
+        font-family="
+          Arial,
+          Helvetica,
+          sans-serif
+        "
+
+        font-size="${lateralFont}"
+
+        font-weight="900"
+
+        fill="#712d00"
+
+      >
+        LATERALE · BORDO LISCIO
+      </text>
+
+    `;
+
+  }
+
+
+  else{
+
+    html += `
+
+      <text
+
+        x="${originX-17}"
+
+        y="${heightPx/2}"
+
+        text-anchor="middle"
+
+        font-family="
+          Arial,
+          Helvetica,
+          sans-serif
+        "
+
+        font-size="${lateralFont}"
+
+        font-weight="900"
+
+        fill="#712d00"
+
+        transform="
+          rotate(
+            -90
+            ${originX-17}
+            ${heightPx/2}
+          )
+        "
+
+      >
+        LATERALE · BORDO LISCIO
+      </text>
+
+
+      <text
+
+        x="${
+          originX+
+          plan.length*
+          scale+
+          17
+        }"
+
+        y="${heightPx/2}"
+
+        text-anchor="middle"
+
+        font-family="
+          Arial,
+          Helvetica,
+          sans-serif
+        "
+
+        font-size="${lateralFont}"
+
+        font-weight="900"
+
+        fill="#712d00"
+
+        transform="
+          rotate(
+            90
+            ${
+              originX+
+              plan.length*
+              scale+
+              17
+            }
+            ${heightPx/2}
+          )
+        "
+
+      >
+        LATERALE · BORDO LISCIO
+      </text>
+
+    `;
+
+  }
+
+
+
+  /*
+    ORIENTAMENTO
+  */
+
+  html += `
 
     <text
 
-      x="500"
-      y="25"
+      x="${widthPx/2}"
+
+      y="${
+        technical
+        ?
+        30
+        :
+        24
+      }"
 
       text-anchor="middle"
 
-      font-family="Arial"
+      font-family="
+        Arial,
+        Helvetica,
+        sans-serif
+      "
 
-      font-size="15"
+      font-size="${titleFont}"
 
-      font-weight="700"
+      font-weight="800"
+
+      fill="#111"
 
     >
+
       ${
-        yellow.orientation==="length"
+        yellow.orientation ===
+        "length"
+
         ?
+
         "Pannelli orientati lungo la lunghezza"
+
         :
+
         "Pannelli orientati lungo la larghezza"
       }
+
     </text>
 
   `;
 
 
-  svg.innerHTML=
-    html;
+  return html;
 
 }
 
 
 
 /* =========================================================
-   THREE
+   YELLOW RENDER
+========================================================= */
+
+function renderYellowPlan(){
+
+  const preview =
+
+    document
+      .getElementById(
+        "yellowPlanPreview"
+      );
+
+
+  preview.setAttribute(
+
+    "viewBox",
+
+    "0 0 700 430"
+
+  );
+
+
+  preview.innerHTML =
+
+    yellowPlanMarkup(
+
+      700,
+
+      430,
+
+      false
+
+    );
+
+
+
+  const technical =
+
+    document
+      .getElementById(
+        "yellowPlanTechnical"
+      );
+
+
+  technical.setAttribute(
+
+    "viewBox",
+
+    "0 0 1000 540"
+
+  );
+
+
+  technical.innerHTML =
+
+    yellowPlanMarkup(
+
+      1000,
+
+      540,
+
+      true
+
+    );
+
+}
+
+
+
+/* =========================================================
+   THREE INIT
 ========================================================= */
 
 function init3D(){
 
-  const container=
+  const container =
+
     document
       .getElementById(
         "viewer"
       );
 
 
-  renderer=
+  renderer =
+
     new THREE.WebGLRenderer({
 
       antialias:true,
@@ -4224,7 +5567,8 @@ function init3D(){
   );
 
 
-  camera=
+  camera =
+
     new THREE.PerspectiveCamera(
 
       45,
@@ -4239,7 +5583,8 @@ function init3D(){
     );
 
 
-  controls=
+  controls =
+
     new OrbitControls(
 
       camera,
@@ -4249,14 +5594,16 @@ function init3D(){
     );
 
 
-  controls.enableDamping=true;
+  controls.enableDamping =
+    true;
 
 
   controls.addEventListener(
     "start",
     ()=>{
 
-      cameraUserAdjusted=true;
+      cameraUserAdjusted =
+        true;
 
     }
   );
@@ -4274,9 +5621,14 @@ function init3D(){
 
 
 
+/* =========================================================
+   THREE RESIZE
+========================================================= */
+
 function resize3D(){
 
-  const container=
+  const container =
+
     document
       .getElementById(
         "viewer"
@@ -4292,9 +5644,12 @@ function resize3D(){
   );
 
 
-  camera.aspect=
+  camera.aspect =
 
-    container.clientWidth/
+    container.clientWidth
+
+    /
+
     container.clientHeight;
 
 
@@ -4304,6 +5659,10 @@ function resize3D(){
 
 
 
+/* =========================================================
+   ANIMATE
+========================================================= */
+
 function animate(){
 
   requestAnimationFrame(
@@ -4311,14 +5670,19 @@ function animate(){
   );
 
 
-  controls?.update();
+  controls
+    ?.update();
 
 
   if(
     renderer
+
     &&
+
     scene
+
     &&
+
     camera
   ){
 
@@ -4334,20 +5698,21 @@ function animate(){
 
 
 /* =========================================================
-   3D RENDER
+   3D
 ========================================================= */
 
 function render3D(){
 
-  const plan=
+  const plan =
     currentPlan;
 
 
-  scene=
+  scene =
     new THREE.Scene();
 
 
-  scene.background=
+  scene.background =
+
     new THREE.Color(
       0xf1f2f3
     );
@@ -4368,27 +5733,46 @@ function render3D(){
   );
 
 
-  const maxDimension=
+
+  /*
+    GRID METRICA
+  */
+
+  const maxDimension =
 
     Math.max(
+
       plan.length,
+
       plan.width,
+
       4
+
     );
 
 
-  let gridSize=
+  let gridSize =
 
     Math.ceil(
-      maxDimension+8
+
+      maxDimension+
+      8
+
     );
 
 
-  if(gridSize%2!==0)
+  if(
+    gridSize%2 !==
+    0
+  ){
+
     gridSize++;
 
+  }
 
-  const grid=
+
+  const grid =
+
     new THREE.GridHelper(
 
       gridSize,
@@ -4400,16 +5784,22 @@ function render3D(){
 
   grid.position.set(
 
-    plan.length/2,
+    Math.round(
+      plan.length/2
+    ),
 
     -.01,
 
-    plan.width/2
+    Math.round(
+      plan.width/2
+    )
 
   );
 
 
-  scene.add(grid);
+  scene.add(
+    grid
+  );
 
 
 
@@ -4421,122 +5811,303 @@ function render3D(){
     plan.yellowEnabled
   ){
 
-    const yellowMaterial=
+    const yellowMaterial =
+
       new THREE.MeshStandardMaterial({
-        color:0xe6bc20
+
+        color:
+          0xe6bc20,
+
+        roughness:
+          .76
+
       });
 
 
-    const sideMaterial=
+    const lateralMaterial =
+
       new THREE.MeshStandardMaterial({
-        color:0xd7a512
+
+        color:
+          0xffcb28,
+
+        roughness:
+          .72
+
       });
 
 
-    plan.yellow.strips
+    const smoothEdgeMaterial =
+
+      new THREE.MeshStandardMaterial({
+
+        color:
+          0x712d00,
+
+        roughness:
+          .8
+
+      });
+
+
+
+    plan
+      .yellow
+      .strips
       .forEach(strip=>{
 
-        let offset=0;
+
+        let offset =
+          0;
 
 
-        strip.sequence.forEach(piece=>{
-
-          let geometry;
-
-          let x;
-
-          let z;
+        strip
+          .sequence
+          .forEach(piece=>{
 
 
-          if(
-            plan.yellow.orientation===
-            "length"
-          ){
+            let geometry;
 
-            geometry=
-              new THREE.BoxGeometry(
+            let x;
 
-                piece-.018,
+            let z;
 
-                .07,
 
-                YELLOW_WIDTH-.018
+
+            if(
+              plan
+                .yellow
+                .orientation ===
+              "length"
+            ){
+
+              geometry =
+
+                new THREE.BoxGeometry(
+
+                  piece-.018,
+
+                  .075,
+
+                  YELLOW_WIDTH-.018
+
+                );
+
+
+              x =
+
+                offset+
+                piece/2;
+
+
+              z =
+
+                strip.index*
+                YELLOW_WIDTH
+
+                +
+
+                YELLOW_WIDTH/2;
+
+            }
+
+
+            else{
+
+              geometry =
+
+                new THREE.BoxGeometry(
+
+                  YELLOW_WIDTH-.018,
+
+                  .075,
+
+                  piece-.018
+
+                );
+
+
+              x =
+
+                strip.index*
+                YELLOW_WIDTH
+
+                +
+
+                YELLOW_WIDTH/2;
+
+
+              z =
+
+                offset+
+                piece/2;
+
+            }
+
+
+
+            const mesh =
+
+              new THREE.Mesh(
+
+                geometry,
+
+                strip.lateral
+
+                ?
+
+                lateralMaterial
+
+                :
+
+                yellowMaterial
 
               );
 
 
-            x=
-              offset+
-              piece/2;
+            mesh.position.set(
 
+              x,
 
-            z=
-              strip.index*
-              YELLOW_WIDTH+
-              YELLOW_WIDTH/2;
+              .048,
 
-          }
-
-          else{
-
-            geometry=
-              new THREE.BoxGeometry(
-
-                YELLOW_WIDTH-.018,
-
-                .07,
-
-                piece-.018
-
-              );
-
-
-            x=
-              strip.index*
-              YELLOW_WIDTH+
-              YELLOW_WIDTH/2;
-
-
-            z=
-              offset+
-              piece/2;
-
-          }
-
-
-          const mesh=
-            new THREE.Mesh(
-
-              geometry,
-
-              strip.lateral
-              ?
-              sideMaterial
-              :
-              yellowMaterial
+              z
 
             );
 
 
-          mesh.position.set(
-
-            x,
-
-            .045,
-
-            z
-
-          );
+            scene.add(
+              mesh
+            );
 
 
-          scene.add(mesh);
+
+            /*
+              LATERALE:
+              disegniamo fisicamente
+              il lato liscio esterno
+              molto più scuro.
+            */
+
+            if(
+              strip.lateral
+            ){
+
+              let edgeGeometry;
+
+              let edgeX;
+
+              let edgeZ;
 
 
-          offset+=piece;
 
-        });
+              if(
+                plan
+                  .yellow
+                  .orientation ===
+                "length"
+              ){
 
-      });
+                edgeGeometry =
+
+                  new THREE.BoxGeometry(
+
+                    piece-.015,
+
+                    .115,
+
+                    .075
+
+                  );
+
+
+                edgeX =
+                  x;
+
+
+                edgeZ =
+
+                  strip.index===0
+
+                  ?
+
+                  0
+
+                  :
+
+                  plan.width;
+
+              }
+
+
+              else{
+
+                edgeGeometry =
+
+                  new THREE.BoxGeometry(
+
+                    .075,
+
+                    .115,
+
+                    piece-.015
+
+                  );
+
+
+                edgeX =
+
+                  strip.index===0
+
+                  ?
+
+                  0
+
+                  :
+
+                  plan.length;
+
+
+                edgeZ =
+                  z;
+
+              }
+
+
+
+              const edgeMesh =
+
+                new THREE.Mesh(
+
+                  edgeGeometry,
+
+                  smoothEdgeMaterial
+
+                );
+
+
+              edgeMesh.position.set(
+
+                edgeX,
+
+                .074,
+
+                edgeZ
+
+              );
+
+
+              scene.add(
+                edgeMesh
+              );
+
+            }
+
+
+            offset +=
+              piece;
+
+          });
 
   }
 
@@ -4546,29 +6117,40 @@ function render3D(){
     QUADROTTI
   */
 
-  if(showDeck){
+  if(
+    showDeck
+  ){
 
-    const materialCache={};
+    const materialCache = {};
 
 
     Object.entries(
       COLOR_INFO
     )
     .forEach(
-      ([key,value])=>{
+      (
+        [
+          key,
+          value
+        ]
+      )=>{
 
-        materialCache[key]=
+
+        materialCache[key] =
+
           new THREE.MeshStandardMaterial({
 
             color:
               value.three,
 
-            roughness:.85
+            roughness:
+              .84
 
           });
 
       }
     );
+
 
 
     for(
@@ -4577,7 +6159,8 @@ function render3D(){
       plan.deck.cells
     ){
 
-      const geometry=
+      const geometry =
+
         new THREE.BoxGeometry(
 
           .97,
@@ -4589,7 +6172,8 @@ function render3D(){
         );
 
 
-      const mesh=
+      const mesh =
+
         new THREE.Mesh(
 
           geometry,
@@ -4607,7 +6191,7 @@ function render3D(){
 
         plan.yellowEnabled
         ?
-        .145
+        .148
         :
         .055,
 
@@ -4616,7 +6200,9 @@ function render3D(){
       );
 
 
-      scene.add(mesh);
+      scene.add(
+        mesh
+      );
 
     }
 
@@ -4625,20 +6211,23 @@ function render3D(){
 
 
   /*
-    CAMERA
+    CAMERA:
+    stessa logica del planner strutture.
 
-    Come nell'altro planner:
-    dopo che la tocchi manualmente
-    non viene resettata.
+    Una volta spostata manualmente,
+    non si resetta più.
   */
 
   if(
     !hasRendered3D
+
     ||
+
     !cameraUserAdjusted
   ){
 
-    const center=
+    const center =
+
       new THREE.Vector3(
 
         plan.length/2,
@@ -4650,12 +6239,16 @@ function render3D(){
       );
 
 
-    const distance=
+    const distance =
 
       Math.max(
+
         plan.length,
+
         plan.width,
+
         5
+
       );
 
 
@@ -4664,10 +6257,10 @@ function render3D(){
       center.x+
       distance*.72,
 
-      distance*.7,
+      distance*.70,
 
       center.z+
-      distance*.9
+      distance*.90
 
     );
 
@@ -4686,7 +6279,8 @@ function render3D(){
     controls.update();
 
 
-    hasRendered3D=true;
+    hasRendered3D =
+      true;
 
   }
 
@@ -4700,7 +6294,7 @@ function render3D(){
 
 function toggleDeckVisibility(){
 
-  showDeck=
+  showDeck =
     !showDeck;
 
 
@@ -4708,12 +6302,16 @@ function toggleDeckVisibility(){
     .getElementById(
       "toggleDeck"
     )
-    .textContent=
+    .textContent =
 
       showDeck
+
       ?
+
       "Piano ON"
+
       :
+
       "Piano OFF";
 
 
@@ -4723,8 +6321,11 @@ function toggleDeckVisibility(){
     )
     .classList
     .toggle(
+
       "active-button",
+
       !showDeck
+
     );
 
 
@@ -4741,12 +6342,16 @@ function toggleDeckVisibility(){
 function commitPlan(){
 
   if(
-    !currentPlan?.valid
+    !currentPlan
+      ?.valid
   ){
 
     return;
 
   }
+
+
+  syncSharedStorage();
 
 
   if(
@@ -4762,8 +6367,17 @@ function commitPlan(){
   }
 
 
+  /*
+    Ricalcola col residuo più recente.
+  */
+
+  calculatePlan();
+
+
   if(
-    currentPlan.deficits.length
+    currentPlan
+      .deficits
+      .length
   ){
 
     alert(
@@ -4775,62 +6389,104 @@ function commitPlan(){
   }
 
 
-  const signature=
+
+  const signature =
+
     planSignature(
       currentPlan
     );
 
 
+  const result =
+
+    commitSharedLoad({
+
+      source:
+        "pedane",
+
+      name:
+        currentPlan.name,
+
+      length:
+        currentPlan.length,
+
+      width:
+        currentPlan.width,
+
+      requirements:
+        currentPlan.requirements,
+
+      signature
+
+    });
+
+
+
   if(
-    signature===
-    lastCommittedSignature
+    !result.ok
   ){
+
+    if(
+      result.reason ===
+      "duplicate"
+    ){
+
+      alert(
+        "Questo carico è già stato confermato."
+      );
+
+    }
+
+
+    else if(
+      result.reason ===
+      "insufficient"
+    ){
+
+      alert(
+        "Nel frattempo il materiale disponibile non è più sufficiente."
+      );
+
+    }
+
+
+    else{
+
+      alert(
+        "Imposta prima il magazzino."
+      );
+
+    }
+
+
+    syncSharedStorage();
+
+    calculatePlan();
 
     return;
 
   }
 
 
-  Object.entries(
-    currentPlan.requirements
-  )
-  .forEach(
-    ([key,quantity])=>{
 
-      if(quantity){
-
-        remaining[key]-=
-          quantity;
-
-      }
-
-    }
-  );
+  warehouse = {
+    ...result.state.warehouse
+  };
 
 
-  allocations.push({
-
-    name:
-      currentPlan.name,
-
-    length:
-      currentPlan.length,
-
-    width:
-      currentPlan.width,
-
-    requirements:{
-      ...currentPlan.requirements
-    }
-
-  });
+  remaining = {
+    ...result.state.remaining
+  };
 
 
-  lastCommittedSignature=
+  allocations = [
+    ...result.state.allocations
+  ];
+
+
+  lastCommittedSignature =
     signature;
 
-
-  persistState();
 
   renderRemaining();
 
@@ -4848,16 +6504,22 @@ function commitPlan(){
 
 function renderAllocations(){
 
-  const root=
+  syncSharedStorage();
+
+
+  const root =
+
     document
       .getElementById(
         "allocations"
       );
 
 
-  if(!allocations.length){
+  if(
+    !allocations.length
+  ){
 
-    root.textContent=
+    root.textContent =
       "Nessuno.";
 
     return;
@@ -4865,23 +6527,65 @@ function renderAllocations(){
   }
 
 
-  root.innerHTML=
+  root.innerHTML =
 
     allocations
     .map(
-      (item,index)=>`
+      (
+        item,
+        index
+      )=>`
+
 
         <div class="allocation">
 
           <strong>
-            ${index+1}. ${item.name}
+
+            ${
+              item.source==="pedane"
+
+              ?
+
+              "PEDANA"
+
+              :
+
+              "STRUTTURA"
+            }
+
+            ·
+
+            ${index+1}.
+
+            ${item.name}
+
           </strong>
 
-          ·
 
-          ${item.length}
-          ×
-          ${item.width} m
+          ${
+            item.length
+
+            ?
+
+            ` · ${item.length}`
+
+            :
+
+            ""
+          }
+
+
+          ${
+            item.width
+
+            ?
+
+            ` × ${item.width} m`
+
+            :
+
+            ""
+          }
 
         </div>
 
@@ -4900,7 +6604,8 @@ function renderAllocations(){
 function printReport(){
 
   if(
-    !currentPlan?.valid
+    !currentPlan
+      ?.valid
   ){
 
     return;
@@ -4918,7 +6623,7 @@ function printReport(){
     .getElementById(
       "print3d"
     )
-    .src=
+    .src =
 
       renderer
         .domElement
@@ -4942,6 +6647,16 @@ function printReport(){
 
 function openSettings(){
 
+  /*
+    Ricarica sempre residui e quantità
+    più recenti dallo storage comune.
+  */
+
+  createStockInputs();
+
+  renderAllocations();
+
+
   document
     .getElementById(
       "settingsModal"
@@ -4952,6 +6667,7 @@ function openSettings(){
     );
 
 }
+
 
 
 function closeSettings(){
@@ -4970,12 +6686,13 @@ function closeSettings(){
 
 
 /* =========================================================
-   UI VISIBILITY
+   UI OPTIONS
 ========================================================= */
 
 function updateOptionVisibility(){
 
-  const checker=
+  const checker =
+
     document
       .getElementById(
         "checkerEnabled"
@@ -4989,8 +6706,11 @@ function updateOptionVisibility(){
     )
     .classList
     .toggle(
+
       "hidden",
+
       !checker
+
     );
 
 
@@ -4998,12 +6718,13 @@ function updateOptionVisibility(){
     .getElementById(
       "singleColor"
     )
-    .disabled=
+    .disabled =
       checker;
 
 
 
-  const yellow=
+  const yellow =
+
     document
       .getElementById(
         "yellowEnabled"
@@ -5017,8 +6738,11 @@ function updateOptionVisibility(){
     )
     .classList
     .toggle(
+
       "hidden",
+
       !yellow
+
     );
 
 }
@@ -5172,10 +6896,28 @@ document
 
 
 /* =========================================================
+   QUANDO TORNI NELLA PAGINA
+   aggiorna il magazzino comune.
+========================================================= */
+
+window.addEventListener(
+  "focus",
+  ()=>{
+
+    syncSharedStorage();
+
+    calculatePlan();
+
+  }
+);
+
+
+
+/* =========================================================
    START
 ========================================================= */
 
-loadPersistentState();
+syncSharedStorage();
 
 createStockInputs();
 
