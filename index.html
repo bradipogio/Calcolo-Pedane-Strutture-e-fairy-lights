@@ -7,19 +7,17 @@
 <title>Fairy Structure Planner</title>
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
   font-family:Arial,Helvetica,sans-serif;
   background:#f3f4f6;
-  color:#151515;
+  color:#171717;
 }
 
 header{
-  height:62px;
+  height:58px;
   padding:0 22px;
   background:#111;
   color:white;
@@ -35,8 +33,8 @@ header h1{
 
 button{
   border:0;
-  border-radius:7px;
-  padding:10px 14px;
+  border-radius:6px;
+  padding:9px 12px;
   cursor:pointer;
   font-weight:bold;
 }
@@ -47,7 +45,7 @@ button{
 }
 
 .secondary{
-  background:#e3e3e3;
+  background:#e4e4e4;
 }
 
 .settings-btn{
@@ -56,66 +54,86 @@ button{
 }
 
 .page{
-  max-width:1450px;
+  max-width:1550px;
   margin:auto;
-  padding:18px;
-}
-
-.main-grid{
-  display:grid;
-  grid-template-columns:320px 1fr;
-  gap:18px;
+  padding:14px;
 }
 
 .card{
   background:white;
   border-radius:10px;
-  padding:17px;
-  margin-bottom:18px;
+  padding:14px;
+  margin-bottom:14px;
   box-shadow:0 1px 5px rgba(0,0,0,.10);
 }
 
-h2{
-  font-size:18px;
-  margin:0 0 13px;
+.workspace-title{
+  display:flex;
+  align-items:baseline;
+  gap:12px;
+  margin-bottom:12px;
 }
 
-h3{
-  margin:18px 0 9px;
+.workspace-title h2{
+  margin:0;
+  font-size:20px;
+}
+
+.workspace-title span{
+  font-size:13px;
+  color:#777;
+}
+
+.workspace-grid{
+  display:grid;
+  grid-template-columns:270px 390px 1fr;
+  gap:12px;
+  align-items:stretch;
+}
+
+.panel{
+  border:1px solid #ddd;
+  border-radius:8px;
+  padding:12px;
+  min-width:0;
+}
+
+.panel h3{
+  margin:0 0 10px;
   font-size:15px;
 }
 
 label{
   display:block;
-  margin-top:11px;
+  font-size:12px;
   font-weight:bold;
-  font-size:13px;
+  margin-top:9px;
 }
 
 input[type=text],
 input[type=number],
 select{
   width:100%;
-  margin-top:4px;
-  padding:9px;
-  font-size:15px;
+  padding:8px;
+  margin-top:3px;
   border:1px solid #bbb;
-  border-radius:6px;
+  border-radius:5px;
+  font-size:14px;
   background:white;
 }
 
-.two-columns{
+.dimensions{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:9px;
+  gap:8px;
 }
 
 .check-row{
   display:flex;
   align-items:center;
-  gap:8px;
-  margin-top:15px;
-  font-size:14px;
+  gap:7px;
+  margin-top:12px;
+  font-size:13px;
 }
 
 .check-row input{
@@ -124,15 +142,75 @@ select{
 
 .actions{
   display:flex;
-  gap:8px;
+  gap:7px;
   flex-wrap:wrap;
-  margin-top:17px;
+  margin-top:13px;
 }
 
 .small{
+  font-size:11px;
   color:#666;
-  font-size:12px;
   line-height:1.4;
+}
+
+.config-row{
+  display:grid;
+  grid-template-columns:105px 1fr;
+  gap:7px;
+  align-items:end;
+}
+
+.section-control{
+  display:grid;
+  grid-template-columns:1fr 52px;
+  gap:5px;
+}
+
+.auto-btn{
+  padding:8px 5px;
+  background:#ddd;
+  font-size:11px;
+}
+
+.auto-btn.active{
+  background:#111;
+  color:white;
+}
+
+.matrix-toolbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:11px;
+  margin-bottom:5px;
+}
+
+.matrix-toolbar strong{
+  font-size:12px;
+}
+
+#matrixView{
+  width:100%;
+  height:190px;
+  border:1px solid #ddd;
+  border-radius:6px;
+  background:#fafafa;
+  display:block;
+}
+
+#viewer{
+  width:100%;
+  height:355px;
+  background:#eef0f2;
+  border-radius:6px;
+  overflow:hidden;
+}
+
+.status-line{
+  margin-top:11px;
+  padding-top:10px;
+  border-top:1px solid #ddd;
+  font-size:13px;
 }
 
 .good{
@@ -146,71 +224,29 @@ select{
 }
 
 .warning{
-  background:#fff1c9;
-  border:1px solid #dec16b;
-  border-radius:7px;
-  padding:10px;
+  margin-top:7px;
+  padding:8px;
+  border:1px solid #dfc36e;
+  background:#fff3d2;
+  border-radius:6px;
+}
+
+.compact-results{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
   margin-top:10px;
 }
 
-.config-grid{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:10px;
-  margin-bottom:14px;
-}
-
-.config-box{
-  border:1px solid #ddd;
-  border-radius:8px;
-  padding:10px;
-  background:#fafafa;
-}
-
-.config-box label{
-  margin-top:0;
-}
-
-.sections-row{
-  display:grid;
-  grid-template-columns:1fr auto;
-  gap:6px;
-  align-items:end;
-}
-
-.auto-button{
-  background:#e4e4e4;
-  padding:10px;
-  white-space:nowrap;
-}
-
-.auto-button.active{
-  background:#111;
-  color:white;
-}
-
-.metric-grid{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:9px;
-}
-
-.metric{
-  padding:10px;
+.result-box{
   border:1px solid #ddd;
   border-radius:7px;
+  padding:10px;
 }
 
-.metric span{
-  display:block;
-  color:#666;
-  font-size:12px;
-}
-
-.metric strong{
-  display:block;
-  margin-top:4px;
-  font-size:18px;
+.result-box h3{
+  margin:0 0 7px;
+  font-size:14px;
 }
 
 table{
@@ -218,59 +254,67 @@ table{
   border-collapse:collapse;
 }
 
-th,
-td{
-  padding:8px;
-  border-bottom:1px solid #ddd;
+th,td{
   text-align:left;
+  padding:5px 6px;
+  border-bottom:1px solid #e5e5e5;
+  font-size:12px;
 }
 
-#viewer{
-  width:100%;
-  height:520px;
-  background:#eceef0;
-  overflow:hidden;
-  border-radius:8px;
+.quick-data{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
+.chip{
+  border:1px solid #ddd;
+  border-radius:5px;
+  padding:6px 8px;
+  font-size:12px;
+  background:#fafafa;
+}
+
+.chip strong{
+  display:block;
+  margin-top:2px;
+  font-size:14px;
 }
 
 .views{
   display:grid;
-  gap:13px;
+  gap:12px;
 }
 
 .drawing{
   border:1px solid #ccc;
-  border-radius:8px;
-  padding:10px;
+  border-radius:7px;
+  padding:9px;
 }
 
 .drawing-title{
+  font-size:13px;
   font-weight:bold;
-  margin-bottom:5px;
+  margin-bottom:4px;
 }
 
 .drawing svg{
   width:100%;
-  height:275px;
+  height:250px;
   display:block;
 }
 
 #print3d{
   display:none;
-  max-width:100%;
-}
-
-.allocation{
-  border-bottom:1px solid #ddd;
-  padding:8px 0;
+  width:100%;
 }
 
 #modal{
   display:none;
   position:fixed;
   inset:0;
+  z-index:9999;
   background:rgba(0,0,0,.55);
-  z-index:10000;
   padding:30px;
   overflow:auto;
 }
@@ -280,31 +324,26 @@ td{
 }
 
 .modal-box{
-  max-width:700px;
+  max-width:720px;
   margin:auto;
   background:white;
-  border-radius:12px;
   padding:20px;
+  border-radius:10px;
 }
 
-.modal-header{
+.modal-head{
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
 }
 
-.modal-header h2{
+.modal-head h2{
   margin:0;
-}
-
-.close-btn{
-  font-size:18px;
-  background:#eee;
 }
 
 .stock-grid{
   display:grid;
-  grid-template-columns:1fr 100px;
+  grid-template-columns:1fr 90px;
   gap:6px 10px;
   align-items:center;
   margin-top:15px;
@@ -314,27 +353,30 @@ td{
   margin:0;
 }
 
-@media(max-width:1000px){
+.allocation{
+  padding:6px 0;
+  border-bottom:1px solid #ddd;
+  font-size:12px;
+}
 
-  .main-grid{
-    grid-template-columns:1fr;
+@media(max-width:1100px){
+  .workspace-grid{
+    grid-template-columns:1fr 1fr;
   }
 
-  .config-grid{
-    grid-template-columns:1fr;
+  .viewer-panel{
+    grid-column:1 / -1;
   }
 }
 
 @media(max-width:700px){
-
-  .metric-grid{
-    grid-template-columns:1fr 1fr;
+  .workspace-grid,
+  .compact-results{
+    grid-template-columns:1fr;
   }
-
 }
 
 @media print{
-
   body{
     background:white;
   }
@@ -350,22 +392,17 @@ td{
     max-width:none;
   }
 
-  .main-grid{
-    display:block;
-  }
-
   .card{
     box-shadow:none;
     border:0;
     padding:5px 0;
-    break-inside:avoid;
   }
 
   #print3d{
     display:block;
-    width:100%;
-    max-height:380px;
+    max-height:330px;
     object-fit:contain;
+    margin-bottom:10px;
   }
 
   .drawing{
@@ -373,11 +410,10 @@ td{
   }
 
   .drawing svg{
-    height:220px;
+    height:210px;
   }
 }
 </style>
-
 
 <script type="importmap">
 {
@@ -387,314 +423,317 @@ td{
   }
 }
 </script>
-
 </head>
-
 
 <body>
 
 <header>
-
   <h1>Fairy Structure Planner</h1>
 
   <button
-    class="settings-btn no-print"
     id="openSettings"
+    class="settings-btn no-print"
   >
     ⚙ Settings
   </button>
-
 </header>
-
 
 <div class="page">
 
-<div class="main-grid">
-
-
-<!-- ======================================================
-     SINISTRA
-====================================================== -->
-
-<div class="no-print">
-
   <div class="card">
 
-    <h2>Nuova struttura</h2>
+    <div class="workspace-title">
+      <h2>Struttura</h2>
+      <span id="titleSummary"></span>
+    </div>
 
-    <label>Nome evento</label>
+    <div class="workspace-grid">
 
-    <input
-      id="projectName"
-      type="text"
-      value="Struttura 1"
-    >
+      <!-- =========================================
+           NUOVA STRUTTURA
+      ========================================== -->
 
+      <div class="panel no-print">
 
-    <div class="two-columns">
+        <h3>Nuova struttura</h3>
 
-      <div>
-
-        <label>Lunghezza</label>
-
+        <label>Nome evento</label>
         <input
-          id="length"
-          type="number"
-          value="8"
-          min=".1"
-          step=".1"
+          id="projectName"
+          type="text"
+          value="Struttura 1"
         >
 
-      </div>
+        <div class="dimensions">
 
-      <div>
+          <div>
+            <label>Lunghezza</label>
+            <input
+              id="length"
+              type="number"
+              value="8"
+              min=".1"
+              step=".1"
+            >
+          </div>
 
-        <label>Larghezza</label>
+          <div>
+            <label>Larghezza modulo</label>
+            <input
+              id="width"
+              type="number"
+              value="5"
+              min=".1"
+              step=".1"
+            >
+          </div>
 
-        <input
-          id="width"
-          type="number"
-          value="5"
-          min=".1"
-          step=".1"
-        >
+        </div>
 
-      </div>
-
-    </div>
-
-
-    <label class="check-row">
-
-      <input
-        id="fairyEnabled"
-        type="checkbox"
-        checked
-      >
-
-      Fairy lights
-
-    </label>
-
-
-    <div class="actions">
-
-      <button
-        class="primary"
-        id="commit"
-      >
-        Conferma carico
-      </button>
-
-      <button
-        class="secondary"
-        id="print"
-      >
-        Stampa
-      </button>
-
-    </div>
-
-
-    <p class="small">
-      Il calcolo viene aggiornato automaticamente
-      quando modifichi qualsiasi valore.
-    </p>
-
-  </div>
-
-
-  <div class="card">
-
-    <h2>Strutture assegnate</h2>
-
-    <div id="allocations">
-      Nessuna.
-    </div>
-
-  </div>
-
-</div>
-
-
-
-<!-- ======================================================
-     DESTRA
-====================================================== -->
-
-<div>
-
-
-  <div class="card">
-
-    <h2 id="reportTitle">
-      Risultato
-    </h2>
-
-
-    <!-- CONFIGURAZIONE MODIFICABILE -->
-
-    <div class="config-grid no-print">
-
-
-      <!-- SEZIONI -->
-
-      <div class="config-box">
-
-        <label>Sezioni trasversali</label>
-
-        <div class="sections-row">
-
+        <label class="check-row">
           <input
-            id="sections"
-            type="number"
-            min="2"
-            step="1"
+            id="fairyEnabled"
+            type="checkbox"
+            checked
           >
+          Fairy lights
+        </label>
+
+        <div class="actions">
 
           <button
-            id="sectionsAuto"
-            class="auto-button active"
+            id="commit"
+            class="primary"
           >
-            AUTO
+            Conferma carico
+          </button>
+
+          <button
+            id="print"
+            class="secondary"
+          >
+            Stampa
           </button>
 
         </div>
 
+        <p class="small">
+          Tutto viene ricalcolato automaticamente.
+        </p>
+
+      </div>
+
+
+      <!-- =========================================
+           SCHEMA
+      ========================================== -->
+
+      <div class="panel no-print">
+
+        <h3>Schema struttura</h3>
+
+        <div class="config-row">
+
+          <label style="margin:0">
+            Sezioni
+          </label>
+
+          <div class="section-control">
+
+            <input
+              id="sections"
+              type="number"
+              min="2"
+              step="1"
+            >
+
+            <button
+              id="sectionsAuto"
+              class="auto-btn active"
+            >
+              AUTO
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <div class="config-row">
+
+          <label style="margin:0">
+            Longitudinale
+          </label>
+
+          <select id="sideMethod">
+
+            <option value="auto">
+              Automatico
+            </option>
+
+            <option value="fixed3">
+              Traverse 3 m
+            </option>
+
+            <option value="fixed4">
+              Traverse 4 m
+            </option>
+
+            <option value="tel1">
+              Telescopica 1 m
+            </option>
+
+            <option value="tel15">
+              Telescopica 1,5 m
+            </option>
+
+            <option value="tel3">
+              Telescopica 3 → 5,5 m
+            </option>
+
+            <option value="tel4">
+              Telescopica 4 → 7,5 m
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="config-row">
+
+          <label style="margin:0">
+            Superiore
+          </label>
+
+          <select id="topMethod">
+
+            <option value="auto">
+              Automatico
+            </option>
+
+            <option value="fixed3">
+              Traversa alta 3 m
+            </option>
+
+            <option value="fixed4">
+              Traversa alta 4 m
+            </option>
+
+            <option value="tel1">
+              Telescopica 1 m
+            </option>
+
+            <option value="tel15">
+              Telescopica 1,5 m
+            </option>
+
+            <option value="tel3">
+              Telescopica 3 → 5,5 m
+            </option>
+
+            <option value="tel4">
+              Telescopica 4 → 7,5 m
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="matrix-toolbar">
+
+          <strong>Vista dall'alto</strong>
+
+          <button
+            id="resetMatrix"
+            class="secondary"
+            style="padding:5px 8px;font-size:10px"
+          >
+            Ripristina tunnel
+          </button>
+
+        </div>
+
+        <svg id="matrixView"></svg>
+
         <div class="small">
-          Inizio + sezioni intermedie + fine.
+          Clicca un punto per aggiungere o togliere un palo.
+          I collegamenti tra punti adiacenti vengono creati
+          automaticamente.
         </div>
 
       </div>
 
 
+      <!-- =========================================
+           3D
+      ========================================== -->
 
-      <!-- LATO -->
+      <div class="panel viewer-panel">
 
-      <div class="config-box">
+        <h3>Vista 3D</h3>
 
-        <label>Lato longitudinale</label>
+        <div id="viewer"></div>
 
-        <select id="sideMethod">
-
-          <option value="auto">
-            Automatico
-          </option>
-
-          <option value="fixed3">
-            Traverse fisse 3 m
-          </option>
-
-          <option value="fixed4">
-            Traverse fisse 4 m
-          </option>
-
-          <option value="tel1">
-            Telescopica 1 m
-          </option>
-
-          <option value="tel15">
-            Telescopica 1,5 m
-          </option>
-
-          <option value="tel3">
-            Telescopica 3 → 5,5 m
-          </option>
-
-          <option value="tel4">
-            Telescopica 4 → 7,5 m
-          </option>
-
-        </select>
-
-      </div>
-
-
-
-      <!-- SUPERIORE -->
-
-      <div class="config-box">
-
-        <label>Superiore trasversale</label>
-
-        <select id="topMethod">
-
-          <option value="auto">
-            Automatico
-          </option>
-
-          <option value="fixed3">
-            Traversa alta fissa 3 m
-          </option>
-
-          <option value="fixed4">
-            Traversa alta fissa 4 m
-          </option>
-
-          <option value="tel1">
-            Telescopica 1 m
-          </option>
-
-          <option value="tel15">
-            Telescopica 1,5 m
-          </option>
-
-          <option value="tel3">
-            Telescopica 3 → 5,5 m
-          </option>
-
-          <option value="tel4">
-            Telescopica 4 → 7,5 m
-          </option>
-
-        </select>
+        <div class="small no-print">
+          Trascina per ruotare · rotella per zoom
+        </div>
 
       </div>
 
     </div>
 
 
-    <div id="status"></div>
+    <!-- =========================================
+         RISULTATO COMPATTO
+    ========================================== -->
 
-    <div id="summary"></div>
+    <div
+      id="status"
+      class="status-line"
+    ></div>
 
-  </div>
+    <div class="compact-results">
 
+      <div class="result-box">
 
+        <h3>Materiale</h3>
 
-  <div class="card no-print">
+        <div id="materialResult"></div>
 
-    <h2>Vista 3D</h2>
+      </div>
 
-    <div id="viewer"></div>
+      <div class="result-box">
 
-    <div class="small">
-      Trascina per ruotare · rotella per zoom ·
-      tasto destro per spostare.
+        <h3>Dati</h3>
+
+        <div
+          id="quickResult"
+          class="quick-data"
+        ></div>
+
+      </div>
+
     </div>
 
   </div>
 
 
+  <!-- immagine 3d utilizzata solo in stampa -->
+
+  <img id="print3d">
+
+
+  <!-- =========================================
+       DISEGNI TECNICI
+  ========================================== -->
 
   <div class="card">
 
-    <h2>Vista 3D</h2>
-
-    <img id="print3d">
-
-    <div class="small no-print">
-      Nella stampa verrà utilizzata
-      la prospettiva 3D attualmente visibile.
-    </div>
-
-  </div>
-
-
-
-  <div class="card">
-
-    <h2>Disegni tecnici</h2>
+    <h2 style="margin:0 0 10px;font-size:17px">
+      Disegni tecnici
+    </h2>
 
     <div class="views">
 
@@ -736,15 +775,10 @@ td{
 
 </div>
 
-</div>
 
-</div>
-
-
-
-<!-- ======================================================
+<!-- =========================================
      SETTINGS
-====================================================== -->
+========================================= -->
 
 <div
   id="modal"
@@ -753,32 +787,27 @@ td{
 
   <div class="modal-box">
 
-    <div class="modal-header">
+    <div class="modal-head">
 
       <h2>Magazzino</h2>
 
       <button
         id="closeSettings"
-        class="close-btn"
+        class="secondary"
       >
         ×
       </button>
 
     </div>
 
-
     <p class="small">
       Quantità disponibili all'inizio della giornata.
-      Confermando una struttura il materiale viene
-      sottratto dal magazzino residuo.
     </p>
-
 
     <div
       id="stockInputs"
       class="stock-grid"
     ></div>
-
 
     <div class="actions">
 
@@ -798,15 +827,19 @@ td{
 
     </div>
 
-
     <h3>Residuo</h3>
 
     <div id="remainingStock"></div>
 
+    <h3>Carichi confermati</h3>
+
+    <div id="allocations">
+      Nessuno.
+    </div>
+
   </div>
 
 </div>
-
 
 
 <script type="module">
@@ -818,28 +851,18 @@ import {
 } from "three/addons/controls/OrbitControls.js";
 
 
-
 /* =========================================================
    COSTANTI
 ========================================================= */
 
 const HEIGHT = 2.5;
-
 const LOWER_HEIGHT = 1.20;
 
 const FAIRY_SPACING = 0.30;
-
 const FAIRY_SLACK = 0.20;
 
+const MATRIX_ROWS = 6;
 
-
-/*
-  Per ora 1 m e 1,5 m sono considerate
-  misure fisse.
-
-  Quando conosciamo l'eventuale estensione
-  reale basta modificare min e max.
-*/
 
 const TELESCOPICS = {
 
@@ -878,71 +901,26 @@ const TELESCOPICS = {
 };
 
 
-
 const ITEMS = [
 
-  {
-    key:"high3",
-    label:"Traversa alta 3 m"
-  },
+  {key:"high3",label:"Traversa alta 3 m"},
+  {key:"low3", label:"Traversa bassa 3 m"},
 
-  {
-    key:"low3",
-    label:"Traversa bassa 3 m"
-  },
+  {key:"high4",label:"Traversa alta 4 m"},
+  {key:"low4", label:"Traversa bassa 4 m"},
 
-  {
-    key:"high4",
-    label:"Traversa alta 4 m"
-  },
+  {key:"tel1", label:"Telescopica 1 m"},
+  {key:"tel15",label:"Telescopica 1,5 m"},
+  {key:"tel3", label:"Telescopica 3 → 5,5 m"},
+  {key:"tel4", label:"Telescopica 4 → 7,5 m"},
 
-  {
-    key:"low4",
-    label:"Traversa bassa 4 m"
-  },
+  {key:"pole",label:"Palo 2,5 m"},
+  {key:"base",label:"Base palo"},
 
-  {
-    key:"tel1",
-    label:"Telescopica 1 m"
-  },
-
-  {
-    key:"tel15",
-    label:"Telescopica 1,5 m"
-  },
-
-  {
-    key:"tel3",
-    label:"Telescopica 3 → 5,5 m"
-  },
-
-  {
-    key:"tel4",
-    label:"Telescopica 4 → 7,5 m"
-  },
-
-  {
-    key:"pole",
-    label:"Palo 2,5 m"
-  },
-
-  {
-    key:"base",
-    label:"Base palo"
-  },
-
-  {
-    key:"fairy100",
-    label:"Cesta fairy 100 m"
-  },
-
-  {
-    key:"fairy200",
-    label:"Cesta fairy 200 m"
-  }
+  {key:"fairy100",label:"Cesta fairy 100 m"},
+  {key:"fairy200",label:"Cesta fairy 200 m"}
 
 ];
-
 
 
 const SIDE_METHODS = {
@@ -951,14 +929,14 @@ const SIDE_METHODS = {
     key:"fixed3",
     type:"fixed",
     size:3,
-    label:"Traverse fisse 3 m"
+    label:"Traverse 3 m"
   },
 
   fixed4:{
     key:"fixed4",
     type:"fixed",
     size:4,
-    label:"Traverse fisse 4 m"
+    label:"Traverse 4 m"
   },
 
   tel1:{
@@ -990,7 +968,6 @@ const SIDE_METHODS = {
   }
 
 };
-
 
 
 const TOP_METHODS = {
@@ -1042,38 +1019,30 @@ const TOP_METHODS = {
 };
 
 
-
 /* =========================================================
    STATO
 ========================================================= */
 
 let warehouse = {};
-
 let remaining = {};
-
 let allocations = [];
 
 let currentPlan = null;
 
-
-/*
-  NULL = sezioni automatiche.
-
-  Se l'utente modifica il campo,
-  diventa un numero.
-*/
-
 let manualSections = null;
 
+let customLayout = false;
+
+let layout = {
+  rows:MATRIX_ROWS,
+  cols:3,
+  nodes:[]
+};
 
 let scene;
-
 let camera;
-
 let renderer;
-
 let controls;
-
 
 
 /* =========================================================
@@ -1081,50 +1050,259 @@ let controls;
 ========================================================= */
 
 function closeEnough(a,b){
-
-  return Math.abs(a-b) < 0.001;
-
+  return Math.abs(a-b) < .001;
 }
 
 
 function emptyRequirements(){
 
-  const r = {};
+  const r={};
 
-  ITEMS.forEach(item => {
-
-    r[item.key] = 0;
-
+  ITEMS.forEach(i=>{
+    r[i.key]=0;
   });
 
   return r;
-
 }
 
 
 function itemLabel(key){
 
   return (
-    ITEMS.find(x => x.key === key)?.label
+    ITEMS.find(i=>i.key===key)?.label
     ||
     key
   );
-
 }
 
 
 function telFits(key,length){
 
-  const t = TELESCOPICS[key];
+  const t=TELESCOPICS[key];
 
   return (
-    length >= t.min - .001
+    length >= t.min-.001
     &&
-    length <= t.max + .001
+    length <= t.max+.001
   );
-
 }
 
+
+function cloneLayout(source){
+
+  return {
+    rows:source.rows,
+    cols:source.cols,
+    nodes:source.nodes.map(row=>[...row])
+  };
+}
+
+
+/* =========================================================
+   MATRICE / TOPOLOGIA
+========================================================= */
+
+function makeDefaultLayout(cols){
+
+  const nodes =
+    Array.from(
+      {length:MATRIX_ROWS},
+      ()=>Array(cols).fill(false)
+    );
+
+  const r1=2;
+  const r2=3;
+
+  for(let c=0;c<cols;c++){
+    nodes[r1][c]=true;
+    nodes[r2][c]=true;
+  }
+
+  return {
+    rows:MATRIX_ROWS,
+    cols,
+    nodes
+  };
+}
+
+
+function resizeCustomLayout(cols){
+
+  const old=layout;
+
+  const nodes =
+    Array.from(
+      {length:MATRIX_ROWS},
+      ()=>Array(cols).fill(false)
+    );
+
+  for(
+    let r=0;
+    r<MATRIX_ROWS;
+    r++
+  ){
+
+    for(
+      let c=0;
+      c<Math.min(old.cols,cols);
+      c++
+    ){
+
+      nodes[r][c]=old.nodes[r][c];
+
+    }
+
+  }
+
+  layout={
+    rows:MATRIX_ROWS,
+    cols,
+    nodes
+  };
+}
+
+
+function ensureLayout(cols){
+
+  if(!customLayout){
+
+    layout=makeDefaultLayout(cols);
+
+    return;
+  }
+
+  if(layout.cols!==cols){
+
+    resizeCustomLayout(cols);
+  }
+}
+
+
+function toggleMatrixNode(r,c){
+
+  customLayout=true;
+
+  manualSections=layout.cols;
+
+  document
+    .getElementById("sectionsAuto")
+    .classList.remove("active");
+
+  layout.nodes[r][c]=
+    !layout.nodes[r][c];
+
+  scheduleCalculate();
+}
+
+
+function resetMatrix(){
+
+  customLayout=false;
+
+  const cols =
+    currentPlan
+      ? currentPlan.geometry.side.sections
+      : Math.max(
+          2,
+          Number(
+            document.getElementById("sections").value
+          ) || 3
+        );
+
+  layout=makeDefaultLayout(cols);
+
+  scheduleCalculate();
+}
+
+
+function layoutStats(l){
+
+  let nodes=0;
+  let horizontalEdges=0;
+  let verticalEdges=0;
+
+  const horizontal=[];
+  const vertical=[];
+
+  for(let r=0;r<l.rows;r++){
+
+    for(let c=0;c<l.cols;c++){
+
+      if(l.nodes[r][c])
+        nodes++;
+
+      if(
+        c<l.cols-1
+        &&
+        l.nodes[r][c]
+        &&
+        l.nodes[r][c+1]
+      ){
+
+        horizontalEdges++;
+
+        horizontal.push({
+          r,
+          c1:c,
+          c2:c+1
+        });
+      }
+
+      if(
+        r<l.rows-1
+        &&
+        l.nodes[r][c]
+        &&
+        l.nodes[r+1][c]
+      ){
+
+        verticalEdges++;
+
+        vertical.push({
+          r1:r,
+          r2:r+1,
+          c
+        });
+      }
+
+    }
+
+  }
+
+  return {
+    nodes,
+    horizontalEdges,
+    verticalEdges,
+    horizontal,
+    vertical
+  };
+}
+
+
+/*
+  Celle-tunnel.
+
+  Una cella esiste quando sono presenti
+  i quattro pali ai suoi quattro angoli.
+*/
+
+function cellExists(l,r,c){
+
+  return (
+    r < l.rows-1
+    &&
+    c < l.cols-1
+
+    &&
+    l.nodes[r][c]
+    &&
+    l.nodes[r+1][c]
+    &&
+    l.nodes[r][c+1]
+    &&
+    l.nodes[r+1][c+1]
+  );
+}
 
 
 /* =========================================================
@@ -1133,135 +1311,102 @@ function telFits(key,length){
 
 function createStockInputs(){
 
-  const root =
+  const root=
     document.getElementById("stockInputs");
 
-
-  warehouse =
+  warehouse=
     JSON.parse(
       localStorage.getItem("fairyWarehouse")
       ||
       "{}"
     );
 
+  root.innerHTML="";
 
-  root.innerHTML = "";
+  ITEMS.forEach(item=>{
 
-
-  ITEMS.forEach(item => {
-
-    const name =
+    const name=
       document.createElement("div");
 
-    name.textContent =
-      item.label;
+    name.textContent=item.label;
 
-
-    const input =
+    const input=
       document.createElement("input");
 
-    input.type = "number";
+    input.type="number";
+    input.min="0";
+    input.step="1";
 
-    input.min = "0";
-
-    input.step = "1";
-
-    input.value =
+    input.value=
       warehouse[item.key] ?? 0;
 
-    input.id =
-      "stock_" + item.key;
-
+    input.id=
+      "stock_"+item.key;
 
     root.appendChild(name);
-
     root.appendChild(input);
 
   });
 
-
   if(Object.keys(warehouse).length){
-
-    remaining = {...warehouse};
-
+    remaining={...warehouse};
   }
 
-
   renderRemaining();
-
 }
-
 
 
 function applyWarehouse(){
 
-  warehouse = {};
+  warehouse={};
 
+  ITEMS.forEach(item=>{
 
-  ITEMS.forEach(item => {
-
-    warehouse[item.key] =
-
+    warehouse[item.key]=
       Number(
         document.getElementById(
-          "stock_" + item.key
+          "stock_"+item.key
         ).value
-      )
-
-      || 0;
+      ) || 0;
 
   });
-
 
   localStorage.setItem(
     "fairyWarehouse",
     JSON.stringify(warehouse)
   );
 
+  remaining={...warehouse};
 
-  remaining = {...warehouse};
-
-  allocations = [];
-
-  currentPlan = null;
-
+  allocations=[];
 
   renderRemaining();
-
   renderAllocations();
 
   closeSettings();
 
   scheduleCalculate();
-
 }
-
 
 
 function renderRemaining(){
 
-  const root =
-    document.getElementById(
-      "remainingStock"
-    );
-
+  const root=
+    document.getElementById("remainingStock");
 
   if(!Object.keys(remaining).length){
 
-    root.innerHTML =
-      "Magazzino non ancora impostato.";
+    root.innerHTML=
+      "Magazzino non impostato.";
 
     return;
-
   }
 
+  let html="<table>";
 
-  let html = "<table>";
+  ITEMS.forEach(item=>{
 
-
-  ITEMS.forEach(item => {
-
-    html += `
+    html+=`
       <tr>
         <td>${item.label}</td>
         <td>
@@ -1274,14 +1419,10 @@ function renderRemaining(){
 
   });
 
+  html+="</table>";
 
-  html += "</table>";
-
-
-  root.innerHTML = html;
-
+  root.innerHTML=html;
 }
-
 
 
 /* =========================================================
@@ -1294,31 +1435,20 @@ function makeSideCandidate(
   sections
 ){
 
-  if(sections < 2){
-
+  if(sections<2)
     return null;
 
-  }
-
-
-  const method =
+  const method=
     SIDE_METHODS[methodKey];
 
+  const bays=
+    sections-1;
 
-  const bays =
-    sections - 1;
-
-
-  const bayLength =
-    length / bays;
+  const bayLength=
+    length/bays;
 
 
-
-  /*
-    TRAVERSE FISSE
-  */
-
-  if(method.type === "fixed"){
+  if(method.type==="fixed"){
 
     if(
       !closeEnough(
@@ -1326,29 +1456,18 @@ function makeSideCandidate(
         method.size
       )
     ){
-
       return null;
-
     }
 
-
     return {
-
       method,
       sections,
       bays,
       bayLength,
       extension:0
-
     };
-
   }
 
-
-
-  /*
-    TELESCOPICHE
-  */
 
   if(
     !telFits(
@@ -1356,203 +1475,121 @@ function makeSideCandidate(
       bayLength
     )
   ){
-
     return null;
-
   }
 
 
-  const tel =
+  const tel=
     TELESCOPICS[method.tel];
 
 
   return {
-
     method,
-    tel,
     sections,
     bays,
     bayLength,
-
+    tel,
     extension:
       Math.abs(
-        bayLength
-        -
-        tel.nominal
+        bayLength-tel.nominal
       )
-
   };
-
 }
 
 
+function sideScore(c){
 
-/*
-  PREFERENZA AUTOMATICA:
-
-  1. traversa fissa
-  2. campate possibilmente 3-4 m
-  3. telescopica con poca estensione
-  4. evita campate enormi
-*/
-
-function sideScore(candidate){
-
-  if(
-    candidate.method.type
-    ===
-    "fixed"
-  ){
-
-    /*
-      A parità di tutto,
-      preferiamo 4 m:
-      meno pali/sezioni.
-    */
+  if(c.method.type==="fixed"){
 
     return (
-      candidate.method.size === 4
-      ? 0
-      : 10
+      c.method.size===4
+        ? 0
+        : 10
     )
-
     +
-    candidate.bays * .01;
-
+    c.bays*.01;
   }
 
 
-  const distanceFromIdeal =
+  const distance=
     Math.abs(
-      candidate.bayLength
-      -
-      3.5
+      c.bayLength-3.5
     );
 
-
-  const tooLongPenalty =
-
-    candidate.bayLength > 4.5
-
-      ?
-
-      (
-        candidate.bayLength
-        -
-        4.5
-      ) * 100
-
-      :
-
-      0;
+  const tooLong=
+    c.bayLength>4.5
+      ? (c.bayLength-4.5)*100
+      : 0;
 
 
   return (
-
     1000
-
     +
-
-    distanceFromIdeal * 20
-
+    distance*20
     +
-
-    candidate.extension * 5
-
+    c.extension*5
     +
-
-    tooLongPenalty
-
+    tooLong
     +
-
-    candidate.bays * .01
-
+    c.bays*.01
   );
-
 }
-
 
 
 function buildSideCandidates(length){
 
-  const selected =
+  const selected=
     document.getElementById(
       "sideMethod"
     ).value;
 
 
-  const methods =
-
-    selected === "auto"
-
-      ?
-
-      Object.keys(
-        SIDE_METHODS
-      )
-
-      :
-
-      [selected];
+  const methods=
+    selected==="auto"
+      ? Object.keys(SIDE_METHODS)
+      : [selected];
 
 
-  const result = [];
+  const result=[];
 
 
-  /*
-    SEZIONI FORZATE DALL'UTENTE
-  */
+  if(manualSections!==null){
 
-  if(manualSections !== null){
+    methods.forEach(method=>{
 
-    methods.forEach(method => {
-
-      const candidate =
+      const c=
         makeSideCandidate(
           method,
           length,
           manualSections
         );
 
-
-      if(candidate){
-
-        result.push(candidate);
-
-      }
+      if(c)
+        result.push(c);
 
     });
 
   }
 
-
-  /*
-    SEZIONI AUTOMATICHE
-  */
-
   else{
 
     for(
       let sections=2;
-      sections<=100;
+      sections<=80;
       sections++
     ){
 
-      methods.forEach(method => {
+      methods.forEach(method=>{
 
-        const candidate =
+        const c=
           makeSideCandidate(
             method,
             length,
             sections
           );
 
-
-        if(candidate){
-
-          result.push(candidate);
-
-        }
+        if(c)
+          result.push(c);
 
       });
 
@@ -1562,67 +1599,42 @@ function buildSideCandidates(length){
 
 
   result.sort(
-    (a,b) =>
-      sideScore(a)
-      -
-      sideScore(b)
+    (a,b)=>sideScore(a)-sideScore(b)
   );
 
 
   return result;
-
 }
 
 
-
 /* =========================================================
-   SUPERIORE TRASVERSALE
+   SUPERIORE
 ========================================================= */
 
 function buildTopCandidates(width){
 
-  const selected =
+  const selected=
     document.getElementById(
       "topMethod"
     ).value;
 
 
-  let methods;
+  const methods=
+    selected==="auto"
+      ? Object.keys(TOP_METHODS)
+      : [selected];
 
 
-  if(selected === "auto"){
-
-    methods =
-      Object.keys(
-        TOP_METHODS
-      );
-
-  }
-
-  else{
-
-    methods =
-      [selected];
-
-  }
+  const result=[];
 
 
-  const result = [];
+  methods.forEach(key=>{
 
-
-  methods.forEach(key => {
-
-    const method =
+    const method=
       TOP_METHODS[key];
 
 
-    /*
-      FISSA
-    */
-
-    if(
-      method.type === "fixed"
-    ){
+    if(method.type==="fixed"){
 
       if(
         !closeEnough(
@@ -1630,37 +1642,22 @@ function buildTopCandidates(width){
           width
         )
       ){
-
         return;
-
       }
 
+      /*
+        FISSO vince sempre in automatico.
+      */
 
       result.push({
-
         method,
-
-        extension:0,
-
-        /*
-          Priorità assoluta
-          alle traverse fisse.
-        */
-
-        score:0
-
+        score:0,
+        extension:0
       });
 
-
       return;
-
     }
 
-
-
-    /*
-      TELESCOPICA
-    */
 
     if(
       !telFits(
@@ -1668,259 +1665,169 @@ function buildTopCandidates(width){
         width
       )
     ){
-
       return;
-
     }
 
 
-    const tel =
-      TELESCOPICS[
-        method.tel
-      ];
+    const tel=
+      TELESCOPICS[method.tel];
 
-
-    const extension =
+    const extension=
       Math.abs(
-        width
-        -
-        tel.nominal
+        width-tel.nominal
       );
 
 
     result.push({
-
       method,
-
       tel,
-
       extension,
-
-      /*
-        Le telescopiche vengono
-        dopo le traverse fisse.
-      */
-
       score:
         100
         +
-        extension * 10
-
+        extension*10
     });
 
   });
 
 
   result.sort(
-    (a,b) =>
-      a.score
-      -
-      b.score
+    (a,b)=>a.score-b.score
   );
 
 
   return result;
-
 }
 
 
-
 /* =========================================================
-   CONTEGGIO MATERIALI
+   MATERIALI DALLO SCHEMA
 ========================================================= */
 
 function buildRequirements(
   side,
-  top
+  top,
+  activeLayout
 ){
 
-  const req =
+  const req=
     emptyRequirements();
 
 
-  const sections =
-    side.sections;
-
-
-  const bays =
-    side.bays;
-
+  const stats=
+    layoutStats(activeLayout);
 
 
   /*
-    PALI + BASI
+    Ogni punto:
+    palo + base.
   */
 
-  req.pole =
-    sections * 2;
+  req.pole=
+    stats.nodes;
 
-
-  req.base =
-    sections * 2;
-
+  req.base=
+    stats.nodes;
 
 
   /*
-    LATI LONGITUDINALI
+    Ogni collegamento orizzontale:
+    ALTA + BASSA.
   */
 
   if(
-    side.method.key
-    ===
-    "fixed3"
+    side.method.key==="fixed3"
   ){
 
     req.high3 +=
-      bays * 2;
+      stats.horizontalEdges;
 
     req.low3 +=
-      bays * 2;
+      stats.horizontalEdges;
 
   }
 
-
   else if(
-    side.method.key
-    ===
-    "fixed4"
+    side.method.key==="fixed4"
   ){
 
     req.high4 +=
-      bays * 2;
+      stats.horizontalEdges;
 
     req.low4 +=
-      bays * 2;
+      stats.horizontalEdges;
 
   }
-
 
   else{
 
-    /*
-      TELESCOPICHE LATERALI
-
-      2 lati
-      × alta + bassa
-      = 4 per campata
-    */
-
-    req[
-      side.method.tel
-    ] +=
-
-      bays * 4;
+    req[side.method.tel] +=
+      stats.horizontalEdges*2;
 
   }
-
 
 
   /*
-    SUPERIORE TRASVERSALE
+    Ogni collegamento verticale
+    nella PIANTA è solo superiore.
   */
 
-  if(
-    top.method.type
-    ===
-    "fixed"
-  ){
+  if(top.method.type==="fixed"){
 
-    /*
-      IMPORTANTE:
-
-      la traversa trasversale
-      superiore viene presa
-      dal magazzino delle
-      TRAVERSE ALTE.
-    */
-
-    req[
-      top.method.stockKey
-    ] +=
-
-      sections;
+    req[top.method.stockKey] +=
+      stats.verticalEdges;
 
   }
 
-
   else{
 
-    req[
-      top.method.tel
-    ] +=
-
-      sections;
+    req[top.method.tel] +=
+      stats.verticalEdges;
 
   }
 
 
   return req;
-
 }
 
 
-
 /* =========================================================
-   MAGAZZINO / DEFICIT
+   DEFICIT
 ========================================================= */
 
 function deficitsFor(req){
 
-  const deficits = [];
-
+  const deficits=[];
 
   Object.entries(req)
-    .forEach(
-      ([key,needed]) => {
+    .forEach(([key,needed])=>{
 
-        if(!needed){
+      if(!needed)
+        return;
 
-          return;
+      const available=
+        remaining[key] ?? 0;
 
-        }
+      if(needed>available){
 
-
-        const available =
-          remaining[key]
-          ??
-          0;
-
-
-        if(
-          needed > available
-        ){
-
-          deficits.push({
-
-            key,
-
-            label:
-              itemLabel(key),
-
-            needed,
-
-            available,
-
-            missing:
-              needed
-              -
-              available
-
-          });
-
-        }
+        deficits.push({
+          key,
+          label:itemLabel(key),
+          needed,
+          available,
+          missing:needed-available
+        });
 
       }
-    );
 
+    });
 
   return deficits;
-
 }
 
 
-
 /* =========================================================
-   COMBINAZIONI
+   CANDIDATI COMPLETI
 ========================================================= */
 
 function geometryCandidates(
@@ -1928,52 +1835,121 @@ function geometryCandidates(
   width
 ){
 
-  const sides =
-    buildSideCandidates(
-      length
-    );
+  const sides=
+    buildSideCandidates(length);
+
+  const tops=
+    buildTopCandidates(width);
+
+  const combinations=[];
 
 
-  const tops =
-    buildTopCandidates(
-      width
-    );
+  sides.forEach(side=>{
+
+    /*
+      Lo schema dipende dal numero di sezioni.
+    */
+
+    let candidateLayout;
+
+    if(customLayout){
+
+      candidateLayout=
+        cloneLayout(layout);
+
+      if(
+        candidateLayout.cols
+        !==
+        side.sections
+      ){
+
+        /*
+          In pratica questo succede solo
+          se l'utente modifica le sezioni.
+        */
+
+        const old=layout;
+
+        const nodes=
+          Array.from(
+            {length:MATRIX_ROWS},
+            ()=>Array(side.sections).fill(false)
+          );
+
+        for(
+          let r=0;
+          r<MATRIX_ROWS;
+          r++
+        ){
+
+          for(
+            let c=0;
+            c<
+            Math.min(
+              old.cols,
+              side.sections
+            );
+            c++
+          ){
+
+            nodes[r][c]=
+              old.nodes[r][c];
+
+          }
+
+        }
+
+        candidateLayout={
+          rows:MATRIX_ROWS,
+          cols:side.sections,
+          nodes
+        };
+      }
+
+    }
+
+    else{
+
+      candidateLayout=
+        makeDefaultLayout(
+          side.sections
+        );
+
+    }
 
 
-  const combinations = [];
+    tops.forEach(top=>{
 
-
-  sides.forEach(side => {
-
-    tops.forEach(top => {
-
-      const requirements =
+      const requirements=
         buildRequirements(
           side,
-          top
+          top,
+          candidateLayout
         );
 
-
-      const deficits =
-        deficitsFor(
-          requirements
-        );
+      const deficits=
+        deficitsFor(requirements);
 
 
       combinations.push({
-
         side,
         top,
-
+        layout:candidateLayout,
         requirements,
-
         deficits,
+
+        /*
+          Preferiamo prima la geometria
+          corretta.
+
+          Il magazzino segnala poi
+          eventuali mancanze.
+        */
 
         score:
           sideScore(side)
           +
           top.score
-
       });
 
     });
@@ -1981,151 +1957,171 @@ function geometryCandidates(
   });
 
 
+  combinations.sort((a,b)=>{
 
-  combinations.sort(
-    (a,b) => {
+    if(a.score!==b.score)
+      return a.score-b.score;
 
-      /*
-        Prima scegliamo una soluzione
-        disponibile a magazzino,
-        se ce n'è una.
-
-        Poi applichiamo le preferenze
-        geometriche.
-      */
-
-      const aAvailable =
-        a.deficits.length
-        ?
-        1
-        :
-        0;
+    return (
+      a.deficits.length
+      -
+      b.deficits.length
+    );
+  });
 
 
-      const bAvailable =
-        b.deficits.length
-        ?
-        1
-        :
-        0;
+  return combinations;
+}
 
+
+/* =========================================================
+   FAIRY LIGHTS SU SCHEMA PERSONALIZZATO
+========================================================= */
+
+function calculateFairy(
+  activeLayout,
+  bayLength,
+  width
+){
+
+  const runs=[];
+
+
+  /*
+    Per ogni coppia di righe adiacenti
+    cerchiamo sequenze continue di
+    celle-tunnel.
+  */
+
+  for(
+    let r=0;
+    r<activeLayout.rows-1;
+    r++
+  ){
+
+    let c=0;
+
+
+    while(
+      c<activeLayout.cols-1
+    ){
 
       if(
-        aAvailable
-        !==
-        bAvailable
+        !cellExists(
+          activeLayout,
+          r,
+          c
+        )
       ){
 
-        return (
-          aAvailable
-          -
-          bAvailable
-        );
+        c++;
+
+        continue;
+      }
+
+
+      const start=c;
+
+
+      while(
+        c<activeLayout.cols-1
+        &&
+        cellExists(
+          activeLayout,
+          r,
+          c
+        )
+      ){
+
+        c++;
 
       }
 
 
-      return (
-        a.score
-        -
-        b.score
-      );
+      const end=c;
+
+      const bays=
+        end-start;
+
+      const length=
+        bays*bayLength;
+
+      const rows=
+        Math.ceil(
+          length/FAIRY_SPACING
+        );
+
+      const actualSpacing=
+        length/rows;
+
+      runs.push({
+        r,
+        start,
+        bays,
+        length,
+        rows,
+        actualSpacing
+      });
 
     }
-  );
+
+  }
 
 
-  return combinations;
-
-}
-
-
-
-/* =========================================================
-   FAIRY LIGHTS
-========================================================= */
-
-function calculateFairy(
-  length,
-  width
-){
-
-  /*
-    Sempre per eccesso.
-  */
-
-  const rows =
-    Math.ceil(
-      length
-      /
-      FAIRY_SPACING
-    );
-
-
-  /*
-    Distribuzione uniforme:
-    distanza mai superiore
-    a 30 cm.
-  */
-
-  const actualSpacing =
-    length
-    /
-    rows;
-
-
-  const perU =
-
-    HEIGHT * 2
-
+  const perU=
+    HEIGHT*2
     +
-
     width
-
     +
-
     FAIRY_SLACK;
 
 
-  const total =
-    rows
-    *
-    perU;
+  const totalRows=
+    runs.reduce(
+      (sum,run)=>sum+run.rows,
+      0
+    );
+
+
+  const total=
+    totalRows*perU;
 
 
   return {
-
-    rows,
-
-    actualSpacing,
-
+    runs,
     perU,
-
+    rows:totalRows,
     total
-
   };
-
 }
 
 
+/* =========================================================
+   CESTE FAIRY
+========================================================= */
 
-function chooseFairyBaskets(
-  requiredMeters
-){
+function chooseFairyBaskets(required){
 
-  const max100 =
-    remaining.fairy100
-    ??
-    0;
+  if(required<=0){
 
-
-  const max200 =
-    remaining.fairy200
-    ??
-    0;
+    return {
+      fairy100:0,
+      fairy200:0,
+      meters:0,
+      excess:0,
+      baskets:0
+    };
+  }
 
 
-  let best = null;
+  const max100=
+    remaining.fairy100 ?? 0;
+
+  const max200=
+    remaining.fairy200 ?? 0;
+
+
+  let best=null;
 
 
   for(
@@ -2140,71 +2136,40 @@ function chooseFairyBaskets(
       b++
     ){
 
-      const meters =
-        a * 100
-        +
-        b * 200;
+      const meters=
+        a*100+b*200;
 
 
-      if(
-        meters
-        <
-        requiredMeters
-      ){
-
+      if(meters<required)
         continue;
 
-      }
 
-
-      const candidate = {
-
+      const candidate={
         fairy100:a,
-
         fairy200:b,
-
         meters,
-
-        excess:
-          meters
-          -
-          requiredMeters,
-
-        baskets:
-          a+b
-
+        excess:meters-required,
+        baskets:a+b
       };
 
 
       if(
-
         !best
-
         ||
-
-        candidate.excess
-        <
-        best.excess
-
+        candidate.excess<best.excess
         ||
-
         (
           closeEnough(
             candidate.excess,
             best.excess
           )
-
           &&
-
-          candidate.baskets
-          <
+          candidate.baskets<
           best.baskets
         )
-
       ){
 
-        best =
-          candidate;
+        best=candidate;
 
       }
 
@@ -2214,18 +2179,16 @@ function chooseFairyBaskets(
 
 
   return best;
-
 }
 
 
-
 /* =========================================================
-   CALCOLO COMPLETO
+   CALCOLO
 ========================================================= */
 
 function calculatePlan(){
 
-  const length =
+  const length=
     Number(
       document.getElementById(
         "length"
@@ -2233,7 +2196,7 @@ function calculatePlan(){
     );
 
 
-  const width =
+  const width=
     Number(
       document.getElementById(
         "width"
@@ -2246,142 +2209,123 @@ function calculatePlan(){
     ||
     !width
     ||
-    length <= 0
+    length<=0
     ||
-    width <= 0
+    width<=0
   ){
-
     return;
-
   }
 
 
-  const candidates =
+  const candidates=
     geometryCandidates(
       length,
       width
     );
 
 
-  if(
-    !candidates.length
-  ){
+  if(!candidates.length){
 
-    currentPlan = null;
-
+    currentPlan=null;
 
     document.getElementById(
       "status"
-    ).innerHTML = `
+    ).innerHTML=`
 
       <div class="bad">
         Configurazione non possibile.
       </div>
 
-      <div class="warning">
-        Con le impostazioni correnti
-        non esiste una combinazione
-        di sezioni e barre compatibile
-        con le dimensioni richieste.
-      </div>
-
     `;
 
+    document.getElementById(
+      "materialResult"
+    ).innerHTML="";
 
     document.getElementById(
-      "summary"
-    ).innerHTML = "";
-
+      "quickResult"
+    ).innerHTML="";
 
     return;
-
   }
 
 
-  const geometry =
+  const geometry=
     candidates[0];
 
 
-  /*
-    Se siamo in AUTO,
-    mostriamo il numero trovato
-    dall'algoritmo.
-  */
+  layout=
+    cloneLayout(
+      geometry.layout
+    );
 
-  if(
-    manualSections === null
-  ){
+
+  if(manualSections===null){
 
     document.getElementById(
       "sections"
-    ).value =
-
+    ).value=
       geometry.side.sections;
 
   }
 
 
-
-  const fairyEnabled =
+  const fairyEnabled=
     document.getElementById(
       "fairyEnabled"
     ).checked;
 
 
-  let fairy = null;
-
-  let fairyBaskets = null;
-
-  let fairyAvailable = true;
-
-
-  const requirements = {
+  const requirements={
     ...geometry.requirements
   };
 
 
+  let fairy=null;
+  let baskets=null;
+  let fairyAvailable=true;
+
+
   if(fairyEnabled){
 
-    fairy =
+    fairy=
       calculateFairy(
-        length,
+        layout,
+        geometry.side.bayLength,
         width
       );
 
 
-    fairyBaskets =
+    baskets=
       chooseFairyBaskets(
         fairy.total
       );
 
 
-    if(fairyBaskets){
+    if(baskets){
 
-      requirements.fairy100 =
-        fairyBaskets.fairy100;
+      requirements.fairy100=
+        baskets.fairy100;
 
-
-      requirements.fairy200 =
-        fairyBaskets.fairy200;
+      requirements.fairy200=
+        baskets.fairy200;
 
     }
 
     else{
 
-      fairyAvailable = false;
+      fairyAvailable=false;
 
     }
 
   }
 
 
-  const deficits =
-    deficitsFor(
-      requirements
-    );
+  const deficits=
+    deficitsFor(requirements);
 
 
-  currentPlan = {
+  currentPlan={
 
     name:
       document.getElementById(
@@ -2391,675 +2335,511 @@ function calculatePlan(){
       "Struttura",
 
     length,
-
     width,
 
     geometry,
+    layout,
 
     requirements,
-
     deficits,
 
     fairyEnabled,
-
     fairy,
-
-    fairyBaskets,
-
+    baskets,
     fairyAvailable
 
   };
 
 
-  renderPlan();
+  renderEverything();
+}
+
+
+/* =========================================================
+   RENDER GENERALE
+========================================================= */
+
+function renderEverything(){
+
+  renderSummary();
+
+  renderMatrix();
 
   render3D(
     currentPlan
   );
 
-  renderDrawings(
+  renderTechnicalViews(
     currentPlan
   );
-
 }
 
 
-
 /* =========================================================
-   RISULTATI
+   SUMMARY
 ========================================================= */
 
-function renderPlan(){
+function renderSummary(){
 
-  const p =
-    currentPlan;
+  const p=currentPlan;
 
-
-  const side =
+  const side=
     p.geometry.side;
 
-
-  const top =
-    p.geometry.top;
+  const stats=
+    layoutStats(p.layout);
 
 
   document.getElementById(
-    "reportTitle"
-  ).textContent =
-
+    "titleSummary"
+  ).textContent=
     `${p.name} · ${p.length} × ${p.width} m`;
 
 
-
-  let status = "";
+  let status;
 
 
   if(
-    p.deficits.length === 0
+    !p.deficits.length
     &&
     p.fairyAvailable
   ){
 
-    status = `
-
-      <div class="good">
-        ✓ Configurazione realizzabile
-        con il magazzino residuo
-      </div>
-
+    status=`
+      <span class="good">
+        ✓ Materiale disponibile
+      </span>
     `;
 
   }
 
   else{
 
-    status = `
-
-      <div class="bad">
+    status=`
+      <span class="bad">
         ⚠ Materiale insufficiente
+      </span>
+    `;
+
+
+    if(p.deficits.length){
+
+      status+=`
+        <div class="warning">
+      `;
+
+      p.deficits.forEach(d=>{
+
+        status+=`
+          ${d.label}:
+          mancano
+          <strong>${d.missing}</strong>
+          &nbsp;
+        `;
+
+      });
+
+      status+=`
+        </div>
+      `;
+
+    }
+
+
+    if(
+      p.fairyEnabled
+      &&
+      !p.fairyAvailable
+    ){
+
+      status+=`
+        <div class="warning">
+          Fairy insufficienti:
+          servono circa
+          ${p.fairy.total.toFixed(1)} m.
+        </div>
+      `;
+
+    }
+
+  }
+
+
+  document.getElementById(
+    "status"
+  ).innerHTML=status;
+
+
+
+  let rows="";
+
+
+  ITEMS.forEach(item=>{
+
+    const qty=
+      p.requirements[item.key] || 0;
+
+    if(!qty)
+      return;
+
+
+    rows+=`
+      <tr>
+        <td>${item.label}</td>
+        <td>
+          <strong>${qty}</strong>
+        </td>
+      </tr>
+    `;
+
+  });
+
+
+  document.getElementById(
+    "materialResult"
+  ).innerHTML=`
+
+    <table>
+      <tbody>
+        ${rows}
+      </tbody>
+    </table>
+
+  `;
+
+
+
+  let fairyData="";
+
+
+  if(p.fairyEnabled){
+
+    fairyData=`
+
+      <div class="chip">
+        Fairy U
+        <strong>
+          ${p.fairy.rows}
+        </strong>
+      </div>
+
+      <div class="chip">
+        Fairy totali
+        <strong>
+          ${p.fairy.total.toFixed(1)} m
+        </strong>
       </div>
 
     `;
 
 
-    if(
-      p.deficits.length
-    ){
+    if(p.baskets){
 
-      status += `
+      fairyData+=`
 
-        <div class="warning">
-
-          <strong>Manca:</strong><br>
+        <div class="chip">
+          Carico fairy
+          <strong>
+            ${p.baskets.fairy100}×100
+            +
+            ${p.baskets.fairy200}×200
+          </strong>
+        </div>
 
       `;
 
+    }
 
-      p.deficits.forEach(
-        deficit => {
+  }
 
-          status += `
 
-            ${deficit.label}:
-            mancano
-            <strong>
-              ${deficit.missing}
-            </strong>
+  document.getElementById(
+    "quickResult"
+  ).innerHTML=`
 
-            · servono
-            ${deficit.needed}
+    <div class="chip">
+      Sezioni
+      <strong>
+        ${side.sections}
+      </strong>
+    </div>
 
-            · disponibili
-            ${deficit.available}
+    <div class="chip">
+      Campate
+      <strong>
+        ${side.bays}
+      </strong>
+    </div>
 
-            <br>
+    <div class="chip">
+      Campata
+      <strong>
+        ${side.bayLength.toFixed(2)} m
+      </strong>
+    </div>
 
-          `;
+    <div class="chip">
+      Pali
+      <strong>
+        ${stats.nodes}
+      </strong>
+    </div>
+
+    ${fairyData}
+
+  `;
+}
+
+
+/* =========================================================
+   MATRIX SVG
+========================================================= */
+
+function renderMatrix(){
+
+  const svg=
+    document.getElementById(
+      "matrixView"
+    );
+
+
+  svg.setAttribute(
+    "viewBox",
+    "0 0 430 210"
+  );
+
+
+  const left=35;
+  const right=395;
+
+  const top=20;
+  const bottom=190;
+
+
+  const dx=
+    layout.cols>1
+      ? (right-left)/(layout.cols-1)
+      : 0;
+
+
+  const dy=
+    (bottom-top)/(layout.rows-1);
+
+
+  let html="";
+
+
+  /*
+    Griglia di riferimento
+  */
+
+  for(
+    let r=0;
+    r<layout.rows;
+    r++
+  ){
+
+    for(
+      let c=0;
+      c<layout.cols;
+      c++
+    ){
+
+      const x=
+        left+c*dx;
+
+      const y=
+        top+r*dy;
+
+
+      if(c<layout.cols-1){
+
+        html+=`
+          <line
+            x1="${x}"
+            y1="${y}"
+            x2="${x+dx}"
+            y2="${y}"
+            stroke="#ddd"
+            stroke-width="1"
+          />
+        `;
+      }
+
+
+      if(r<layout.rows-1){
+
+        html+=`
+          <line
+            x1="${x}"
+            y1="${y}"
+            x2="${x}"
+            y2="${y+dy}"
+            stroke="#ddd"
+            stroke-width="1"
+          />
+        `;
+      }
+
+    }
+
+  }
+
+
+  /*
+    Collegamenti attivi
+  */
+
+  const stats=
+    layoutStats(layout);
+
+
+  stats.horizontal.forEach(e=>{
+
+    const x1=
+      left+e.c1*dx;
+
+    const x2=
+      left+e.c2*dx;
+
+    const y=
+      top+e.r*dy;
+
+
+    html+=`
+      <line
+        x1="${x1}"
+        y1="${y}"
+        x2="${x2}"
+        y2="${y}"
+        stroke="#222"
+        stroke-width="4"
+      />
+    `;
+
+  });
+
+
+  stats.vertical.forEach(e=>{
+
+    const x=
+      left+e.c*dx;
+
+    const y1=
+      top+e.r1*dy;
+
+    const y2=
+      top+e.r2*dy;
+
+
+    html+=`
+      <line
+        x1="${x}"
+        y1="${y1}"
+        x2="${x}"
+        y2="${y2}"
+        stroke="#356d91"
+        stroke-width="4"
+      />
+    `;
+
+  });
+
+
+  /*
+    Punti
+  */
+
+  for(
+    let r=0;
+    r<layout.rows;
+    r++
+  ){
+
+    for(
+      let c=0;
+      c<layout.cols;
+      c++
+    ){
+
+      const x=
+        left+c*dx;
+
+      const y=
+        top+r*dy;
+
+      const active=
+        layout.nodes[r][c];
+
+
+      html+=`
+        <circle
+          class="matrix-node"
+          data-r="${r}"
+          data-c="${c}"
+          cx="${x}"
+          cy="${y}"
+          r="${active ? 8 : 5}"
+          fill="${active ? "#111" : "#fff"}"
+          stroke="${active ? "#111" : "#aaa"}"
+          stroke-width="2"
+          style="cursor:pointer"
+        />
+      `;
+
+    }
+
+  }
+
+
+  svg.innerHTML=html;
+
+
+  svg
+    .querySelectorAll(
+      ".matrix-node"
+    )
+    .forEach(circle=>{
+
+      circle.addEventListener(
+        "click",
+        ()=>{
+
+          toggleMatrixNode(
+
+            Number(
+              circle.dataset.r
+            ),
+
+            Number(
+              circle.dataset.c
+            )
+
+          );
 
         }
       );
 
-
-      status += "</div>";
-
-    }
-
-
-    if(
-      !p.fairyAvailable
-    ){
-
-      const availableMeters =
-
-        (remaining.fairy100 || 0)
-        *
-        100
-
-        +
-
-        (remaining.fairy200 || 0)
-        *
-        200;
-
-
-      status += `
-
-        <div class="warning">
-
-          Fairy lights insufficienti.
-
-          <br>
-
-          Servono circa
-          <strong>
-            ${p.fairy.total.toFixed(1)} m
-          </strong>.
-
-          Disponibili:
-          ${availableMeters} m.
-
-        </div>
-
-      `;
-
-    }
-
-  }
-
-
-  document.getElementById(
-    "status"
-  ).innerHTML =
-    status;
-
-
-
-  let rows = "";
-
-
-  ITEMS.forEach(item => {
-
-    const qty =
-      p.requirements[item.key]
-      ||
-      0;
-
-
-    if(qty){
-
-      rows += `
-
-        <tr>
-
-          <td>
-            ${item.label}
-          </td>
-
-          <td>
-            <strong>
-              ${qty}
-            </strong>
-          </td>
-
-        </tr>
-
-      `;
-
-    }
-
-  });
-
-
-
-  let sideDescription;
-
-
-  if(
-    side.method.type
-    ===
-    "fixed"
-  ){
-
-    sideDescription =
-      `${side.method.label}`;
-
-  }
-
-  else{
-
-    sideDescription =
-      `${side.method.label}
-       a ${side.bayLength.toFixed(2)} m`;
-
-  }
-
-
-
-  let topDescription;
-
-
-  if(
-    top.method.type
-    ===
-    "fixed"
-  ){
-
-    topDescription =
-      `${top.method.label}`;
-
-  }
-
-  else{
-
-    topDescription =
-      `${top.method.label}
-       a ${p.width.toFixed(2)} m`;
-
-  }
-
-
-
-  let fairyHtml = "";
-
-
-  if(
-    p.fairyEnabled
-  ){
-
-    fairyHtml = `
-
-      <h3>Fairy lights</h3>
-
-
-      <div class="metric-grid">
-
-        <div class="metric">
-
-          <span>
-            Numero U
-          </span>
-
-          <strong>
-            ${p.fairy.rows}
-          </strong>
-
-        </div>
-
-
-        <div class="metric">
-
-          <span>
-            Passo reale
-          </span>
-
-          <strong>
-            ${(p.fairy.actualSpacing*100).toFixed(1)} cm
-          </strong>
-
-        </div>
-
-
-        <div class="metric">
-
-          <span>
-            Metri per U
-          </span>
-
-          <strong>
-            ${p.fairy.perU.toFixed(2)} m
-          </strong>
-
-        </div>
-
-
-        <div class="metric">
-
-          <span>
-            Fairy totale
-          </span>
-
-          <strong>
-            ${p.fairy.total.toFixed(1)} m
-          </strong>
-
-        </div>
-
-      </div>
-
-    `;
-
-
-    if(
-      p.fairyBaskets
-    ){
-
-      fairyHtml += `
-
-        <p>
-
-          <strong>
-            Carico fairy:
-          </strong>
-
-          ${p.fairyBaskets.fairy100}
-          × 100 m
-
-          +
-
-          ${p.fairyBaskets.fairy200}
-          × 200 m
-
-          =
-
-          <strong>
-            ${p.fairyBaskets.meters} m
-          </strong>
-
-        </p>
-
-      `;
-
-    }
-
-  }
-
-
-
-  document.getElementById(
-    "summary"
-  ).innerHTML = `
-
-
-    <h3>Geometria</h3>
-
-
-    <div class="metric-grid">
-
-
-      <div class="metric">
-
-        <span>
-          Sezioni trasversali
-        </span>
-
-        <strong>
-          ${side.sections}
-        </strong>
-
-      </div>
-
-
-      <div class="metric">
-
-        <span>
-          Campate longitudinali
-        </span>
-
-        <strong>
-          ${side.bays}
-        </strong>
-
-      </div>
-
-
-      <div class="metric">
-
-        <span>
-          Lunghezza campata
-        </span>
-
-        <strong>
-          ${side.bayLength.toFixed(2)} m
-        </strong>
-
-      </div>
-
-
-      <div class="metric">
-
-        <span>
-          Lato longitudinale
-        </span>
-
-        <strong style="font-size:14px">
-          ${sideDescription}
-        </strong>
-
-      </div>
-
-
-      <div class="metric">
-
-        <span>
-          Superiore trasversale
-        </span>
-
-        <strong style="font-size:14px">
-          ${topDescription}
-        </strong>
-
-      </div>
-
-
-      <div class="metric">
-
-        <span>
-          Pali + basi
-        </span>
-
-        <strong>
-          ${side.sections*2}
-        </strong>
-
-      </div>
-
-
-    </div>
-
-
-
-    <h3>Lista materiale</h3>
-
-
-    <table>
-
-      <thead>
-
-        <tr>
-
-          <th>
-            Materiale
-          </th>
-
-          <th>
-            Q.tà
-          </th>
-
-        </tr>
-
-      </thead>
-
-
-      <tbody>
-
-        ${rows}
-
-      </tbody>
-
-    </table>
-
-
-    ${fairyHtml}
-
-  `;
-
+    });
 }
-
 
 
 /* =========================================================
-   CONFERMA
-========================================================= */
-
-function commitPlan(){
-
-  if(
-    !currentPlan
-  ){
-
-    alert(
-      "Configurazione non valida."
-    );
-
-    return;
-
-  }
-
-
-  if(
-    currentPlan.deficits.length
-    ||
-    !currentPlan.fairyAvailable
-  ){
-
-    alert(
-      "Il materiale disponibile non è sufficiente."
-    );
-
-    return;
-
-  }
-
-
-  Object.entries(
-    currentPlan.requirements
-  ).forEach(
-    ([key,qty]) => {
-
-      if(qty){
-
-        remaining[key] -= qty;
-
-      }
-
-    }
-  );
-
-
-  allocations.push({
-
-    name:
-      currentPlan.name,
-
-    length:
-      currentPlan.length,
-
-    width:
-      currentPlan.width,
-
-    sections:
-      currentPlan.geometry.side.sections,
-
-    requirements:{
-      ...currentPlan.requirements
-    }
-
-  });
-
-
-  renderRemaining();
-
-  renderAllocations();
-
-
-  document.getElementById(
-    "status"
-  ).innerHTML += `
-
-    <div
-      class="good"
-      style="margin-top:10px"
-    >
-      ✓ Carico confermato e
-      materiale scalato dal magazzino.
-    </div>
-
-  `;
-
-}
-
-
-
-function renderAllocations(){
-
-  const root =
-    document.getElementById(
-      "allocations"
-    );
-
-
-  if(
-    !allocations.length
-  ){
-
-    root.innerHTML =
-      "Nessuna.";
-
-    return;
-
-  }
-
-
-  root.innerHTML =
-
-    allocations.map(
-      (a,index) => `
-
-        <div class="allocation">
-
-          <strong>
-            ${index+1}. ${a.name}
-          </strong>
-
-          <br>
-
-          ${a.length}
-          ×
-          ${a.width} m
-
-          ·
-
-          ${a.sections}
-          sezioni
-
-        </div>
-
-      `
-    ).join("");
-
-}
-
-
-
-/* =========================================================
-   THREE.JS
+   THREE JS
 ========================================================= */
 
 function init3D(){
 
-  const container =
+  const container=
     document.getElementById(
       "viewer"
     );
 
 
-  renderer =
+  renderer=
     new THREE.WebGLRenderer({
-
       antialias:true,
-
       preserveDrawingBuffer:true
-
     });
 
 
@@ -3072,11 +2852,8 @@ function init3D(){
 
 
   renderer.setSize(
-
     container.clientWidth,
-
     container.clientHeight
-
   );
 
 
@@ -3085,57 +2862,40 @@ function init3D(){
   );
 
 
-  camera =
+  camera=
     new THREE.PerspectiveCamera(
-
       45,
-
-      container.clientWidth
-      /
+      container.clientWidth/
       container.clientHeight,
-
       .1,
-
       1000
-
     );
 
 
-  controls =
+  controls=
     new OrbitControls(
-
       camera,
-
       renderer.domElement
-
     );
 
 
-  controls.enableDamping =
-    true;
+  controls.enableDamping=true;
 
 
   window.addEventListener(
     "resize",
-    () => {
+    ()=>{
 
-      const width =
+      const w=
         container.clientWidth;
 
-
-      const height =
+      const h=
         container.clientHeight;
 
 
-      renderer.setSize(
-        width,
-        height
-      );
+      renderer.setSize(w,h);
 
-
-      camera.aspect =
-        width / height;
-
+      camera.aspect=w/h;
 
       camera.updateProjectionMatrix();
 
@@ -3144,9 +2904,7 @@ function init3D(){
 
 
   animate();
-
 }
-
 
 
 function animate(){
@@ -3156,19 +2914,16 @@ function animate(){
   );
 
 
-  if(controls){
-
+  if(controls)
     controls.update();
-
-  }
 
 
   if(
-    renderer
-    &&
     scene
     &&
     camera
+    &&
+    renderer
   ){
 
     renderer.render(
@@ -3177,55 +2932,46 @@ function animate(){
     );
 
   }
-
 }
 
 
-
 function cylinderBetween(
-  start,
-  end,
+  a,
+  b,
   radius,
   material
 ){
 
-  const direction =
-
+  const dir=
     new THREE.Vector3()
-
-    .subVectors(
-      end,
-      start
-    );
-
-
-  const length =
-    direction.length();
+      .subVectors(
+        b,
+        a
+      );
 
 
-  const geometry =
+  const length=
+    dir.length();
+
+
+  const geo=
     new THREE.CylinderGeometry(
-
       radius,
       radius,
       length,
       10
-
     );
 
 
-  const mesh =
+  const mesh=
     new THREE.Mesh(
-      geometry,
+      geo,
       material
     );
 
 
   mesh.position
-    .addVectors(
-      start,
-      end
-    )
+    .addVectors(a,b)
     .multiplyScalar(.5);
 
 
@@ -3236,7 +2982,7 @@ function cylinderBetween(
         0,1,0
       ),
 
-      direction
+      dir
         .clone()
         .normalize()
 
@@ -3245,296 +2991,93 @@ function cylinderBetween(
 
   scene.add(mesh);
 
-
   return mesh;
-
 }
 
 
+function activeRowBounds(l){
 
-/* =========================================================
-   LABEL 3D COMPATTE
-========================================================= */
-
-function makeSmallLabel(
-  text,
-  position,
-  width=1.8
-){
-
-  const lines =
-    text.split("\n");
+  let min=Infinity;
+  let max=-Infinity;
 
 
-  const canvas =
-    document.createElement(
-      "canvas"
-    );
+  for(let r=0;r<l.rows;r++){
 
+    if(
+      l.nodes[r].some(Boolean)
+    ){
 
-  canvas.width = 512;
-
-  canvas.height =
-    lines.length > 1
-    ?
-    120
-    :
-    76;
-
-
-  const ctx =
-    canvas.getContext("2d");
-
-
-  /*
-    Fondo piccolo,
-    leggermente trasparente.
-  */
-
-  ctx.fillStyle =
-    "rgba(255,255,255,.88)";
-
-
-  ctx.fillRect(
-    0,
-    0,
-    canvas.width,
-    canvas.height
-  );
-
-
-  ctx.strokeStyle =
-    "rgba(40,40,40,.8)";
-
-
-  ctx.lineWidth = 3;
-
-
-  ctx.strokeRect(
-    2,
-    2,
-    canvas.width-4,
-    canvas.height-4
-  );
-
-
-  ctx.fillStyle =
-    "#111";
-
-
-  ctx.textAlign =
-    "center";
-
-
-  ctx.textBaseline =
-    "middle";
-
-
-  ctx.font =
-    "bold 25px Arial";
-
-
-  if(
-    lines.length === 1
-  ){
-
-    ctx.fillText(
-      lines[0],
-      canvas.width/2,
-      canvas.height/2
-    );
-
-  }
-
-  else{
-
-    ctx.fillText(
-      lines[0],
-      canvas.width/2,
-      39
-    );
-
-
-    ctx.font =
-      "22px Arial";
-
-
-    ctx.fillText(
-      lines[1],
-      canvas.width/2,
-      82
-    );
+      min=Math.min(min,r);
+      max=Math.max(max,r);
+    }
 
   }
 
 
-  const texture =
-    new THREE.CanvasTexture(
-      canvas
-    );
+  if(min===Infinity){
 
-
-  texture.minFilter =
-    THREE.LinearFilter;
-
-
-  const material =
-    new THREE.SpriteMaterial({
-
-      map:texture,
-
-      transparent:true,
-
-      /*
-        IMPORTANTE:
-        adesso rispetta
-        la profondità 3D.
-      */
-
-      depthTest:true,
-
-      depthWrite:false
-
-    });
-
-
-  const sprite =
-    new THREE.Sprite(
-      material
-    );
-
-
-  sprite.position.copy(
-    position
-  );
-
-
-  const aspect =
-    canvas.height
-    /
-    canvas.width;
-
-
-  sprite.scale.set(
-
-    width,
-
-    width * aspect,
-
-    1
-
-  );
-
-
-  scene.add(sprite);
-
-
-  return sprite;
-
-}
-
-
-
-/* =========================================================
-   TESTO PER I LABEL
-========================================================= */
-
-function sideLabelText(side){
-
-  if(
-    side.method.type
-    ===
-    "fixed"
-  ){
-
-    return (
-      `TRAVERSA ${side.method.size} m`
-    );
-
+    return {
+      min:0,
+      max:1
+    };
   }
 
 
-  return (
-    `${side.method.label}\n${side.bayLength.toFixed(2)} m`
-  );
-
+  return {
+    min,
+    max
+  };
 }
 
-
-
-function topLabelText(
-  top,
-  width
-){
-
-  if(
-    top.method.type
-    ===
-    "fixed"
-  ){
-
-    return (
-      `SUP. · TRAVERSA ${top.method.size} m`
-    );
-
-  }
-
-
-  return (
-    `SUP. · ${top.method.label}\n${width.toFixed(2)} m`
-  );
-
-}
-
-
-
-/* =========================================================
-   RENDER 3D
-========================================================= */
 
 function render3D(plan){
 
-  scene =
+  scene=
     new THREE.Scene();
 
 
-  scene.background =
+  scene.background=
     new THREE.Color(
-      0xf0f1f3
+      0xf1f2f3
     );
 
 
   scene.add(
 
     new THREE.HemisphereLight(
-
       0xffffff,
-
       0x777777,
-
-      2.3
-
+      2.4
     )
 
   );
 
 
-  const side =
-    plan.geometry.side;
+  const l=
+    plan.layout;
+
+  const bay=
+    plan.geometry.side.bayLength;
+
+  const width=
+    plan.width;
 
 
-  const sections =
-    side.sections;
+  const bounds=
+    activeRowBounds(l);
 
 
-  const bay =
-    side.bayLength;
+  const zForRow=
+    r=>
+      (r-bounds.min)*width;
 
 
+  const totalWidth=
+    Math.max(
+      width,
+      (bounds.max-bounds.min)*width
+    );
 
-  /*
-    GRIGLIA
-  */
 
   scene.add(
 
@@ -3542,541 +3085,341 @@ function render3D(plan){
 
       Math.max(
         plan.length,
-        plan.width
-      ) * 2,
+        totalWidth
+      )*2,
 
-      20
+      24
 
     )
 
   );
 
 
-
-  /*
-    MATERIALI
-  */
-
-  const poleMat =
+  const poleMat=
     new THREE.MeshStandardMaterial({
       color:0x292929
     });
 
 
-  const highMat =
+  const highMat=
     new THREE.MeshStandardMaterial({
-      color:0x171717
+      color:0x111111
     });
 
 
-  const lowMat =
+  const lowMat=
     new THREE.MeshStandardMaterial({
       color:0x555555
     });
 
 
-  const crossMat =
+  const topMat=
     new THREE.MeshStandardMaterial({
-      color:0x164b70
+      color:0x174e72
     });
 
 
-
-  /*
-    PALI + SUPERIORI TRASVERSALI
-  */
-
-  for(
-    let i=0;
-    i<sections;
-    i++
-  ){
-
-    const x =
-      i * bay;
+  const baseMat=
+    new THREE.MeshStandardMaterial({
+      color:0x222222
+    });
 
 
-    [0,plan.width]
-      .forEach(z => {
-
-
-        cylinderBetween(
-
-          new THREE.Vector3(
-            x,
-            0,
-            z
-          ),
-
-          new THREE.Vector3(
-            x,
-            HEIGHT,
-            z
-          ),
-
-          .045,
-
-          poleMat
-
-        );
-
-      });
-
-
-
-    cylinderBetween(
-
-      new THREE.Vector3(
-        x,
-        HEIGHT,
-        0
-      ),
-
-      new THREE.Vector3(
-        x,
-        HEIGHT,
-        plan.width
-      ),
-
-      .038,
-
-      crossMat
-
-    );
-
-  }
-
-
-
-  /*
-    LATERALI
-  */
-
-  for(
-    let i=0;
-    i<side.bays;
-    i++
-  ){
-
-    const x1 =
-      i * bay;
-
-
-    const x2 =
-      (i+1) * bay;
-
-
-    [0,plan.width]
-      .forEach(z => {
-
-
-        cylinderBetween(
-
-          new THREE.Vector3(
-            x1,
-            HEIGHT,
-            z
-          ),
-
-          new THREE.Vector3(
-            x2,
-            HEIGHT,
-            z
-          ),
-
-          .037,
-
-          highMat
-
-        );
-
-
-        cylinderBetween(
-
-          new THREE.Vector3(
-            x1,
-            LOWER_HEIGHT,
-            z
-          ),
-
-          new THREE.Vector3(
-            x2,
-            LOWER_HEIGHT,
-            z
-          ),
-
-          .037,
-
-          lowMat
-
-        );
-
-      });
-
-  }
-
-
-
-  /*
-    BASI
-  */
-
-  const baseGeometry =
+  const baseGeo=
     new THREE.BoxGeometry(
-      .36,
+      .34,
       .04,
-      .36
+      .34
     );
 
 
-  const baseMaterial =
-    new THREE.MeshStandardMaterial({
-      color:0x202020
-    });
-
-
-  for(
-    let i=0;
-    i<sections;
-    i++
-  ){
-
-    const x =
-      i * bay;
-
-
-    [0,plan.width]
-      .forEach(z => {
-
-        const base =
-          new THREE.Mesh(
-
-            baseGeometry,
-
-            baseMaterial
-
-          );
-
-
-        base.position.set(
-          x,
-          .02,
-          z
-        );
-
-
-        scene.add(base);
-
-      });
-
-  }
-
-
-
   /*
-    FAIRY LIGHTS
+    PALI
   */
 
-  if(
-    plan.fairyEnabled
+  for(
+    let r=0;
+    r<l.rows;
+    r++
   ){
-
-    const fairyMaterial =
-      new THREE.LineBasicMaterial({
-        color:0xd18e00
-      });
-
-
-    const spacing =
-      plan.fairy.actualSpacing;
-
 
     for(
-      let i=0;
-      i<plan.fairy.rows;
-      i++
+      let c=0;
+      c<l.cols;
+      c++
     ){
 
-      const x =
-        (i+.5)
-        *
-        spacing;
+      if(!l.nodes[r][c])
+        continue;
 
 
-      /*
-        Piccola pancia centrale.
-      */
+      const x=
+        c*bay;
 
-      const points = [
+      const z=
+        zForRow(r);
+
+
+      cylinderBetween(
 
         new THREE.Vector3(
-          x,
-          .05,
-          0
+          x,0,z
         ),
 
         new THREE.Vector3(
-          x,
-          HEIGHT,
-          0
+          x,HEIGHT,z
         ),
 
-        new THREE.Vector3(
-          x,
-          HEIGHT-.17,
-          plan.width/2
-        ),
+        .045,
 
-        new THREE.Vector3(
-          x,
-          HEIGHT,
-          plan.width
-        ),
-
-        new THREE.Vector3(
-          x,
-          .05,
-          plan.width
-        )
-
-      ];
-
-
-      const geometry =
-        new THREE.BufferGeometry()
-          .setFromPoints(
-            points
-          );
-
-
-      scene.add(
-
-        new THREE.Line(
-
-          geometry,
-
-          fairyMaterial
-
-        )
+        poleMat
 
       );
+
+
+      const base=
+        new THREE.Mesh(
+          baseGeo,
+          baseMat
+        );
+
+
+      base.position.set(
+        x,
+        .02,
+        z
+      );
+
+
+      scene.add(base);
 
     }
 
   }
 
 
-
   /*
-    ======================================================
-    LABEL
-
-    Piccole.
-    Direttamente accanto al pezzo.
-    Niente callout lunghi.
-    ======================================================
+    LONGITUDINALI
   */
 
-
-  /*
-    PALO
-  */
-
-  makeSmallLabel(
-
-    "PALO · 2,5 m",
-
-    new THREE.Vector3(
-
-      -.18,
-
-      HEIGHT * .52,
-
-      -.14
-
-    ),
-
-    1.35
-
-  );
+  const stats=
+    layoutStats(l);
 
 
+  stats.horizontal
+    .forEach(edge=>{
 
-  /*
-    BASE
-  */
+      const x1=
+        edge.c1*bay;
 
-  makeSmallLabel(
+      const x2=
+        edge.c2*bay;
 
-    "BASE",
-
-    new THREE.Vector3(
-
-      .15,
-
-      .23,
-
-      .15
-
-    ),
-
-    .9
-
-  );
+      const z=
+        zForRow(edge.r);
 
 
+      cylinderBetween(
 
-  /*
-    TRAVERSA ALTA / LATERALE
+        new THREE.Vector3(
+          x1,
+          HEIGHT,
+          z
+        ),
 
-    direttamente sopra
-    la prima campata.
-  */
+        new THREE.Vector3(
+          x2,
+          HEIGHT,
+          z
+        ),
 
-  makeSmallLabel(
+        .036,
 
-    sideLabelText(side),
+        highMat
 
-    new THREE.Vector3(
+      );
 
-      bay/2,
 
-      HEIGHT + .22,
+      cylinderBetween(
 
-      -.08
+        new THREE.Vector3(
+          x1,
+          LOWER_HEIGHT,
+          z
+        ),
 
-    ),
+        new THREE.Vector3(
+          x2,
+          LOWER_HEIGHT,
+          z
+        ),
 
-    1.75
+        .036,
 
-  );
+        lowMat
 
+      );
+
+    });
 
 
   /*
-    BASSA
-
-    usiamo il lato opposto
-    per evitare che le label
-    si coprano.
+    SUPERIORI TRASVERSALI
   */
 
-  let lowerText;
+  stats.vertical
+    .forEach(edge=>{
+
+      const x=
+        edge.c*bay;
+
+      const z1=
+        zForRow(edge.r1);
+
+      const z2=
+        zForRow(edge.r2);
 
 
-  if(
-    side.method.type
-    ===
-    "fixed"
-  ){
+      cylinderBetween(
 
-    lowerText =
-      `BASSA · ${side.method.size} m`;
+        new THREE.Vector3(
+          x,
+          HEIGHT,
+          z1
+        ),
 
-  }
+        new THREE.Vector3(
+          x,
+          HEIGHT,
+          z2
+        ),
 
-  else{
+        .038,
 
-    lowerText =
-      `BASSA · ${side.bayLength.toFixed(2)} m`;
+        topMat
 
-  }
+      );
 
-
-  makeSmallLabel(
-
-    lowerText,
-
-    new THREE.Vector3(
-
-      bay/2,
-
-      LOWER_HEIGHT + .17,
-
-      plan.width + .07
-
-    ),
-
-    1.45
-
-  );
-
-
-
-  /*
-    SUPERIORE TRASVERSALE
-
-    sulla prima sezione,
-    poco sopra la barra.
-  */
-
-  makeSmallLabel(
-
-    topLabelText(
-      plan.geometry.top,
-      plan.width
-    ),
-
-    new THREE.Vector3(
-
-      .02,
-
-      HEIGHT + .28,
-
-      plan.width/2
-
-    ),
-
-    1.9
-
-  );
-
+    });
 
 
   /*
     FAIRY
-
-    molto piccola,
-    dentro alla struttura.
   */
 
   if(
     plan.fairyEnabled
+    &&
+    plan.fairy
   ){
 
-    makeSmallLabel(
+    const fairyMat=
+      new THREE.LineBasicMaterial({
+        color:0xd49400
+      });
 
-      `FAIRY · ${(plan.fairy.actualSpacing*100).toFixed(1)} cm`,
 
-      new THREE.Vector3(
+    plan.fairy.runs
+      .forEach(run=>{
 
-        plan.length * .67,
+        const z1=
+          zForRow(run.r);
 
-        HEIGHT - .33,
+        const z2=
+          zForRow(run.r+1);
 
-        plan.width/2
 
-      ),
+        const runStart=
+          run.start*bay;
 
-      1.35
 
-    );
+        const spacing=
+          run.length/run.rows;
+
+
+        for(
+          let i=0;
+          i<run.rows;
+          i++
+        ){
+
+          const x=
+            runStart
+            +
+            (i+.5)*spacing;
+
+
+          const points=[
+
+            new THREE.Vector3(
+              x,
+              .04,
+              z1
+            ),
+
+            new THREE.Vector3(
+              x,
+              HEIGHT,
+              z1
+            ),
+
+            new THREE.Vector3(
+              x,
+              HEIGHT-.18,
+              (z1+z2)/2
+            ),
+
+            new THREE.Vector3(
+              x,
+              HEIGHT,
+              z2
+            ),
+
+            new THREE.Vector3(
+              x,
+              .04,
+              z2
+            )
+
+          ];
+
+
+          const geo=
+            new THREE.BufferGeometry()
+              .setFromPoints(points);
+
+
+          scene.add(
+
+            new THREE.Line(
+              geo,
+              fairyMat
+            )
+
+          );
+
+        }
+
+      });
 
   }
 
 
-
   /*
-    CAMERA
+    NESSUNA LABEL 3D.
   */
+
 
   camera.position.set(
 
-    plan.length * .78,
+    plan.length*.75,
 
-    HEIGHT * 2.45,
+    HEIGHT*2.6,
 
-    plan.width * 1.75
+    Math.max(
+      totalWidth*1.45,
+      plan.width*1.7
+    )
 
   );
 
@@ -4087,47 +3430,18 @@ function render3D(plan){
 
     HEIGHT/2,
 
-    plan.width/2
+    totalWidth/2
 
   );
 
 
   controls.update();
-
 }
-
 
 
 /* =========================================================
-   SVG
+   SVG UTILITY
 ========================================================= */
-
-function svgDefs(){
-
-  return `
-    <defs>
-
-      <marker
-        id="arrow"
-        viewBox="0 0 10 10"
-        refX="9"
-        refY="5"
-        markerWidth="6"
-        markerHeight="6"
-        orient="auto"
-      >
-        <path
-          d="M0 0 L10 5 L0 10 z"
-          fill="#222"
-        />
-      </marker>
-
-    </defs>
-  `;
-
-}
-
-
 
 function svgLine(
   x1,y1,
@@ -4145,17 +3459,13 @@ function svgLine(
       stroke-width="${width}"
     />
   `;
-
 }
 
 
-
 function svgText(
-  x,
-  y,
-  text,
+  x,y,text,
   anchor="middle",
-  size=15
+  size=14
 ){
 
   return `
@@ -4170,16 +3480,8 @@ function svgText(
       ${text}
     </text>
   `;
-
 }
 
-
-
-/*
-  Etichetta piccola
-  direttamente accanto
-  al pezzo.
-*/
 
 function svgTag(
   x,
@@ -4188,52 +3490,32 @@ function svgTag(
   anchor="middle"
 ){
 
-  const estimatedWidth =
+  const width=
     Math.max(
-      90,
-      text.length * 7.4
+      76,
+      text.length*7
     );
 
 
-  let rectX;
+  let rectX=x-width/2;
 
 
-  if(anchor === "middle"){
+  if(anchor==="start")
+    rectX=x;
 
-    rectX =
-      x
-      -
-      estimatedWidth/2;
 
-  }
-
-  else if(
-    anchor === "end"
-  ){
-
-    rectX =
-      x
-      -
-      estimatedWidth;
-
-  }
-
-  else{
-
-    rectX =
-      x;
-
-  }
+  if(anchor==="end")
+    rectX=x-width;
 
 
   return `
 
     <rect
       x="${rectX}"
-      y="${y-18}"
-      width="${estimatedWidth}"
-      height="25"
-      rx="4"
+      y="${y-17}"
+      width="${width}"
+      height="23"
+      rx="3"
       fill="white"
       stroke="#aaa"
     />
@@ -4243,38 +3525,32 @@ function svgTag(
       y,
       text,
       anchor,
-      13
+      12
     )}
 
   `;
-
 }
-
 
 
 /* =========================================================
-   DISEGNI
+   TECHNICAL VIEWS
 ========================================================= */
 
-function renderDrawings(plan){
+function renderTechnicalViews(plan){
 
-  renderTop(plan);
-
-  renderSide(plan);
-
-  renderFront(plan);
-
+  renderTopView(plan);
+  renderSideView(plan);
+  renderFrontView(plan);
 }
 
 
-
-/* ===========================
+/* =========================================================
    PIANTA
-=========================== */
+========================================================= */
 
-function renderTop(plan){
+function renderTopView(plan){
 
-  const svg =
+  const svg=
     document.getElementById(
       "topView"
     );
@@ -4282,244 +3558,238 @@ function renderTop(plan){
 
   svg.setAttribute(
     "viewBox",
-    "0 0 1000 320"
+    "0 0 1000 280"
   );
 
 
-  const side =
-    plan.geometry.side;
+  const l=
+    plan.layout;
+
+  const stats=
+    layoutStats(l);
 
 
-  const left = 100;
-
-  const right = 900;
-
-  const top = 80;
-
-  const bottom = 240;
-
-  const usable =
-    right - left;
+  const bounds=
+    activeRowBounds(l);
 
 
-  let html =
-    svgDefs();
+  const activeRows=
+    Math.max(
+      1,
+      bounds.max-bounds.min
+    );
 
+
+  const left=150;
+  const right=900;
+
+  const top=50;
+  const bottom=230;
+
+
+  const dx=
+    l.cols>1
+      ? (right-left)/(l.cols-1)
+      : 0;
+
+
+  const dy=
+    activeRows>0
+      ? (bottom-top)/activeRows
+      : 0;
+
+
+  const yForRow=
+    r=>
+      top+
+      (r-bounds.min)*dy;
+
+
+  let html="";
 
 
   /*
-    LATERALI
+    Collegamenti.
   */
 
-  html +=
-    svgLine(
-      left,
-      top,
-      right,
-      top
-    );
+  stats.horizontal
+    .forEach(e=>{
+
+      html+=svgLine(
+
+        left+e.c1*dx,
+        yForRow(e.r),
+
+        left+e.c2*dx,
+        yForRow(e.r),
+
+        4
+
+      );
+
+    });
 
 
-  html +=
-    svgLine(
-      left,
-      bottom,
-      right,
-      bottom
-    );
+  stats.vertical
+    .forEach(e=>{
 
+      html+=`
+
+        <line
+          x1="${left+e.c*dx}"
+          y1="${yForRow(e.r1)}"
+          x2="${left+e.c*dx}"
+          y2="${yForRow(e.r2)}"
+          stroke="#356d91"
+          stroke-width="4"
+        />
+
+      `;
+
+    });
 
 
   /*
-    SEZIONI
+    Pali.
   */
 
   for(
-    let i=0;
-    i<side.sections;
-    i++
+    let r=0;
+    r<l.rows;
+    r++
   ){
 
-    const x =
+    for(
+      let c=0;
+      c<l.cols;
+      c++
+    ){
 
-      left
+      if(!l.nodes[r][c])
+        continue;
 
-      +
 
+      html+=`
+
+        <circle
+          cx="${left+c*dx}"
+          cy="${yForRow(r)}"
+          r="5"
+          fill="#111"
+        />
+
+      `;
+
+    }
+
+  }
+
+
+  /*
+    Lato longitudinale.
+  */
+
+  if(stats.horizontal.length){
+
+    const e=
+      stats.horizontal[0];
+
+
+    const x=
       (
-        i
-        /
-        (side.sections-1)
-      )
-
-      *
-      usable;
+        left+e.c1*dx
+        +
+        left+e.c2*dx
+      )/2;
 
 
-    html +=
-      svgLine(
-        x,
-        top,
-        x,
-        bottom,
-        2
-      );
+    const text=
+      plan.geometry.side.method.type==="fixed"
+
+        ?
+
+        `Traversa ${plan.geometry.side.method.size} m`
+
+        :
+
+        `${plan.geometry.side.method.label} · ${plan.geometry.side.bayLength.toFixed(2)} m`;
 
 
-    html += `
-
-      <circle
-        cx="${x}"
-        cy="${top}"
-        r="5"
-        fill="#111"
-      />
-
-      <circle
-        cx="${x}"
-        cy="${bottom}"
-        r="5"
-        fill="#111"
-      />
-
-    `;
-
-  }
-
-
-
-  html +=
-    svgText(
-
-      500,
-
-      25,
-
-      `${plan.length} m · ${side.bays} campate × ${side.bayLength.toFixed(2)} m`
-
+    html+=svgTag(
+      x,
+      yForRow(e.r)-15,
+      text
     );
 
+  }
 
 
   /*
-    LABEL LATERALE
+    Trasversale:
+
+    LABEL SULLA SINISTRA DEL PEZZO,
+    non in mezzo alla struttura.
   */
 
-  let sideName;
+  if(stats.vertical.length){
+
+    const e=
+      stats.vertical[0];
 
 
-  if(
-    side.method.type
-    ===
-    "fixed"
-  ){
-
-    sideName =
-      `Traversa ${side.method.size} m`;
-
-  }
-
-  else{
-
-    sideName =
-      `${side.method.label} · ${side.bayLength.toFixed(2)} m`;
-
-  }
+    const y=
+      (
+        yForRow(e.r1)
+        +
+        yForRow(e.r2)
+      )/2;
 
 
-  const firstBayMiddle =
+    const text=
+      plan.geometry.top.method.type==="fixed"
 
-    left
+        ?
 
-    +
+        `Superiore ${plan.geometry.top.method.size} m`
 
-    usable
-    /
-    (
-      side.bays * 2
-    );
+        :
+
+        `${plan.geometry.top.method.label} · ${plan.width.toFixed(2)} m`;
 
 
-  html +=
-    svgTag(
+    html+=svgTag(
 
-      firstBayMiddle,
+      left-18,
 
-      top - 13,
+      y,
 
-      sideName
+      text,
+
+      "end"
 
     );
-
-
-
-  /*
-    SUPERIORE
-  */
-
-  let topName;
-
-
-  if(
-    plan.geometry.top.method.type
-    ===
-    "fixed"
-  ){
-
-    topName =
-      `Sup. traversa ${plan.geometry.top.method.size} m`;
-
-  }
-
-  else{
-
-    topName =
-      `${plan.geometry.top.method.label} · ${plan.width.toFixed(2)} m`;
 
   }
 
 
-  html +=
-    svgTag(
-
-      left + 18,
-
-      (top+bottom)/2,
-
-      topName,
-
-      "start"
-
-    );
+  html+=svgText(
+    500,
+    270,
+    `Vista dall'alto · ${plan.geometry.side.sections} sezioni`
+  );
 
 
-
-  html +=
-    svgText(
-
-      500,
-
-      295,
-
-      `${side.sections} sezioni trasversali`
-
-    );
-
-
-  svg.innerHTML =
-    html;
-
+  svg.innerHTML=html;
 }
 
 
-
-/* ===========================
+/* =========================================================
    LATERALE
-=========================== */
+========================================================= */
 
-function renderSide(plan){
+function renderSideView(plan){
 
-  const svg =
+  const svg=
     document.getElementById(
       "sideView"
     );
@@ -4527,271 +3797,279 @@ function renderSide(plan){
 
   svg.setAttribute(
     "viewBox",
-    "0 0 1000 320"
+    "0 0 1000 280"
   );
 
 
-  const side =
-    plan.geometry.side;
+  const l=
+    plan.layout;
 
 
-  const left = 100;
+  /*
+    Cerchiamo la prima riga che abbia
+    almeno un collegamento longitudinale.
+  */
 
-  const right = 900;
-
-  const ground = 260;
-
-  const top = 65;
+  let row=-1;
 
 
-  const lowerY =
+  for(let r=0;r<l.rows;r++){
 
+    for(let c=0;c<l.cols-1;c++){
+
+      if(
+        l.nodes[r][c]
+        &&
+        l.nodes[r][c+1]
+      ){
+
+        row=r;
+
+        break;
+      }
+
+    }
+
+    if(row>=0)
+      break;
+  }
+
+
+  if(row<0){
+
+    svg.innerHTML=
+      svgText(
+        500,
+        140,
+        "Nessun lato longitudinale"
+      );
+
+    return;
+  }
+
+
+  const left=150;
+  const right=900;
+
+  const ground=235;
+  const top=40;
+
+
+  const lowerY=
     ground
-
     -
-
-    (
-      LOWER_HEIGHT
-      /
-      HEIGHT
-    )
-
+    (LOWER_HEIGHT/HEIGHT)
     *
+    (ground-top);
 
-    (
-      ground
-      -
+
+  const dx=
+    (right-left)/
+    (l.cols-1);
+
+
+  let html="";
+
+
+  /*
+    Pali.
+  */
+
+  for(
+    let c=0;
+    c<l.cols;
+    c++
+  ){
+
+    if(!l.nodes[row][c])
+      continue;
+
+
+    const x=
+      left+c*dx;
+
+
+    html+=svgLine(
+      x,
+      ground,
+      x,
       top
     );
 
 
-  let html =
-    svgDefs();
-
-
-
-  /*
-    PALI
-  */
-
-  for(
-    let i=0;
-    i<side.sections;
-    i++
-  ){
-
-    const x =
-
-      left
-
-      +
-
-      (
-        i
-        /
-        (side.sections-1)
-      )
-
-      *
-      (
-        right-left
-      );
-
-
-    html +=
-      svgLine(
-
-        x,
-
-        ground,
-
-        x,
-
-        top
-
-      );
-
-
-    html += `
-
+    html+=`
       <rect
-        x="${x-11}"
+        x="${x-10}"
         y="${ground}"
-        width="22"
+        width="20"
         height="6"
         fill="#111"
       />
-
     `;
 
   }
 
 
-
   /*
-    TRAVERSE
+    Alta + bassa.
   */
 
-  html +=
-    svgLine(
-      left,
+  let firstEdge=null;
+
+
+  for(
+    let c=0;
+    c<l.cols-1;
+    c++
+  ){
+
+    if(
+      !l.nodes[row][c]
+      ||
+      !l.nodes[row][c+1]
+    ){
+      continue;
+    }
+
+
+    const x1=
+      left+c*dx;
+
+    const x2=
+      left+(c+1)*dx;
+
+
+    html+=svgLine(
+      x1,
       top,
-      right,
+      x2,
       top
     );
 
 
-  html +=
-    svgLine(
-      left,
+    html+=svgLine(
+      x1,
       lowerY,
-      right,
+      x2,
       lowerY
     );
 
 
+    if(!firstEdge){
 
-  const midFirstBay =
+      firstEdge={
+        x1,
+        x2
+      };
+    }
 
-    left
+  }
 
-    +
 
-    (
-      right-left
-    )
+  if(firstEdge){
 
-    /
-    (
-      side.bays * 2
+    const mid=
+      (
+        firstEdge.x1
+        +
+        firstEdge.x2
+      )/2;
+
+
+    const lengthText=
+      plan.geometry.side.method.type==="fixed"
+
+        ?
+
+        `${plan.geometry.side.method.size} m`
+
+        :
+
+        `${plan.geometry.side.bayLength.toFixed(2)} m`;
+
+
+    html+=svgTag(
+      mid,
+      top-13,
+      `ALTA · ${lengthText}`
     );
 
 
-
-  if(
-    side.method.type
-    ===
-    "fixed"
-  ){
-
-    html +=
-      svgTag(
-
-        midFirstBay,
-
-        top - 12,
-
-        `Alta · ${side.method.size} m`
-
-      );
-
-
-    html +=
-      svgTag(
-
-        midFirstBay,
-
-        lowerY + 32,
-
-        `Bassa · ${side.method.size} m`
-
-      );
+    html+=svgTag(
+      mid,
+      lowerY+30,
+      `BASSA · ${lengthText}`
+    );
 
   }
-
-  else{
-
-    html +=
-      svgTag(
-
-        midFirstBay,
-
-        top - 12,
-
-        `${side.method.label} · ${side.bayLength.toFixed(2)} m`
-
-      );
-
-
-    html +=
-      svgTag(
-
-        midFirstBay,
-
-        lowerY + 32,
-
-        `Stesso pezzo · bassa`
-
-      );
-
-  }
-
 
 
   /*
-    PALO
+    PALO:
+    a SINISTRA del primo palo.
   */
 
-  html +=
-    svgTag(
+  const firstPole=
+    l.nodes[row].findIndex(Boolean);
 
-      left + 12,
 
-      160,
+  if(firstPole>=0){
 
-      "Palo 2,5 m",
+    const x=
+      left+firstPole*dx;
+
+
+    html+=svgTag(
+
+      x-18,
+
+      135,
+
+      "PALO · 2,5 m",
+
+      "end"
+
+    );
+
+
+    /*
+      BASE:
+      a DESTRA del palo.
+    */
+
+    html+=svgTag(
+
+      x+18,
+
+      ground+28,
+
+      "BASE",
 
       "start"
 
     );
 
+  }
 
 
-  /*
-    BASE
-  */
-
-  html +=
-    svgTag(
-
-      left + 25,
-
-      ground + 35,
-
-      "Base",
-
-      "start"
-
-    );
+  html+=svgText(
+    500,
+    272,
+    `Lato longitudinale · campata ${plan.geometry.side.bayLength.toFixed(2)} m`
+  );
 
 
-
-  html +=
-    svgText(
-
-      500,
-
-      305,
-
-      `${side.bays} × ${side.bayLength.toFixed(2)} m = ${plan.length} m`
-
-    );
-
-
-  svg.innerHTML =
-    html;
-
+  svg.innerHTML=html;
 }
 
 
-
-/* ===========================
+/* =========================================================
    FRONTALE
-=========================== */
+========================================================= */
 
-function renderFront(plan){
+function renderFrontView(plan){
 
-  const svg =
+  const svg=
     document.getElementById(
       "frontView"
     );
@@ -4799,142 +4077,356 @@ function renderFront(plan){
 
   svg.setAttribute(
     "viewBox",
-    "0 0 1000 320"
+    "0 0 1000 280"
   );
 
 
-  const left = 270;
-
-  const right = 730;
-
-  const ground = 260;
-
-  const top = 65;
+  const l=
+    plan.layout;
 
 
-  let html =
-    svgDefs();
+  /*
+    Prima colonna con almeno
+    un collegamento trasversale.
+  */
+
+  let column=-1;
 
 
+  for(
+    let c=0;
+    c<l.cols;
+    c++
+  ){
 
-  html +=
-    svgLine(
-      left,
+    for(
+      let r=0;
+      r<l.rows-1;
+      r++
+    ){
+
+      if(
+        l.nodes[r][c]
+        &&
+        l.nodes[r+1][c]
+      ){
+
+        column=c;
+
+        break;
+      }
+
+    }
+
+    if(column>=0)
+      break;
+  }
+
+
+  if(column<0){
+
+    svg.innerHTML=
+      svgText(
+        500,
+        140,
+        "Nessuna sezione trasversale"
+      );
+
+    return;
+  }
+
+
+  const active=[];
+
+
+  for(
+    let r=0;
+    r<l.rows;
+    r++
+  ){
+
+    if(l.nodes[r][column]){
+      active.push(r);
+    }
+
+  }
+
+
+  const minR=
+    Math.min(...active);
+
+  const maxR=
+    Math.max(...active);
+
+
+  const span=
+    Math.max(
+      1,
+      maxR-minR
+    );
+
+
+  const left=230;
+  const right=770;
+
+  const ground=235;
+  const top=40;
+
+
+  const xForRow=
+    r=>
+      left+
+      (
+        (r-minR)/span
+      )
+      *
+      (right-left);
+
+
+  let html="";
+
+
+  /*
+    Pali.
+  */
+
+  active.forEach(r=>{
+
+    const x=
+      xForRow(r);
+
+
+    html+=svgLine(
+      x,
       ground,
-      left,
+      x,
       top
     );
 
 
-  html +=
-    svgLine(
-      right,
-      ground,
-      right,
-      top
+    html+=`
+      <rect
+        x="${x-10}"
+        y="${ground}"
+        width="20"
+        height="6"
+        fill="#111"
+      />
+    `;
+
+  });
+
+
+  /*
+    Traverse superiori.
+  */
+
+  let firstEdge=null;
+
+
+  for(
+    let r=minR;
+    r<maxR;
+    r++
+  ){
+
+    if(
+      l.nodes[r][column]
+      &&
+      l.nodes[r+1][column]
+    ){
+
+      const x1=
+        xForRow(r);
+
+      const x2=
+        xForRow(r+1);
+
+
+      html+=svgLine(
+        x1,
+        top,
+        x2,
+        top,
+        4
+      );
+
+
+      if(!firstEdge){
+
+        firstEdge={
+          x1,
+          x2
+        };
+      }
+
+    }
+
+  }
+
+
+  if(firstEdge){
+
+    const mid=
+      (
+        firstEdge.x1
+        +
+        firstEdge.x2
+      )/2;
+
+
+    const text=
+      plan.geometry.top.method.type==="fixed"
+
+        ?
+
+        `Traversa alta ${plan.geometry.top.method.size} m`
+
+        :
+
+        `${plan.geometry.top.method.label} · ${plan.width.toFixed(2)} m`;
+
+
+    html+=svgTag(
+      mid,
+      top-14,
+      text
     );
 
+  }
 
-  html +=
-    svgLine(
-      left,
-      top,
-      right,
-      top
+
+  html+=svgTag(
+    left-18,
+    135,
+    "PALO · 2,5 m",
+    "end"
+  );
+
+
+  html+=svgTag(
+    left+18,
+    ground+28,
+    "BASE",
+    "start"
+  );
+
+
+  html+=svgText(
+    500,
+    272,
+    `Vista frontale · modulo ${plan.width.toFixed(2)} m`
+  );
+
+
+  svg.innerHTML=html;
+}
+
+
+/* =========================================================
+   CONFERMA
+========================================================= */
+
+function commitPlan(){
+
+  if(!currentPlan){
+
+    alert(
+      "Configurazione non valida."
     );
 
-
-
-  html += `
-
-    <rect
-      x="${left-12}"
-      y="${ground}"
-      width="24"
-      height="7"
-      fill="#111"
-    />
-
-    <rect
-      x="${right-12}"
-      y="${ground}"
-      width="24"
-      height="7"
-      fill="#111"
-    />
-
-  `;
-
-
-
-  let topName;
+    return;
+  }
 
 
   if(
-    plan.geometry.top.method.type
-    ===
-    "fixed"
+    currentPlan.deficits.length
+    ||
+    !currentPlan.fairyAvailable
   ){
 
-    topName =
-      `Traversa alta ${plan.geometry.top.method.size} m`;
+    alert(
+      "Il materiale non è sufficiente."
+    );
 
-  }
-
-  else{
-
-    topName =
-      `${plan.geometry.top.method.label} · ${plan.width.toFixed(2)} m`;
-
+    return;
   }
 
 
+  Object.entries(
+    currentPlan.requirements
+  )
+  .forEach(([key,qty])=>{
 
-  html +=
-    svgTag(
+    if(qty){
 
-      500,
+      remaining[key]-=qty;
 
-      top - 14,
+    }
 
-      topName
-
-    );
-
-
-
-  html +=
-    svgTag(
-
-      left + 15,
-
-      165,
-
-      "Palo 2,5 m",
-
-      "start"
-
-    );
+  });
 
 
+  allocations.push({
 
-  html +=
-    svgText(
+    name:currentPlan.name,
 
-      500,
+    length:currentPlan.length,
 
-      305,
+    width:currentPlan.width,
 
-      `INGRESSO / USCITA APERTI · ${plan.width.toFixed(2)} m`
+    requirements:{
+      ...currentPlan.requirements
+    }
 
-    );
+  });
 
 
-  svg.innerHTML =
-    html;
+  renderRemaining();
+  renderAllocations();
 
+  scheduleCalculate();
 }
 
+
+function renderAllocations(){
+
+  const root=
+    document.getElementById(
+      "allocations"
+    );
+
+
+  if(!allocations.length){
+
+    root.innerHTML=
+      "Nessuno.";
+
+    return;
+  }
+
+
+  root.innerHTML=
+    allocations.map(
+      (a,i)=>`
+
+        <div class="allocation">
+
+          <strong>
+            ${i+1}. ${a.name}
+          </strong>
+
+          ·
+
+          ${a.length}
+          ×
+          ${a.width} m
+
+        </div>
+
+      `
+    ).join("");
+}
 
 
 /* =========================================================
@@ -4943,16 +4435,13 @@ function renderFront(plan){
 
 function printReport(){
 
-  if(
-    !currentPlan
-  ){
+  if(!currentPlan){
 
     alert(
-      "La configurazione corrente non è valida."
+      "Configurazione non valida."
     );
 
     return;
-
   }
 
 
@@ -4964,7 +4453,7 @@ function printReport(){
 
   document.getElementById(
     "print3d"
-  ).src =
+  ).src=
 
     renderer.domElement
       .toDataURL(
@@ -4973,12 +4462,10 @@ function printReport(){
 
 
   setTimeout(
-    () => window.print(),
-    120
+    ()=>window.print(),
+    100
   );
-
 }
-
 
 
 /* =========================================================
@@ -4992,7 +4479,6 @@ function openSettings(){
   ).classList.add(
     "open"
   );
-
 }
 
 
@@ -5003,16 +4489,14 @@ function closeSettings(){
   ).classList.remove(
     "open"
   );
-
 }
 
 
-
 /* =========================================================
-   RICALCOLO AUTOMATICO
+   AUTO RECALC
 ========================================================= */
 
-let calculateTimer = null;
+let calculateTimer=null;
 
 
 function scheduleCalculate(){
@@ -5022,81 +4506,83 @@ function scheduleCalculate(){
   );
 
 
-  calculateTimer =
+  calculateTimer=
     setTimeout(
       calculatePlan,
-      80
+      60
     );
-
 }
 
 
-
 /* =========================================================
-   EVENTI
+   EVENTS
 ========================================================= */
 
-document.getElementById(
-  "openSettings"
-).addEventListener(
-  "click",
-  openSettings
-);
+document
+  .getElementById("openSettings")
+  .addEventListener(
+    "click",
+    openSettings
+  );
 
 
-document.getElementById(
-  "closeSettings"
-).addEventListener(
-  "click",
-  closeSettings
-);
+document
+  .getElementById("closeSettings")
+  .addEventListener(
+    "click",
+    closeSettings
+  );
 
 
-document.getElementById(
-  "closeSettings2"
-).addEventListener(
-  "click",
-  closeSettings
-);
+document
+  .getElementById("closeSettings2")
+  .addEventListener(
+    "click",
+    closeSettings
+  );
 
 
-document.getElementById(
-  "applyStock"
-).addEventListener(
-  "click",
-  applyWarehouse
-);
+document
+  .getElementById("applyStock")
+  .addEventListener(
+    "click",
+    applyWarehouse
+  );
 
 
-document.getElementById(
-  "commit"
-).addEventListener(
-  "click",
-  commitPlan
-);
+document
+  .getElementById("commit")
+  .addEventListener(
+    "click",
+    commitPlan
+  );
 
 
-document.getElementById(
-  "print"
-).addEventListener(
-  "click",
-  printReport
-);
+document
+  .getElementById("print")
+  .addEventListener(
+    "click",
+    printReport
+  );
 
 
+document
+  .getElementById("resetMatrix")
+  .addEventListener(
+    "click",
+    resetMatrix
+  );
 
-/*
-  INPUT PRINCIPALI:
-  SEMPRE AUTOMATICO
-*/
 
 [
   "projectName",
   "length",
   "width"
-].forEach(id => {
+]
+.forEach(id=>{
 
-  document.getElementById(id)
+  document
+    .getElementById(id)
     .addEventListener(
       "input",
       scheduleCalculate
@@ -5105,116 +4591,120 @@ document.getElementById(
 });
 
 
-document.getElementById(
-  "fairyEnabled"
-).addEventListener(
-  "change",
-  scheduleCalculate
-);
+document
+  .getElementById("fairyEnabled")
+  .addEventListener(
+    "change",
+    scheduleCalculate
+  );
 
 
-
-/*
-  MODIFICA MANUALE SEZIONI
-*/
-
-document.getElementById(
-  "sections"
-).addEventListener(
-  "input",
-  () => {
-
-    const value =
-      Number(
-        document.getElementById(
-          "sections"
-        ).value
-      );
+document
+  .getElementById("sideMethod")
+  .addEventListener(
+    "change",
+    scheduleCalculate
+  );
 
 
-    if(
-      value >= 2
-    ){
+document
+  .getElementById("topMethod")
+  .addEventListener(
+    "change",
+    scheduleCalculate
+  );
 
-      manualSections =
-        Math.round(value);
+
+document
+  .getElementById("sections")
+  .addEventListener(
+    "input",
+    ()=>{
+
+      const value=
+        Number(
+          document.getElementById(
+            "sections"
+          ).value
+        );
 
 
-      document.getElementById(
-        "sectionsAuto"
-      ).classList.remove(
-        "active"
-      );
+      if(value>=2){
+
+        manualSections=
+          Math.round(value);
+
+
+        document
+          .getElementById(
+            "sectionsAuto"
+          )
+          .classList.remove(
+            "active"
+          );
+
+
+        if(customLayout){
+
+          resizeCustomLayout(
+            manualSections
+          );
+        }
+
+
+        scheduleCalculate();
+
+      }
+
+    }
+  );
+
+
+document
+  .getElementById("sectionsAuto")
+  .addEventListener(
+    "click",
+    ()=>{
+
+      manualSections=null;
+
+      /*
+        Tornare in AUTO sulle sezioni
+        ripristina il tunnel standard.
+      */
+
+      customLayout=false;
+
+
+      document
+        .getElementById(
+          "sectionsAuto"
+        )
+        .classList.add(
+          "active"
+        );
 
 
       scheduleCalculate();
 
     }
-
-  }
-);
-
-
-
-/*
-  RESET SEZIONI AUTOMATICHE
-*/
-
-document.getElementById(
-  "sectionsAuto"
-).addEventListener(
-  "click",
-  () => {
-
-    manualSections = null;
-
-
-    document.getElementById(
-      "sectionsAuto"
-    ).classList.add(
-      "active"
-    );
-
-
-    scheduleCalculate();
-
-  }
-);
-
-
-
-/*
-  SCELTE MANUALI
-*/
-
-document.getElementById(
-  "sideMethod"
-).addEventListener(
-  "change",
-  scheduleCalculate
-);
-
-
-document.getElementById(
-  "topMethod"
-).addEventListener(
-  "change",
-  scheduleCalculate
-);
-
+  );
 
 
 /* =========================================================
-   AVVIO
+   START
 ========================================================= */
 
 createStockInputs();
+
+layout=
+  makeDefaultLayout(3);
 
 init3D();
 
 setTimeout(
   calculatePlan,
-  150
+  120
 );
 
 </script>
