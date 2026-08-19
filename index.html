@@ -19,12 +19,15 @@
   box-sizing:border-box;
 }
 
+
 body{
   margin:0;
   font-family:Arial,Helvetica,sans-serif;
+  font-size:15px;
   background:#f3f4f6;
   color:#171717;
 }
+
 
 body.matrix-open{
   overflow:hidden;
@@ -36,7 +39,7 @@ body.matrix-open{
 ========================================================= */
 
 header{
-  height:56px;
+  height:58px;
   padding:0 20px;
 
   background:#111;
@@ -47,10 +50,12 @@ header{
   justify-content:space-between;
 }
 
+
 header h1{
   margin:0;
-  font-size:19px;
+  font-size:20px;
 }
+
 
 button{
   border:0;
@@ -60,21 +65,26 @@ button{
 
   cursor:pointer;
   font-weight:bold;
+  font-size:13px;
 }
+
 
 button:disabled{
   opacity:.45;
   cursor:not-allowed;
 }
 
+
 .primary{
   background:#111;
   color:white;
 }
 
+
 .secondary{
   background:#e3e3e3;
 }
+
 
 .active-button{
   background:#111 !important;
@@ -92,6 +102,7 @@ button:disabled{
   padding:14px;
 }
 
+
 .card{
   background:white;
 
@@ -103,6 +114,7 @@ button:disabled{
   box-shadow:0 1px 5px rgba(0,0,0,.1);
 }
 
+
 .workspace-header{
   display:flex;
   align-items:baseline;
@@ -111,15 +123,18 @@ button:disabled{
   margin-bottom:11px;
 }
 
+
 .workspace-header h2{
   margin:0;
-  font-size:20px;
+  font-size:21px;
 }
+
 
 .workspace-header span{
   color:#777;
-  font-size:13px;
+  font-size:14px;
 }
+
 
 .workspace-grid{
   display:grid;
@@ -132,6 +147,7 @@ button:disabled{
   gap:12px;
 }
 
+
 .panel{
   border:1px solid #ddd;
   border-radius:8px;
@@ -141,19 +157,22 @@ button:disabled{
   min-width:0;
 }
 
+
 .panel h3{
   margin:0 0 9px;
-  font-size:14px;
+  font-size:15px;
 }
+
 
 label{
   display:block;
 
   margin-top:8px;
 
-  font-size:12px;
+  font-size:13px;
   font-weight:bold;
 }
+
 
 input[type=text],
 input[type=number],
@@ -161,15 +180,16 @@ select{
   width:100%;
 
   margin-top:3px;
-  padding:7px;
+  padding:8px;
 
   border:1px solid #bbb;
   border-radius:5px;
 
   background:white;
 
-  font-size:14px;
+  font-size:15px;
 }
+
 
 .two-cols{
   display:grid;
@@ -179,6 +199,7 @@ select{
   gap:7px;
 }
 
+
 .checkbox-row{
   display:flex;
   align-items:center;
@@ -186,12 +207,14 @@ select{
 
   margin-top:12px;
 
-  font-size:13px;
+  font-size:14px;
 }
+
 
 .checkbox-row input{
   margin:0;
 }
+
 
 .actions{
   display:flex;
@@ -201,10 +224,11 @@ select{
   margin-top:12px;
 }
 
+
 .small{
   color:#666;
-  font-size:11px;
-  line-height:1.4;
+  font-size:12px;
+  line-height:1.45;
 }
 
 
@@ -224,9 +248,11 @@ select{
   align-items:center;
 }
 
+
 .config-line label{
   margin:0;
 }
+
 
 .sections-control{
   display:grid;
@@ -236,10 +262,11 @@ select{
   gap:5px;
 }
 
+
 .auto-button{
   padding:6px;
   background:#ddd;
-  font-size:10px;
+  font-size:11px;
 }
 
 
@@ -257,17 +284,20 @@ select{
   margin:9px 0 6px;
 }
 
+
 .matrix-toolbar .spacer{
   flex:1;
 }
+
 
 .matrix-button{
   padding:6px 8px;
 
   background:#e5e5e5;
 
-  font-size:10px;
+  font-size:11px;
 }
+
 
 #matrixView{
   display:block;
@@ -282,6 +312,7 @@ select{
 
   touch-action:none;
 }
+
 
 #matrixPanel.matrix-fullscreen{
   position:fixed;
@@ -298,6 +329,7 @@ select{
     0 0 0 100vmax
     rgba(0,0,0,.65);
 }
+
 
 #matrixPanel.matrix-fullscreen #matrixView{
   height:calc(100vh - 175px);
@@ -330,22 +362,25 @@ select{
 
   border-top:1px solid #ddd;
 
-  font-size:13px;
+  font-size:14px;
 }
+
 
 .good{
   color:#08752a;
   font-weight:bold;
 }
 
+
 .bad{
   color:#b00020;
   font-weight:bold;
 }
 
+
 .warning{
   margin-top:6px;
-  padding:7px;
+  padding:8px;
 
   border:1px solid #ddc06a;
   border-radius:6px;
@@ -363,12 +398,13 @@ select{
 
   grid-template-columns:
     minmax(0,1.65fr)
-    minmax(245px,.65fr);
+    minmax(280px,.7fr);
 
   gap:12px;
 
   margin-top:12px;
 }
+
 
 .result-box{
   padding:10px;
@@ -377,9 +413,10 @@ select{
   border-radius:7px;
 }
 
+
 .result-box h3{
-  margin:0 0 8px;
-  font-size:14px;
+  margin:0 0 9px;
+  font-size:15px;
 }
 
 
@@ -401,25 +438,30 @@ select{
     background .15s ease;
 }
 
+
 .material-box.material-unavailable{
   border-color:#c40020;
   background:#fffafa;
 }
 
+
 .material-box h3{
-  margin-bottom:9px;
-  font-size:16px;
+  margin-bottom:10px;
+  font-size:18px;
 }
+
 
 .material-list{
   display:grid;
   gap:4px;
 }
 
+
 .material-row{
-  min-height:36px;
+  min-height:38px;
 
   display:grid;
+
   grid-template-columns:52px 1fr;
 
   gap:8px;
@@ -431,12 +473,14 @@ select{
   border-bottom:1px solid #ddd;
 }
 
+
 .material-row:last-child{
   border-bottom:0;
 }
 
+
 .material-qty{
-  min-height:28px;
+  min-height:30px;
 
   display:flex;
   align-items:center;
@@ -445,14 +489,16 @@ select{
   border:2px solid #222;
   border-radius:5px;
 
-  font-size:17px;
+  font-size:18px;
   font-weight:800;
   line-height:1;
 }
 
+
 .material-name{
-  font-size:13px;
+  font-size:14px;
   font-weight:700;
+  line-height:1.25;
 }
 
 
@@ -466,26 +512,56 @@ select{
   grid-template-columns:
     repeat(2,minmax(0,1fr));
 
-  gap:6px;
+  gap:7px;
 }
 
-.chip{
-  padding:7px 8px;
 
-  border:1px solid #ddd;
-  border-radius:5px;
+.chip{
+  padding:8px 9px;
+
+  border:1px solid #ccc;
+  border-radius:6px;
 
   background:#fafafa;
 
-  font-size:11px;
+  font-size:12px;
 }
+
 
 .chip strong{
   display:block;
 
-  margin-top:2px;
+  margin-top:3px;
 
-  font-size:14px;
+  font-size:16px;
+  line-height:1.15;
+}
+
+
+.chip.total-chip{
+  min-height:66px;
+
+  border:2px solid #222;
+
+  background:#fff;
+
+  font-size:13px;
+}
+
+
+.chip.total-chip strong{
+  font-size:22px;
+  font-weight:800;
+}
+
+
+.chip.wide-chip{
+  grid-column:1/-1;
+}
+
+
+.chip.wide-chip strong{
+  font-size:18px;
 }
 
 
@@ -498,6 +574,7 @@ select{
   gap:11px;
 }
 
+
 .drawing{
   padding:8px;
 
@@ -505,31 +582,39 @@ select{
   border-radius:7px;
 }
 
-.drawing-title{
-  margin-bottom:3px;
 
-  font-size:13px;
-  font-weight:bold;
+.drawing-title{
+  margin-bottom:5px;
+
+  font-size:15px;
+  font-weight:700;
 }
+
 
 .drawing svg{
   display:block;
 
   width:100%;
-  height:245px;
+  height:260px;
 }
 
 
 /* =========================================================
-   STAMPA TITLE / IMAGE
+   PRINT
 ========================================================= */
 
 #printEventTitle{
   display:none;
 }
 
+
 #print3d{
   display:none;
+}
+
+
+.data-print-layout{
+  display:block;
 }
 
 
@@ -552,12 +637,14 @@ select{
   background:rgba(0,0,0,.55);
 }
 
+
 #settingsModal.open{
   display:block;
 }
 
+
 .modal-box{
-  max-width:700px;
+  max-width:720px;
 
   margin:auto;
   padding:20px;
@@ -567,15 +654,18 @@ select{
   background:white;
 }
 
+
 .modal-head{
   display:flex;
   align-items:center;
   justify-content:space-between;
 }
 
+
 .modal-head h2{
   margin:0;
 }
+
 
 .settings-section{
   margin-top:20px;
@@ -584,14 +674,17 @@ select{
   border-top:1px solid #ddd;
 }
 
+
 .settings-section:first-of-type{
   margin-top:14px;
 }
 
+
 .settings-section h3{
   margin:0 0 10px;
-  font-size:15px;
+  font-size:16px;
 }
+
 
 .setting-row{
   display:grid;
@@ -603,6 +696,7 @@ select{
   align-items:center;
 }
 
+
 .unit-input{
   display:grid;
 
@@ -613,9 +707,11 @@ select{
   align-items:center;
 }
 
+
 .unit-input input{
   margin:0;
 }
+
 
 .stock-grid{
   display:grid;
@@ -629,16 +725,18 @@ select{
   margin-top:14px;
 }
 
+
 .stock-grid input{
   margin:0;
 }
+
 
 .allocation{
   padding:6px 0;
 
   border-bottom:1px solid #ddd;
 
-  font-size:12px;
+  font-size:13px;
 }
 
 
@@ -657,6 +755,7 @@ select{
   }
 
 }
+
 
 @media(max-width:700px){
 
@@ -680,7 +779,9 @@ select{
 
   body{
     background:white;
+    font-size:13px;
   }
+
 
   header,
   .no-print,
@@ -691,10 +792,12 @@ select{
     display:none !important;
   }
 
+
   .page{
     max-width:none;
     padding:0;
   }
+
 
   .card{
     padding:5px 0;
@@ -704,74 +807,138 @@ select{
     box-shadow:none;
   }
 
+
   #printEventTitle{
     display:block;
 
-    margin:0 0 14px;
-
+    margin:0 0 12px;
     padding:0 0 8px;
 
     border-bottom:2px solid #000;
 
-    font-size:27px;
+    font-size:28px;
     font-weight:800;
     line-height:1.1;
   }
 
-  .results{
-    grid-template-columns:1fr;
 
-    gap:8px;
+  /*
+    DATI PRIMA, MATERIALE DOPO
+  */
+
+  .results{
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
 
     margin-top:0;
   }
 
-  .result-box{
-    break-inside:avoid;
+
+  .data-box{
+    order:1;
   }
+
 
   .material-box{
-    border:3px solid #000;
+    order:2;
   }
 
-  .material-box.material-unavailable{
-    border-color:#c40020 !important;
+
+  /*
+    DATI + 3D INSIEME
+  */
+
+  .data-print-layout{
+    display:grid;
+
+    grid-template-columns:
+      .85fr
+      1.15fr;
+
+    gap:14px;
+
+    align-items:center;
   }
 
-  .material-row{
-    min-height:32px;
-
-    grid-template-columns:46px 1fr;
-  }
-
-  .material-qty{
-    border:2px solid #000;
-
-    font-size:16px;
-  }
-
-  .material-name{
-    font-size:12px;
-  }
 
   #print3d{
     display:block;
 
     width:100%;
-    max-height:285px;
+    max-height:245px;
 
     object-fit:contain;
 
-    margin:10px 0 12px;
+    margin:0;
   }
+
+
+  .chip.total-chip{
+    border:2px solid #000;
+  }
+
+
+  .chip.total-chip strong{
+    font-size:21px;
+  }
+
+
+  /*
+    MATERIALE
+  */
+
+  .material-box{
+    border:3px solid #000;
+
+    break-inside:avoid;
+  }
+
+
+  .material-box.material-unavailable{
+    border-color:#c40020 !important;
+  }
+
+
+  .material-row{
+    min-height:34px;
+
+    grid-template-columns:48px 1fr;
+  }
+
+
+  .material-qty{
+    border:2px solid #000;
+
+    font-size:17px;
+  }
+
+
+  .material-name{
+    font-size:13px;
+  }
+
+
+  /*
+    DISEGNI
+  */
 
   .drawing{
     break-inside:avoid;
   }
 
-  .drawing svg{
-    height:205px;
+
+  .drawing-title{
+    font-size:15px;
   }
+
+
+  .drawing svg{
+    height:220px;
+  }
+
 
   #sideView{
     max-height:none !important;
@@ -841,9 +1008,7 @@ select{
   <div class="workspace-grid">
 
 
-    <!-- ===================================================
-         NUOVA STRUTTURA
-    ==================================================== -->
+    <!-- NUOVA STRUTTURA -->
 
     <div class="panel no-print">
 
@@ -939,9 +1104,7 @@ select{
 
 
 
-    <!-- ===================================================
-         MATRIX
-    ==================================================== -->
+    <!-- MATRIX -->
 
     <div
       id="matrixPanel"
@@ -1074,7 +1237,6 @@ select{
 
       <div class="matrix-toolbar">
 
-
         <button
           id="modePoints"
           class="matrix-button active-button"
@@ -1125,7 +1287,6 @@ select{
           Reset
         </button>
 
-
       </div>
 
 
@@ -1135,9 +1296,7 @@ select{
 
 
 
-    <!-- ===================================================
-         3D
-    ==================================================== -->
+    <!-- 3D -->
 
     <div class="panel viewer-panel no-print">
 
@@ -1161,9 +1320,7 @@ select{
 
 
 
-  <!-- =====================================================
-       RISULTATI
-  ====================================================== -->
+  <!-- RISULTATI -->
 
   <div class="results">
 
@@ -1183,16 +1340,26 @@ select{
 
 
 
-    <div class="result-box">
+    <div class="result-box data-box">
 
       <h3>
         Dati struttura
       </h3>
 
-      <div
-        id="quickResult"
-        class="quick-data"
-      ></div>
+
+      <div class="data-print-layout">
+
+
+        <div
+          id="quickResult"
+          class="quick-data"
+        ></div>
+
+
+        <img id="print3d">
+
+
+      </div>
 
     </div>
 
@@ -1203,12 +1370,8 @@ select{
 </div>
 
 
-<img id="print3d">
 
-
-<!-- =======================================================
-     DISEGNI
-======================================================== -->
+<!-- DISEGNI -->
 
 <div class="card">
 
@@ -1216,7 +1379,7 @@ select{
   <h2
     style="
       margin:0 0 8px;
-      font-size:17px
+      font-size:18px
     "
   >
     Disegni tecnici
@@ -1271,9 +1434,7 @@ select{
 
 
 
-<!-- =======================================================
-     SETTINGS
-======================================================== -->
+<!-- SETTINGS -->
 
 <div
   id="settingsModal"
@@ -1443,25 +1604,20 @@ const LOWER_HEIGHT = 1.20;
 
 const FAIRY_SPACING = 0.30;
 
-/*
-  Solo rappresentazione grafica:
-  la fairy dritta cala leggermente
-  nel mezzo, come nella prima versione.
-*/
 const FAIRY_VISUAL_SAG = 0.17;
 
 const MATRIX_CELL = 54;
 
 
 /*
-  ATTENZIONE:
-  arco ancora provvisorio.
+  ARCO ANCORA PROVVISORIO.
 
-  Per ora resta il modello già approvato:
-  semicerchio con diametro = larghezza modulo.
+  Per ora viene mantenuto il modello
+  semicircolare già utilizzato:
+  diametro = larghezza del modulo.
 
-  NON modificare finché non saranno note
-  le misure fisiche reali dell'arco.
+  Le dimensioni fisiche reali dell'arco
+  verranno inserite successivamente.
 */
 
 
@@ -1766,9 +1922,6 @@ let cameraUserAdjusted = false;
 let lastCommittedSignature = null;
 
 
-/*
-  Default 20 cm per percorso.
-*/
 let fairySlackMeters = 0.20;
 
 
@@ -2025,38 +2178,12 @@ function transverseModuleCount(
     return 1;
 
 
-  /*
-    2 file di pali = 1 modulo
-    3 file = 2 moduli
-    4 file = 3 moduli
-  */
-
   return Math.max(
 
     1,
 
     bounds.maxR-
     bounds.minR
-
-  );
-}
-
-
-
-function moduleWidthFromTotal(
-  target,
-  totalWidth
-){
-
-  return (
-
-    totalWidth
-
-    /
-
-    transverseModuleCount(
-      target
-    )
 
   );
 }
@@ -2297,10 +2424,6 @@ function normalizeMatrix(){
   }
 
 
-
-  /*
-    ARCHI
-  */
 
   const newArches=
     new Set();
@@ -2859,11 +2982,6 @@ function matrixChanged(){
       "active-button"
     );
 
-
-  /*
-    Dal Matrix:
-    conserviamo campata e modulo.
-  */
 
   const preservedBay=
 
@@ -4139,6 +4257,243 @@ function buildRequirements(
 
 
 /* =========================================================
+   USO TELESCOPICHE
+
+   Serve per mostrare nella lista materiale
+   la misura effettiva impostata con @.
+========================================================= */
+
+function telescopicUsageForPlan(
+  plan
+){
+
+  const usage={};
+
+
+  function addUsage(
+    key,
+    count,
+    length
+  ){
+
+    if(
+      !key
+      ||
+      !count
+    ){
+
+      return;
+
+    }
+
+
+    if(!usage[key]){
+
+      usage[key]=[];
+
+    }
+
+
+    const existing=
+
+      usage[key]
+        .find(entry=>
+
+          closeEnough(
+            entry.length,
+            length
+          )
+
+        );
+
+
+    if(existing){
+
+      existing.count+=
+        count;
+
+    }
+
+    else{
+
+      usage[key].push({
+
+        count,
+
+        length
+
+      });
+
+    }
+
+  }
+
+
+
+  const stats=
+    layoutStats(
+      plan.layout,
+      plan.archEdges
+    );
+
+
+  const lowerCount=
+
+    stats.horizontal
+      .filter(edge=>
+
+        !plan.lowerOffEdges.has(
+
+          hKey(
+            edge.r,
+            edge.c
+          )
+
+        )
+
+      )
+      .length;
+
+
+
+  /*
+    LONGITUDINALI
+  */
+
+  const side=
+    plan.geometry.side.method;
+
+
+  if(
+    side?.type==="tel"
+  ){
+
+    addUsage(
+
+      side.tel,
+
+      stats.horizontal.length+
+      lowerCount,
+
+      plan.geometry.side.bayLength
+
+    );
+
+  }
+
+
+
+  /*
+    SUPERIORI
+  */
+
+  const top=
+    plan.geometry.top?.method;
+
+
+  if(
+    top?.type==="tel"
+  ){
+
+    addUsage(
+
+      top.tel,
+
+      stats.normalVerticalEdges,
+
+      plan.moduleWidth
+
+    );
+
+  }
+
+
+  return usage;
+}
+
+
+
+function materialDisplayName(
+  plan,
+  item,
+  telUsage
+){
+
+  if(
+    ![
+      "tel1",
+      "tel15",
+      "tel3",
+      "tel4"
+    ].includes(
+      item.key
+    )
+  ){
+
+    return item.label;
+
+  }
+
+
+  const usage=
+    telUsage[item.key];
+
+
+  if(
+    !usage
+    ||
+    !usage.length
+  ){
+
+    return item.label;
+
+  }
+
+
+  if(
+    usage.length===1
+  ){
+
+    return (
+
+      `${item.label} @ ${usage[0].length.toFixed(2)} m`
+
+    );
+
+  }
+
+
+  /*
+    Stesso SKU usato a più misure.
+
+    Esempio:
+    Telescopica 4→7,5
+    · 4× @4m + 3× @5m
+  */
+
+  const details=
+
+    usage
+      .map(entry=>
+
+        `${entry.count}× @ ${entry.length.toFixed(2)} m`
+
+      )
+      .join(
+        " + "
+      );
+
+
+  return (
+
+    `${item.label} · ${details}`
+
+  );
+}
+
+
+
+/* =========================================================
    DEFICIT
 ========================================================= */
 
@@ -4319,13 +4674,6 @@ function geometryCandidates(
 
 
   results.sort((a,b)=>{
-
-    /*
-      Quando Matrix/sezioni impongono
-      una geometria, la geometria vince
-      sul tentativo di cambiare forma
-      per evitare un deficit.
-    */
 
     if(
       preferredSections!==null
@@ -4937,16 +5285,6 @@ function topCurvePoints(
       wave;
 
 
-    /*
-      Solo in visualizzazione 3D:
-      con superiore dritto,
-      la fairy cala leggermente
-      al centro.
-
-      Il conteggio metrico NON usa
-      questa pancia grafica.
-    */
-
     if(visual){
 
       y-=
@@ -5116,11 +5454,6 @@ function buildFairyCrossSection(
       moduleWidth;
 
 
-
-    /*
-      DISCESA INIZIALE
-    */
-
     if(
       !fairyOff.has(
         hKey(
@@ -5150,10 +5483,6 @@ function buildFairyCrossSection(
     });
 
 
-
-    /*
-      SOPRA
-    */
 
     for(
       let cell=start;
@@ -5206,11 +5535,6 @@ function buildFairyCrossSection(
       }
 
 
-
-      /*
-        DISCESA INTERMEDIA
-      */
-
       if(
         cell<end
         &&
@@ -5249,11 +5573,6 @@ function buildFairyCrossSection(
     }
 
 
-
-    /*
-      DISCESA FINALE
-    */
-
     const endBoundary=
       end+1;
 
@@ -5280,18 +5599,11 @@ function buildFairyCrossSection(
     }
 
 
-
     paths.push({
 
       points,
 
       visualPoints,
-
-      /*
-        Lo scarto impostato nei Settings
-        viene aggiunto UNA volta
-        per ogni percorso.
-      */
 
       length:
         polylineLength(
@@ -5887,7 +6199,7 @@ function renderAll(){
 
 
 /* =========================================================
-   MENU AUTOMATICI COMPATTI
+   MENU AUTOMATICI
 ========================================================= */
 
 function shortMethodLabel(
@@ -5948,11 +6260,6 @@ function updateAutomaticLabels(
         "topAutoOption"
       );
 
-
-  /*
-    Se manuale, il menu stesso
-    mostra già la scelta.
-  */
 
   if(sideSelect.value!=="auto"){
 
@@ -6239,11 +6546,6 @@ function renderSummary(){
 
 
 
-  /*
-    BORDO MATERIALE ROSSO
-    solo se c'è un problema reale.
-  */
-
   const materialUnavailable=
 
     plan.invalid
@@ -6275,7 +6577,14 @@ function renderSummary(){
 
   /*
     MATERIALE
+    con misura effettiva telescopiche @
   */
+
+  const telUsage=
+    telescopicUsageForPlan(
+      plan
+    );
+
 
   const materialHtml=
 
@@ -6291,6 +6600,14 @@ function renderSummary(){
           return "";
 
 
+        const displayName=
+          materialDisplayName(
+            plan,
+            item,
+            telUsage
+          );
+
+
         return `
 
           <div class="material-row">
@@ -6300,7 +6617,7 @@ function renderSummary(){
             </div>
 
             <div class="material-name">
-              ${item.label}
+              ${displayName}
             </div>
 
           </div>
@@ -6329,6 +6646,22 @@ function renderSummary(){
 
 
 
+  const fairyTotalText=
+
+    plan.fairyEnabled
+    &&
+    plan.fairy
+
+    ?
+
+    `${plan.fairy.total.toFixed(1)} m`
+
+    :
+
+    "—";
+
+
+
   /*
     DATI
   */
@@ -6338,6 +6671,28 @@ function renderSummary(){
       "quickResult"
     )
     .innerHTML=`
+
+      <div class="chip total-chip">
+
+        Lunghezza totale
+
+        <strong>
+          ${plan.length.toFixed(2)} m
+        </strong>
+
+      </div>
+
+
+      <div class="chip total-chip">
+
+        Larghezza totale
+
+        <strong>
+          ${plan.totalWidth.toFixed(2)} m
+        </strong>
+
+      </div>
+
 
       <div class="chip">
 
@@ -6352,32 +6707,10 @@ function renderSummary(){
 
       <div class="chip">
 
-        Lunghezza totale
-
-        <strong>
-          ${plan.length.toFixed(2)} m
-        </strong>
-
-      </div>
-
-
-      <div class="chip">
-
         Modulo
 
         <strong>
           ${plan.moduleWidth.toFixed(2)} m
-        </strong>
-
-      </div>
-
-
-      <div class="chip">
-
-        Larghezza totale
-
-        <strong>
-          ${plan.totalWidth.toFixed(2)} m
         </strong>
 
       </div>
@@ -6414,6 +6747,17 @@ function renderSummary(){
             0
           }
 
+        </strong>
+
+      </div>
+
+
+      <div class="chip wide-chip">
+
+        Fairy totale
+
+        <strong>
+          ${fairyTotalText}
         </strong>
 
       </div>
@@ -6514,10 +6858,6 @@ function renderMatrix(){
   let html="";
 
 
-  /*
-    GRID
-  */
-
   for(
     let r=0;
     r<layout.rows;
@@ -6598,10 +6938,6 @@ function renderMatrix(){
       archEdges
     );
 
-
-  /*
-    LONGITUDINALI
-  */
 
   stats.horizontal
     .forEach(edge=>{
@@ -6776,10 +7112,6 @@ function renderMatrix(){
 
 
 
-  /*
-    TRASVERSALI / ARCHI
-  */
-
   stats.vertical
     .forEach(edge=>{
 
@@ -6873,10 +7205,6 @@ function renderMatrix(){
     });
 
 
-
-  /*
-    PUNTI
-  */
 
   for(
     let r=0;
@@ -7171,12 +7499,6 @@ function init3D(){
 
   controls.enableDamping=true;
 
-
-  /*
-    Dopo che tocchi il 3D,
-    nessun ricalcolo cambierà più
-    camera o target.
-  */
 
   controls.addEventListener(
     "start",
@@ -7506,13 +7828,14 @@ function render3D(
 
 
 
-  /* =======================================================
-     GRIGLIA METRICA
+  /*
+    GRIGLIA METRICA
 
-     1 quadretto = 1 metro.
-  ======================================================= */
+    Sempre 1 quadrato = 1 m.
+    Origine fissa.
+  */
 
-  let gridSize=
+  let positiveExtent=
 
     Math.ceil(
 
@@ -7529,6 +7852,10 @@ function render3D(
     );
 
 
+  let gridSize=
+    positiveExtent*2;
+
+
   if(gridSize%2!==0)
     gridSize++;
 
@@ -7543,24 +7870,8 @@ function render3D(
     );
 
 
-  /*
-    Centro su coordinate intere,
-    così le linee restano metriche.
-  */
-
-  grid.position.set(
-
-    Math.round(
-      totalLength/2
-    ),
-
-    -.005,
-
-    Math.round(
-      totalWidth/2
-    )
-
-  );
+  grid.position.y=
+    -.005;
 
 
   scene.add(grid);
@@ -7611,10 +7922,6 @@ function render3D(
     );
 
 
-
-  /*
-    PALI + BASI
-  */
 
   for(
     let r=0;
@@ -7686,10 +7993,6 @@ function render3D(
     );
 
 
-
-  /*
-    LONGITUDINALI
-  */
 
   stats.horizontal
     .forEach(edge=>{
@@ -7768,10 +8071,6 @@ function render3D(
 
 
 
-  /*
-    TRASVERSALI / ARCHI
-  */
-
   stats.vertical
     .forEach(edge=>{
 
@@ -7839,10 +8138,6 @@ function render3D(
 
 
 
-  /*
-    FAIRY
-  */
-
   if(
     plan.fairyEnabled
     &&
@@ -7867,14 +8162,6 @@ function render3D(
           bounds.minC*
           bay;
 
-
-        /*
-          Usiamo i punti VISUALI:
-          la fairy dritta cala leggermente
-          nel centro.
-
-          Il conteggio resta invariato.
-        */
 
         const sourcePoints=
 
@@ -7930,12 +8217,12 @@ function render3D(
 
 
 
-  /* =======================================================
-     CAMERA
+  /*
+    CAMERA
 
-     Dopo un movimento manuale:
-     NON VIENE PIÙ TOCCATA.
-  ======================================================= */
+    Dopo che l'utente tocca il 3D
+    non viene più modificata.
+  */
 
   if(
     !hasRendered3D
@@ -7999,8 +8286,10 @@ function render3D(
 ========================================================= */
 
 function svgLine(
-  x1,y1,
-  x2,y2,
+  x1,
+  y1,
+  x2,
+  y2,
   width=3,
   color="#111"
 ){
@@ -8026,7 +8315,8 @@ function svgText(
   y,
   text,
   anchor="middle",
-  size=13
+  size=14,
+  weight=600
 ){
 
   return `
@@ -8035,8 +8325,9 @@ function svgText(
       x="${x}"
       y="${y}"
       text-anchor="${anchor}"
-      font-family="Arial"
+      font-family="Arial, Helvetica, sans-serif"
       font-size="${size}"
+      font-weight="${weight}"
       fill="#111"
     >
       ${text}
@@ -8054,17 +8345,19 @@ function svgTag(
   anchor="middle"
 ){
 
+  const fontSize=13;
+
+
   const width=
 
     Math.max(
-      70,
-      text.length*6.8
+      82,
+      text.length*7.2
     );
 
 
   let rectX=
-    x-
-    width/2;
+    x-width/2;
 
 
   if(anchor==="start")
@@ -8081,13 +8374,15 @@ function svgTag(
 
     <rect
       x="${rectX}"
-      y="${y-16}"
+      y="${y-18}"
       width="${width}"
-      height="22"
-      rx="3"
+      height="25"
+      rx="4"
       fill="white"
-      stroke="#aaa"
+      stroke="#888"
+      stroke-width="1"
     />
+
 
     ${
       svgText(
@@ -8095,11 +8390,52 @@ function svgTag(
         y,
         text,
         anchor,
-        11.5
+        fontSize,
+        700
       )
     }
 
   `;
+}
+
+
+
+/* =========================================================
+   LABEL TECNICHE LONGITUDINALI
+========================================================= */
+
+function sideTechnicalText(
+  plan,
+  prefix
+){
+
+  const method=
+    plan.geometry.side.method;
+
+
+  if(!method){
+
+    return (
+      `${prefix} @ ${plan.geometry.side.bayLength.toFixed(2)} m`
+    );
+
+  }
+
+
+  if(method.type==="fixed"){
+
+    return (
+      `${prefix} · ${method.size.toFixed(2)} m`
+    );
+
+  }
+
+
+  return (
+
+    `${prefix} · ${method.label} @ ${plan.geometry.side.bayLength.toFixed(2)} m`
+
+  );
 }
 
 
@@ -8168,9 +8504,11 @@ function renderTopView(
 
 
   const left=160;
+
   const right=900;
 
   const top=45;
+
   const bottom=230;
 
 
@@ -8325,18 +8663,21 @@ function renderTopView(
       stats.horizontal[0];
 
 
+    const method=
+      plan.geometry.side.method;
+
+
     const label=
 
-      plan.geometry.side.method.type===
-      "fixed"
+      method.type==="fixed"
 
       ?
 
-      `Traversa ${plan.geometry.side.method.size} m`
+      `Traversa ${method.size} m`
 
       :
 
-      `${plan.geometry.side.method.label} · ${plan.geometry.side.bayLength.toFixed(2)} m`;
+      `${method.label} @ ${plan.geometry.side.bayLength.toFixed(2)} m`;
 
 
     html+=
@@ -8378,18 +8719,21 @@ function renderTopView(
     plan.geometry.top?.method
   ){
 
+    const method=
+      plan.geometry.top.method;
+
+
     const label=
 
-      plan.geometry.top.method.type===
-      "fixed"
+      method.type==="fixed"
 
       ?
 
-      `Superiore ${plan.geometry.top.method.size} m`
+      `Superiore ${method.size} m`
 
       :
 
-      `${plan.geometry.top.method.label} · ${plan.moduleWidth.toFixed(2)} m`;
+      `${method.label} @ ${plan.moduleWidth.toFixed(2)} m`;
 
 
     html+=
@@ -8438,7 +8782,7 @@ function renderTopView(
           y(firstArch.r)+
           y(firstArch.r+1)
         )/2+
-        27,
+        29,
 
         "ARCO",
 
@@ -8456,7 +8800,13 @@ function renderTopView(
 
       270,
 
-      `Vista dall'alto · modulo ${plan.moduleWidth.toFixed(2)} m · totale ${plan.totalWidth.toFixed(2)} m`
+      `Modulo ${plan.moduleWidth.toFixed(2)} m · Larghezza totale ${plan.totalWidth.toFixed(2)} m`,
+
+      "middle",
+
+      14,
+
+      700
 
     );
 
@@ -8469,7 +8819,7 @@ function renderTopView(
 
 
 /* =========================================================
-   SIDE VIEW — VARIANTI
+   SIDE VIEW
 ========================================================= */
 
 function renderSideView(
@@ -8597,14 +8947,17 @@ function renderSideView(
 
 
     svg.style.height=
-      "245px";
+      "260px";
 
 
     svg.innerHTML=
       svgText(
         500,
         140,
-        "Nessun lato longitudinale"
+        "Nessun lato longitudinale",
+        "middle",
+        15,
+        700
       );
 
 
@@ -8635,9 +8988,9 @@ function renderSideView(
 
     `${
       Math.max(
-        245,
+        260,
         variantList.length*
-        205
+        210
       )
     }px`;
 
@@ -8716,7 +9069,9 @@ function renderSideView(
 
           "start",
 
-          13
+          14,
+
+          700
 
         );
 
@@ -8844,9 +9199,6 @@ function renderSideView(
       }
 
 
-      const lengthText=
-        `${plan.geometry.side.bayLength.toFixed(2)} m`;
-
 
       if(firstHigh){
 
@@ -8860,7 +9212,10 @@ function renderSideView(
 
             top-11,
 
-            `ALTA · ${lengthText}`
+            sideTechnicalText(
+              plan,
+              "ALTA"
+            )
 
           );
 
@@ -8877,9 +9232,12 @@ function renderSideView(
               firstLow.x2
             )/2,
 
-            lowerY+27,
+            lowerY+29,
 
-            `BASSA · ${lengthText}`
+            sideTechnicalText(
+              plan,
+              "BASSA"
+            )
 
           );
 
@@ -8916,7 +9274,7 @@ function renderSideView(
 
             x+18,
 
-            ground+26,
+            ground+28,
 
             "BASE",
 
@@ -9033,7 +9391,10 @@ function renderFrontView(
       svgText(
         500,
         150,
-        "Nessuna sezione trasversale"
+        "Nessuna sezione trasversale",
+        "middle",
+        15,
+        700
       );
 
 
@@ -9279,18 +9640,21 @@ function renderFrontView(
     plan.geometry.top?.method
   ){
 
+    const method=
+      plan.geometry.top.method;
+
+
     const label=
 
-      plan.geometry.top.method.type===
-      "fixed"
+      method.type==="fixed"
 
       ?
 
-      `Traversa alta ${plan.geometry.top.method.size} m`
+      `Traversa alta ${method.size} m`
 
       :
 
-      `${plan.geometry.top.method.label} · ${plan.moduleWidth.toFixed(2)} m`;
+      `${method.label} @ ${plan.moduleWidth.toFixed(2)} m`;
 
 
     html+=
@@ -9329,7 +9693,7 @@ function renderFrontView(
 
       left+17,
 
-      ground+26,
+      ground+28,
 
       "BASE",
 
@@ -9345,7 +9709,13 @@ function renderFrontView(
 
       292,
 
-      `Modulo ${plan.moduleWidth.toFixed(2)} m · larghezza totale ${plan.totalWidth.toFixed(2)} m`
+      `Modulo ${plan.moduleWidth.toFixed(2)} m · Larghezza totale ${plan.totalWidth.toFixed(2)} m`,
+
+      "middle",
+
+      14,
+
+      700
 
     );
 
@@ -9760,10 +10130,6 @@ document
 
 
 
-/* =========================================================
-   INPUT
-========================================================= */
-
 document
   .getElementById(
     "projectName"
@@ -9796,13 +10162,6 @@ document
   );
 
 
-
-/*
-  LARGHEZZA TOTALE:
-
-  non cambia il numero di moduli.
-  Cambia la larghezza di ciascun modulo.
-*/
 
 document
   .getElementById(
@@ -10070,10 +10429,6 @@ document
         "points"
       );
 
-
-      /*
-        NON resettiamo il 3D.
-      */
 
       scheduleCalculate();
 
