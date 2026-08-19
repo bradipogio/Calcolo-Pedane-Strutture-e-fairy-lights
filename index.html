@@ -825,56 +825,39 @@ select{
   /*
     DATI PRIMA, MATERIALE DOPO
   */
+.results{
+  display:grid;
 
-  .results{
-    display:flex;
+  grid-template-columns:
+    1.35fr
+    .85fr;
 
-    flex-direction:column;
+  gap:10px;
 
-    gap:10px;
+  align-items:start;
 
-    margin-top:0;
-  }
-
-
-  .data-box{
-    order:1;
-  }
-
-
-  .material-box{
-    order:2;
-  }
-
+  margin-top:0;
+}
 
   /*
     DATI + 3D INSIEME
   */
 
-  .data-print-layout{
-    display:grid;
-
-    grid-template-columns:
-      .85fr
-      1.15fr;
-
-    gap:14px;
-
-    align-items:center;
-  }
 
 
-  #print3d{
-    display:block;
 
-    width:100%;
-    max-height:245px;
+#print3d{
+  display:block;
 
-    object-fit:contain;
+  width:100%;
+  height:300px;
 
-    margin:0;
-  }
+  object-fit:contain;
 
+  margin:0 0 12px;
+
+  break-inside:avoid;
+}
 
   .chip.total-chip{
     border:2px solid #000;
@@ -1321,7 +1304,7 @@ select{
 
 
   <!-- RISULTATI -->
-
+<img id="print3d">
   <div class="results">
 
 
@@ -1340,20 +1323,18 @@ select{
 
 
 
-    <div class="result-box data-box">
+<div class="result-box data-box">
 
-      <h3>
-        Dati struttura
-      </h3>
+  <h3>
+    Dati struttura
+  </h3>
 
+  <div
+    id="quickResult"
+    class="quick-data"
+  ></div>
 
-      <div class="data-print-layout">
-
-
-        <div
-          id="quickResult"
-          class="quick-data"
-        ></div>
+</div>
 
 
         <img id="print3d">
