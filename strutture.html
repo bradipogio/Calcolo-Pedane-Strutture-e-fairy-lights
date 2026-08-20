@@ -8169,7 +8169,8 @@ function svgTag(
   x,
   y,
   text,
-  anchor="middle"
+  anchor="middle",
+  strokeColor="#6f7882"
 ){
 
   const box=
@@ -8201,7 +8202,7 @@ function svgTag(
       height="${height}"
       rx="6"
       fill="white"
-      stroke="#6f7882"
+      stroke="${strokeColor}"
       stroke-width="1.5"
     />
 
@@ -8304,7 +8305,9 @@ function svgArrowTag(
   targetX,
   targetY,
   anchor="middle",
-  curveBias=1
+  curveBias=1,
+  color="#5d6670",
+  startSide="auto"
 ){
 
   const box=
@@ -8356,27 +8359,70 @@ function svgArrowTag(
   ];
 
 
-  const start=
-    candidates.reduce(
-      (best,point)=>{
-
-        const distance=
-          (point.x-targetX)**2+
-          (point.y-targetY)**2;
+  let start;
 
 
-        return (
-          distance<best.distance
-          ? {point,distance}
-          : best
-        );
+  if(startSide==="right"){
 
-      },
-      {
-        point:candidates[0],
-        distance:Infinity
-      }
-    ).point;
+    start={
+      x:right,
+      y:(top+bottom)/2
+    };
+
+  }
+
+  else if(startSide==="left"){
+
+    start={
+      x:left,
+      y:(top+bottom)/2
+    };
+
+  }
+
+  else if(startSide==="top"){
+
+    start={
+      x:(left+right)/2,
+      y:top
+    };
+
+  }
+
+  else if(startSide==="bottom"){
+
+    start={
+      x:(left+right)/2,
+      y:bottom
+    };
+
+  }
+
+  else{
+
+    start=
+      candidates.reduce(
+        (best,point)=>{
+
+          const distance=
+            (point.x-targetX)**2+
+            (point.y-targetY)**2;
+
+
+          return (
+            distance<best.distance
+            ? {point,distance}
+            : best
+          );
+
+        },
+        {
+          point:candidates[0],
+          distance:Infinity
+        }
+      ).point;
+
+  }
 
 
   const deltaX=
@@ -8445,9 +8491,9 @@ function svgArrowTag(
   const unitY=
     tangentY/tangentDistance;
 
-  const arrowLength=12;
+  const arrowLength=10;
 
-  const arrowWidth=6;
+  const arrowWidth=4.5;
 
   const baseX=
     targetX-
@@ -8473,30 +8519,14 @@ function svgArrowTag(
     <path
       d="M ${start.x} ${start.y} Q ${controlX} ${controlY} ${baseX} ${baseY}"
       fill="none"
-      stroke="white"
-      stroke-width="7"
-      stroke-linecap="round"
-    />
-
-    <path
-      d="M ${start.x} ${start.y} Q ${controlX} ${controlY} ${baseX} ${baseY}"
-      fill="none"
-      stroke="#5d6670"
+      stroke="${color}"
       stroke-width="2.5"
       stroke-linecap="round"
     />
 
     <polygon
       points="${pointA} ${pointB} ${pointC}"
-      fill="white"
-      stroke="white"
-      stroke-width="5"
-      stroke-linejoin="round"
-    />
-
-    <polygon
-      points="${pointA} ${pointB} ${pointC}"
-      fill="#5d6670"
+      fill="${color}"
     />
 
     ${
@@ -8504,9 +8534,17 @@ function svgArrowTag(
         x,
         y,
         text,
-        anchor
+        anchor,
+        color
       )
     }
+
+    <circle
+      cx="${start.x}"
+      cy="${start.y}"
+      r="4"
+      fill="${color}"
+    />
 
   `;
 
@@ -8865,7 +8903,11 @@ function renderTopView(
 
         "start",
 
-        1
+        1,
+
+        "#28658c",
+
+        "left"
 
       );
 
@@ -8909,7 +8951,11 @@ function renderTopView(
 
         "start",
 
-        -1
+        -1,
+
+        "#c36e00",
+
+        "right"
 
       );
 
@@ -9391,7 +9437,11 @@ function renderSideView(
 
             index%2===0
             ? 1
-            : -1
+            : -1,
+
+            "#5d6670",
+
+            "right"
 
           );
 
@@ -9815,7 +9865,11 @@ function renderFrontView(
 
       "start",
 
-      -1
+      -1,
+
+      "#5d6670",
+
+      "right"
 
     );
 
