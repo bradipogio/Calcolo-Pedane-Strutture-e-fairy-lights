@@ -1026,6 +1026,7 @@ select{
             min=".1"
             step=".1"
             data-stepper
+            data-stepper-step="1"
             data-unit="m"
             aria-label="Lunghezza struttura"
           >
@@ -1046,6 +1047,7 @@ select{
             min=".1"
             step=".1"
             data-stepper
+            data-stepper-step="1"
             data-unit="m"
             aria-label="Larghezza totale struttura"
           >
@@ -1290,9 +1292,21 @@ select{
 
     <div class="panel viewer-panel no-print">
 
-      <h3>
-        Vista 3D
-      </h3>
+      <div class="preview-toolbar">
+        <h3 style="margin:0">
+          Vista 3D
+        </h3>
+
+        <button
+          type="button"
+          class="secondary expand-view-button"
+          data-expand-target="#viewer"
+          data-expand-mode="viewer"
+          data-expand-label="Vista 3D struttura"
+        >
+          ⛶ Schermo intero
+        </button>
+      </div>
 
       <div id="viewer"></div>
 
@@ -1362,19 +1376,26 @@ select{
 
 <!-- DISEGNI TECNICI -->
 
-<div class="card">
+<div class="card technical-section">
 
-  <h2
-    style="
-      margin:0 0 8px;
-      font-size:18px
-    "
-  >
-    Disegni tecnici
-  </h2>
+  <div class="section-heading">
+    <h2>
+      Disegni tecnici
+    </h2>
+
+    <button
+      type="button"
+      class="secondary expand-view-button no-print"
+      data-expand-target="#structureTechnicalViews"
+      data-expand-mode="drawings"
+      data-expand-label="Disegni tecnici struttura"
+    >
+      ⛶ Ingrandisci
+    </button>
+  </div>
 
 
-  <div class="views">
+  <div id="structureTechnicalViews" class="views">
 
 
     <div class="drawing">

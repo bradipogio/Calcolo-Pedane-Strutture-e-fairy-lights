@@ -11,12 +11,27 @@
   function adjustNumber(input, direction){
     if(input.disabled || input.readOnly) return;
 
-    try{
-      direction > 0 ? input.stepUp() : input.stepDown();
-    }catch(error){
-      const step = Number(input.step) || 1;
+    const buttonStep = Number(input.dataset.stepperStep);
+
+    if(Number.isFinite(buttonStep) && buttonStep > 0){
       const current = Number(input.value) || 0;
-      input.value = String(current + step * direction);
+      const decimals = Math.max(
+        (String(current).split(".")[1] || "").length,
+        (String(buttonStep).split(".")[1] || "").length
+      );
+      let next = Number((current + buttonStep * direction).toFixed(decimals));
+
+      if(input.min !== "") next = Math.max(next, Number(input.min));
+      if(input.max !== "") next = Math.min(next, Number(input.max));
+      input.value = String(next);
+    }else{
+      try{
+        direction > 0 ? input.stepUp() : input.stepDown();
+      }catch(error){
+        const step = Number(input.step) || 1;
+        const current = Number(input.value) || 0;
+        input.value = String(current + step * direction);
+      }
     }
 
     emitNumberChange(input);
@@ -162,6 +177,92 @@
     syncOpenState();
   }
 
+  function setupExpandedViews(){
+    const triggers = [...document.querySelectorAll("[data-expand-target]")];
+    if(!triggers.length) return;
+
+    const overlay = document.createElement("div");
+    overlay.className = "fullscreen-view no-print";
+    overlay.hidden = true;
+    overlay.setAttribute("role", "dialog");
+    overlay.setAttribute("aria-modal", "true");
+    overlay.setAttribute("aria-labelledby", "fullscreenViewTitle");
+    overlay.innerHTML = `
+      <div class="fullscreen-view-head">
+        <strong id="fullscreenViewTitle"></strong>
+        <button type="button" class="secondary fullscreen-view-close" aria-label="Chiudi schermo intero">×</button>
+      </div>
+      <div class="fullscreen-view-host"></div>
+    `;
+    document.body.appendChild(overlay);
+
+    const title = overlay.querySelector("#fullscreenViewTitle");
+    const host = overlay.querySelector(".fullscreen-view-host");
+    const closeButton = overlay.querySelector(".fullscreen-view-close");
+    let activeTarget = null;
+    let activeTrigger = null;
+    let placeholder = null;
+    let savedScrollY = 0;
+
+    const refreshLayout = ()=>{
+      requestAnimationFrame(()=>{
+        requestAnimationFrame(()=>window.dispatchEvent(new Event("resize")));
+      });
+    };
+
+    const close = ()=>{
+      if(!activeTarget || !placeholder?.parentNode) return;
+
+      placeholder.parentNode.replaceChild(activeTarget, placeholder);
+      activeTarget.classList.remove("is-expanded-view");
+      activeTrigger?.setAttribute("aria-expanded", "false");
+      overlay.hidden = true;
+      overlay.removeAttribute("data-mode");
+      document.body.classList.remove("fullscreen-view-open");
+      window.scrollTo(0, savedScrollY);
+      refreshLayout();
+      activeTrigger?.focus({preventScroll:true});
+
+      activeTarget = null;
+      activeTrigger = null;
+      placeholder = null;
+    };
+
+    const open = trigger=>{
+      const target = document.querySelector(trigger.dataset.expandTarget);
+      if(!target || activeTarget) return;
+
+      activeTarget = target;
+      activeTrigger = trigger;
+      savedScrollY = window.scrollY;
+      placeholder = document.createComment("expanded-view-return");
+      target.parentNode.insertBefore(placeholder, target);
+      host.appendChild(target);
+      target.classList.add("is-expanded-view");
+
+      title.textContent = trigger.dataset.expandLabel || "Vista ingrandita";
+      overlay.dataset.mode = trigger.dataset.expandMode || "content";
+      overlay.hidden = false;
+      document.body.classList.add("fullscreen-view-open");
+      trigger.setAttribute("aria-expanded", "true");
+      closeButton.focus({preventScroll:true});
+      refreshLayout();
+    };
+
+    triggers.forEach(trigger=>{
+      trigger.setAttribute("aria-expanded", "false");
+      trigger.addEventListener("click", ()=>open(trigger));
+    });
+
+    closeButton.addEventListener("click", close);
+    document.addEventListener("keydown", event=>{
+      if(event.key === "Escape" && !overlay.hidden){
+        event.preventDefault();
+        close();
+      }
+    });
+  }
+
   function registerServiceWorker(){
     if(!("serviceWorker" in navigator)) return;
     if(location.protocol !== "https:" && location.hostname !== "localhost" && location.hostname !== "127.0.0.1") return;
@@ -175,6 +276,7 @@
     decorateNumbers();
     loadFairySetting();
     setupSettingsModal();
+    setupExpandedViews();
     registerServiceWorker();
 
     document.getElementById("saveFairySettings")

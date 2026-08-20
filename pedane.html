@@ -405,6 +405,15 @@ input[type=text],input[type=number],select{
 
         <div class="viewer-toolbar">
           <button id="toggleDeck" class="secondary">Piano ON</button>
+          <button
+            type="button"
+            class="secondary expand-view-button"
+            data-expand-target="#viewer"
+            data-expand-mode="viewer"
+            data-expand-label="Vista 3D pedana"
+          >
+            ⛶ Schermo intero
+          </button>
         </div>
       </div>
 
@@ -415,10 +424,21 @@ input[type=text],input[type=number],select{
 
 </div>
 
-<div class="card">
-  <h2 style="margin:0 0 9px;font-size:19px">Disegni tecnici</h2>
+<div class="card technical-section">
+  <div class="section-heading">
+    <h2>Disegni tecnici</h2>
+    <button
+      type="button"
+      class="secondary expand-view-button no-print"
+      data-expand-target="#pedaneTechnicalViews"
+      data-expand-mode="drawings"
+      data-expand-label="Disegni tecnici pedana"
+    >
+      ⛶ Ingrandisci
+    </button>
+  </div>
 
-  <div class="drawings">
+  <div id="pedaneTechnicalViews" class="drawings">
 
     <div class="drawing">
       <div class="drawing-title">PIANTA PEDANA</div>
