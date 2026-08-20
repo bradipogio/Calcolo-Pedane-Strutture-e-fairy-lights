@@ -14,12 +14,19 @@
   --shadow-lg: 0 24px 70px rgba(15, 23, 32, .22);
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 @media screen {
   html {
     color-scheme: light;
   }
 
   body {
+    margin: 0;
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
@@ -69,6 +76,16 @@
     font-size: 12px;
     font-weight: 900;
     letter-spacing: -.02em;
+  }
+
+  .brand-logo {
+    width: 34px;
+    height: 34px;
+    display: block;
+    flex: 0 0 auto;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 3px 10px rgba(24, 33, 43, .18);
   }
 
   header h1 {
@@ -686,7 +703,6 @@
     font-weight: 700;
   }
 
-  /* Home */
   .home-page {
     min-height: 100vh;
     display: grid;
@@ -699,8 +715,8 @@
   }
 
   .home-page .home {
-    width: min(960px, 100%);
-    padding: 42px;
+    width: min(880px, 100%);
+    padding: 38px;
     border: 1px solid rgba(220, 226, 232, .9);
     border-radius: 24px;
     background: rgba(255, 255, 255, .9);
@@ -712,48 +728,41 @@
     display: flex;
     align-items: center;
     gap: 11px;
-    margin-bottom: 34px;
+    margin-bottom: 28px;
     color: var(--ink);
     font-size: 14px;
     font-weight: 800;
   }
 
-  .eyebrow {
-    margin-bottom: 10px;
-    color: var(--accent-dark);
-    font-size: 12px;
-    font-weight: 850;
-    letter-spacing: .1em;
-    text-transform: uppercase;
+  .home-brand .brand-logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
   }
 
   .home-page h1 {
-    max-width: 720px;
     margin: 0;
-    font-size: clamp(34px, 5vw, 54px);
-    line-height: 1.02;
-    letter-spacing: -.055em;
-  }
-
-  .home-page .subtitle {
-    max-width: 620px;
-    margin: 16px 0 34px;
-    color: var(--muted);
-    font-size: 16px;
-    line-height: 1.6;
+    font-size: clamp(30px, 4vw, 42px);
+    line-height: 1.08;
+    letter-spacing: -.045em;
   }
 
   .home-page .apps {
-    gap: 14px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 26px;
   }
 
   .home-page .app {
-    min-height: 224px;
-    padding: 22px;
+    min-width: 0;
+    overflow: hidden;
     border: 1px solid var(--line);
-    border-radius: 16px;
+    border-radius: 18px;
     background: #fff;
+    color: var(--ink);
     box-shadow: 0 1px 2px rgba(24, 33, 43, .03);
+    text-decoration: none;
     transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
   }
 
@@ -763,69 +772,111 @@
     box-shadow: 0 18px 38px rgba(24, 33, 43, .11);
   }
 
-  .app-top {
+  .app-visual {
+    height: 180px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+    background:
+      linear-gradient(rgba(255, 255, 255, .72), rgba(255, 255, 255, .72)),
+      linear-gradient(135deg, var(--accent-soft), var(--surface-soft));
+  }
+
+  .app-visual-structure {
+    background:
+      radial-gradient(circle at 50% 86%, rgba(242, 189, 39, .22), transparent 42%),
+      linear-gradient(#fafbfc, #eef2f5);
+  }
+
+  .structure-sketch {
+    position: relative;
+    width: min(62%, 220px);
+    height: 108px;
+    border: solid var(--ink);
+    border-width: 6px 6px 0;
+    border-radius: 3px 3px 0 0;
+  }
+
+  .structure-sketch::before {
+    content: "";
+    position: absolute;
+    inset: 0 34% 0;
+    border: solid var(--ink);
+    border-width: 0 5px;
+  }
+
+  .structure-sketch::after {
+    content: "";
+    position: absolute;
+    right: -18px;
+    bottom: -7px;
+    left: -18px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(24, 33, 43, .14);
+    filter: blur(4px);
+  }
+
+  .structure-sketch span {
+    position: absolute;
+    top: 28px;
+    right: 3px;
+    left: 3px;
+    height: 28px;
+    border-top: 3px solid var(--accent-dark);
+    background: radial-gradient(circle, var(--accent) 0 5px, transparent 5.5px) 3px 5px / 28px 21px repeat-x;
+  }
+
+  .app-visual-pedana {
+    background:
+      radial-gradient(circle at 50% 78%, rgba(24, 33, 43, .12), transparent 43%),
+      linear-gradient(#fff9e4, #f6e6ad);
+  }
+
+  .pedana-sketch {
+    width: min(64%, 230px);
+    aspect-ratio: 1.55;
+    border: 6px solid var(--ink);
+    background:
+      conic-gradient(
+        #f4c23b 0 25%,
+        var(--ink) 0 50%,
+        #f4c23b 0 75%,
+        var(--ink) 0
+      ) 0 0 / 52px 52px;
+    box-shadow: 0 13px 0 #a86f0a, 0 20px 24px rgba(24, 33, 43, .18);
+    transform: perspective(420px) rotateX(55deg) rotateZ(-4deg);
+  }
+
+  .app-label {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 28px;
-  }
-
-  .app-icon {
-    width: 44px;
-    height: 44px;
-    display: grid;
-    place-items: center;
-    border-radius: 13px;
-    background: var(--ink);
-    color: var(--accent);
-    font-size: 14px;
-    font-weight: 900;
-  }
-
-  .app-kicker {
-    color: var(--muted);
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: .08em;
-    text-transform: uppercase;
+    gap: 16px;
+    padding: 19px 20px 20px;
   }
 
   .home-page .app-title {
-    font-size: 23px;
+    font-size: 24px;
+    font-weight: 850;
     letter-spacing: -.03em;
   }
 
   .home-page .app-description {
-    max-width: 330px;
+    margin-top: 4px;
     color: var(--muted);
     font-size: 13px;
   }
 
   .home-page .app-arrow {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 26px;
-    padding-top: 16px;
-    border-top: 1px solid #edf0f3;
-    font-size: 13px;
-  }
-
-  .home-page .app-arrow span {
-    font-size: 20px;
+    flex: 0 0 auto;
+    font-size: 25px;
     transition: transform .15s ease;
   }
 
-  .home-page .app:hover .app-arrow span {
+  .home-page .app:hover .app-arrow {
     transform: translateX(3px);
-  }
-
-  .home-note {
-    margin: 24px 0 0;
-    color: var(--muted);
-    font-size: 12px;
-    text-align: center;
   }
 
   .page-pedane #deckPlan,
@@ -904,7 +955,8 @@
     gap: 10px;
   }
 
-  .brand-mark {
+  .brand-mark,
+  .brand-logo {
     width: 32px;
     height: 32px;
   }
@@ -1026,10 +1078,20 @@
   }
 
   .home-brand {
-    margin-bottom: 42px;
+    margin-bottom: 24px;
   }
 
   .home-page .apps {
     grid-template-columns: 1fr;
+    gap: 13px;
+    margin-top: 20px;
+  }
+
+  .app-visual {
+    height: 145px;
+  }
+
+  .home-page .app-title {
+    font-size: 22px;
   }
 }

@@ -162,10 +162,20 @@
     syncOpenState();
   }
 
+  function registerServiceWorker(){
+    if(!("serviceWorker" in navigator)) return;
+    if(location.protocol !== "https:" && location.hostname !== "localhost" && location.hostname !== "127.0.0.1") return;
+
+    window.addEventListener("load", ()=>{
+      navigator.serviceWorker.register("./service-worker.js").catch(()=>{});
+    }, {once:true});
+  }
+
   function setup(){
     decorateNumbers();
     loadFairySetting();
     setupSettingsModal();
+    registerServiceWorker();
 
     document.getElementById("saveFairySettings")
       ?.addEventListener("click", saveFairySetting);

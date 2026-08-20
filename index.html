@@ -1,235 +1,58 @@
 <!doctype html>
 <html lang="it">
-
 <head>
-
 <meta charset="utf-8">
-
-<meta
-  name="viewport"
-  content="width=device-width,initial-scale=1"
->
-
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#18212b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Planner">
+<meta name="description" content="Planner tecnico per strutture, pedane e materiale eventi.">
 <title>Planner tecnico</title>
-
-<style>
-
-*{
-  box-sizing:border-box;
-}
-
-body{
-  margin:0;
-
-  min-height:100vh;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  padding:24px;
-
-  font-family:Arial,Helvetica,sans-serif;
-
-  background:#f3f4f6;
-  color:#171717;
-}
-
-.home{
-  width:min(760px,100%);
-
-  padding:28px;
-
-  background:white;
-
-  border-radius:14px;
-
-  box-shadow:0 2px 14px rgba(0,0,0,.12);
-}
-
-h1{
-  margin:0 0 6px;
-
-  font-size:29px;
-}
-
-.subtitle{
-  margin-bottom:28px;
-
-  color:#666;
-
-  font-size:14px;
-}
-
-.apps{
-  display:grid;
-
-  grid-template-columns:
-    repeat(2,minmax(0,1fr));
-
-  gap:14px;
-}
-
-.app{
-  min-height:180px;
-
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-
-  padding:20px;
-
-  border:2px solid #222;
-  border-radius:11px;
-
-  color:#111;
-
-  text-decoration:none;
-
-  transition:
-    transform .12s ease,
-    box-shadow .12s ease;
-}
-
-.app:hover{
-  transform:translateY(-2px);
-
-  box-shadow:0 5px 14px rgba(0,0,0,.12);
-}
-
-.app-title{
-  font-size:22px;
-  font-weight:800;
-}
-
-.app-description{
-  margin-top:8px;
-
-  color:#666;
-
-  font-size:13px;
-  line-height:1.45;
-}
-
-.app-arrow{
-  margin-top:22px;
-
-  font-size:18px;
-  font-weight:800;
-}
-
-@media(max-width:600px){
-
-  .apps{
-    grid-template-columns:1fr;
-  }
-
-}
-
-</style>
-
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icons/icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="./icons/icon-180.png">
 <link rel="stylesheet" href="./ui.css">
-
 </head>
 
-
 <body class="home-page">
-
-
 <main class="home">
-
   <div class="home-brand">
-    <span class="brand-mark">PT</span>
+    <img class="brand-logo" src="./icons/icon-192.png" alt="">
     <span>Planner tecnico</span>
   </div>
 
-  <div class="eyebrow">Produzione eventi</div>
-
-  <h1>
-    Dal progetto alla lista materiale.
-  </h1>
-
-  <div class="subtitle">
-    Configura strutture e pedane, controlla i disegni tecnici
-    e prepara il materiale necessario in pochi passaggi.
-  </div>
-
+  <h1>Scegli il planner</h1>
 
   <div class="apps">
-
-
-    <a
-      class="app"
-      href="strutture.html"
-    >
-
-      <div>
-
-        <div class="app-top">
-          <span class="app-icon">S</span>
-          <span class="app-kicker">Strutture</span>
-        </div>
-
-        <div class="app-title">
-          Strutture Fairy
-        </div>
-
-        <div class="app-description">
-          Strutture modulari, archi, traverse,
-          fairy lights e calcolo materiale.
-        </div>
-
+    <a class="app" href="strutture.html">
+      <div class="app-visual app-visual-structure" aria-hidden="true">
+        <div class="structure-sketch"><span></span></div>
       </div>
-
-      <div class="app-arrow">
-        Apri planner <span aria-hidden="true">→</span>
+      <div class="app-label">
+        <div>
+          <div class="app-title">Strutture</div>
+          <div class="app-description">Strutture e Fairy Lights</div>
+        </div>
+        <span class="app-arrow" aria-hidden="true">→</span>
       </div>
-
     </a>
 
-
-
-    <a
-      class="app"
-      href="pedane.html"
-    >
-
-      <div>
-
-        <div class="app-top">
-          <span class="app-icon">P</span>
-          <span class="app-kicker">Pedane</span>
-        </div>
-
-        <div class="app-title">
-          Pedane
-        </div>
-
-        <div class="app-description">
-          Quadrotti 1×1, scacchiere,
-          pannelli gialli e disposizione strutturale.
-        </div>
-
+    <a class="app" href="pedane.html">
+      <div class="app-visual app-visual-pedana" aria-hidden="true">
+        <div class="pedana-sketch"></div>
       </div>
-
-      <div class="app-arrow">
-        Apri planner <span aria-hidden="true">→</span>
+      <div class="app-label">
+        <div>
+          <div class="app-title">Pedane</div>
+          <div class="app-description">Quadrotti e pannelli gialli</div>
+        </div>
+        <span class="app-arrow" aria-hidden="true">→</span>
       </div>
-
     </a>
-
-
   </div>
-
-  <p class="home-note">
-    Il magazzino è condiviso tra i due planner.
-  </p>
-
 </main>
 
-
 <script src="./ui.js" defer></script>
-
 </body>
-
 </html>
