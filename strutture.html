@@ -940,8 +940,10 @@ select{
     class="secondary no-print"
     aria-controls="settingsModal"
     aria-expanded="false"
+    aria-label="Apri impostazioni"
+    title="Impostazioni"
   >
-    ⚙ Impostazioni
+    ⚙
   </button>
 
 </header>
@@ -1378,7 +1380,10 @@ select{
 
     <div class="drawing">
 
-      <div class="drawing-title">
+      <div
+        id="sideViewTitle"
+        class="drawing-title"
+      >
         LATERALE
       </div>
 
@@ -6075,6 +6080,10 @@ function calculatePlan(){
 ========================================================= */
 
 function renderAll(){
+  updateAutomaticLabels(
+    currentPlan
+  );
+
   renderSummary();
 
   renderMatrix();
@@ -6086,6 +6095,104 @@ function renderAll(){
   renderTechnicalViews(
     currentPlan
   );
+
+}
+
+
+function compactAutomaticMethod(
+  method,
+  actualLength=null
+){
+
+  if(!method)
+    return "nessuna compatibile";
+
+
+  if(
+    method.type==="tel"
+    &&
+    actualLength!==null
+  ){
+
+    return (
+      `${method.label} @ ${actualLength.toFixed(2)} m`
+    );
+
+  }
+
+
+  return method.label;
+
+}
+
+
+function updateAutomaticLabels(
+  plan
+){
+
+  const sideSelect=
+    document.getElementById(
+      "sideMethod"
+    );
+
+
+  const topSelect=
+    document.getElementById(
+      "topMethod"
+    );
+
+
+  const sideAuto=
+    document.getElementById(
+      "sideAutoOption"
+    );
+
+
+  const topAuto=
+    document.getElementById(
+      "topAutoOption"
+    );
+
+
+  sideAuto.textContent=
+    sideSelect.value==="auto"
+    ?
+    `Auto · ${compactAutomaticMethod(
+      plan.geometry.side.method,
+      plan.geometry.side.method?.type==="tel"
+      ? plan.geometry.side.bayLength
+      : null
+    )}`
+    :
+    "Auto";
+
+
+  if(topSelect.value!=="auto"){
+
+    topAuto.textContent="Auto";
+    return;
+
+  }
+
+
+  const stats=
+    layoutStats(
+      plan.layout,
+      plan.archEdges
+    );
+
+
+  topAuto.textContent=
+    stats.normalVerticalEdges===0
+    ?
+    "Auto · solo archi"
+    :
+    `Auto · ${compactAutomaticMethod(
+      plan.geometry.top?.method,
+      plan.geometry.top?.method?.type==="tel"
+      ? plan.moduleWidth
+      : null
+    )}`;
 
 }
 
@@ -8065,15 +8172,79 @@ function svgTag(
   anchor="middle"
 ){
 
-  const fontSize=13;
+  const box=
+    svgTagBounds(
+      x,
+      y,
+      text,
+      anchor
+    );
+
+
+  const {
+    fontSize,
+    width,
+    height,
+    rectX,
+    rectY,
+    textX,
+    textAnchor
+  }=box;
+
+
+  return `
+
+    <rect
+      x="${rectX}"
+      y="${rectY}"
+      width="${width}"
+      height="${height}"
+      rx="6"
+      fill="white"
+      stroke="#6f7882"
+      stroke-width="1.5"
+    />
+
+    ${
+      svgText(
+        textX,
+        y,
+        text,
+        textAnchor,
+        fontSize,
+        700
+      )
+    }
+
+  `;
+
+}
+
+
+function svgTagBounds(
+  x,
+  y,
+  text,
+  anchor="middle"
+){
+
+  const fontSize=22;
 
 
   const width=
 
     Math.max(
-      82,
-      text.length*7.2
+      108,
+      Math.ceil(
+        text.length*
+        fontSize*
+        .62+
+        26
+      )
     );
+
+
+  const height=36;
 
 
   let rectX=
@@ -8090,27 +8261,189 @@ function svgTag(
       width;
 
 
+  rectX=
+    Math.max(
+      12,
+      Math.min(
+        988-width,
+        rectX
+      )
+    );
+
+
+  let textX=
+    rectX+
+    width/2;
+
+
+  if(anchor==="start")
+    textX=rectX+13;
+
+
+  if(anchor==="end")
+    textX=rectX+width-13;
+
+
+  return {
+    fontSize,
+    width,
+    height,
+    rectX,
+    rectY:y-27,
+    textX,
+    textAnchor:anchor
+  };
+
+}
+
+
+function svgArrowTag(
+  x,
+  y,
+  text,
+  targetX,
+  targetY,
+  anchor="middle"
+){
+
+  const box=
+    svgTagBounds(
+      x,
+      y,
+      text,
+      anchor
+    );
+
+
+  const clamp=(value,min,max)=>
+    Math.max(
+      min,
+      Math.min(max,value)
+    );
+
+
+  const left=box.rectX;
+
+  const right=
+    box.rectX+
+    box.width;
+
+  const top=box.rectY;
+
+  const bottom=
+    box.rectY+
+    box.height;
+
+
+  const candidates=[
+    {
+      x:left,
+      y:clamp(targetY,top,bottom)
+    },
+    {
+      x:right,
+      y:clamp(targetY,top,bottom)
+    },
+    {
+      x:clamp(targetX,left,right),
+      y:top
+    },
+    {
+      x:clamp(targetX,left,right),
+      y:bottom
+    }
+  ];
+
+
+  const start=
+    candidates.reduce(
+      (best,point)=>{
+
+        const distance=
+          (point.x-targetX)**2+
+          (point.y-targetY)**2;
+
+
+        return (
+          distance<best.distance
+          ? {point,distance}
+          : best
+        );
+
+      },
+      {
+        point:candidates[0],
+        distance:Infinity
+      }
+    ).point;
+
+
+  const deltaX=
+    targetX-start.x;
+
+  const deltaY=
+    targetY-start.y;
+
+  const distance=
+    Math.max(
+      1,
+      Math.hypot(
+        deltaX,
+        deltaY
+      )
+    );
+
+  const unitX=
+    deltaX/distance;
+
+  const unitY=
+    deltaY/distance;
+
+  const arrowLength=12;
+
+  const arrowWidth=6;
+
+  const baseX=
+    targetX-
+    unitX*arrowLength;
+
+  const baseY=
+    targetY-
+    unitY*arrowLength;
+
+
+  const pointA=
+    `${targetX},${targetY}`;
+
+  const pointB=
+    `${baseX-unitY*arrowWidth},${baseY+unitX*arrowWidth}`;
+
+  const pointC=
+    `${baseX+unitY*arrowWidth},${baseY-unitX*arrowWidth}`;
+
+
   return `
 
-    <rect
-      x="${rectX}"
-      y="${y-18}"
-      width="${width}"
-      height="25"
-      rx="4"
-      fill="white"
-      stroke="#888"
-      stroke-width="1"
+    <line
+      x1="${start.x}"
+      y1="${start.y}"
+      x2="${baseX}"
+      y2="${baseY}"
+      stroke="#5d6670"
+      stroke-width="2.5"
+    />
+
+    <polygon
+      points="${pointA} ${pointB} ${pointC}"
+      fill="#5d6670"
     />
 
     ${
-      svgText(
+      svgTag(
         x,
         y,
         text,
-        anchor,
-        fontSize,
-        700
+        anchor
       )
     }
 
@@ -8196,7 +8529,7 @@ function renderTopView(
 
   svg.setAttribute(
     "viewBox",
-    "0 0 1000 280"
+    "0 0 1000 340"
   );
 
 
@@ -8227,9 +8560,9 @@ function renderTopView(
 
   const right=955;
 
-  const top=30;
+  const top=110;
 
-  const bottom=240;
+  const bottom=280;
 
 
   const dx=
@@ -8454,18 +8787,22 @@ function renderTopView(
 
 
     html+=
-      svgTag(
+      svgArrowTag(
 
-        left-16,
+        20,
+
+        32,
+
+        label,
+
+        x(normal.c),
 
         (
           y(normal.r)+
           y(normal.r+1)
         )/2,
 
-        label,
-
-        "end"
+        "start"
 
       );
 
@@ -8490,19 +8827,24 @@ function renderTopView(
   if(firstArch){
 
     html+=
-      svgTag(
+      svgArrowTag(
 
-        left-16,
+        20,
+
+        normal
+        ? 72
+        : 32,
+
+        "ARCO",
+
+        x(firstArch.c),
 
         (
           y(firstArch.r)+
           y(firstArch.r+1)
-        )/2+
-        29,
+        )/2,
 
-        "ARCO",
-
-        "end"
+        "start"
 
       );
 
@@ -8514,7 +8856,7 @@ function renderTopView(
 
       500,
 
-      270,
+      330,
 
       `Modulo ${plan.moduleWidth.toFixed(2)} m · Larghezza totale ${plan.totalWidth.toFixed(2)} m`,
 
@@ -8549,6 +8891,13 @@ function renderSideView(
       );
 
 
+  const title=
+    document
+      .getElementById(
+        "sideViewTitle"
+      );
+
+
   const target=
     plan.layout;
 
@@ -8558,6 +8907,9 @@ function renderSideView(
 
 
   if(!bounds){
+
+    title.textContent=
+      "LATERALE";
 
     svg.innerHTML="";
     return;
@@ -8654,6 +9006,9 @@ function renderSideView(
 
   if(!variantList.length){
 
+    title.textContent=
+      "LATERALE";
+
     svg.setAttribute(
       "viewBox",
       "0 0 1000 280"
@@ -8681,7 +9036,22 @@ function renderSideView(
   }
 
 
-  const blockHeight=260;
+  const lastVariantLetter=
+    String.fromCharCode(
+      64+
+      variantList.length
+    );
+
+
+  title.textContent=
+    variantList.length===1
+    ?
+    "LATERALE A"
+    :
+    `LATERALI A–${lastVariantLetter}`;
+
+
+  const blockHeight=300;
 
 
   const totalSvgHeight=
@@ -8704,7 +9074,7 @@ function renderSideView(
   );
 
 
-  const left=105;
+  const left=240;
 
   const right=955;
 
@@ -8746,11 +9116,11 @@ function renderSideView(
 
 
       const top=
-        offsetY+32;
+        offsetY+72;
 
 
       const ground=
-        offsetY+210;
+        offsetY+235;
 
 
       const lowerY=
@@ -8761,28 +9131,6 @@ function renderSideView(
 
         (LOWER_HEIGHT/HEIGHT)*
         (ground-top);
-
-
-      html+=
-        svgText(
-
-          55,
-
-          offsetY+22,
-
-          `LATERALE ${
-            String.fromCharCode(
-              65+index
-            )
-          }`,
-
-          "start",
-
-          14,
-
-          700
-
-        );
 
 
       for(
@@ -8962,15 +9310,19 @@ function renderSideView(
 
 
         html+=
-          svgTag(
+          svgArrowTag(
 
-            x-18,
+            20,
 
-            offsetY+122,
+            offsetY+198,
 
             "PALO · 2,5 m",
 
-            "end"
+            x,
+
+            offsetY+153,
+
+            "start"
 
           );
 
@@ -8980,7 +9332,7 @@ function renderSideView(
 
             x+18,
 
-            ground+28,
+            ground+38,
 
             "BASE",
 
@@ -9039,7 +9391,7 @@ function renderFrontView(
 
   svg.setAttribute(
     "viewBox",
-    "0 0 1000 300"
+    "0 0 1000 400"
   );
 
 
@@ -9147,13 +9499,13 @@ function renderFrontView(
     );
 
 
-  const left=160;
+  const left=240;
 
   const right=900;
 
-  const top=80;
+  const top=140;
 
-  const ground=245;
+  const ground=320;
 
 
   const x=
@@ -9330,7 +9682,7 @@ function renderFrontView(
           firstArch.x2
         )/2,
 
-        26,
+        50,
 
         "ARCO"
 
@@ -9380,15 +9732,19 @@ function renderFrontView(
 
 
   html+=
-    svgTag(
+    svgArrowTag(
 
-      left-17,
+      20,
 
-      170,
+      235,
 
       "PALO · 2,5 m",
 
-      "end"
+      left,
+
+      230,
+
+      "start"
 
     );
 
@@ -9398,7 +9754,7 @@ function renderFrontView(
 
       left+17,
 
-      ground+28,
+      ground+38,
 
       "BASE",
 
@@ -9412,7 +9768,7 @@ function renderFrontView(
 
       500,
 
-      292,
+      392,
 
       `Modulo ${plan.moduleWidth.toFixed(2)} m · Larghezza totale ${plan.totalWidth.toFixed(2)} m`,
 

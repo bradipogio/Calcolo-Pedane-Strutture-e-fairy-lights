@@ -172,7 +172,11 @@
   #openSettings {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+    width: 42px;
+    min-width: 42px;
+    padding: 0;
+    font-size: 18px;
     white-space: nowrap;
   }
 
@@ -985,7 +989,8 @@
   .page-structures .drawing svg line,
   .page-structures .drawing svg path,
   .page-structures .drawing svg rect,
-  .page-structures .drawing svg circle {
+  .page-structures .drawing svg circle,
+  .page-structures .drawing svg polygon {
     vector-effect: non-scaling-stroke;
   }
 }
@@ -1118,10 +1123,6 @@
 
   .page-structures .drawing svg {
     height: auto;
-  }
-
-  .page-structures .drawing svg text {
-    font-size: 28px;
   }
 
   .page-structures .viewer-panel,
