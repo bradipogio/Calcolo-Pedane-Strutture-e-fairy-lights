@@ -20,8 +20,6 @@
     }
 
     emitNumberChange(input);
-    input.focus({preventScroll:true});
-    input.select();
   }
 
   function decorateNumberInput(input){

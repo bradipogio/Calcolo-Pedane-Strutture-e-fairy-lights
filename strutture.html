@@ -1131,7 +1131,7 @@ select{
       <div class="config-line">
 
         <label for="sideMethod">
-          Longitudinale
+          Laterale
         </label>
 
 
@@ -1169,6 +1169,8 @@ select{
           </option>
 
         </select>
+
+        <div id="sideMethodSummary" class="method-summary" aria-live="polite"></div>
 
       </div>
 
@@ -1215,6 +1217,8 @@ select{
           </option>
 
         </select>
+
+        <div id="topMethodSummary" class="method-summary" aria-live="polite"></div>
 
       </div>
 
@@ -4912,7 +4916,7 @@ function fallbackPlanGeometry(
     invalid:true,
 
     invalidReason:
-      `Nessuna barra longitudinale copre una campata da ${bayLength.toFixed(2)} m.`
+      `Nessuna barra laterale copre una campata da ${bayLength.toFixed(2)} m.`
 
   };
 
@@ -6244,6 +6248,74 @@ function updateAutomaticLabels(
       "Automatico (nessuna compatibile)";
 
   }
+
+
+  const sideMethodSummary=
+    document
+      .getElementById(
+        "sideMethodSummary"
+      );
+
+
+  const topMethodSummary=
+    document
+      .getElementById(
+        "topMethodSummary"
+      );
+
+
+  const sideUsed=
+    plan.geometry.side.method
+    ?
+    shortMethodLabel(
+      plan.geometry.side.method,
+      plan.geometry.side.method.type==="tel"
+      ?
+      plan.geometry.side.bayLength
+      :
+      null
+    )
+    :
+    "nessuna barra compatibile";
+
+
+  const topUsed=
+    stats.normalVerticalEdges===0
+    ?
+    "solo archi"
+    :
+    plan.geometry.top?.method
+    ?
+    shortMethodLabel(
+      plan.geometry.top.method,
+      plan.geometry.top.method.type==="tel"
+      ?
+      plan.moduleWidth
+      :
+      null
+    )
+    :
+    "nessuna barra compatibile";
+
+
+  sideMethodSummary.textContent=
+    `Usato: ${
+      sideSelect.value==="auto"
+      ?
+      "automatico"
+      :
+      "manuale"
+    } · ${sideUsed}`;
+
+
+  topMethodSummary.textContent=
+    `Usato: ${
+      topSelect.value==="auto"
+      ?
+      "automatico"
+      :
+      "manuale"
+    } · ${topUsed}`;
 
 }
 
@@ -8390,13 +8462,13 @@ function renderTopView(
   }
 
 
-  const left=160;
+  const left=105;
 
-  const right=900;
+  const right=955;
 
-  const top=45;
+  const top=30;
 
-  const bottom=230;
+  const bottom=240;
 
 
   const dx=
@@ -8827,15 +8899,16 @@ function renderSideView(
     );
 
 
-    svg.style.height=
-      "260px";
+    svg.style.removeProperty(
+      "height"
+    );
 
 
     svg.innerHTML=
       svgText(
         500,
         140,
-        "Nessun lato longitudinale",
+        "Nessun lato laterale",
         "middle",
         15,
         700
@@ -8847,7 +8920,7 @@ function renderSideView(
   }
 
 
-  const blockHeight=220;
+  const blockHeight=260;
 
 
   const totalSvgHeight=
@@ -8865,20 +8938,14 @@ function renderSideView(
   );
 
 
-  svg.style.height=
-
-    `${
-      Math.max(
-        260,
-        variantList.length*
-        210
-      )
-    }px`;
+  svg.style.removeProperty(
+    "height"
+  );
 
 
-  const left=150;
+  const left=105;
 
-  const right=900;
+  const right=955;
 
 
   const dx=
@@ -8918,11 +8985,11 @@ function renderSideView(
 
 
       const top=
-        offsetY+42;
+        offsetY+32;
 
 
       const ground=
-        offsetY+175;
+        offsetY+210;
 
 
       const lowerY=
@@ -9138,7 +9205,7 @@ function renderSideView(
 
             x-18,
 
-            offsetY+108,
+            offsetY+122,
 
             "PALO · 2,5 m",
 
@@ -9319,13 +9386,13 @@ function renderFrontView(
     );
 
 
-  const left=210;
+  const left=160;
 
-  const right=790;
+  const right=900;
 
-  const top=90;
+  const top=80;
 
-  const ground=250;
+  const ground=245;
 
 
   const x=
@@ -9845,9 +9912,152 @@ function renderAllocations(){
    PRINT
 ========================================================= */
 
+function capturePrint3D(){
+
+  const originalSize=
+    renderer.getSize(
+      new THREE.Vector2()
+    );
+
+
+  const originalPixelRatio=
+    renderer.getPixelRatio();
+
+
+  const printWidth=1400;
+
+  const printHeight=800;
+
+
+  const printCamera=
+    camera.clone();
+
+
+  const archHeight=
+    currentPlan.archEdges.size
+    ?
+    currentPlan.moduleWidth/2
+    :
+    0;
+
+
+  const totalHeight=
+    HEIGHT+archHeight;
+
+
+  const center=
+    new THREE.Vector3(
+      currentPlan.length/2,
+      totalHeight/2,
+      currentPlan.totalWidth/2
+    );
+
+
+  const radius=
+    Math.max(
+      1,
+      Math.sqrt(
+        (currentPlan.length/2)**2+
+        (currentPlan.totalWidth/2)**2+
+        (totalHeight/2)**2
+      )
+    );
+
+
+  const verticalFov=
+    THREE.MathUtils.degToRad(
+      printCamera.fov
+    );
+
+
+  const distance=
+    radius/
+    Math.sin(verticalFov/2)*
+    1.12;
+
+
+  printCamera.aspect=
+    printWidth/printHeight;
+
+
+  printCamera.position
+    .copy(center)
+    .addScaledVector(
+      new THREE.Vector3(
+        1,
+        .72,
+        1.15
+      ).normalize(),
+      distance
+    );
+
+
+  printCamera.near=
+    Math.max(
+      .05,
+      distance-radius*1.6
+    );
+
+
+  printCamera.far=
+    distance+radius*3;
+
+
+  printCamera.lookAt(center);
+
+  printCamera.updateProjectionMatrix();
+
+
+  renderer.setPixelRatio(1.5);
+
+  renderer.setSize(
+    printWidth,
+    printHeight,
+    false
+  );
+
+  renderer.render(
+    scene,
+    printCamera
+  );
+
+
+  const image=
+    renderer
+      .domElement
+      .toDataURL(
+        "image/png"
+      );
+
+
+  renderer.setPixelRatio(
+    originalPixelRatio
+  );
+
+  renderer.setSize(
+    originalSize.x,
+    originalSize.y,
+    false
+  );
+
+  renderer.render(
+    scene,
+    camera
+  );
+
+
+  return image;
+
+}
+
+
 function printReport(){
 
-  if(!currentPlan){
+  if(
+    !currentPlan
+    ||
+    currentPlan.invalid
+  ){
 
     alert(
       "Configurazione non valida."
@@ -9858,23 +10068,7 @@ function printReport(){
   }
 
 
-  renderer.render(
-    scene,
-    camera
-  );
-
-
-  document
-    .getElementById(
-      "print3d"
-    )
-    .src=
-
-      renderer
-        .domElement
-        .toDataURL(
-          "image/png"
-        );
+  preparePrintPreview();
 
 
   setTimeout(
@@ -9883,6 +10077,32 @@ function printReport(){
   );
 
 }
+
+
+function preparePrintPreview(){
+
+  if(
+    !currentPlan
+    ||
+    currentPlan.invalid
+  )
+    return;
+
+
+  document
+    .getElementById(
+      "print3d"
+    )
+    .src=
+      capturePrint3D();
+
+}
+
+
+window.addEventListener(
+  "beforeprint",
+  preparePrintPreview
+);
 
 
 

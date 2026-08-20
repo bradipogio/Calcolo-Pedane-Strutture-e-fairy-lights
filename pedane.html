@@ -1218,7 +1218,7 @@ function planSignature(plan){
 function deckSvgMarkup(widthPx,heightPx){
   const plan=currentPlan;
 
-  const margin=widthPx>=900?62:35;
+  const margin=widthPx>=900?42:36;
   const dimensionFont=widthPx>=900?25:18;
 
   const scale=Math.min(
@@ -1283,15 +1283,15 @@ function deckSvgMarkup(widthPx,heightPx){
 
 function renderDeckPlan(){
   const svg=document.getElementById("deckPlan");
-  svg.setAttribute("viewBox","0 0 700 430");
-  svg.innerHTML=deckSvgMarkup(700,430);
+  svg.setAttribute("viewBox","0 0 560 560");
+  svg.innerHTML=deckSvgMarkup(560,560);
 }
 
 
 function renderDeckTechnical(){
   const svg=document.getElementById("deckTechnical");
-  svg.setAttribute("viewBox","0 0 1000 540");
-  svg.innerHTML=deckSvgMarkup(1000,540);
+  svg.setAttribute("viewBox","0 0 900 900");
+  svg.innerHTML=deckSvgMarkup(900,900);
 }
 
 
@@ -1315,7 +1315,7 @@ function yellowPlanMarkup(widthPx,heightPx,technical=false){
   const plan=currentPlan;
   const yellow=plan.yellow;
 
-  const margin=technical?78:48;
+  const margin=technical?48:30;
 
   const scale=Math.min(
     (widthPx-margin*2)/plan.length,
@@ -1463,7 +1463,7 @@ function yellowPlanMarkup(widthPx,heightPx,technical=false){
     html+=`
       <text
         x="${widthPx/2}"
-        y="${originY-13}"
+        y="${originY-5}"
         text-anchor="middle"
         font-family="Arial, Helvetica, sans-serif"
         font-size="${lateralFont}"
@@ -1515,23 +1515,25 @@ function yellowPlanMarkup(widthPx,heightPx,technical=false){
     `;
   }
 
-  html+=`
-    <text
-      x="${widthPx/2}"
-      y="${technical?30:24}"
-      text-anchor="middle"
-      font-family="Arial, Helvetica, sans-serif"
-      font-size="${titleFont}"
-      font-weight="800"
-      fill="#111"
-    >
-      ${
-        yellow.orientation==="length"
-          ? "Pannelli orientati lungo la lunghezza"
-          : "Pannelli orientati lungo la larghezza"
-      }
-    </text>
-  `;
+  if(technical){
+    html+=`
+      <text
+        x="${widthPx/2}"
+        y="26"
+        text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="${titleFont}"
+        font-weight="800"
+        fill="#111"
+      >
+        ${
+          yellow.orientation==="length"
+            ? "Pannelli orientati lungo la lunghezza"
+            : "Pannelli orientati lungo la larghezza"
+        }
+      </text>
+    `;
+  }
 
   return html;
 }
@@ -1539,12 +1541,12 @@ function yellowPlanMarkup(widthPx,heightPx,technical=false){
 
 function renderYellowPlan(){
   const preview=document.getElementById("yellowPlanPreview");
-  preview.setAttribute("viewBox","0 0 700 430");
-  preview.innerHTML=yellowPlanMarkup(700,430,false);
+  preview.setAttribute("viewBox","0 0 560 560");
+  preview.innerHTML=yellowPlanMarkup(560,560,false);
 
   const technical=document.getElementById("yellowPlanTechnical");
-  technical.setAttribute("viewBox","0 0 1000 540");
-  technical.innerHTML=yellowPlanMarkup(1000,540,true);
+  technical.setAttribute("viewBox","0 0 900 900");
+  technical.innerHTML=yellowPlanMarkup(900,900,true);
 }
 
 
@@ -1948,19 +1950,121 @@ function renderAllocations(){
 }
 
 
+function capturePrint3D(){
+  const originalSize=
+    renderer.getSize(
+      new THREE.Vector2()
+    );
+  const originalPixelRatio=
+    renderer.getPixelRatio();
+  const printWidth=1400;
+  const printHeight=800;
+  const printCamera=
+    camera.clone();
+  const center=
+    new THREE.Vector3(
+      currentPlan.length/2,
+      .12,
+      currentPlan.width/2
+    );
+  const radius=
+    Math.max(
+      1,
+      Math.sqrt(
+        (currentPlan.length/2)**2+
+        (currentPlan.width/2)**2+
+        .5
+      )
+    );
+  const verticalFov=
+    THREE.MathUtils.degToRad(
+      printCamera.fov
+    );
+  const distance=
+    radius/
+    Math.sin(verticalFov/2)*
+    1.12;
+
+  printCamera.aspect=
+    printWidth/printHeight;
+  printCamera.position
+    .copy(center)
+    .addScaledVector(
+      new THREE.Vector3(
+        1,
+        .78,
+        1.16
+      ).normalize(),
+      distance
+    );
+  printCamera.near=
+    Math.max(
+      .05,
+      distance-radius*1.6
+    );
+  printCamera.far=
+    distance+radius*3;
+  printCamera.lookAt(center);
+  printCamera.updateProjectionMatrix();
+
+  renderer.setPixelRatio(1.5);
+  renderer.setSize(
+    printWidth,
+    printHeight,
+    false
+  );
+  renderer.render(
+    scene,
+    printCamera
+  );
+
+  const image=
+    renderer.domElement
+      .toDataURL(
+        "image/png"
+      );
+
+  renderer.setPixelRatio(
+    originalPixelRatio
+  );
+  renderer.setSize(
+    originalSize.x,
+    originalSize.y,
+    false
+  );
+  renderer.render(
+    scene,
+    camera
+  );
+
+  return image;
+}
+
+
 function printReport(){
   if(!currentPlan?.valid)return;
 
-  renderer.render(scene,camera);
-
-  document.getElementById("print3d").src=
-    renderer.domElement.toDataURL("image/png");
+  preparePrintPreview();
 
   setTimeout(
     ()=>window.print(),
     100
   );
 }
+
+
+function preparePrintPreview(){
+  if(!currentPlan?.valid)return;
+
+  document.getElementById("print3d").src=
+    capturePrint3D();
+}
+
+
+window.addEventListener(
+  "beforeprint",
+  preparePrintPreview
+);
 
 
 function openSettings(){

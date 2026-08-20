@@ -20,6 +20,9 @@
   }
 
   body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
     background:
       radial-gradient(circle at 8% 0%, rgba(242, 189, 39, .12), transparent 24rem),
       var(--canvas);
@@ -107,6 +110,7 @@
     border-radius: 10px;
     font-family: inherit;
     font-weight: 750;
+    touch-action: manipulation;
     transition: transform .12s ease, box-shadow .12s ease, background .12s ease, border-color .12s ease;
   }
 
@@ -156,6 +160,9 @@
   }
 
   .page {
+    width: 100%;
+    min-width: 0;
+    overflow-x: clip;
     max-width: 1580px;
     padding: 22px;
   }
@@ -187,6 +194,7 @@
   }
 
   .workspace-grid {
+    min-width: 0;
     gap: 14px;
   }
 
@@ -201,6 +209,8 @@
   .panel,
   .result-box,
   .drawing {
+    min-width: 0;
+    max-width: 100%;
     border-color: var(--line);
     border-radius: 13px;
     background: var(--surface);
@@ -228,6 +238,8 @@
   input[type="text"],
   input[type="number"],
   select {
+    min-width: 0;
+    max-width: 100%;
     min-height: 44px;
     margin-top: 5px;
     padding: 9px 11px;
@@ -307,6 +319,7 @@
     border-radius: 10px;
     background: #fff;
     transition: border-color .14s ease, box-shadow .14s ease;
+    touch-action: manipulation;
   }
 
   .number-control.has-unit {
@@ -346,6 +359,9 @@
     font-size: 20px;
     font-weight: 500;
     box-shadow: none;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
   }
 
   .stepper-button:first-child {
@@ -386,6 +402,7 @@
   }
 
   .sections-control {
+    min-width: 0;
     grid-template-columns: minmax(0, 1fr) 58px;
     gap: 7px;
   }
@@ -417,6 +434,32 @@
     border-color: var(--line);
     border-radius: 10px;
     background: #f4f6f8;
+  }
+
+  .config-line,
+  .config-line > *,
+  .sections-control > * {
+    min-width: 0;
+  }
+
+  .method-summary {
+    grid-column: 2;
+    min-width: 0;
+    margin: -1px 0 9px;
+    padding: 7px 9px;
+    border: 1px solid #e5e9ed;
+    border-radius: 8px;
+    background: var(--surface-soft);
+    color: #4d5965;
+    font-size: 12px;
+    font-weight: 650;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  .method-summary strong {
+    color: var(--ink);
+    font-weight: 750;
   }
 
   .preview-toolbar {
@@ -495,6 +538,7 @@
 
   .drawing {
     padding: 13px;
+    overflow: hidden;
   }
 
   .drawing-title {
@@ -783,6 +827,50 @@
     font-size: 12px;
     text-align: center;
   }
+
+  .page-pedane #deckPlan,
+  .page-pedane #yellowPlanPreview {
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+  .page-pedane .drawing svg {
+    height: 520px;
+  }
+
+  .page-structures .drawing svg {
+    height: auto;
+  }
+
+  .page-structures .drawing svg line,
+  .page-structures .drawing svg path,
+  .page-structures .drawing svg rect,
+  .page-structures .drawing svg circle {
+    vector-effect: non-scaling-stroke;
+  }
+}
+
+@media print {
+  #print3d {
+    width: 100% !important;
+    height: 340px !important;
+    object-fit: contain !important;
+    object-position: center !important;
+    background: #f4f6f8;
+  }
+
+  .page-pedane .drawing svg {
+    height: 470px !important;
+  }
+
+  .page-structures .drawing svg {
+    height: auto !important;
+  }
+
+  .page-structures #sideView {
+    min-height: 0;
+    max-height: none !important;
+  }
 }
 
 @media screen and (max-width: 1320px) {
@@ -798,6 +886,14 @@
 }
 
 @media screen and (max-width: 760px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    overscroll-behavior-x: none;
+  }
+
   header {
     position: static;
     align-items: stretch;
@@ -849,7 +945,42 @@
 
   .page-structures .workspace-grid,
   .page-pedane .workspace-grid {
+    width: 100%;
+    min-width: 0;
     grid-template-columns: 1fr;
+  }
+
+  .page-structures .config-line {
+    grid-template-columns: 82px minmax(0, 1fr);
+  }
+
+  .page-structures select {
+    width: 100%;
+    min-width: 0;
+    text-overflow: ellipsis;
+  }
+
+  .method-summary {
+    grid-column: 1 / -1;
+    margin-top: 1px;
+  }
+
+  .page-pedane #deckPlan,
+  .page-pedane #yellowPlanPreview {
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+  .page-pedane .drawing svg {
+    height: min(100vw, 430px);
+  }
+
+  .page-structures .drawing svg {
+    height: auto;
+  }
+
+  .page-structures .drawing svg text {
+    font-size: 28px;
   }
 
   .page-structures .viewer-panel,
