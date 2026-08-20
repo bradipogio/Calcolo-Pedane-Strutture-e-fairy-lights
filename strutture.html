@@ -8303,7 +8303,8 @@ function svgArrowTag(
   text,
   targetX,
   targetY,
-  anchor="middle"
+  anchor="middle",
+  curveBias=1
 ){
 
   const box=
@@ -8393,11 +8394,56 @@ function svgArrowTag(
       )
     );
 
+  const curve=
+    Math.min(
+      52,
+      Math.max(
+        6,
+        distance*.18
+      )
+    )*
+    curveBias;
+
+
+  const controlX=
+    (
+      start.x+
+      targetX
+    )/2
+    -
+    (deltaY/distance)*
+    curve;
+
+  const controlY=
+    (
+      start.y+
+      targetY
+    )/2
+    +
+    (deltaX/distance)*
+    curve;
+
+
+  const tangentX=
+    targetX-controlX;
+
+  const tangentY=
+    targetY-controlY;
+
+  const tangentDistance=
+    Math.max(
+      1,
+      Math.hypot(
+        tangentX,
+        tangentY
+      )
+    );
+
   const unitX=
-    deltaX/distance;
+    tangentX/tangentDistance;
 
   const unitY=
-    deltaY/distance;
+    tangentY/tangentDistance;
 
   const arrowLength=12;
 
@@ -8424,13 +8470,28 @@ function svgArrowTag(
 
   return `
 
-    <line
-      x1="${start.x}"
-      y1="${start.y}"
-      x2="${baseX}"
-      y2="${baseY}"
+    <path
+      d="M ${start.x} ${start.y} Q ${controlX} ${controlY} ${baseX} ${baseY}"
+      fill="none"
+      stroke="white"
+      stroke-width="7"
+      stroke-linecap="round"
+    />
+
+    <path
+      d="M ${start.x} ${start.y} Q ${controlX} ${controlY} ${baseX} ${baseY}"
+      fill="none"
       stroke="#5d6670"
       stroke-width="2.5"
+      stroke-linecap="round"
+    />
+
+    <polygon
+      points="${pointA} ${pointB} ${pointC}"
+      fill="white"
+      stroke="white"
+      stroke-width="5"
+      stroke-linejoin="round"
     />
 
     <polygon
@@ -8802,7 +8863,9 @@ function renderTopView(
           y(normal.r+1)
         )/2,
 
-        "start"
+        "start",
+
+        1
 
       );
 
@@ -8844,7 +8907,9 @@ function renderTopView(
           y(firstArch.r+1)
         )/2,
 
-        "start"
+        "start",
+
+        -1
 
       );
 
@@ -9322,7 +9387,11 @@ function renderSideView(
 
             offsetY+153,
 
-            "start"
+            "start",
+
+            index%2===0
+            ? 1
+            : -1
 
           );
 
@@ -9744,7 +9813,9 @@ function renderFrontView(
 
       230,
 
-      "start"
+      "start",
+
+      -1
 
     );
 
