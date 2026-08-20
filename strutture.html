@@ -149,24 +149,6 @@ button:disabled{
   box-shadow:0 1px 5px rgba(0,0,0,.1);
 }
 
-.workspace-header{
-  display:flex;
-  align-items:baseline;
-  gap:12px;
-
-  margin-bottom:11px;
-}
-
-.workspace-header h2{
-  margin:0;
-  font-size:21px;
-}
-
-.workspace-header span{
-  color:#777;
-  font-size:14px;
-}
-
 .workspace-grid{
   display:grid;
 
@@ -785,7 +767,6 @@ select{
 
   header,
   .no-print,
-  .workspace-header,
   .workspace-grid,
   .status,
   #viewer{
@@ -975,17 +956,6 @@ select{
   <div id="printEventTitle"></div>
 
 
-  <div class="workspace-header">
-
-    <h2>
-      Struttura
-    </h2>
-
-    <span id="titleSummary"></span>
-
-  </div>
-
-
   <div class="workspace-grid">
 
 
@@ -1137,7 +1107,7 @@ select{
 
 
 
-      <div class="config-line">
+      <div class="config-line method-config">
 
         <label for="sideMethod">
           Laterale
@@ -1150,7 +1120,7 @@ select{
             id="sideAutoOption"
             value="auto"
           >
-            Automatico
+            Auto
           </option>
 
           <option value="fixed3">
@@ -1179,13 +1149,11 @@ select{
 
         </select>
 
-        <div id="sideMethodSummary" class="method-summary" aria-live="polite"></div>
-
       </div>
 
 
 
-      <div class="config-line">
+      <div class="config-line method-config">
 
         <label for="topMethod">
           Superiore
@@ -1198,7 +1166,7 @@ select{
             id="topAutoOption"
             value="auto"
           >
-            Automatico
+            Auto
           </option>
 
           <option value="fixed3">
@@ -1226,8 +1194,6 @@ select{
           </option>
 
         </select>
-
-        <div id="topMethodSummary" class="method-summary" aria-live="polite"></div>
 
       </div>
 
@@ -6109,12 +6075,6 @@ function calculatePlan(){
 ========================================================= */
 
 function renderAll(){
-
-  updateAutomaticLabels(
-    currentPlan
-  );
-
-
   renderSummary();
 
   renderMatrix();
@@ -6126,224 +6086,6 @@ function renderAll(){
   renderTechnicalViews(
     currentPlan
   );
-
-}
-
-
-
-/* =========================================================
-   MENU AUTOMATICI
-========================================================= */
-
-function shortMethodLabel(
-  method,
-  actualLength=null
-){
-
-  if(!method)
-    return "nessuna";
-
-
-  if(method.type==="fixed")
-    return method.label;
-
-
-  if(actualLength!==null){
-
-    return (
-      `${method.label} @ ${actualLength.toFixed(2)} m`
-    );
-
-  }
-
-
-  return method.label;
-
-}
-
-
-function updateAutomaticLabels(
-  plan
-){
-
-  const sideSelect=
-    document
-      .getElementById(
-        "sideMethod"
-      );
-
-
-  const topSelect=
-    document
-      .getElementById(
-        "topMethod"
-      );
-
-
-  const sideAuto=
-    document
-      .getElementById(
-        "sideAutoOption"
-      );
-
-
-  const topAuto=
-    document
-      .getElementById(
-        "topAutoOption"
-      );
-
-
-  if(sideSelect.value!=="auto"){
-
-    sideAuto.textContent=
-      "Automatico";
-
-  }
-
-  else if(
-    plan.geometry.side.method
-  ){
-
-    sideAuto.textContent=
-
-      `Automatico (${
-        shortMethodLabel(
-          plan.geometry.side.method,
-          plan.geometry.side.method.type==="tel"
-          ?
-          plan.geometry.side.bayLength
-          :
-          null
-        )
-      })`;
-
-  }
-
-  else{
-
-    sideAuto.textContent=
-      "Automatico (nessuna compatibile)";
-
-  }
-
-
-  const stats=
-    layoutStats(
-      plan.layout,
-      plan.archEdges
-    );
-
-
-  if(topSelect.value!=="auto"){
-
-    topAuto.textContent=
-      "Automatico";
-
-  }
-
-  else if(
-    stats.normalVerticalEdges===0
-  ){
-
-    topAuto.textContent=
-      "Automatico (solo archi)";
-
-  }
-
-  else if(
-    plan.geometry.top?.method
-  ){
-
-    topAuto.textContent=
-
-      `Automatico (${
-        shortMethodLabel(
-          plan.geometry.top.method,
-          plan.geometry.top.method.type==="tel"
-          ?
-          plan.moduleWidth
-          :
-          null
-        )
-      })`;
-
-  }
-
-  else{
-
-    topAuto.textContent=
-      "Automatico (nessuna compatibile)";
-
-  }
-
-
-  const sideMethodSummary=
-    document
-      .getElementById(
-        "sideMethodSummary"
-      );
-
-
-  const topMethodSummary=
-    document
-      .getElementById(
-        "topMethodSummary"
-      );
-
-
-  const sideUsed=
-    plan.geometry.side.method
-    ?
-    shortMethodLabel(
-      plan.geometry.side.method,
-      plan.geometry.side.method.type==="tel"
-      ?
-      plan.geometry.side.bayLength
-      :
-      null
-    )
-    :
-    "nessuna barra compatibile";
-
-
-  const topUsed=
-    stats.normalVerticalEdges===0
-    ?
-    "solo archi"
-    :
-    plan.geometry.top?.method
-    ?
-    shortMethodLabel(
-      plan.geometry.top.method,
-      plan.geometry.top.method.type==="tel"
-      ?
-      plan.moduleWidth
-      :
-      null
-    )
-    :
-    "nessuna barra compatibile";
-
-
-  sideMethodSummary.textContent=
-    `Usato: ${
-      sideSelect.value==="auto"
-      ?
-      "automatico"
-      :
-      "manuale"
-    } · ${sideUsed}`;
-
-
-  topMethodSummary.textContent=
-    `Usato: ${
-      topSelect.value==="auto"
-      ?
-      "automatico"
-      :
-      "manuale"
-    } · ${topUsed}`;
 
 }
 
@@ -6407,15 +6149,6 @@ function renderSummary(){
 
   const plan=
     currentPlan;
-
-
-  document
-    .getElementById(
-      "titleSummary"
-    )
-    .textContent=
-
-      `${plan.name} · ${plan.length} × ${plan.totalWidth} m`;
 
 
   document
@@ -9961,78 +9694,8 @@ function capturePrint3D(){
     camera.clone();
 
 
-  const archHeight=
-    currentPlan.archEdges.size
-    ?
-    currentPlan.moduleWidth/2
-    :
-    0;
-
-
-  const totalHeight=
-    HEIGHT+archHeight;
-
-
-  const center=
-    new THREE.Vector3(
-      currentPlan.length/2,
-      totalHeight/2,
-      currentPlan.totalWidth/2
-    );
-
-
-  const radius=
-    Math.max(
-      1,
-      Math.sqrt(
-        (currentPlan.length/2)**2+
-        (currentPlan.totalWidth/2)**2+
-        (totalHeight/2)**2
-      )
-    );
-
-
-  const verticalFov=
-    THREE.MathUtils.degToRad(
-      printCamera.fov
-    );
-
-
-  const distance=
-    radius/
-    Math.sin(verticalFov/2)*
-    1.12;
-
-
   printCamera.aspect=
     printWidth/printHeight;
-
-
-  printCamera.position
-    .copy(center)
-    .addScaledVector(
-      new THREE.Vector3(
-        1,
-        .72,
-        1.15
-      ).normalize(),
-      distance
-    );
-
-
-  printCamera.near=
-    Math.max(
-      .05,
-      distance-radius*1.6
-    );
-
-
-  printCamera.far=
-    distance+radius*3;
-
-
-  printCamera.lookAt(center);
-
   printCamera.updateProjectionMatrix();
 
 

@@ -44,10 +44,6 @@ button:disabled{opacity:.45;cursor:not-allowed}
   margin-bottom:14px;padding:14px;background:#fff;border-radius:10px;
   box-shadow:0 1px 5px rgba(0,0,0,.1)
 }
-.workspace-header{display:flex;align-items:baseline;gap:12px;margin-bottom:11px}
-.workspace-header h2{margin:0;font-size:21px}
-.workspace-header span{color:#777;font-size:14px}
-
 .workspace-grid{
   display:grid;
   grid-template-columns:270px minmax(360px,.95fr) minmax(420px,1.12fr);
@@ -200,7 +196,7 @@ input[type=text],input[type=number],select{
 
 @media print{
   body{background:#fff;font-size:13px}
-  header,.no-print,.workspace-header,.workspace-grid,.status,#viewer{display:none!important}
+  header,.no-print,.workspace-grid,.status,#viewer{display:none!important}
   .page{max-width:none;padding:0}
   .card{padding:5px 0;border:0;box-shadow:none}
 
@@ -268,11 +264,6 @@ input[type=text],input[type=number],select{
 
   <div id="printEventTitle"></div>
   <img id="print3d">
-
-  <div class="workspace-header">
-    <h2>Pedana</h2>
-    <span id="titleSummary"></span>
-  </div>
 
   <div class="workspace-grid">
 
@@ -1090,9 +1081,6 @@ function updateOrientationAutoLabel(){
 
 function renderSummary(){
   const plan=currentPlan;
-
-  document.getElementById("titleSummary").textContent=
-    `${plan.name} · ${plan.length} × ${plan.width} m`;
 
   document.getElementById("printEventTitle").textContent=plan.name;
 
@@ -1988,50 +1976,9 @@ function capturePrint3D(){
   const printHeight=800;
   const printCamera=
     camera.clone();
-  const center=
-    new THREE.Vector3(
-      currentPlan.length/2,
-      .12,
-      currentPlan.width/2
-    );
-  const radius=
-    Math.max(
-      1,
-      Math.sqrt(
-        (currentPlan.length/2)**2+
-        (currentPlan.width/2)**2+
-        .5
-      )
-    );
-  const verticalFov=
-    THREE.MathUtils.degToRad(
-      printCamera.fov
-    );
-  const distance=
-    radius/
-    Math.sin(verticalFov/2)*
-    1.12;
 
   printCamera.aspect=
     printWidth/printHeight;
-  printCamera.position
-    .copy(center)
-    .addScaledVector(
-      new THREE.Vector3(
-        1,
-        .78,
-        1.16
-      ).normalize(),
-      distance
-    );
-  printCamera.near=
-    Math.max(
-      .05,
-      distance-radius*1.6
-    );
-  printCamera.far=
-    distance+radius*3;
-  printCamera.lookAt(center);
   printCamera.updateProjectionMatrix();
 
   renderer.setPixelRatio(1.5);
