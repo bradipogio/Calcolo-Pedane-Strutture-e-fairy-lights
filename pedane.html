@@ -225,6 +225,8 @@ input[type=text],input[type=number],select{
 }
 </style>
 
+<link rel="stylesheet" href="./ui.css">
+
 <script type="importmap">
 {
   "imports":{
@@ -235,11 +237,14 @@ input[type=text],input[type=number],select{
 </script>
 </head>
 
-<body>
+<body class="page-pedane">
 
 <header>
   <div class="header-left">
-    <h1>Planner tecnico</h1>
+    <div class="brand">
+      <span class="brand-mark">PT</span>
+      <h1>Planner tecnico</h1>
+    </div>
     <nav>
       <a href="index.html">Home</a>
       <a href="strutture.html">Strutture</a>
@@ -247,7 +252,7 @@ input[type=text],input[type=number],select{
     </nav>
   </div>
 
-  <button id="openSettings" class="secondary no-print">⚙ Settings</button>
+  <button id="openSettings" class="secondary no-print" aria-controls="settingsModal" aria-expanded="false">⚙ Impostazioni</button>
 </header>
 
 <div class="page">
@@ -267,22 +272,22 @@ input[type=text],input[type=number],select{
     <div class="panel no-print">
       <h3>Nuova pedana</h3>
 
-      <label>Nome evento</label>
-      <input id="projectName" type="text" value="Pedana 1">
+      <label for="projectName">Nome evento</label>
+      <input id="projectName" type="text" value="Pedana 1" autocomplete="off">
 
       <div class="two-cols">
         <div>
-          <label>Lunghezza</label>
-          <input id="length" type="number" min="1" step="1" value="5">
+          <label for="length">Lunghezza</label>
+          <input id="length" type="number" min="1" step="1" value="5" data-stepper data-unit="m" aria-label="Lunghezza pedana">
         </div>
 
         <div>
-          <label>Larghezza</label>
-          <input id="width" type="number" min="1" step="1" value="5">
+          <label for="width">Larghezza</label>
+          <input id="width" type="number" min="1" step="1" value="5" data-stepper data-unit="m" aria-label="Larghezza pedana">
         </div>
       </div>
 
-      <label>Colore quadrotti</label>
+      <label for="singleColor">Colore quadrotti</label>
       <select id="singleColor">
         <option value="black">Nero</option>
         <option value="white">Bianco</option>
@@ -297,7 +302,7 @@ input[type=text],input[type=number],select{
       <div id="checkerOptions" class="subpanel hidden">
         <div class="inline-selects">
           <div>
-            <label>Colore A</label>
+            <label for="checkerA">Colore A</label>
             <select id="checkerA">
               <option value="black">Nero</option>
               <option value="white">Bianco</option>
@@ -306,7 +311,7 @@ input[type=text],input[type=number],select{
           </div>
 
           <div>
-            <label>Colore B</label>
+            <label for="checkerB">Colore B</label>
             <select id="checkerB">
               <option value="white">Bianco</option>
               <option value="black">Nero</option>
@@ -322,7 +327,7 @@ input[type=text],input[type=number],select{
       </label>
 
       <div id="yellowOptions" class="subpanel">
-        <label>Orientamento pannelli</label>
+        <label for="yellowOrientation">Orientamento pannelli</label>
 
         <select id="yellowOrientation">
           <option id="orientationAutoOption" value="auto">Auto</option>
@@ -435,34 +440,48 @@ input[type=text],input[type=number],select{
 
 </div>
 
-<div id="settingsModal" class="no-print">
+<div id="settingsModal" class="no-print" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" aria-hidden="true">
   <div class="modal-box">
 
     <div class="modal-head">
-      <h2>Magazzino</h2>
-      <button id="closeSettings" class="secondary">×</button>
+      <h2 id="settingsTitle">Impostazioni</h2>
+      <button id="closeSettings" class="secondary modal-close" aria-label="Chiudi impostazioni">×</button>
     </div>
 
-    <div id="stockInputs" class="stock-grid"></div>
+    <p class="modal-intro">
+      Gestisci lo scarto dei percorsi fairy e le quantità disponibili in magazzino.
+    </p>
 
-    <div class="actions">
-      <button id="applyStock" class="primary">Salva / nuova giornata</button>
+    <div class="settings-section">
+      <h3>Fairy lights</h3>
+      <p class="settings-help">Lo scarto viene aggiunto a ogni percorso di luci calcolato.</p>
+      <div class="setting-row">
+        <label for="fairySlackCm">Scarto per ogni percorso</label>
+        <div class="unit-input">
+          <input id="fairySlackCm" type="number" min="0" step="1" value="20" data-stepper data-unit="cm" aria-label="Scarto fairy lights">
+        </div>
+      </div>
+      <div class="actions">
+        <button id="saveFairySettings" class="secondary">Salva scarto</button>
+      </div>
+      <div id="fairySaveFeedback" class="save-feedback" aria-live="polite"></div>
+    </div>
+
+    <div class="settings-section">
+      <h3>Magazzino</h3>
+      <p class="settings-help">Inserisci le quantità totali disponibili. Il magazzino è condiviso con il planner Strutture.</p>
+      <div id="stockInputs" class="stock-grid"></div>
+    </div>
+
+    <div class="modal-actions">
       <button id="closeSettings2" class="secondary">Chiudi</button>
-    </div>
-
-    <div class="settings-section">
-      <h3>Residuo</h3>
-      <div id="remainingStock"></div>
-    </div>
-
-    <div class="settings-section">
-      <h3>Carichi confermati</h3>
-      <div id="allocations">Nessuno.</div>
+      <button id="applyStock" class="primary">Salva magazzino</button>
     </div>
 
   </div>
 </div>
 
+<script src="./ui.js" defer></script>
 <script type="module">
 
 import * as THREE from "three";
@@ -561,19 +580,14 @@ function createStockInputs(){
 
     if(item.group!==lastGroup){
       const title=document.createElement("div");
-
-      title.style.gridColumn="1 / -1";
-      title.style.marginTop=lastGroup?"12px":"0";
-      title.style.paddingTop=lastGroup?"10px":"0";
-      title.style.borderTop=lastGroup?"1px solid #ddd":"0";
-      title.style.fontWeight="800";
+      title.className="stock-group-title";
       title.textContent=item.group;
 
       root.appendChild(title);
       lastGroup=item.group;
     }
 
-    const label=document.createElement("div");
+    const label=document.createElement("label");
     label.textContent=item.label;
 
     const input=document.createElement("input");
@@ -581,6 +595,9 @@ function createStockInputs(){
     input.min="0";
     input.step="1";
     input.id="stock_"+item.key;
+    input.dataset.stepper="compact";
+    input.setAttribute("aria-label",item.label);
+    label.htmlFor=input.id;
     input.value=warehouse[item.key]??0;
 
     root.append(label,input);
@@ -622,6 +639,7 @@ function renderRemaining(){
   syncSharedStorage();
 
   const root=document.getElementById("remainingStock");
+  if(!root)return;
 
   if(!warehouseConfigured){
     root.textContent="Magazzino non impostato.";
@@ -1592,6 +1610,10 @@ function animate(){
 function render3D(){
   const plan=currentPlan;
 
+  if(!plan?.valid||!renderer||!camera||!controls){
+    return;
+  }
+
   scene=new THREE.Scene();
   scene.background=new THREE.Color(0xf1f2f3);
 
@@ -1846,7 +1868,7 @@ function commitPlan(){
   syncSharedStorage();
 
   if(!warehouseConfigured){
-    alert("Prima imposta il magazzino nei Settings.");
+    alert("Prima imposta il magazzino nelle Impostazioni.");
     return;
   }
 
@@ -1898,6 +1920,7 @@ function renderAllocations(){
   syncSharedStorage();
 
   const root=document.getElementById("allocations");
+  if(!root)return;
 
   if(!allocations.length){
     root.textContent="Nessuno.";

@@ -897,6 +897,8 @@ select{
 
 </style>
 
+<link rel="stylesheet" href="./ui.css">
+
 
 <script type="importmap">
 
@@ -912,16 +914,17 @@ select{
 </head>
 
 
-<body>
+<body class="page-structures">
 
 
 <header>
 
   <div class="header-left">
 
-    <h1>
-      Planner tecnico
-    </h1>
+    <div class="brand">
+      <span class="brand-mark">PT</span>
+      <h1>Planner tecnico</h1>
+    </div>
 
     <nav>
 
@@ -947,8 +950,10 @@ select{
   <button
     id="openSettings"
     class="secondary no-print"
+    aria-controls="settingsModal"
+    aria-expanded="false"
   >
-    ⚙ Settings
+    ⚙ Impostazioni
   </button>
 
 </header>
@@ -986,7 +991,7 @@ select{
       </h3>
 
 
-      <label>
+      <label for="projectName">
         Nome evento
       </label>
 
@@ -994,6 +999,7 @@ select{
         id="projectName"
         type="text"
         value="Struttura 1"
+        autocomplete="off"
       >
 
 
@@ -1002,7 +1008,7 @@ select{
 
         <div>
 
-          <label>
+          <label for="length">
             Lunghezza
           </label>
 
@@ -1012,6 +1018,9 @@ select{
             value="8"
             min=".1"
             step=".1"
+            data-stepper
+            data-unit="m"
+            aria-label="Lunghezza struttura"
           >
 
         </div>
@@ -1019,7 +1028,7 @@ select{
 
         <div>
 
-          <label>
+          <label for="totalWidth">
             Larghezza totale
           </label>
 
@@ -1029,6 +1038,9 @@ select{
             value="5"
             min=".1"
             step=".1"
+            data-stepper
+            data-unit="m"
+            aria-label="Larghezza totale struttura"
           >
 
         </div>
@@ -1087,7 +1099,7 @@ select{
 
       <div class="config-line">
 
-        <label>
+        <label for="sections">
           Sezioni
         </label>
 
@@ -1099,6 +1111,8 @@ select{
             type="number"
             min="2"
             step="1"
+            data-stepper
+            aria-label="Numero sezioni"
           >
 
           <button
@@ -1116,7 +1130,7 @@ select{
 
       <div class="config-line">
 
-        <label>
+        <label for="sideMethod">
           Longitudinale
         </label>
 
@@ -1162,7 +1176,7 @@ select{
 
       <div class="config-line">
 
-        <label>
+        <label for="topMethod">
           Superiore
         </label>
 
@@ -1401,6 +1415,10 @@ select{
 <div
   id="settingsModal"
   class="no-print"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="settingsTitle"
+  aria-hidden="true"
 >
 
 <div class="modal-box">
@@ -1408,18 +1426,24 @@ select{
 
   <div class="modal-head">
 
-    <h2>
-      Settings
+    <h2 id="settingsTitle">
+      Impostazioni
     </h2>
 
     <button
       id="closeSettings"
-      class="secondary"
+      class="secondary modal-close"
+      aria-label="Chiudi impostazioni"
     >
       ×
     </button>
 
   </div>
+
+
+  <p class="modal-intro">
+    Gestisci lo scarto dei percorsi fairy e le quantità disponibili in magazzino.
+  </p>
 
 
 
@@ -1429,12 +1453,13 @@ select{
       Fairy lights
     </h3>
 
+    <p class="settings-help">
+      Lo scarto viene aggiunto a ogni percorso di luci calcolato.
+    </p>
 
     <div class="setting-row">
 
-      <div>
-        Scarto per ogni percorso fairy
-      </div>
+      <label for="fairySlackCm">Scarto per ogni percorso</label>
 
       <div class="unit-input">
 
@@ -1444,11 +1469,10 @@ select{
           min="0"
           step="1"
           value="20"
+          data-stepper
+          data-unit="cm"
+          aria-label="Scarto fairy lights"
         >
-
-        <span>
-          cm
-        </span>
 
       </div>
 
@@ -1459,12 +1483,14 @@ select{
 
       <button
         id="saveFairySettings"
-        class="primary"
+        class="secondary"
       >
-        Salva impostazioni
+        Salva scarto
       </button>
 
     </div>
+
+    <div id="fairySaveFeedback" class="save-feedback" aria-live="polite"></div>
 
   </div>
 
@@ -1476,58 +1502,32 @@ select{
       Magazzino
     </h3>
 
+    <p class="settings-help">
+      Inserisci le quantità totali disponibili. Il magazzino è condiviso con il planner Pedane.
+    </p>
+
     <div
       id="stockInputs"
       class="stock-grid"
     ></div>
 
-    <div class="actions">
-
-      <button
-        id="applyStock"
-        class="primary"
-      >
-        Salva / nuova giornata
-      </button>
-
-    </div>
-
   </div>
 
 
-
-  <div class="settings-section">
-
-    <h3>
-      Residuo
-    </h3>
-
-    <div id="remainingStock"></div>
-
-  </div>
-
-
-
-  <div class="settings-section">
-
-    <h3>
-      Carichi confermati
-    </h3>
-
-    <div id="allocations">
-      Nessuno.
-    </div>
-
-  </div>
-
-
-  <div class="actions">
+  <div class="modal-actions">
 
     <button
       id="closeSettings2"
       class="secondary"
     >
       Chiudi
+    </button>
+
+    <button
+      id="applyStock"
+      class="primary"
+    >
+      Salva magazzino
     </button>
 
   </div>
@@ -1538,6 +1538,7 @@ select{
 </div>
 
 
+<script src="./ui.js" defer></script>
 
 <script type="module">
 
@@ -3320,37 +3321,8 @@ function createStockInputs(){
           "div"
         );
 
-
-      title.style.gridColumn=
-        "1 / -1";
-
-
-      title.style.marginTop=
-        lastGroup
-        ?
-        "12px"
-        :
-        "0";
-
-
-      title.style.paddingTop=
-        lastGroup
-        ?
-        "10px"
-        :
-        "0";
-
-
-      title.style.borderTop=
-        lastGroup
-        ?
-        "1px solid #ddd"
-        :
-        "0";
-
-
-      title.style.fontWeight=
-        "800";
+      title.className=
+        "stock-group-title";
 
 
       title.textContent=
@@ -3370,7 +3342,7 @@ function createStockInputs(){
 
     const name=
       document.createElement(
-        "div"
+        "label"
       );
 
 
@@ -3400,6 +3372,20 @@ function createStockInputs(){
     input.id=
       "stock_"+
       item.key;
+
+
+    input.dataset.stepper=
+      "compact";
+
+
+    input.setAttribute(
+      "aria-label",
+      item.label
+    );
+
+
+    name.htmlFor=
+      input.id;
 
 
     root.append(
@@ -3500,6 +3486,10 @@ function renderRemaining(){
       .getElementById(
         "remainingStock"
       );
+
+
+  if(!root)
+    return;
 
 
   if(!warehouseConfigured){
@@ -9637,7 +9627,7 @@ function commitPlan(){
   if(!warehouseConfigured){
 
     alert(
-      "Prima imposta il magazzino nei Settings."
+      "Prima imposta il magazzino nelle Impostazioni."
     );
 
     return;
@@ -9783,6 +9773,10 @@ function renderAllocations(){
       .getElementById(
         "allocations"
       );
+
+
+  if(!root)
+    return;
 
 
   if(!allocations.length){

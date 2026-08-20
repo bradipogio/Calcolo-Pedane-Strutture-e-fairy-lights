@@ -128,20 +128,30 @@ h1{
 
 </style>
 
+<link rel="stylesheet" href="./ui.css">
+
 </head>
 
 
-<body>
+<body class="home-page">
 
 
 <main class="home">
 
+  <div class="home-brand">
+    <span class="brand-mark">PT</span>
+    <span>Planner tecnico</span>
+  </div>
+
+  <div class="eyebrow">Produzione eventi</div>
+
   <h1>
-    Planner tecnico
+    Dal progetto alla lista materiale.
   </h1>
 
   <div class="subtitle">
-    Calcolo strutture, pedane e materiale di magazzino.
+    Configura strutture e pedane, controlla i disegni tecnici
+    e prepara il materiale necessario in pochi passaggi.
   </div>
 
 
@@ -155,6 +165,11 @@ h1{
 
       <div>
 
+        <div class="app-top">
+          <span class="app-icon">S</span>
+          <span class="app-kicker">Strutture</span>
+        </div>
+
         <div class="app-title">
           Strutture Fairy
         </div>
@@ -167,7 +182,7 @@ h1{
       </div>
 
       <div class="app-arrow">
-        Apri →
+        Apri planner <span aria-hidden="true">→</span>
       </div>
 
     </a>
@@ -181,6 +196,11 @@ h1{
 
       <div>
 
+        <div class="app-top">
+          <span class="app-icon">P</span>
+          <span class="app-kicker">Pedane</span>
+        </div>
+
         <div class="app-title">
           Pedane
         </div>
@@ -193,7 +213,7 @@ h1{
       </div>
 
       <div class="app-arrow">
-        Apri →
+        Apri planner <span aria-hidden="true">→</span>
       </div>
 
     </a>
@@ -201,8 +221,14 @@ h1{
 
   </div>
 
+  <p class="home-note">
+    Il magazzino è condiviso tra i due planner.
+  </p>
+
 </main>
 
+
+<script src="./ui.js" defer></script>
 
 </body>
 
