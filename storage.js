@@ -70,7 +70,7 @@ export const SHARED_ITEMS = [
   {
     group:"Strutture",
     key:"arch",
-    label:"Arco"
+    label:"Arco 180° · 3 × 6 m"
   },
 
   {

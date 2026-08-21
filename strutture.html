@@ -1214,7 +1214,7 @@ select{
           id="modeArch"
           class="matrix-button"
         >
-          ⌒ Archi
+          ⌒ Archi 180°
         </button>
 
         <button
@@ -1587,11 +1587,28 @@ const MATRIX_CELL = 54;
 
 
 /*
-  ARCO ANCORA PROVVISORIO.
+  ARCO REALE MISURATO.
 
-  Manteniamo il modello attuale:
-  diametro = larghezza modulo.
+  Ingombro completo a 180°:
+  1,5 + 1,5 m in altezza,
+  3 + 3 m in larghezza.
+
+  Ogni arco selezionato nella matrice
+  rappresenta un assemblato completo.
 */
+
+const ARCH_ANGLE = 180;
+
+const ARCH_RISE = 3;
+
+const ARCH_SPAN = 6;
+
+const ARCH_HALF_RISE = 1.5;
+
+const ARCH_HALF_SPAN = 3;
+
+const ARCH_LABEL =
+  `Arco ${ARCH_ANGLE}° · ${ARCH_RISE} × ${ARCH_SPAN} m`;
 
 const TELESCOPICS = {
 
@@ -1674,7 +1691,7 @@ const ITEMS = [
 
   {
     key:"arch",
-    label:"Arco"
+    label:"Arco 180° · 3 × 6 m"
   },
 
   {
@@ -3153,6 +3170,38 @@ function layoutStats(
 }
 
 
+function archGeometryIssue(
+  stats,
+  moduleWidth
+){
+
+  if(
+    !stats.arches
+    ||
+    closeEnough(
+      moduleWidth,
+      ARCH_SPAN
+    )
+  ){
+
+    return null;
+
+  }
+
+
+  return (
+
+    `L’arco ${ARCH_ANGLE}° misura ${ARCH_RISE.toFixed(2)} m in altezza × ${ARCH_SPAN.toFixed(2)} m in larghezza. `
+
+    +
+
+    `Il modulo trasversale attuale è ${moduleWidth.toFixed(2)} m: impostalo a ${ARCH_SPAN.toFixed(2)} m.`
+
+  );
+
+}
+
+
 
 /* =========================================================
    SETTINGS FAIRY
@@ -4508,6 +4557,13 @@ function geometryCandidates(
       );
 
 
+    const archIssue=
+      archGeometryIssue(
+        stats,
+        moduleWidth
+      );
+
+
     const tops=
 
       stats.normalVerticalEdges>0
@@ -4572,6 +4628,12 @@ function geometryCandidates(
 
         missing,
 
+        invalid:
+          Boolean(archIssue),
+
+        invalidReason:
+          archIssue,
+
         score:
           sideScore(side)
           +
@@ -4585,6 +4647,17 @@ function geometryCandidates(
 
 
   results.sort((a,b)=>{
+
+    const aInvalid=
+      a.invalid ? 1 : 0;
+
+
+    const bInvalid=
+      b.invalid ? 1 : 0;
+
+
+    if(aInvalid!==bInvalid)
+      return aInvalid-bInvalid;
 
     if(
       preferredSections!==null
@@ -5158,7 +5231,7 @@ function topCurvePoints(
   const points=[];
 
 
-  const radius=
+  const halfSpan=
     moduleWidth/2;
 
 
@@ -5193,7 +5266,7 @@ function topCurvePoints(
       +
 
       factor*
-      radius*
+      ARCH_RISE*
       wave;
 
 
@@ -5220,7 +5293,7 @@ function topCurvePoints(
 
       z:
         centerZ-
-        radius*
+        halfSpan*
         Math.cos(theta)
 
     });
@@ -5868,10 +5941,6 @@ function calculatePlan(){
     );
 
 
-  const invalid=
-    !candidates.length;
-
-
   const chosen=
 
     candidates[0]
@@ -5881,6 +5950,17 @@ function calculatePlan(){
     fallbackPlanGeometry(
       length,
       totalWidth
+    );
+
+
+  const invalid=
+
+    !candidates.length
+
+    ||
+
+    Boolean(
+      chosen.invalid
     );
 
 
@@ -6185,7 +6265,7 @@ function updateAutomaticLabels(
   topAuto.textContent=
     stats.normalVerticalEdges===0
     ?
-    "Auto · solo archi"
+    "Auto · solo archi 180°"
     :
     `Auto · ${compactAutomaticMethod(
       plan.geometry.top?.method,
@@ -6238,6 +6318,9 @@ function planSignature(
 
     fairySlack:
       fairySlackMeters,
+
+    archModel:
+      `${ARCH_ANGLE}-${ARCH_RISE}x${ARCH_SPAN}`,
 
     requirements:
       plan.requirements
@@ -6497,6 +6580,36 @@ function renderSummary(){
     "—";
 
 
+  const summaryStats=
+    layoutStats(
+      plan.layout,
+      plan.archEdges
+    );
+
+
+  const archDataHtml=
+
+    summaryStats.arches
+
+    ?
+
+    `
+      <div class="chip wide-chip">
+
+        Archi 180°
+
+        <strong>
+          ${summaryStats.arches} × (${ARCH_HALF_RISE} + ${ARCH_HALF_RISE}) m H × (${ARCH_HALF_SPAN} + ${ARCH_HALF_SPAN}) m L
+        </strong>
+
+      </div>
+    `
+
+    :
+
+    "";
+
+
   document
     .getElementById(
       "quickResult"
@@ -6581,6 +6694,9 @@ function renderSummary(){
         </strong>
 
       </div>
+
+
+      ${archDataHtml}
 
 
       <div class="chip wide-chip">
@@ -7515,7 +7631,7 @@ function drawArch3D(
     (z1+z2)/2;
 
 
-  const radius=
+  const halfSpan=
     Math.abs(z2-z1)/2;
 
 
@@ -7548,11 +7664,11 @@ function drawArch3D(
 
         HEIGHT+
         Math.sin(theta)*
-        radius,
+        ARCH_RISE,
 
         center+
         Math.cos(theta)*
-        radius
+        halfSpan
 
       );
 
@@ -8940,7 +9056,7 @@ function renderTopView(
         ? 72
         : 32,
 
-        "ARCO",
+        ARCH_LABEL.toUpperCase(),
 
         x(firstArch.c),
 
@@ -9510,7 +9626,7 @@ function renderFrontView(
 
   svg.setAttribute(
     "viewBox",
-    "0 0 1000 400"
+    "0 0 1000 460"
   );
 
 
@@ -9527,6 +9643,47 @@ function renderFrontView(
 
 
   let selectedCol=null;
+
+
+  /*
+    Se esiste un arco, la vista frontale
+    mostra prima quella sezione.
+  */
+
+  for(
+    let c=bounds.minC;
+    c<=bounds.maxC
+    &&
+    selectedCol===null;
+    c++
+  ){
+
+    for(
+      let r=bounds.minR;
+      r<bounds.maxR;
+      r++
+    ){
+
+      if(
+        verticalExists(
+          target,
+          r,
+          c
+        )
+        &&
+        plan.archEdges.has(
+          vKey(r,c)
+        )
+      ){
+
+        selectedCol=c;
+        break;
+
+      }
+
+    }
+
+  }
 
 
   for(
@@ -9618,13 +9775,81 @@ function renderFrontView(
     );
 
 
-  const left=240;
+  let hasArchOnSection=false;
 
-  const right=900;
 
-  const top=140;
+  for(
+    let r=minR;
+    r<maxR;
+    r++
+  ){
 
-  const ground=320;
+    if(
+      plan.archEdges.has(
+        vKey(
+          r,
+          selectedCol
+        )
+      )
+    ){
+
+      hasArchOnSection=true;
+      break;
+
+    }
+
+  }
+
+
+  const physicalWidth=
+    span*
+    plan.moduleWidth;
+
+
+  const physicalHeight=
+
+    HEIGHT
+
+    +
+
+    (
+      hasArchOnSection
+      ?
+      ARCH_RISE
+      :
+      0
+    );
+
+
+  const drawingScale=
+
+    Math.min(
+
+      720/
+      physicalWidth,
+
+      300/
+      physicalHeight
+
+    );
+
+
+  const drawingWidth=
+    physicalWidth*
+    drawingScale;
+
+
+  const left=
+    (1000-drawingWidth)/2;
+
+
+  const ground=382;
+
+
+  const top=
+    ground-
+    HEIGHT*
+    drawingScale;
 
 
   const x=
@@ -9632,14 +9857,9 @@ function renderFrontView(
 
       left+
 
-      (
-        (row-minR)/
-        span
-      )
-
-      *
-
-      (right-left);
+      (row-minR)*
+      plan.moduleWidth*
+      drawingScale;
 
 
   let html="";
@@ -9718,20 +9938,9 @@ function renderFrontView(
 
 
     if(isArch){
-
-      const middle=
-        (x1+x2)/2;
-
-
       const rise=
-
-        Math.min(
-
-          Math.abs(x2-x1)/2,
-
-          65
-
-        );
+        ARCH_RISE*
+        drawingScale;
 
 
       html+=`
@@ -9739,9 +9948,10 @@ function renderFrontView(
         <path
           d="
             M ${x1} ${top}
-            Q
-            ${middle}
-            ${top-rise*2}
+            A
+            ${rise}
+            ${rise}
+            0 0 1
             ${x2}
             ${top}
           "
@@ -9801,9 +10011,15 @@ function renderFrontView(
           firstArch.x2
         )/2,
 
-        50,
+        Math.max(
+          22,
+          top-
+          ARCH_RISE*
+          drawingScale-
+          14
+        ),
 
-        "ARCO"
+        ARCH_LABEL.toUpperCase()
 
       );
 
@@ -9855,13 +10071,20 @@ function renderFrontView(
 
       20,
 
-      235,
+      (
+        top+
+        ground
+      )/2+
+      6,
 
       "PALO · 2,5 m",
 
       left,
 
-      230,
+      (
+        top+
+        ground
+      )/2,
 
       "start",
 
@@ -9893,7 +10116,7 @@ function renderFrontView(
 
       500,
 
-      392,
+      448,
 
       `Modulo ${plan.moduleWidth.toFixed(2)} m · Larghezza totale ${plan.totalWidth.toFixed(2)} m`,
 
