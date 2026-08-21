@@ -301,17 +301,55 @@
     background: var(--surface-soft);
   }
 
+  .arch-project-options {
+    margin-top: 9px;
+    padding: 12px;
+    border: 1px solid #d3b04b;
+    border-radius: 11px;
+    background: #fffaf0;
+  }
+
+  .arch-project-options[hidden] {
+    display: none;
+  }
+
+  .arch-project-options label {
+    margin-top: 0;
+  }
+
+  .width-breakdown {
+    display: grid;
+    gap: 6px;
+    margin-top: 10px;
+    padding-top: 9px;
+    border-top: 1px solid #e5d7ac;
+    font-size: 12px;
+  }
+
+  .width-breakdown > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .width-breakdown > div strong {
+    text-align: right;
+  }
+
+  .width-breakdown-total {
+    margin-top: 2px;
+    padding-top: 7px;
+    border-top: 1px solid #e5d7ac;
+    font-size: 14px;
+    font-weight: 800;
+  }
+
   .fairy-project-options[hidden] {
     display: none;
   }
 
   .fairy-project-options label {
     margin-top: 0;
-  }
-
-  .fairy-orientation-help {
-    margin-top: 8px;
-    font-size: 12px;
   }
 
   .two-cols,

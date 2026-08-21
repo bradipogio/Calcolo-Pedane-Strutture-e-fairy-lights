@@ -73,7 +73,7 @@ export const SHARED_ITEMS = [
   {
     group:"Strutture",
     key:"arch",
-    label:"Modulo arco 90° · curva 3 m · prof. 1,5 m"
+    label:"Modulo arco 90° · curva 3 m"
   },
 
   {

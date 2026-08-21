@@ -228,16 +228,58 @@ select{
   background:#fafafa;
 }
 
+.arch-project-options{
+  margin-top:8px;
+  padding:10px;
+
+  border:1px solid #d7d7d7;
+  border-radius:7px;
+
+  background:#fafafa;
+}
+
+.arch-project-options[hidden]{
+  display:none;
+}
+
+.arch-project-options label{
+  margin-top:0;
+}
+
+.width-breakdown{
+  display:grid;
+  gap:4px;
+
+  margin-top:8px;
+  padding-top:8px;
+
+  border-top:1px solid #ddd;
+
+  font-size:12px;
+}
+
+.width-breakdown-row{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.width-breakdown-total{
+  margin-top:2px;
+  padding-top:5px;
+
+  border-top:1px solid #ddd;
+
+  font-size:14px;
+  font-weight:800;
+}
+
 .fairy-project-options[hidden]{
   display:none;
 }
 
 .fairy-project-options label{
   margin-top:0;
-}
-
-.fairy-orientation-help{
-  margin-top:7px;
 }
 
 .actions{
@@ -1036,7 +1078,7 @@ select{
         <div>
 
           <label for="totalWidth">
-            Larghezza totale
+            Larghezza
           </label>
 
           <input
@@ -1048,11 +1090,46 @@ select{
             data-stepper
             data-stepper-step="1"
             data-unit="m"
-            aria-label="Larghezza totale struttura"
+            aria-label="Larghezza traverse normali"
           >
 
         </div>
 
+
+      </div>
+
+
+      <div
+        id="archProjectOptions"
+        class="arch-project-options"
+        hidden
+      >
+
+        <label for="archBaySize">
+          Modulo arco
+        </label>
+
+        <select
+          id="archBaySize"
+          aria-label="Misura modulo arco"
+        >
+
+          <option value="3" selected>
+            3 m
+          </option>
+
+          <option value="1.5">
+            1,5 m
+          </option>
+
+        </select>
+
+
+        <div
+          id="widthBreakdown"
+          class="width-breakdown"
+          aria-live="polite"
+        ></div>
 
       </div>
 
@@ -1075,7 +1152,7 @@ select{
         class="fairy-project-options"
       >
 
-        <div class="two-cols">
+        <div>
 
           <div>
 
@@ -1089,11 +1166,11 @@ select{
             >
 
               <option value="A">
-                A · trasversale
+                Trasversale
               </option>
 
               <option value="B">
-                B · longitudinale
+                Longitudinale
               </option>
 
             </select>
@@ -1101,10 +1178,15 @@ select{
           </div>
 
 
+        </div>
+
+
+        <div class="two-cols">
+
           <div>
 
             <label for="fairySpacingCm">
-              Distanza
+              Dima
             </label>
 
             <input
@@ -1116,15 +1198,32 @@ select{
               data-stepper
               data-stepper-step="5"
               data-unit="cm"
-              aria-label="Distanza fairy lights"
+              aria-label="Dima fairy lights"
             >
 
           </div>
 
-        </div>
 
-        <div class="small fairy-orientation-help">
-          A attraversa la larghezza · B segue la lunghezza
+          <div>
+
+            <label for="fairyMarginCm">
+              Margine
+            </label>
+
+            <input
+              id="fairyMarginCm"
+              type="number"
+              value="20"
+              min="0"
+              step="5"
+              data-stepper
+              data-stepper-step="5"
+              data-unit="cm"
+              aria-label="Margine fairy lights"
+            >
+
+          </div>
+
         </div>
 
       </div>
@@ -1525,57 +1624,8 @@ select{
 
 
   <p class="modal-intro">
-    Gestisci lo scarto dei percorsi fairy e le quantità disponibili in magazzino.
+    Gestisci le quantità disponibili in magazzino.
   </p>
-
-
-
-  <div class="settings-section">
-
-    <h3>
-      Fairy lights
-    </h3>
-
-    <p class="settings-help">
-      Lo scarto viene aggiunto a ogni percorso di luci calcolato.
-    </p>
-
-    <div class="setting-row">
-
-      <label for="fairySlackCm">Scarto per ogni percorso</label>
-
-      <div class="unit-input">
-
-        <input
-          id="fairySlackCm"
-          type="number"
-          min="0"
-          step="1"
-          value="20"
-          data-stepper
-          data-unit="cm"
-          aria-label="Scarto fairy lights"
-        >
-
-      </div>
-
-    </div>
-
-
-    <div class="actions">
-
-      <button
-        id="saveFairySettings"
-        class="secondary"
-      >
-        Salva scarto
-      </button>
-
-    </div>
-
-    <div id="fairySaveFeedback" class="save-feedback" aria-live="polite"></div>
-
-  </div>
 
 
 
@@ -1674,25 +1724,26 @@ const MATRIX_CELL = 54;
   ARCO REALE MISURATO.
 
   Ogni modulo da 90° contiene due
-  curve parallele da 3 m, collegate
-  da sbarre da 1,5 m.
+  curve parallele da 3 m. I due profili
+  paralleli possono essere collegati da
+  sbarre da 1,5 m oppure da 3 m.
 
   Due moduli formano l'arco a 180°:
   - sviluppo curvo per lato: 6 m;
-  - profondita: 1,5 m;
+  - campata longitudinale: 1,5 o 3 m;
   - luce: 12 / PI, circa 3,82 m;
   - rialzo: 6 / PI, circa 1,91 m.
 
-  Ogni arco selezionato nella matrice
-  occupa quindi una campata da 1,5 m
-  e usa due profili curvi paralleli.
+  Ogni arco selezionato nella matrice usa
+  due profili curvi paralleli. La campata
+  predefinita e 3 m.
 */
 
 const ARCH_MODULE_ANGLE = 90;
 
 const ARCH_MODULE_CURVE_LENGTH = 3;
 
-const ARCH_DEPTH = 1.5;
+const DEFAULT_ARCH_BAY_LENGTH = 3;
 
 const ARCH_MODULES_PER_ASSEMBLY = 2;
 
@@ -1715,7 +1766,7 @@ const ARCH_SPAN=
   ARCH_RADIUS*2;
 
 const ARCH_LABEL =
-  `Arco ${ARCH_ANGLE}° · luce ${ARCH_SPAN.toFixed(2)} m · prof. ${ARCH_DEPTH.toFixed(2)} m`;
+  `Arco ${ARCH_ANGLE}° · luce ${ARCH_SPAN.toFixed(2)} m`;
 
 const TELESCOPICS = {
 
@@ -1798,7 +1849,7 @@ const ITEMS = [
 
   {
     key:"arch",
-    label:"Modulo arco 90° · curva 3 m · prof. 1,5 m"
+    label:"Modulo arco 90° · curva 3 m"
   },
 
   {
@@ -1947,6 +1998,9 @@ let matrixBayLength = 4;
 
 let matrixModuleWidth = 5;
 
+let archBayLength =
+  DEFAULT_ARCH_BAY_LENGTH;
+
 let archEdges = new Set();
 
 let lowerOffEdges = new Set();
@@ -1972,7 +2026,7 @@ let cameraUserAdjusted = false;
 
 let lastCommittedSignature = null;
 
-let fairySlackMeters = 0.20;
+let fairyMarginMeters = 0.20;
 
 let fairySpacingMeters =
   DEFAULT_FAIRY_SPACING;
@@ -2225,6 +2279,130 @@ function transverseModuleCount(
     bounds.maxR-
     bounds.minR
   );
+
+}
+
+
+function transverseGeometry(
+  target=layout,
+  arches=archEdges,
+  normalWidth=matrixModuleWidth
+){
+
+  const bounds=
+    activeBounds(target);
+
+
+  if(!bounds){
+
+    return {
+      bounds:null,
+      positions:new Map(),
+      rowWidths:new Map(),
+      normalRows:0,
+      archRows:0,
+      normalWidthTotal:0,
+      archWidthTotal:0,
+      totalWidth:0,
+      position:()=>0,
+      width:()=>normalWidth
+    };
+
+  }
+
+
+  const archRowsSet=
+    new Set(
+
+      [...arches]
+        .map(key=>parseKey(key).r)
+
+    );
+
+
+  const positions=
+    new Map();
+
+  const rowWidths=
+    new Map();
+
+  let cursor=0;
+  let normalRows=0;
+  let archRows=0;
+
+
+  positions.set(
+    bounds.minR,
+    0
+  );
+
+
+  for(
+    let r=bounds.minR;
+    r<bounds.maxR;
+    r++
+  ){
+
+    const isArch=
+      archRowsSet.has(r);
+
+    const width=
+      isArch
+      ? ARCH_SPAN
+      : normalWidth;
+
+
+    rowWidths.set(r,width);
+
+
+    if(isArch)
+      archRows++;
+    else
+      normalRows++;
+
+
+    cursor+=width;
+
+    positions.set(
+      r+1,
+      cursor
+    );
+
+  }
+
+
+  return {
+
+    bounds,
+    positions,
+    rowWidths,
+    normalRows,
+    archRows,
+
+    normalWidthTotal:
+      normalRows*
+      normalWidth,
+
+    archWidthTotal:
+      archRows*
+      ARCH_SPAN,
+
+    totalWidth:
+      cursor,
+
+    position:
+      row=>
+        positions.get(row)
+        ??
+        0,
+
+    width:
+      row=>
+        rowWidths.get(row)
+        ??
+        normalWidth
+
+  };
 
 }
 
@@ -3032,12 +3210,6 @@ function matrixChanged(){
     structuralSections();
 
 
-  const modules=
-    transverseModuleCount(
-      layout
-    );
-
-
   preferredSections=
     sections;
 
@@ -3095,13 +3267,7 @@ function matrixChanged(){
       .value=
 
         Number(
-
-          (
-            preservedModule
-            *
-            modules
-          )
-          .toFixed(3)
+          preservedModule.toFixed(3)
 
         );
 
@@ -3139,36 +3305,28 @@ function forceArchGeometry(){
     structuralSections();
 
 
-  const modules=
-    transverseModuleCount();
-
-
   const totalLength=
 
-    ARCH_DEPTH*
+    archBayLength*
 
     (
       sections-1
     );
 
 
-  const totalWidth=
-
-    ARCH_SPAN*
-
-    modules;
-
-
   matrixBayLength=
-    ARCH_DEPTH;
-
-
-  matrixModuleWidth=
-    ARCH_SPAN;
+    archBayLength;
 
 
   preferredSections=
     sections;
+
+
+  document
+    .getElementById(
+      "sideMethod"
+    )
+    .value="auto";
 
 
   document
@@ -3181,16 +3339,6 @@ function forceArchGeometry(){
         totalLength.toFixed(3)
       );
 
-
-  document
-    .getElementById(
-      "totalWidth"
-    )
-    .value=
-
-      Number(
-        totalWidth.toFixed(3)
-      );
 
 }
 
@@ -3546,7 +3694,6 @@ function layoutStats(
 
 function archGeometryIssue(
   stats,
-  moduleWidth,
   bayLength
 ){
 
@@ -3568,38 +3715,18 @@ function archGeometryIssue(
 
   if(
     !closeEnough(
-      moduleWidth,
-      ARCH_SPAN
-    )
-  ){
-
-    return (
-
-      `L’arco ${ARCH_ANGLE}° ha una luce di ${ARCH_SPAN.toFixed(2)} m, ricavata dai 6,00 m di curva. `
-
-      +
-
-      `Il modulo trasversale attuale è ${moduleWidth.toFixed(2)} m: impostalo a ${ARCH_SPAN.toFixed(2)} m.`
-
-    );
-
-  }
-
-
-  if(
-    !closeEnough(
       bayLength,
-      ARCH_DEPTH
+      archBayLength
     )
   ){
 
     return (
 
-      `I due profili dell’arco devono essere distanti ${ARCH_DEPTH.toFixed(2)} m. `
+      `Il modulo arco scelto è ${archBayLength.toFixed(2)} m. `
 
       +
 
-      `La campata attuale è ${bayLength.toFixed(2)} m: impostala a ${ARCH_DEPTH.toFixed(2)} m.`
+      `La campata attuale è ${bayLength.toFixed(2)} m: impostala a ${archBayLength.toFixed(2)} m.`
 
     );
 
@@ -3613,108 +3740,128 @@ function archGeometryIssue(
 
 
 /* =========================================================
-   SETTINGS FAIRY
+   OPZIONI PROGETTO
 ========================================================= */
 
-function loadFairySettings(){
+function loadLegacyFairyMargin(){
 
-  const saved=
-    localStorage.getItem(
-      "fairyPlannerSettings"
-    );
+  try{
+
+    const saved=
+      JSON.parse(
+        localStorage.getItem(
+          "fairyPlannerSettings"
+        )
+        ||
+        "null"
+      );
+
+    const cm=
+      Number(saved?.fairySlackCm);
 
 
-  if(saved){
+    if(
+      Number.isFinite(cm)
+      &&
+      cm>=0
+    ){
 
-    try{
+      fairyMarginMeters=
+        cm/100;
 
-      const data=
-        JSON.parse(saved);
-
-      const cm=
-        Number(
-          data.fairySlackCm
-        );
-
-      if(
-        Number.isFinite(cm)
-        &&
-        cm>=0
-      ){
-
-        fairySlackMeters=
-          cm/100;
-
-      }
+      document
+        .getElementById(
+          "fairyMarginCm"
+        )
+        .value=cm;
 
     }
-    catch(error){}
 
   }
-
-
-  document
-    .getElementById(
-      "fairySlackCm"
-    )
-    .value=
-
-      Number(
-        (
-          fairySlackMeters
-          *
-          100
-        )
-        .toFixed(1)
-      );
+  catch(error){}
 
 }
 
 
-function saveFairySettings(){
+function syncArchProjectOptions(){
 
-  const cm=
+  const panel=
+    document.getElementById(
+      "archProjectOptions"
+    );
 
+  const hasArches=
+    archEdges.size>0;
+
+
+  panel.hidden=
+    !hasArches;
+
+
+  if(!hasArches)
+    return;
+
+
+  document
+    .getElementById(
+      "archBaySize"
+    )
+    .value=
+      String(archBayLength);
+
+
+  const normalWidth=
     Math.max(
-
-      0,
-
+      .1,
       Number(
-
         document
           .getElementById(
-            "fairySlackCm"
+            "totalWidth"
           )
           .value
-
       )
-
       ||
+      matrixModuleWidth
+    );
 
-      0
-
+  const widths=
+    transverseGeometry(
+      layout,
+      archEdges,
+      normalWidth
     );
 
 
-  fairySlackMeters=
-    cm/100;
+  document
+    .getElementById(
+      "widthBreakdown"
+    )
+    .innerHTML=`
 
+      <div>
+        <span>Traverse normali</span>
+        <strong>
+          ${
+            widths.normalRows
+            ? `${widths.normalRows} × ${normalWidth.toFixed(2)} m = ${widths.normalWidthTotal.toFixed(2)} m`
+            : "—"
+          }
+        </strong>
+      </div>
 
-  localStorage.setItem(
+      <div>
+        <span>+ Archi</span>
+        <strong>
+          ${widths.archRows} × ${ARCH_SPAN.toFixed(2)} m = ${widths.archWidthTotal.toFixed(2)} m
+        </strong>
+      </div>
 
-    "fairyPlannerSettings",
+      <div class="width-breakdown-total">
+        <span>Larghezza complessiva</span>
+        <strong>${widths.totalWidth.toFixed(2)} m</strong>
+      </div>
 
-    JSON.stringify({
-
-      fairySlackCm:
-        cm
-
-    })
-
-  );
-
-
-  scheduleCalculate();
+    `;
 
 }
 
@@ -4986,7 +5133,7 @@ function deficitsFor(
 
 function geometryCandidates(
   length,
-  totalWidth
+  normalWidth
 ){
 
   const sides=
@@ -5013,8 +5160,15 @@ function geometryCandidates(
 
 
     const moduleWidth=
-      totalWidth/
-      moduleCount;
+      normalWidth;
+
+
+    const widths=
+      transverseGeometry(
+        state.layout,
+        state.arches,
+        moduleWidth
+      );
 
 
     const stats=
@@ -5027,7 +5181,6 @@ function geometryCandidates(
     const archIssue=
       archGeometryIssue(
         stats,
-        moduleWidth,
         side.bayLength
       );
 
@@ -5088,7 +5241,10 @@ function geometryCandidates(
 
         moduleWidth,
 
-        totalWidth,
+        totalWidth:
+          widths.totalWidth,
+
+        widths,
 
         requirements,
 
@@ -5193,7 +5349,7 @@ function geometryCandidates(
 
 function fallbackPlanGeometry(
   length,
-  totalWidth
+  normalWidth
 ){
 
   const validSides=
@@ -5221,8 +5377,15 @@ function fallbackPlanGeometry(
 
 
     const moduleWidth=
-      totalWidth/
-      moduleCount;
+      normalWidth;
+
+
+    const widths=
+      transverseGeometry(
+        state.layout,
+        state.arches,
+        moduleWidth
+      );
 
 
     const stats=
@@ -5267,7 +5430,10 @@ function fallbackPlanGeometry(
 
         moduleWidth,
 
-        totalWidth,
+        totalWidth:
+          widths.totalWidth,
+
+        widths,
 
         requirements:
           buildRequirements(
@@ -5378,8 +5544,15 @@ function fallbackPlanGeometry(
 
 
   const moduleWidth=
-    totalWidth/
-    moduleCount;
+    normalWidth;
+
+
+  const widths=
+    transverseGeometry(
+      state.layout,
+      state.arches,
+      moduleWidth
+    );
 
 
   const stats=
@@ -5442,7 +5615,10 @@ function fallbackPlanGeometry(
 
     moduleWidth,
 
-    totalWidth,
+    totalWidth:
+      widths.totalWidth,
+
+    widths,
 
     requirements:
       buildRequirements(
@@ -5691,7 +5867,7 @@ function archFactor(
 
 function topCurvePoints(
   r,
-  moduleWidth,
+  widths,
   factor,
   visual=false
 ){
@@ -5700,12 +5876,12 @@ function topCurvePoints(
 
 
   const halfSpan=
-    moduleWidth/2;
+    widths.width(r)/2;
 
 
   const centerZ=
-    (r+.5)*
-    moduleWidth;
+    widths.position(r)+
+    halfSpan;
 
 
   const segments=18;
@@ -5827,7 +6003,7 @@ function buildFairyCrossSection(
 
   t,
 
-  moduleWidth,
+  widths,
 
   arches,
 
@@ -5912,8 +6088,7 @@ function buildFairyCrossSection(
 
 
     const startZ=
-      start*
-      moduleWidth;
+      widths.position(start);
 
 
     if(
@@ -5957,7 +6132,7 @@ function buildFairyCrossSection(
       const countCurve=
         topCurvePoints(
           cell,
-          moduleWidth,
+          widths,
           factor,
           false
         );
@@ -5966,7 +6141,7 @@ function buildFairyCrossSection(
       const visualCurve=
         topCurvePoints(
           cell,
-          moduleWidth,
+          widths,
           factor,
           true
         );
@@ -6002,8 +6177,9 @@ function buildFairyCrossSection(
       ){
 
         const z=
-          (cell+1)*
-          moduleWidth;
+          widths.position(
+            cell+1
+          );
 
 
         addBoth({
@@ -6040,8 +6216,9 @@ function buildFairyCrossSection(
         y:.04,
 
         z:
-          endBoundary*
-          moduleWidth
+          widths.position(
+            endBoundary
+          )
 
       });
 
@@ -6059,7 +6236,7 @@ function buildFairyCrossSection(
           points
         )
         +
-        fairySlackMeters
+        fairyMarginMeters
 
     });
 
@@ -6077,7 +6254,7 @@ function calculateFairyAcrossWidth(
 
   bayLength,
 
-  moduleWidth,
+  widths,
 
   arches,
 
@@ -6088,6 +6265,9 @@ function calculateFairyAcrossWidth(
 ){
 
   const samples=[];
+
+  const bounds=
+    activeBounds(target);
 
 
   let total=0;
@@ -6180,7 +6360,7 @@ function calculateFairyAcrossWidth(
 
           t,
 
-          moduleWidth,
+          widths,
 
           arches,
 
@@ -6198,13 +6378,16 @@ function calculateFairyAcrossWidth(
         pathsCount++;
 
 
+        const x=
+          (run.start-bounds.minC)*
+          bayLength
+          +
+          localX;
+
+
         samples.push({
 
-          x:
-            run.start*
-            bayLength
-            +
-            localX,
+          x,
 
           bay,
 
@@ -6215,6 +6398,20 @@ function calculateFairyAcrossWidth(
 
           visualPoints:
             path.visualPoints,
+
+          worldPoints:
+            path.points.map(point=>({
+              x,
+              y:point.y,
+              z:point.z
+            })),
+
+          worldVisualPoints:
+            path.visualPoints.map(point=>({
+              x,
+              y:point.y,
+              z:point.z
+            })),
 
           length:
             path.length
@@ -6306,7 +6503,7 @@ function calculateFairyAlongLength(
 
   bayLength,
 
-  moduleWidth,
+  widths,
 
   arches,
 
@@ -6315,6 +6512,9 @@ function calculateFairyAlongLength(
 ){
 
   const samples=[];
+
+  const bounds=
+    activeBounds(target);
 
   let total=0;
 
@@ -6342,7 +6542,7 @@ function calculateFairyAlongLength(
       Math.max(
         1,
         Math.ceil(
-          moduleWidth/
+          widths.width(r)/
           spacing
         )
       );
@@ -6360,8 +6560,9 @@ function calculateFairyAlongLength(
 
 
       const z=
-        (r+u)*
-        moduleWidth;
+        widths.position(r)+
+        u*
+        widths.width(r);
 
 
       const archWave=
@@ -6378,7 +6579,7 @@ function calculateFairyAlongLength(
 
 
         const startX=
-          run.start*
+          (run.start-bounds.minC)*
           bayLength;
 
 
@@ -6460,7 +6661,7 @@ function calculateFairyAlongLength(
 
 
             const x=
-              (bay+t)*
+              (bay-bounds.minC+t)*
               bayLength;
 
 
@@ -6503,7 +6704,7 @@ function calculateFairyAlongLength(
 
 
         const endX=
-          run.end*
+          (run.end-bounds.minC)*
           bayLength;
 
 
@@ -6524,7 +6725,7 @@ function calculateFairyAlongLength(
         const length=
           polylineLength(points)
           +
-          fairySlackMeters;
+          fairyMarginMeters;
 
 
         total+=length;
@@ -6581,12 +6782,20 @@ function calculateFairy(
     );
 
 
+  const widths=
+    transverseGeometry(
+      target,
+      arches,
+      moduleWidth
+    );
+
+
   if(orientation==="B"){
 
     return calculateFairyAlongLength(
       target,
       bayLength,
-      moduleWidth,
+      widths,
       arches,
       spacing
     );
@@ -6597,7 +6806,7 @@ function calculateFairy(
   return calculateFairyAcrossWidth(
     target,
     bayLength,
-    moduleWidth,
+    widths,
     arches,
     fairyOff,
     spacing
@@ -6753,7 +6962,7 @@ function calculatePlan(){
     );
 
 
-  const totalWidth=
+  const normalWidth=
 
     Number(
 
@@ -6769,7 +6978,7 @@ function calculatePlan(){
   if(
     !(length>0)
     ||
-    !(totalWidth>0)
+    !(normalWidth>0)
   ){
 
     return;
@@ -6783,7 +6992,7 @@ function calculatePlan(){
   const candidates=
     geometryCandidates(
       length,
-      totalWidth
+      normalWidth
     );
 
 
@@ -6795,7 +7004,7 @@ function calculatePlan(){
 
     fallbackPlanGeometry(
       length,
-      totalWidth
+      normalWidth
     );
 
 
@@ -6879,6 +7088,35 @@ function calculatePlan(){
     :
 
     DEFAULT_FAIRY_SPACING;
+
+
+  const marginCm=
+
+    Number(
+
+      document
+        .getElementById(
+          "fairyMarginCm"
+        )
+        .value
+
+    );
+
+
+  fairyMarginMeters=
+
+    Number.isFinite(marginCm)
+
+    ?
+
+    Math.max(
+      0,
+      marginCm/100
+    )
+
+    :
+
+    .20;
 
 
   const requirements={
@@ -6968,7 +7206,10 @@ function calculatePlan(){
 
     length,
 
-    totalWidth,
+    normalWidth,
+
+    totalWidth:
+      chosen.totalWidth,
 
     moduleWidth:
       chosen.moduleWidth,
@@ -7022,6 +7263,9 @@ function calculatePlan(){
     fairySpacing:
       fairySpacingMeters,
 
+    fairyMargin:
+      fairyMarginMeters,
+
     fairy,
 
     baskets,
@@ -7053,6 +7297,8 @@ function calculatePlan(){
 ========================================================= */
 
 function renderAll(){
+  syncArchProjectOptions();
+
   updateAutomaticLabels(
     currentPlan
   );
@@ -7209,8 +7455,8 @@ function planSignature(
     fairy:
       [...plan.fairyOffEdges].sort(),
 
-    fairySlack:
-      fairySlackMeters,
+    fairyMargin:
+      fairyMarginMeters,
 
     fairyOrientation:
       plan.fairyOrientation,
@@ -7219,7 +7465,7 @@ function planSignature(
       plan.fairySpacing,
 
     archModel:
-      `${ARCH_MODULES_PER_ASSEMBLY}x${ARCH_MODULE_ANGLE}-curve${ARCH_MODULE_CURVE_LENGTH}-depth${ARCH_DEPTH}`,
+      `${ARCH_MODULES_PER_ASSEMBLY}x${ARCH_MODULE_ANGLE}-curve${ARCH_MODULE_CURVE_LENGTH}-bay${archBayLength}`,
 
     requirements:
       plan.requirements
@@ -7498,7 +7744,7 @@ function renderSummary(){
         Archi
 
         <strong>
-          ${summaryStats.archAssemblies} campate · ${summaryStats.archAssemblies*ARCH_MODULES_PER_ASSEMBLY} moduli da 90°
+          ${summaryStats.archAssemblies} campate da ${archBayLength.toFixed(2)} m · ${summaryStats.archAssemblies*ARCH_MODULES_PER_ASSEMBLY} moduli da 90°
         </strong>
 
       </div>
@@ -7528,7 +7774,7 @@ function renderSummary(){
 
       <div class="chip total-chip">
 
-        Larghezza totale
+        Larghezza complessiva
 
         <strong>
           ${plan.totalWidth.toFixed(2)} m
@@ -7550,7 +7796,7 @@ function renderSummary(){
 
       <div class="chip">
 
-        Modulo
+        Traversa normale
 
         <strong>
           ${plan.moduleWidth.toFixed(2)} m
@@ -8692,6 +8938,14 @@ function render3D(
     plan.moduleWidth;
 
 
+  const widths=
+    transverseGeometry(
+      target,
+      plan.archEdges,
+      moduleWidth
+    );
+
+
   const xForCol=
     col=>
 
@@ -8701,9 +8955,7 @@ function render3D(
 
   const zForRow=
     row=>
-
-      (row-bounds.minR)*
-      moduleWidth;
+      widths.position(row);
 
 
   const totalLength=
@@ -8719,15 +8971,7 @@ function render3D(
 
 
   const totalWidth=
-
-    (
-      bounds.maxR-
-      bounds.minR
-    )
-
-    *
-
-    moduleWidth;
+    widths.totalWidth;
 
 
   let positiveExtent=
@@ -9087,17 +9331,11 @@ function render3D(
 
               new THREE.Vector3(
 
-                point.x
-                -
-                bounds.minC*
-                bay,
+                point.x,
 
                 point.y,
 
                 point.z
-                -
-                bounds.minR*
-                moduleWidth
 
               )
 
@@ -9122,13 +9360,7 @@ function render3D(
         }
 
         const x=
-
-          sample.x
-
-          -
-
-          bounds.minC*
-          bay;
+          sample.x;
 
 
         const sourcePoints=
@@ -9152,11 +9384,6 @@ function render3D(
                 point.y,
 
                 point.z
-
-                -
-
-                bounds.minR*
-                moduleWidth
 
               )
 
@@ -9981,7 +10208,7 @@ function renderTopView(
 
       330,
 
-      `Modulo ${plan.moduleWidth.toFixed(2)} m · Larghezza totale ${plan.totalWidth.toFixed(2)} m`,
+      `Traverse normali ${plan.moduleWidth.toFixed(2)} m · Larghezza complessiva ${plan.totalWidth.toFixed(2)} m`,
 
       "middle",
 
@@ -10659,10 +10886,11 @@ function renderFrontView(
     );
 
 
-  const span=
-    Math.max(
-      1,
-      maxR-minR
+  const widths=
+    transverseGeometry(
+      target,
+      plan.archEdges,
+      plan.moduleWidth
     );
 
 
@@ -10693,8 +10921,8 @@ function renderFrontView(
 
 
   const physicalWidth=
-    span*
-    plan.moduleWidth;
+    widths.position(maxR)-
+    widths.position(minR);
 
 
   const physicalHeight=
@@ -10748,8 +10976,11 @@ function renderFrontView(
 
       left+
 
-      (row-minR)*
-      plan.moduleWidth*
+      (
+        widths.position(row)
+        -
+        widths.position(minR)
+      )*
       drawingScale;
 
 
@@ -11003,7 +11234,7 @@ function renderFrontView(
 
       448,
 
-      `Modulo ${plan.moduleWidth.toFixed(2)} m · Larghezza totale ${plan.totalWidth.toFixed(2)} m`,
+      `Traverse normali ${plan.moduleWidth.toFixed(2)} m · Larghezza complessiva ${plan.totalWidth.toFixed(2)} m`,
 
       "middle",
 
@@ -11563,16 +11794,6 @@ document
 
 document
   .getElementById(
-    "saveFairySettings"
-  )
-  .addEventListener(
-    "click",
-    saveFairySettings
-  );
-
-
-document
-  .getElementById(
     "print"
   )
   .addEventListener(
@@ -11601,7 +11822,18 @@ document
 
       if(archEdges.size){
 
-        forceArchGeometry();
+        sectionsManual=false;
+        preferredSections=null;
+
+        document
+          .getElementById(
+            "sectionsAuto"
+          )
+          .classList
+          .add(
+            "active-button"
+          );
+
         scheduleCalculate();
         return;
 
@@ -11625,13 +11857,25 @@ document
   )
   .addEventListener(
     "input",
-    ()=>{
+    scheduleCalculate
+  );
 
-      if(archEdges.size){
 
+document
+  .getElementById(
+    "archBaySize"
+  )
+  .addEventListener(
+    "change",
+    event=>{
+
+      archBayLength=
+        Number(event.target.value)
+        ||
+        DEFAULT_ARCH_BAY_LENGTH;
+
+      if(archEdges.size)
         forceArchGeometry();
-
-      }
 
       scheduleCalculate();
 
@@ -11662,6 +11906,16 @@ document
 document
   .getElementById(
     "fairySpacingCm"
+  )
+  .addEventListener(
+    "input",
+    scheduleCalculate
+  );
+
+
+document
+  .getElementById(
+    "fairyMarginCm"
   )
   .addEventListener(
     "input",
@@ -11989,7 +12243,7 @@ createStockInputs();
 
 renderAllocations();
 
-loadFairySettings();
+loadLegacyFairyMargin();
 
 syncFairyProjectOptions();
 

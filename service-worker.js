@@ -1,4 +1,4 @@
-const CACHE_NAME = "planner-tecnico-v12";
+const CACHE_NAME = "planner-tecnico-v13";
 
 const APP_SHELL = [
   "./",
