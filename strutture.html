@@ -2986,6 +2986,42 @@ function toggleNode(
 }
 
 
+function forceArchBayLength(){
+
+  const sections=
+    structuralSections();
+
+
+  const totalLength=
+
+    ARCH_DEPTH*
+
+    (
+      sections-1
+    );
+
+
+  matrixBayLength=
+    ARCH_DEPTH;
+
+
+  preferredSections=
+    sections;
+
+
+  document
+    .getElementById(
+      "length"
+    )
+    .value=
+
+      Number(
+        totalLength.toFixed(3)
+      );
+
+}
+
+
 function toggleArch(
   r,
   c
@@ -3076,6 +3112,9 @@ function toggleArch(
     archEdges.add(
       vKey(r,freeColumn)
     );
+
+
+    forceArchBayLength();
 
   }
 
