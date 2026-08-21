@@ -1214,7 +1214,7 @@ select{
           id="modeArch"
           class="matrix-button"
         >
-          ⌒ Archi 180° · 2×90°
+          ⌒ Archi
         </button>
 
         <button
@@ -2210,6 +2210,56 @@ function verticalExists(
 }
 
 
+function expandArchRows(
+  target,
+  arches
+){
+
+  const archRows=
+    new Set(
+      [...arches]
+        .map(key=>
+          parseKey(key).r
+        )
+    );
+
+
+  const expanded=
+    new Set();
+
+
+  archRows.forEach(r=>{
+
+    for(
+      let c=0;
+      c<target.cols;
+      c++
+    ){
+
+      if(
+        verticalExists(
+          target,
+          r,
+          c
+        )
+      ){
+
+        expanded.add(
+          vKey(r,c)
+        );
+
+      }
+
+    }
+
+  });
+
+
+  return expanded;
+
+}
+
+
 
 /* =========================================================
    MATRIX COMPACT
@@ -2463,7 +2513,10 @@ function normalizeMatrix(){
   };
 
   archEdges=
-    newArches;
+    expandArchRows(
+      layout,
+      newArches
+    );
 
   lowerOffEdges=
     remapHorizontalSet(
@@ -2486,20 +2539,9 @@ function normalizeMatrix(){
 function cleanOverrides(){
 
   archEdges=
-    new Set(
-      [...archEdges]
-      .filter(key=>{
-
-        const {r,c}=
-          parseKey(key);
-
-        return verticalExists(
-          layout,
-          r,
-          c
-        );
-
-      })
+    expandArchRows(
+      layout,
+      archEdges
     );
 
 
@@ -2813,16 +2855,25 @@ function remapStateToSections(
   }
 
 
-  return {
+  const remappedLayout={
 
-    layout:{
       rows:
         sourceLayout.rows,
       cols:newCols,
       nodes
-    },
+    };
 
-    arches,
+
+  return {
+
+    layout:
+      remappedLayout,
+
+    arches:
+      expandArchRows(
+        remappedLayout,
+        arches
+      ),
 
     lower:
       remapHorizontal(
@@ -2968,6 +3019,13 @@ function matrixChanged(){
   }
 
 
+  if(archEdges.size){
+
+    forceArchGeometry();
+
+  }
+
+
   scheduleCalculate();
 
 }
@@ -2986,10 +3044,14 @@ function toggleNode(
 }
 
 
-function forceArchBayLength(){
+function forceArchGeometry(){
 
   const sections=
     structuralSections();
+
+
+  const modules=
+    transverseModuleCount();
 
 
   const totalLength=
@@ -3001,8 +3063,19 @@ function forceArchBayLength(){
     );
 
 
+  const totalWidth=
+
+    ARCH_SPAN*
+
+    modules;
+
+
   matrixBayLength=
     ARCH_DEPTH;
+
+
+  matrixModuleWidth=
+    ARCH_SPAN;
 
 
   preferredSections=
@@ -3017,6 +3090,17 @@ function forceArchBayLength(){
 
       Number(
         totalLength.toFixed(3)
+      );
+
+
+  document
+    .getElementById(
+      "totalWidth"
+    )
+    .value=
+
+      Number(
+        totalWidth.toFixed(3)
       );
 
 }
@@ -3041,80 +3125,56 @@ function toggleArch(
 
   customLayout=true;
 
-  const key=
-    vKey(r,c);
+  const rowEdges=[];
 
 
-  const neighbours=
-    [c-1,c+1]
-      .filter(column=>
+  for(
+    let column=0;
+    column<layout.cols;
+    column++
+  ){
 
-        verticalExists(
-          layout,
-          r,
-          column
-        )
+    if(
+      verticalExists(
+        layout,
+        r,
+        column
+      )
+    ){
 
-      );
-
-
-  if(archEdges.has(key)){
-
-    const pairedColumn=
-      neighbours.find(column=>
-
-        archEdges.has(
-          vKey(r,column)
-        )
-
-      );
-
-
-    archEdges.delete(key);
-
-
-    if(pairedColumn!==undefined){
-
-      archEdges.delete(
-        vKey(r,pairedColumn)
+      rowEdges.push(
+        vKey(r,column)
       );
 
     }
 
   }
 
-  else{
 
-    const freeColumn=
+  const rowIsArch=
 
-      neighbours
-        .filter(column=>
+    rowEdges.length>0
 
-          !archEdges.has(
-            vKey(r,column)
-          )
+    &&
 
-        )
-        .sort((a,b)=>
-
-          Math.abs(a-(c+1))-
-          Math.abs(b-(c+1))
-
-        )[0];
-
-
-    if(freeColumn===undefined)
-      return;
-
-
-    archEdges.add(key);
-
-    archEdges.add(
-      vKey(r,freeColumn)
+    rowEdges.every(key=>
+      archEdges.has(key)
     );
 
 
-    forceArchBayLength();
+  rowEdges.forEach(key=>{
+
+    if(rowIsArch)
+      archEdges.delete(key);
+    else
+      archEdges.add(key);
+
+  });
+
+
+  if(!rowIsArch){
+
+    forceArchGeometry();
 
   }
 
@@ -3227,10 +3287,6 @@ function archAssemblyData(
         &&
         arches.has(second)
         &&
-        !pairedKeys.has(first)
-        &&
-        !pairedKeys.has(second)
-        &&
         verticalExists(
           target,
           r,
@@ -3252,8 +3308,6 @@ function archAssemblyData(
         pairedKeys.add(first);
 
         pairedKeys.add(second);
-
-        c++;
 
       }
 
@@ -11101,6 +11155,14 @@ document
     "input",
     ()=>{
 
+      if(archEdges.size){
+
+        forceArchGeometry();
+        scheduleCalculate();
+        return;
+
+      }
+
       if(!sectionsManual){
 
         preferredSections=null;
@@ -11119,7 +11181,17 @@ document
   )
   .addEventListener(
     "input",
-    scheduleCalculate
+    ()=>{
+
+      if(archEdges.size){
+
+        forceArchGeometry();
+
+      }
+
+      scheduleCalculate();
+
+    }
   );
 
 
@@ -11234,6 +11306,13 @@ document
 
 
       normalizeMatrix();
+
+
+      if(archEdges.size){
+
+        forceArchGeometry();
+
+      }
 
       scheduleCalculate();
 
