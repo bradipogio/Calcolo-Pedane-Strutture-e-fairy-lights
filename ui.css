@@ -293,6 +293,27 @@
     gap: 9px;
   }
 
+  .fairy-project-options {
+    margin-top: 7px;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 11px;
+    background: var(--surface-soft);
+  }
+
+  .fairy-project-options[hidden] {
+    display: none;
+  }
+
+  .fairy-project-options label {
+    margin-top: 0;
+  }
+
+  .fairy-orientation-help {
+    margin-top: 8px;
+    font-size: 12px;
+  }
+
   .two-cols,
   .inline-selects {
     gap: 10px;
@@ -752,8 +773,9 @@
     align-self: center;
     margin: 0;
     color: #394653;
-    font-size: 13px;
-    font-weight: 650;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.35;
   }
 
   .stock-group-title {
@@ -762,7 +784,7 @@
     padding: 14px 0 2px;
     border-top: 1px solid var(--line);
     color: var(--ink);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 850;
     letter-spacing: .09em;
     text-transform: uppercase;

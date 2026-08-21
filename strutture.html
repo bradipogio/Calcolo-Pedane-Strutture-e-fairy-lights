@@ -218,6 +218,28 @@ select{
   margin:0;
 }
 
+.fairy-project-options{
+  margin-top:7px;
+  padding:10px;
+
+  border:1px solid #d7d7d7;
+  border-radius:7px;
+
+  background:#fafafa;
+}
+
+.fairy-project-options[hidden]{
+  display:none;
+}
+
+.fairy-project-options label{
+  margin-top:0;
+}
+
+.fairy-orientation-help{
+  margin-top:7px;
+}
+
 .actions{
   display:flex;
   flex-wrap:wrap;
@@ -684,6 +706,11 @@ select{
   margin:0;
 }
 
+.stock-grid > label{
+  font-size:15px;
+  line-height:1.3;
+}
+
 .stock-table{
   width:100%;
   border-collapse:collapse;
@@ -1043,14 +1070,67 @@ select{
       </label>
 
 
-      <div class="actions">
+      <div
+        id="fairyProjectOptions"
+        class="fairy-project-options"
+      >
 
-        <button
-          id="commit"
-          class="primary"
-        >
-          Conferma carico
-        </button>
+        <div class="two-cols">
+
+          <div>
+
+            <label for="fairyOrientation">
+              Orientamento
+            </label>
+
+            <select
+              id="fairyOrientation"
+              aria-label="Orientamento fairy lights"
+            >
+
+              <option value="A">
+                A · trasversale
+              </option>
+
+              <option value="B">
+                B · longitudinale
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div>
+
+            <label for="fairySpacingCm">
+              Distanza
+            </label>
+
+            <input
+              id="fairySpacingCm"
+              type="number"
+              value="30"
+              min="5"
+              step="5"
+              data-stepper
+              data-stepper-step="5"
+              data-unit="cm"
+              aria-label="Distanza fairy lights"
+            >
+
+          </div>
+
+        </div>
+
+        <div class="small fairy-orientation-help">
+          A attraversa la larghezza · B segue la lunghezza
+        </div>
+
+      </div>
+
+
+      <div class="actions">
 
 
         <button
@@ -1506,7 +1586,7 @@ select{
     </h3>
 
     <p class="settings-help">
-      Inserisci le quantità totali disponibili. Il magazzino è condiviso con il planner Pedane.
+      Inserisci le quantità totali disponibili. Restano memorizzate anche chiudendo la pagina e il magazzino è condiviso con il planner Pedane.
     </p>
 
     <div
@@ -1562,7 +1642,11 @@ import {
 
   getSharedState,
 
-  startSharedDay,
+  getSharedWarehouseDraft,
+
+  saveSharedWarehouseDraft,
+
+  saveSharedWarehouse,
 
   commitSharedLoad
 
@@ -1579,7 +1663,7 @@ const HEIGHT = 2.5;
 
 const LOWER_HEIGHT = 1.20;
 
-const FAIRY_SPACING = 0.30;
+const DEFAULT_FAIRY_SPACING = 0.30;
 
 const FAIRY_VISUAL_SAG = 0.17;
 
@@ -1889,6 +1973,11 @@ let cameraUserAdjusted = false;
 let lastCommittedSignature = null;
 
 let fairySlackMeters = 0.20;
+
+let fairySpacingMeters =
+  DEFAULT_FAIRY_SPACING;
+
+let fairyOrientation = "A";
 
 
 
@@ -3630,6 +3719,29 @@ function saveFairySettings(){
 }
 
 
+function syncFairyProjectOptions(){
+
+  const enabled=
+    document
+      .getElementById(
+        "fairyEnabled"
+      )
+      .checked;
+
+
+  document
+    .getElementById(
+      "fairyProjectOptions"
+    )
+    .hidden=
+      !enabled;
+
+
+  scheduleCalculate();
+
+}
+
+
 
 /* =========================================================
    MAGAZZINO CONDIVISO
@@ -3665,6 +3777,10 @@ function syncSharedStorage(){
 function createStockInputs(){
 
   syncSharedStorage();
+
+
+  const draft=
+    getSharedWarehouseDraft();
 
 
   const root=
@@ -3736,6 +3852,10 @@ function createStockInputs(){
 
 
     input.value=
+      draft?.[item.key]
+
+      ??
+
       warehouse[item.key]
       ??
       0;
@@ -3760,6 +3880,12 @@ function createStockInputs(){
       input.id;
 
 
+    input.addEventListener(
+      "input",
+      preserveStockDraft
+    );
+
+
     root.append(
       name,
       input
@@ -3773,7 +3899,7 @@ function createStockInputs(){
 }
 
 
-function applyWarehouse(){
+function stockFromInputs(){
 
   const stock={};
 
@@ -3795,7 +3921,7 @@ function applyWarehouse(){
                 "stock_"+
                 item.key
               )
-              .value
+              ?.value
 
           )
 
@@ -3810,8 +3936,28 @@ function applyWarehouse(){
   });
 
 
+  return stock;
+
+}
+
+
+function preserveStockDraft(){
+
+  saveSharedWarehouseDraft(
+    stockFromInputs()
+  );
+
+}
+
+
+function applyWarehouse(){
+
+  const stock=
+    stockFromInputs();
+
+
   const state=
-    startSharedDay(
+    saveSharedWarehouse(
       stock
     );
 
@@ -5645,6 +5791,18 @@ function polylineLength(
 
       Math.hypot(
 
+        (
+          points[i].x
+          ??
+          0
+        )
+        -
+        (
+          points[i-1].x
+          ??
+          0
+        ),
+
         points[i].y-
         points[i-1].y,
 
@@ -5913,7 +6071,7 @@ function buildFairyCrossSection(
 }
 
 
-function calculateFairy(
+function calculateFairyAcrossWidth(
 
   target,
 
@@ -5923,7 +6081,9 @@ function calculateFairy(
 
   arches,
 
-  fairyOff
+  fairyOff,
+
+  spacing
 
 ){
 
@@ -5951,11 +6111,11 @@ function calculateFairy(
     const stripCount=
       Math.ceil(
         runLength/
-        FAIRY_SPACING
+        spacing
       );
 
 
-    const spacing=
+    const actualSpacing=
       runLength/
       stripCount;
 
@@ -5968,7 +6128,7 @@ function calculateFairy(
 
       const localX=
         (i+.5)*
-        spacing;
+        actualSpacing;
 
 
       let offset=
@@ -6078,6 +6238,370 @@ function calculateFairy(
     total
 
   };
+
+}
+
+
+function fairyRunsForRow(
+  target,
+  row
+){
+
+  const runs=[];
+
+  let c=0;
+
+
+  while(c<target.cols-1){
+
+    if(
+      !cellExists(
+        target,
+        row,
+        c
+      )
+    ){
+
+      c++;
+      continue;
+
+    }
+
+
+    const start=c;
+
+
+    while(
+      c<target.cols-1
+      &&
+      cellExists(
+        target,
+        row,
+        c
+      )
+    ){
+
+      c++;
+
+    }
+
+
+    runs.push({
+      start,
+      end:c,
+      bays:c-start
+    });
+
+  }
+
+
+  return runs;
+
+}
+
+
+function calculateFairyAlongLength(
+
+  target,
+
+  bayLength,
+
+  moduleWidth,
+
+  arches,
+
+  spacing
+
+){
+
+  const samples=[];
+
+  let total=0;
+
+  let pathsCount=0;
+
+
+  for(
+    let r=0;
+    r<target.rows-1;
+    r++
+  ){
+
+    const runs=
+      fairyRunsForRow(
+        target,
+        r
+      );
+
+
+    if(!runs.length)
+      continue;
+
+
+    const stripCount=
+      Math.max(
+        1,
+        Math.ceil(
+          moduleWidth/
+          spacing
+        )
+      );
+
+
+    for(
+      let i=0;
+      i<stripCount;
+      i++
+    ){
+
+      const u=
+        (i+.5)/
+        stripCount;
+
+
+      const z=
+        (r+u)*
+        moduleWidth;
+
+
+      const archWave=
+        Math.sin(
+          Math.PI*u
+        );
+
+
+      for(const run of runs){
+
+        const points=[];
+
+        const visualPoints=[];
+
+
+        const startX=
+          run.start*
+          bayLength;
+
+
+        const startFactor=
+          arches.has(
+            vKey(
+              r,
+              run.start
+            )
+          )
+          ?
+          1
+          :
+          0;
+
+
+        const startY=
+          HEIGHT+
+          startFactor*
+          ARCH_RISE*
+          archWave;
+
+
+        points.push(
+          {
+            x:startX,
+            y:.04,
+            z
+          },
+          {
+            x:startX,
+            y:startY,
+            z
+          }
+        );
+
+
+        visualPoints.push(
+          {
+            x:startX,
+            y:.04,
+            z
+          },
+          {
+            x:startX,
+            y:startY,
+            z
+          }
+        );
+
+
+        for(
+          let bay=run.start;
+          bay<run.end;
+          bay++
+        ){
+
+          const segments=10;
+
+
+          for(
+            let segment=1;
+            segment<=segments;
+            segment++
+          ){
+
+            const t=
+              segment/
+              segments;
+
+
+            const factor=
+              archFactor(
+                r,
+                bay,
+                t,
+                arches
+              );
+
+
+            const x=
+              (bay+t)*
+              bayLength;
+
+
+            const y=
+              HEIGHT+
+              factor*
+              ARCH_RISE*
+              archWave;
+
+
+            points.push({
+              x,
+              y,
+              z
+            });
+
+
+            visualPoints.push({
+
+              x,
+
+              y:
+                y
+                -
+                (1-factor)
+                *
+                FAIRY_VISUAL_SAG
+                *
+                Math.sin(
+                  Math.PI*t
+                ),
+
+              z
+
+            });
+
+          }
+
+        }
+
+
+        const endX=
+          run.end*
+          bayLength;
+
+
+        points.push({
+          x:endX,
+          y:.04,
+          z
+        });
+
+
+        visualPoints.push({
+          x:endX,
+          y:.04,
+          z
+        });
+
+
+        const length=
+          polylineLength(points)
+          +
+          fairySlackMeters;
+
+
+        total+=length;
+
+        pathsCount++;
+
+
+        samples.push({
+          worldPoints:points,
+          worldVisualPoints:visualPoints,
+          length
+        });
+
+      }
+
+    }
+
+  }
+
+
+  return {
+    samples,
+    paths:pathsCount,
+    total
+  };
+
+}
+
+
+function calculateFairy(
+
+  target,
+
+  bayLength,
+
+  moduleWidth,
+
+  arches,
+
+  fairyOff,
+
+  orientation="A",
+
+  spacing=DEFAULT_FAIRY_SPACING
+
+){
+
+  spacing=
+    Math.max(
+      .05,
+      Number(spacing)
+      ||
+      DEFAULT_FAIRY_SPACING
+    );
+
+
+  if(orientation==="B"){
+
+    return calculateFairyAlongLength(
+      target,
+      bayLength,
+      moduleWidth,
+      arches,
+      spacing
+    );
+
+  }
+
+
+  return calculateFairyAcrossWidth(
+    target,
+    bayLength,
+    moduleWidth,
+    arches,
+    fairyOff,
+    spacing
+  );
 
 }
 
@@ -6319,6 +6843,44 @@ function calculatePlan(){
       .checked;
 
 
+  fairyOrientation=
+
+    document
+      .getElementById(
+        "fairyOrientation"
+      )
+      .value;
+
+
+  const spacingCm=
+
+    Number(
+
+      document
+        .getElementById(
+          "fairySpacingCm"
+        )
+        .value
+
+    );
+
+
+  fairySpacingMeters=
+
+    spacingCm>0
+
+    ?
+
+    Math.max(
+      .05,
+      spacingCm/100
+    )
+
+    :
+
+    DEFAULT_FAIRY_SPACING;
+
+
   const requirements={
     ...chosen.requirements
   };
@@ -6344,7 +6906,11 @@ function calculatePlan(){
 
         archEdges,
 
-        fairyOffEdges
+        fairyOffEdges,
+
+        fairyOrientation,
+
+        fairySpacingMeters
 
       );
 
@@ -6450,6 +7016,11 @@ function calculatePlan(){
 
 
     fairyEnabled,
+
+    fairyOrientation,
+
+    fairySpacing:
+      fairySpacingMeters,
 
     fairy,
 
@@ -6640,6 +7211,12 @@ function planSignature(
 
     fairySlack:
       fairySlackMeters,
+
+    fairyOrientation:
+      plan.fairyOrientation,
+
+    fairySpacing:
+      plan.fairySpacing,
 
     archModel:
       `${ARCH_MODULES_PER_ASSEMBLY}x${ARCH_MODULE_ANGLE}-curve${ARCH_MODULE_CURVE_LENGTH}-depth${ARCH_DEPTH}`,
@@ -6918,10 +7495,10 @@ function renderSummary(){
     `
       <div class="chip wide-chip">
 
-        Archi 180° · due profili paralleli
+        Archi
 
         <strong>
-          ${summaryStats.archAssemblies} completi · ${summaryStats.archAssemblies*ARCH_MODULES_PER_ASSEMBLY} moduli da 90° · curva ${ARCH_CURVE_LENGTH.toFixed(2)} m/lato · luce ${ARCH_SPAN.toFixed(2)} m · rialzo ${ARCH_RISE.toFixed(2)} m · prof. ${ARCH_DEPTH.toFixed(2)} m
+          ${summaryStats.archAssemblies} campate · ${summaryStats.archAssemblies*ARCH_MODULES_PER_ASSEMBLY} moduli da 90°
         </strong>
 
       </div>
@@ -7033,48 +7610,6 @@ function renderSummary(){
 
     `;
 
-
-  const signature=
-    planSignature(
-      plan
-    );
-
-
-  /*
-    Vale anche dopo un refresh:
-    se il medesimo carico è già nello
-    storage condiviso il bottone resta
-    disabilitato.
-  */
-
-  const alreadyCommitted=
-
-    allocations.some(
-      allocation=>
-
-        allocation.source===
-        "strutture"
-
-        &&
-
-        allocation.signature===
-        signature
-
-    );
-
-
-  document
-    .getElementById(
-      "commit"
-    )
-    .disabled=
-
-      alreadyCommitted
-
-      ||
-
-      signature===
-      lastCommittedSignature;
 
 }
 
@@ -8535,6 +9070,57 @@ function render3D(
     plan.fairy.samples
       .forEach(sample=>{
 
+        if(sample.worldPoints){
+
+          const sourcePoints=
+
+            sample.worldVisualPoints
+
+            ||
+
+            sample.worldPoints;
+
+
+          const points=
+
+            sourcePoints.map(point=>
+
+              new THREE.Vector3(
+
+                point.x
+                -
+                bounds.minC*
+                bay,
+
+                point.y,
+
+                point.z
+                -
+                bounds.minR*
+                moduleWidth
+
+              )
+
+            );
+
+
+          const geometry=
+            new THREE.BufferGeometry()
+              .setFromPoints(points);
+
+
+          scene.add(
+            new THREE.Line(
+              geometry,
+              fairyMaterial
+            )
+          );
+
+
+          return;
+
+        }
+
         const x=
 
           sample.x
@@ -8748,8 +9334,10 @@ function svgTag(
       width="${width}"
       height="${height}"
       rx="6"
-      fill="white"
+      fill="#fff"
+      fill-opacity=".76"
       stroke="${strokeColor}"
+      stroke-opacity=".82"
       stroke-width="1.5"
     />
 
@@ -8852,9 +9440,7 @@ function svgArrowTag(
   targetX,
   targetY,
   anchor="middle",
-  curveBias=1,
-  color="#5d6670",
-  startSide="auto"
+  color="#5d6670"
 ){
 
   const box=
@@ -8879,97 +9465,38 @@ function svgArrowTag(
     box.rectX+
     box.width;
 
-  const top=box.rectY;
+  const top=
+    box.rectY;
 
   const bottom=
     box.rectY+
     box.height;
 
 
-  const candidates=[
-    {
-      x:left,
-      y:clamp(targetY,top,bottom)
-    },
-    {
-      x:right,
-      y:clamp(targetY,top,bottom)
-    },
-    {
-      x:clamp(targetX,left,right),
-      y:top
-    },
-    {
-      x:clamp(targetX,left,right),
-      y:bottom
-    }
-  ];
+  const targetIsLeft=
+
+    targetX
+    <
+    (left+right)/2;
 
 
-  let start;
+  const start={
 
+    x:
+      targetIsLeft
+      ?
+      left
+      :
+      right,
 
-  if(startSide==="right"){
+    y:
+      clamp(
+        targetY,
+        top+7,
+        bottom-7
+      )
 
-    start={
-      x:right,
-      y:(top+bottom)/2
-    };
-
-  }
-
-  else if(startSide==="left"){
-
-    start={
-      x:left,
-      y:(top+bottom)/2
-    };
-
-  }
-
-  else if(startSide==="top"){
-
-    start={
-      x:(left+right)/2,
-      y:top
-    };
-
-  }
-
-  else if(startSide==="bottom"){
-
-    start={
-      x:(left+right)/2,
-      y:bottom
-    };
-
-  }
-
-  else{
-
-    start=
-      candidates.reduce(
-        (best,point)=>{
-
-          const distance=
-            (point.x-targetX)**2+
-            (point.y-targetY)**2;
-
-
-          return (
-            distance<best.distance
-            ? {point,distance}
-            : best
-          );
-
-        },
-        {
-          point:candidates[0],
-          distance:Infinity
-        }
-      ).point;
-
-  }
+  };
 
 
   const deltaX=
@@ -8987,56 +9514,11 @@ function svgArrowTag(
       )
     );
 
-  const curve=
-    Math.min(
-      52,
-      Math.max(
-        6,
-        distance*.18
-      )
-    )*
-    curveBias;
-
-
-  const controlX=
-    (
-      start.x+
-      targetX
-    )/2
-    -
-    (deltaY/distance)*
-    curve;
-
-  const controlY=
-    (
-      start.y+
-      targetY
-    )/2
-    +
-    (deltaX/distance)*
-    curve;
-
-
-  const tangentX=
-    targetX-controlX;
-
-  const tangentY=
-    targetY-controlY;
-
-  const tangentDistance=
-    Math.max(
-      1,
-      Math.hypot(
-        tangentX,
-        tangentY
-      )
-    );
-
   const unitX=
-    tangentX/tangentDistance;
+    deltaX/distance;
 
   const unitY=
-    tangentY/tangentDistance;
+    deltaY/distance;
 
   const arrowLength=10;
 
@@ -9064,7 +9546,7 @@ function svgArrowTag(
   return `
 
     <path
-      d="M ${start.x} ${start.y} Q ${controlX} ${controlY} ${baseX} ${baseY}"
+      d="M ${start.x} ${start.y} L ${baseX} ${baseY}"
       fill="none"
       stroke="${color}"
       stroke-width="2.5"
@@ -9085,13 +9567,6 @@ function svgArrowTag(
         color
       )
     }
-
-    <circle
-      cx="${start.x}"
-      cy="${start.y}"
-      r="4"
-      fill="${color}"
-    />
 
   `;
 
@@ -9443,18 +9918,13 @@ function renderTopView(
 
         x(normal.c),
 
-        (
-          y(normal.r)+
-          y(normal.r+1)
-        )/2,
+        y(normal.r)*.64
+        +
+        y(normal.r+1)*.36,
 
         "start",
 
-        1,
-
-        "#28658c",
-
-        "left"
+        "#28658c"
 
       );
 
@@ -9491,18 +9961,13 @@ function renderTopView(
 
         x(firstArch.c),
 
-        (
-          y(firstArch.r)+
-          y(firstArch.r+1)
-        )/2,
+        y(firstArch.r)*.64
+        +
+        y(firstArch.r+1)*.36,
 
         "start",
 
-        -1,
-
-        "#c36e00",
-
-        "right"
+        "#c36e00"
 
       );
 
@@ -9978,17 +10443,12 @@ function renderSideView(
 
             x,
 
-            offsetY+153,
+            top+
+            (ground-top)*.30,
 
             "start",
 
-            index%2===0
-            ? 1
-            : -1,
-
-            "#5d6670",
-
-            "right"
+            "#5d6670"
 
           );
 
@@ -10512,18 +10972,12 @@ function renderFrontView(
 
       left,
 
-      (
-        top+
-        ground
-      )/2,
+      top+
+      (ground-top)*.30,
 
       "start",
 
-      -1,
-
-      "#5d6670",
-
-      "right"
+      "#5d6670"
 
     );
 
@@ -11119,16 +11573,6 @@ document
 
 document
   .getElementById(
-    "commit"
-  )
-  .addEventListener(
-    "click",
-    commitPlan
-  );
-
-
-document
-  .getElementById(
     "print"
   )
   .addEventListener(
@@ -11201,6 +11645,26 @@ document
   )
   .addEventListener(
     "change",
+    syncFairyProjectOptions
+  );
+
+
+document
+  .getElementById(
+    "fairyOrientation"
+  )
+  .addEventListener(
+    "change",
+    scheduleCalculate
+  );
+
+
+document
+  .getElementById(
+    "fairySpacingCm"
+  )
+  .addEventListener(
+    "input",
     scheduleCalculate
   );
 
@@ -11526,6 +11990,8 @@ createStockInputs();
 renderAllocations();
 
 loadFairySettings();
+
+syncFairyProjectOptions();
 
 init3D();
 
