@@ -1,0 +1,2156 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#18212b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Planner">
+<title>Planner Pedane</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icons/icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="./icons/icon-180.png">
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;font-size:15px;background:#f3f4f6;color:#171717}
+
+header{
+  min-height:58px;padding:0 18px;background:#111;color:#fff;
+  display:flex;align-items:center;justify-content:space-between;gap:12px
+}
+.header-left{display:flex;align-items:center;gap:18px}
+header h1{margin:0;font-size:20px}
+nav{display:flex;gap:5px}
+nav a{
+  padding:7px 10px;border-radius:6px;color:#ccc;text-decoration:none;
+  font-size:13px;font-weight:700
+}
+nav a:hover{background:#333;color:#fff}
+nav a.active{background:#fff;color:#111}
+
+button{
+  border:0;border-radius:6px;padding:8px 11px;cursor:pointer;
+  font-size:13px;font-weight:700
+}
+button:disabled{opacity:.45;cursor:not-allowed}
+.primary{background:#111;color:#fff}
+.secondary{background:#e5e5e5;color:#111}
+.active-button{background:#111!important;color:#fff!important}
+
+.page{max-width:1550px;margin:auto;padding:14px}
+.card{
+  margin-bottom:14px;padding:14px;background:#fff;border-radius:10px;
+  box-shadow:0 1px 5px rgba(0,0,0,.1)
+}
+.workspace-grid{
+  display:grid;
+  grid-template-columns:270px minmax(360px,.95fr) minmax(420px,1.12fr);
+  gap:12px;align-items:stretch
+}
+
+.panel{
+  min-width:0;padding:11px;border:1px solid #ddd;border-radius:8px;background:#fff
+}
+.panel h3{margin:0 0 10px;font-size:15px}
+
+label{display:block;margin-top:9px;font-size:13px;font-weight:700}
+input[type=text],input[type=number],select{
+  width:100%;margin-top:3px;padding:8px;border:1px solid #bbb;
+  border-radius:5px;background:#fff;font-size:15px
+}
+.two-cols{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.checkbox-row{
+  display:flex;align-items:center;gap:7px;margin-top:12px;
+  font-size:14px;font-weight:700
+}
+.checkbox-row input{margin:0}
+.actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.small{color:#666;font-size:12px;line-height:1.45}
+.subpanel{
+  margin-top:10px;padding:9px;border:1px solid #ddd;border-radius:7px;background:#fafafa
+}
+.subpanel.hidden{display:none}
+.inline-selects{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+
+.preview-toolbar{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:8px;margin-bottom:7px
+}
+.preview-toolbar span{color:#666;font-size:12px}
+
+#deckPlan,#yellowPlanPreview{
+  display:block;width:100%;height:315px;border:1px solid #ddd;
+  border-radius:6px;background:#fafafa
+}
+
+.legend{
+  display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;
+  color:#555;font-size:12px
+}
+.legend-item{display:flex;align-items:center;gap:5px}
+.legend-box{width:18px;height:13px;border:1px solid #333}
+.legend-yellow{background:#f0c729}
+.legend-side{background:#ffd84a;border:3px solid #8d3d00}
+
+.status{
+  margin-top:10px;padding-top:9px;border-top:1px solid #ddd;font-size:14px
+}
+.good{color:#08752a;font-weight:700}
+.bad{color:#b00020;font-weight:700}
+.warning{
+  margin-top:7px;padding:8px;border:1px solid #ddc06a;
+  border-radius:6px;background:#fff3d2
+}
+
+.results{
+  display:grid;
+  grid-template-columns:minmax(330px,1.20fr) minmax(250px,.72fr) minmax(390px,1.08fr);
+  gap:12px;align-items:stretch;margin-top:12px
+}
+
+.result-box{
+  min-width:0;padding:10px;border:1px solid #ddd;border-radius:7px;background:#fff
+}
+.result-box h3{margin:0 0 9px;font-size:15px}
+
+.material-box{border:3px solid #222;border-radius:8px;padding:11px;background:#fff}
+.material-box.material-unavailable{border-color:#c40020;background:#fffafa}
+.material-box h3{font-size:18px}
+.material-list{display:grid;gap:4px}
+.material-row{
+  min-height:38px;display:grid;grid-template-columns:52px 1fr;
+  gap:8px;align-items:center;padding:4px 6px;border-bottom:1px solid #ddd
+}
+.material-row:last-child{border-bottom:0}
+.material-qty{
+  min-height:30px;display:flex;align-items:center;justify-content:center;
+  border:2px solid #222;border-radius:5px;font-size:18px;font-weight:800
+}
+.material-name{font-size:14px;font-weight:700;line-height:1.25}
+
+.quick-data{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px
+}
+.chip{
+  padding:8px 9px;border:1px solid #ccc;border-radius:6px;
+  background:#fafafa;font-size:12px
+}
+.chip strong{display:block;margin-top:3px;font-size:16px}
+.chip.total-chip{
+  min-height:66px;border:2px solid #222;background:#fff;font-size:13px
+}
+.chip.total-chip strong{font-size:22px;font-weight:800}
+.chip.wide-chip{grid-column:1/-1}
+
+.viewer-toolbar{display:flex;gap:6px}
+#viewer{
+  width:100%;height:340px;overflow:hidden;border-radius:6px;background:#eef0f2
+}
+
+.drawings{display:grid;gap:12px}
+.drawing{padding:9px;border:1px solid #ccc;border-radius:7px}
+.drawing-title{margin-bottom:5px;font-size:16px;font-weight:800}
+.drawing svg{display:block;width:100%;height:390px}
+#deckTechnical,#yellowPlanTechnical{background:#fff}
+
+#settingsModal{
+  display:none;position:fixed;inset:0;z-index:30000;padding:30px;
+  overflow:auto;background:rgba(0,0,0,.55)
+}
+#settingsModal.open{display:block}
+.modal-box{
+  max-width:760px;margin:auto;padding:20px;border-radius:10px;background:#fff
+}
+.modal-head{display:flex;align-items:center;justify-content:space-between}
+.modal-head h2{margin:0}
+.stock-grid{
+  display:grid;grid-template-columns:1fr 90px;gap:7px 10px;
+  align-items:center;margin-top:15px
+}
+.stock-grid input{margin:0}
+.settings-section{margin-top:20px;padding-top:14px;border-top:1px solid #ddd}
+.settings-section h3{margin:0 0 8px;font-size:16px}
+.stock-table{width:100%;border-collapse:collapse;font-size:13px}
+.stock-table td{padding:5px;border-bottom:1px solid #ddd}
+.stock-table td:last-child{text-align:right;font-weight:700}
+.allocation{padding:7px 0;border-bottom:1px solid #ddd;font-size:13px}
+
+#printEventTitle,#print3d{display:none}
+
+@media(max-width:1120px){
+  .workspace-grid{grid-template-columns:1fr 1fr}
+  .workspace-grid>:last-child{grid-column:1/-1}
+  .results{grid-template-columns:1fr 1fr}
+  .viewer-panel{grid-column:1/-1}
+}
+
+@media(max-width:700px){
+  header{align-items:flex-start;padding:10px}
+  .header-left{flex-direction:column;align-items:flex-start;gap:7px}
+  .workspace-grid,.results{grid-template-columns:1fr}
+  .workspace-grid>:last-child,.viewer-panel{grid-column:auto}
+  .quick-data{grid-template-columns:1fr 1fr}
+}
+
+@media print{
+  body{background:#fff;font-size:13px}
+  header,.no-print,.workspace-grid,.status,#viewer{display:none!important}
+  .page{max-width:none;padding:0}
+  .card{padding:5px 0;border:0;box-shadow:none}
+
+  #printEventTitle{
+    display:block;margin:0 0 12px;padding:0 0 8px;
+    border-bottom:2px solid #000;font-size:28px;font-weight:800;line-height:1.1
+  }
+
+  #print3d{
+    display:block;width:100%;height:300px;margin:0 0 12px;
+    object-fit:contain;break-inside:avoid
+  }
+
+  .results{
+    display:grid;grid-template-columns:1.35fr .85fr;
+    gap:10px;align-items:start;margin-top:0
+  }
+
+  .viewer-panel{display:none!important}
+  .material-box{border:3px solid #000;break-inside:avoid}
+  .material-box.material-unavailable{border-color:#c40020!important}
+  .material-row{min-height:34px;grid-template-columns:48px 1fr}
+  .material-qty{border:2px solid #000;font-size:17px}
+  .material-name{font-size:13px}
+  .chip.total-chip{border:2px solid #000}
+  .drawing{break-inside:avoid}
+  .drawing-title{font-size:16px}
+  .drawing svg{height:350px}
+}
+</style>
+
+<link rel="stylesheet" href="./ui.css">
+
+<script type="importmap">
+{
+  "imports":{
+    "three":"https://cdn.jsdelivr.net/npm/three/build/three.module.js",
+    "three/addons/":"https://cdn.jsdelivr.net/npm/three/examples/jsm/"
+  }
+}
+</script>
+</head>
+
+<body class="page-pedane">
+
+<header>
+  <div class="header-left">
+    <div class="brand">
+      <img class="brand-logo" src="./icons/icon-192.png" alt="">
+      <h1>Planner tecnico</h1>
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="strutture.html">Strutture</a>
+      <a class="active" href="pedane.html">Pedane</a>
+    </nav>
+  </div>
+
+  <button id="openSettings" class="secondary no-print" aria-controls="settingsModal" aria-expanded="false" aria-label="Apri impostazioni" title="Impostazioni">⚙</button>
+</header>
+
+<div class="page">
+
+<div class="card">
+
+  <div id="printEventTitle"></div>
+  <img id="print3d">
+
+  <div class="workspace-grid">
+
+    <div class="panel no-print">
+      <h3>Nuova pedana</h3>
+
+      <label for="projectName">Nome evento</label>
+      <input id="projectName" type="text" value="Pedana 1" autocomplete="off">
+
+      <div class="two-cols">
+        <div>
+          <label for="length">Lunghezza</label>
+          <input id="length" type="number" min="1" step="1" value="5" data-stepper data-unit="m" aria-label="Lunghezza pedana">
+        </div>
+
+        <div>
+          <label for="width">Larghezza</label>
+          <input id="width" type="number" min="1" step="1" value="5" data-stepper data-unit="m" aria-label="Larghezza pedana">
+        </div>
+      </div>
+
+      <label for="singleColor">Colore quadrotti</label>
+      <select id="singleColor">
+        <option value="black">Nero</option>
+        <option value="white">Bianco</option>
+        <option value="wood">Legno</option>
+      </select>
+
+      <label class="checkbox-row">
+        <input id="checkerEnabled" type="checkbox" checked>
+        Scacchiera
+      </label>
+
+      <div id="checkerOptions" class="subpanel hidden">
+        <div class="inline-selects">
+          <div>
+            <label for="checkerA">Colore A</label>
+            <select id="checkerA">
+              <option value="black">Nero</option>
+              <option value="white">Bianco</option>
+              <option value="wood">Legno</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="checkerB">Colore B</label>
+            <select id="checkerB">
+              <option value="white">Bianco</option>
+              <option value="black">Nero</option>
+              <option value="wood">Legno</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <label class="checkbox-row">
+        <input id="yellowEnabled" type="checkbox" checked>
+        Pannelli gialli sotto
+      </label>
+
+      <div id="yellowOptions" class="subpanel">
+        <label for="yellowOrientation">Orientamento pannelli</label>
+
+        <select id="yellowOrientation">
+          <option id="orientationAutoOption" value="auto">Auto</option>
+          <option value="length">lunghezza</option>
+          <option value="width">larghezza</option>
+        </select>
+      </div>
+
+      <div class="actions">
+        <button id="commit" class="primary">Conferma carico</button>
+        <button id="print" class="secondary">Stampa</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="preview-toolbar">
+        <h3 style="margin:0">Pianta pedana</h3>
+        <span>quadrotti 1 × 1 m</span>
+      </div>
+
+      <svg id="deckPlan"></svg>
+
+      <div class="legend">
+        <div class="legend-item">Ogni quadrato = 1 m²</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="preview-toolbar">
+        <h3 style="margin:0">Pianta pannelli gialli</h3>
+        <span>larghezza 50 cm</span>
+      </div>
+
+      <svg id="yellowPlanPreview"></svg>
+
+      <div class="legend">
+        <div class="legend-item">
+          <span class="legend-box legend-yellow"></span>
+          Normale
+        </div>
+
+        <div class="legend-item">
+          <span class="legend-box legend-side"></span>
+          Laterale · bordo liscio
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="status" class="status"></div>
+
+  <div class="results">
+
+    <div class="result-box material-box">
+      <h3>Materiale</h3>
+      <div id="materialResult" class="material-list"></div>
+    </div>
+
+    <div class="result-box">
+      <h3>Dati pedana</h3>
+      <div id="quickResult" class="quick-data"></div>
+    </div>
+
+    <div class="result-box viewer-panel no-print">
+      <div class="preview-toolbar">
+        <h3 style="margin:0">Vista 3D</h3>
+
+        <div class="viewer-toolbar">
+          <button id="toggleDeck" class="secondary">Piano ON</button>
+          <button
+            type="button"
+            class="secondary expand-view-button"
+            data-expand-target="#viewer"
+            data-expand-mode="viewer"
+            data-expand-label="Vista 3D pedana"
+          >
+            ⛶ Schermo intero
+          </button>
+        </div>
+      </div>
+
+      <div id="viewer"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="card technical-section">
+  <div class="section-heading">
+    <h2>Disegni tecnici</h2>
+    <button
+      type="button"
+      class="secondary expand-view-button no-print"
+      data-expand-target="#pedaneTechnicalViews"
+      data-expand-mode="drawings"
+      data-expand-label="Disegni tecnici pedana"
+    >
+      ⛶ Ingrandisci
+    </button>
+  </div>
+
+  <div id="pedaneTechnicalViews" class="drawings">
+
+    <div class="drawing">
+      <div class="drawing-title">PIANTA PEDANA</div>
+      <svg id="deckTechnical"></svg>
+    </div>
+
+    <div id="yellowDrawingBox" class="drawing">
+      <div class="drawing-title">PIANTA PANNELLI GIALLI</div>
+      <svg id="yellowPlanTechnical"></svg>
+
+      <div class="legend">
+        <div class="legend-item">
+          <span class="legend-box legend-yellow"></span>
+          Normale
+        </div>
+
+        <div class="legend-item">
+          <span class="legend-box legend-side"></span>
+          Laterale · bordo liscio esterno
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div>
+
+<div id="settingsModal" class="no-print" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" aria-hidden="true">
+  <div class="modal-box">
+
+    <div class="modal-head">
+      <h2 id="settingsTitle">Impostazioni</h2>
+      <button id="closeSettings" class="secondary modal-close" aria-label="Chiudi impostazioni">×</button>
+    </div>
+
+    <p class="modal-intro">
+      Gestisci lo scarto dei percorsi fairy e le quantità disponibili in magazzino.
+    </p>
+
+    <div class="settings-section">
+      <h3>Fairy lights</h3>
+      <p class="settings-help">Lo scarto viene aggiunto a ogni percorso di luci calcolato.</p>
+      <div class="setting-row">
+        <label for="fairySlackCm">Scarto per ogni percorso</label>
+        <div class="unit-input">
+          <input id="fairySlackCm" type="number" min="0" step="1" value="20" data-stepper data-unit="cm" aria-label="Scarto fairy lights">
+        </div>
+      </div>
+      <div class="actions">
+        <button id="saveFairySettings" class="secondary">Salva scarto</button>
+      </div>
+      <div id="fairySaveFeedback" class="save-feedback" aria-live="polite"></div>
+    </div>
+
+    <div class="settings-section">
+      <h3>Magazzino</h3>
+      <p class="settings-help">Inserisci le quantità totali disponibili. Il magazzino è condiviso con il planner Strutture.</p>
+      <div id="stockInputs" class="stock-grid"></div>
+    </div>
+
+    <div class="modal-actions">
+      <button id="closeSettings2" class="secondary">Chiudi</button>
+      <button id="applyStock" class="primary">Salva magazzino</button>
+    </div>
+
+  </div>
+</div>
+
+<script src="./ui.js" defer></script>
+<script type="module">
+
+import * as THREE from "three";
+
+import {
+  OrbitControls
+} from "three/addons/controls/OrbitControls.js";
+
+import {
+  SHARED_ITEMS,
+  getSharedState,
+  startSharedDay,
+  commitSharedLoad
+} from "./storage.js";
+
+
+const YELLOW_WIDTH=.5;
+const YELLOW_LENGTHS=[4,2,1];
+
+const ITEMS=[
+  {key:"deckBlack",label:"Quadrotto nero 1 × 1 m"},
+  {key:"deckWhite",label:"Quadrotto bianco 1 × 1 m"},
+  {key:"deckWood",label:"Quadrotto legno 1 × 1 m"},
+  {key:"yellowNormal4",label:"Pannello giallo normale 4 m"},
+  {key:"yellowNormal2",label:"Pannello giallo normale 2 m"},
+  {key:"yellowNormal1",label:"Pannello giallo normale 1 m"},
+  {key:"yellowSide4",label:"Pannello giallo laterale 4 m"},
+  {key:"yellowSide2",label:"Pannello giallo laterale 2 m"},
+  {key:"yellowSide1",label:"Pannello giallo laterale 1 m"}
+];
+
+const COLOR_INFO={
+  black:{label:"Nero",css:"#181818",three:0x181818},
+  white:{label:"Bianco",css:"#f6f6f2",three:0xf2f2ec},
+  wood:{label:"Legno",css:"#a77746",three:0xa77746}
+};
+
+let warehouse={};
+let remaining={};
+let allocations=[];
+let warehouseConfigured=false;
+
+let currentPlan=null;
+let lastCommittedSignature=null;
+
+let renderer;
+let scene;
+let camera;
+let controls;
+
+let cameraUserAdjusted=false;
+let hasRendered3D=false;
+let showDeck=true;
+
+
+function itemLabel(key){
+  return SHARED_ITEMS.find(item=>item.key===key)?.label
+    || ITEMS.find(item=>item.key===key)?.label
+    || key;
+}
+
+function emptyRequirements(){
+  const result={};
+  ITEMS.forEach(item=>result[item.key]=0);
+  return result;
+}
+
+function validIntegerDimension(value){
+  return Number.isInteger(value)&&value>=1;
+}
+
+function uniqueCount(sequence){
+  return new Set(sequence).size;
+}
+
+
+function syncSharedStorage(){
+  const state=getSharedState();
+
+  warehouse={...state.warehouse};
+  remaining={...state.remaining};
+  allocations=[...state.allocations];
+  warehouseConfigured=state.configured;
+}
+
+
+function createStockInputs(){
+  syncSharedStorage();
+
+  const root=document.getElementById("stockInputs");
+  root.innerHTML="";
+
+  let lastGroup=null;
+
+  SHARED_ITEMS.forEach(item=>{
+
+    if(item.group!==lastGroup){
+      const title=document.createElement("div");
+      title.className="stock-group-title";
+      title.textContent=item.group;
+
+      root.appendChild(title);
+      lastGroup=item.group;
+    }
+
+    const label=document.createElement("label");
+    label.textContent=item.label;
+
+    const input=document.createElement("input");
+    input.type="number";
+    input.min="0";
+    input.step="1";
+    input.id="stock_"+item.key;
+    input.dataset.stepper="compact";
+    input.setAttribute("aria-label",item.label);
+    label.htmlFor=input.id;
+    input.value=warehouse[item.key]??0;
+
+    root.append(label,input);
+  });
+
+  renderRemaining();
+}
+
+
+function applyWarehouse(){
+  const stock={};
+
+  SHARED_ITEMS.forEach(item=>{
+    stock[item.key]=Math.max(
+      0,
+      Math.floor(
+        Number(document.getElementById("stock_"+item.key).value)||0
+      )
+    );
+  });
+
+  const state=startSharedDay(stock);
+
+  warehouse={...state.warehouse};
+  remaining={...state.remaining};
+  allocations=[...state.allocations];
+
+  warehouseConfigured=true;
+  lastCommittedSignature=null;
+
+  renderRemaining();
+  renderAllocations();
+  closeSettings();
+  calculatePlan();
+}
+
+
+function renderRemaining(){
+  syncSharedStorage();
+
+  const root=document.getElementById("remainingStock");
+  if(!root)return;
+
+  if(!warehouseConfigured){
+    root.textContent="Magazzino non impostato.";
+    return;
+  }
+
+  let html='<table class="stock-table">';
+  let lastGroup=null;
+
+  SHARED_ITEMS.forEach(item=>{
+
+    if(item.group!==lastGroup){
+      html+=`
+        <tr>
+          <td colspan="2"
+              style="padding-top:12px;font-weight:800;border-bottom:2px solid #222">
+            ${item.group}
+          </td>
+        </tr>
+      `;
+
+      lastGroup=item.group;
+    }
+
+    html+=`
+      <tr>
+        <td>${item.label}</td>
+        <td>${remaining[item.key]??0}</td>
+      </tr>
+    `;
+  });
+
+  html+="</table>";
+  root.innerHTML=html;
+}
+
+
+function calculateDeckColors(length,width){
+  const checker=document.getElementById("checkerEnabled").checked;
+
+  const cells=[];
+  const counts={black:0,white:0,wood:0};
+
+  if(!checker){
+    const color=document.getElementById("singleColor").value;
+
+    for(let y=0;y<width;y++){
+      for(let x=0;x<length;x++){
+        cells.push({x,y,color});
+        counts[color]++;
+      }
+    }
+  }else{
+    const colorA=document.getElementById("checkerA").value;
+    const colorB=document.getElementById("checkerB").value;
+
+    for(let y=0;y<width;y++){
+      for(let x=0;x<length;x++){
+        const color=(x+y)%2===0?colorA:colorB;
+        cells.push({x,y,color});
+        counts[color]++;
+      }
+    }
+  }
+
+  return {cells,counts};
+}
+
+
+function minimumPieceCount(length){
+  const dp=Array(length+1).fill(Infinity);
+  dp[0]=0;
+
+  for(let i=1;i<=length;i++){
+    for(const piece of YELLOW_LENGTHS){
+      if(i-piece>=0){
+        dp[i]=Math.min(dp[i],dp[i-piece]+1);
+      }
+    }
+  }
+
+  return dp[length];
+}
+
+
+function generatePanelPatterns(length){
+  const minPieces=minimumPieceCount(length);
+  const maxPieces=minPieces+1;
+
+  const results=[];
+  const signatures=new Set();
+
+  const MAX_RESULTS=2500;
+
+  function dfs(sum,sequence){
+    if(results.length>=MAX_RESULTS)return;
+
+    if(sum===length){
+      if(sequence.length<=maxPieces){
+        const signature=sequence.join(",");
+
+        if(!signatures.has(signature)){
+          signatures.add(signature);
+          results.push([...sequence]);
+        }
+      }
+      return;
+    }
+
+    if(sum>length||sequence.length>=maxPieces)return;
+
+    for(const piece of [4,2,1]){
+      if(sum+piece<=length){
+        sequence.push(piece);
+        dfs(sum+piece,sequence);
+        sequence.pop();
+      }
+    }
+  }
+
+  dfs(0,[]);
+
+  if(!results.length){
+    results.push(Array(length).fill(1));
+  }
+
+  return results;
+}
+
+
+function sequenceJoints(sequence){
+  const joints=[];
+  let sum=0;
+
+  for(let i=0;i<sequence.length-1;i++){
+    sum+=sequence[i];
+    joints.push(sum);
+  }
+
+  return joints;
+}
+
+
+function alignedJointCount(sequenceA,sequenceB){
+  if(!sequenceA||!sequenceB)return 0;
+
+  const a=new Set(sequenceJoints(sequenceA));
+  let count=0;
+
+  for(const joint of sequenceJoints(sequenceB)){
+    if(a.has(joint))count++;
+  }
+
+  return count;
+}
+
+
+function buildYellowStrips(stripLength,stripCount){
+  const patterns=generatePanelPatterns(stripLength);
+  const strips=[];
+
+  let totalAligned=0;
+
+  for(let row=0;row<stripCount;row++){
+
+    const previous=strips[row-1]?.sequence??null;
+    let best=null;
+
+    for(let p=0;p<patterns.length;p++){
+      const sequence=patterns[p];
+      const aligned=alignedJointCount(previous,sequence);
+
+      const edgeBias=row%2===0
+        ? p*.000001
+        : (patterns.length-p)*.000001;
+
+      const score=
+        aligned*10000+
+        sequence.length*100+
+        uniqueCount(sequence)+
+        edgeBias;
+
+      if(!best||score<best.score){
+        best={sequence,aligned,score};
+      }
+    }
+
+    strips.push({
+      index:row,
+      sequence:[...best.sequence],
+      lateral:row===0||row===stripCount-1
+    });
+
+    totalAligned+=best.aligned;
+  }
+
+  return {strips,totalAligned};
+}
+
+
+function requirementsFromYellow(yellow){
+  const req={
+    yellowNormal4:0,
+    yellowNormal2:0,
+    yellowNormal1:0,
+    yellowSide4:0,
+    yellowSide2:0,
+    yellowSide1:0
+  };
+
+  for(const strip of yellow.strips){
+    for(const piece of strip.sequence){
+      const prefix=strip.lateral?"yellowSide":"yellowNormal";
+      req[prefix+piece]++;
+    }
+  }
+
+  return req;
+}
+
+
+function calculateYellowOrientation(length,width,orientation){
+  let stripLength;
+  let stripCount;
+
+  if(orientation==="length"){
+    stripLength=length;
+    stripCount=Math.round(width/YELLOW_WIDTH);
+  }else{
+    stripLength=width;
+    stripCount=Math.round(length/YELLOW_WIDTH);
+  }
+
+  const arrangement=buildYellowStrips(stripLength,stripCount);
+  const requirements=requirementsFromYellow(arrangement);
+
+  const totalPieces=Object.values(requirements)
+    .reduce((sum,value)=>sum+value,0);
+
+  const distinctSizes=Object.values(requirements)
+    .filter(value=>value>0).length;
+
+  return {
+    orientation,
+    stripLength,
+    stripCount,
+    strips:arrangement.strips,
+    alignedJoints:arrangement.totalAligned,
+    requirements,
+    totalPieces,
+    distinctSizes
+  };
+}
+
+
+function deficitsFor(requirements){
+  if(!warehouseConfigured)return [];
+
+  const deficits=[];
+
+  Object.entries(requirements).forEach(([key,needed])=>{
+    if(needed<=0)return;
+
+    const available=remaining[key]??0;
+
+    if(needed>available){
+      deficits.push({
+        key,
+        needed,
+        available,
+        missing:needed-available
+      });
+    }
+  });
+
+  return deficits;
+}
+
+
+function chooseYellowLayout(length,width){
+  const setting=document.getElementById("yellowOrientation").value;
+
+  const candidates=setting==="auto"
+    ? [
+        calculateYellowOrientation(length,width,"length"),
+        calculateYellowOrientation(length,width,"width")
+      ]
+    : [
+        calculateYellowOrientation(length,width,setting)
+      ];
+
+  candidates.forEach(candidate=>{
+    candidate.deficits=deficitsFor(candidate.requirements);
+    candidate.missing=candidate.deficits
+      .reduce((sum,item)=>sum+item.missing,0);
+  });
+
+  candidates.sort((a,b)=>{
+
+    if(warehouseConfigured){
+      const aBad=a.deficits.length?1:0;
+      const bBad=b.deficits.length?1:0;
+
+      if(aBad!==bBad)return aBad-bBad;
+      if(a.missing!==b.missing)return a.missing-b.missing;
+    }
+
+    if(a.alignedJoints!==b.alignedJoints){
+      return a.alignedJoints-b.alignedJoints;
+    }
+
+    if(a.totalPieces!==b.totalPieces){
+      return a.totalPieces-b.totalPieces;
+    }
+
+    return a.distinctSizes-b.distinctSizes;
+  });
+
+  return candidates[0];
+}
+
+
+function calculatePlan(){
+  syncSharedStorage();
+
+  const length=Number(document.getElementById("length").value);
+  const width=Number(document.getElementById("width").value);
+  const name=document.getElementById("projectName").value||"Pedana";
+
+  const valid=
+    validIntegerDimension(length)&&
+    validIntegerDimension(width);
+
+  if(!valid){
+    currentPlan={valid:false,name,length,width};
+    renderInvalidPlan();
+    return;
+  }
+
+  const deck=calculateDeckColors(length,width);
+  const requirements=emptyRequirements();
+
+  requirements.deckBlack=deck.counts.black;
+  requirements.deckWhite=deck.counts.white;
+  requirements.deckWood=deck.counts.wood;
+
+  const yellowEnabled=document.getElementById("yellowEnabled").checked;
+  let yellow=null;
+
+  if(yellowEnabled){
+    yellow=chooseYellowLayout(length,width);
+
+    Object.entries(yellow.requirements)
+      .forEach(([key,value])=>{
+        requirements[key]+=value;
+      });
+  }
+
+  const deficits=deficitsFor(requirements);
+
+  currentPlan={
+    valid:true,
+    name,
+    length,
+    width,
+    area:length*width,
+    deck,
+    yellowEnabled,
+    yellow,
+    requirements,
+    deficits
+  };
+
+  updateOrientationAutoLabel();
+  renderAll();
+}
+
+
+function renderInvalidPlan(){
+  document.getElementById("status").innerHTML=`
+    <span class="bad">
+      Lunghezza e larghezza devono essere numeri interi:
+      i quadrotti misurano 1 × 1 m.
+    </span>
+  `;
+
+  document.getElementById("materialResult").innerHTML="";
+  document.getElementById("quickResult").innerHTML="";
+  document.getElementById("deckPlan").innerHTML="";
+  document.getElementById("deckTechnical").innerHTML="";
+  document.getElementById("yellowPlanPreview").innerHTML="";
+  document.getElementById("yellowPlanTechnical").innerHTML="";
+  document.getElementById("commit").disabled=true;
+}
+
+
+function renderAll(){
+  renderSummary();
+  renderDeckPlan();
+  renderDeckTechnical();
+  renderYellowPlan();
+  render3D();
+}
+
+
+function updateOrientationAutoLabel(){
+  const option=document.getElementById("orientationAutoOption");
+  const select=document.getElementById("yellowOrientation");
+
+  if(select.value!=="auto"||!currentPlan?.yellow){
+    option.textContent="Automatico";
+    return;
+  }
+
+  option.textContent=
+    currentPlan.yellow.orientation==="length"
+    ? "Automatico (lunghezza)"
+    : "Automatico (larghezza)";
+}
+
+
+function renderSummary(){
+  const plan=currentPlan;
+
+  document.getElementById("printEventTitle").textContent=plan.name;
+
+  let status="";
+
+  if(!warehouseConfigured){
+    status=`
+      <span class="good">✓ Geometria valida</span>
+      <span class="small">· imposta il magazzino per verificare il carico</span>
+    `;
+  }else if(!plan.deficits.length){
+    status=`<span class="good">✓ Materiale disponibile</span>`;
+  }else{
+    status=`
+      <span class="bad">⚠ Materiale insufficiente</span>
+      <div class="warning">
+        ${
+          plan.deficits
+            .map(item=>
+              `${itemLabel(item.key)}: mancano <strong>${item.missing}</strong>`
+            )
+            .join(" · ")
+        }
+      </div>
+    `;
+  }
+
+  document.getElementById("status").innerHTML=status;
+
+  document.querySelector(".material-box").classList.toggle(
+    "material-unavailable",
+    warehouseConfigured&&plan.deficits.length>0
+  );
+
+  const materialHtml=ITEMS
+    .map(item=>{
+      const quantity=plan.requirements[item.key]||0;
+
+      if(!quantity)return "";
+
+      return `
+        <div class="material-row">
+          <div class="material-qty">${quantity}</div>
+          <div class="material-name">${item.label}</div>
+        </div>
+      `;
+    })
+    .join("");
+
+  document.getElementById("materialResult").innerHTML=
+    materialHtml||'<div class="small">Nessun materiale.</div>';
+
+  const checker=document.getElementById("checkerEnabled").checked;
+  let floorText;
+
+  if(checker){
+    floorText=
+      `${COLOR_INFO[document.getElementById("checkerA").value].label} / `+
+      `${COLOR_INFO[document.getElementById("checkerB").value].label}`;
+  }else{
+    floorText=
+      COLOR_INFO[document.getElementById("singleColor").value].label;
+  }
+
+  const orientationText=plan.yellowEnabled
+    ? (
+        plan.yellow.orientation==="length"
+        ? "Lunghezza"
+        : "Larghezza"
+      )
+    : "—";
+
+  document.getElementById("quickResult").innerHTML=`
+    <div class="chip total-chip">
+      Lunghezza totale
+      <strong>${plan.length.toFixed(2)} m</strong>
+    </div>
+
+    <div class="chip total-chip">
+      Larghezza totale
+      <strong>${plan.width.toFixed(2)} m</strong>
+    </div>
+
+    <div class="chip">
+      Superficie
+      <strong>${plan.area} m²</strong>
+    </div>
+
+    <div class="chip">
+      Quadrotti
+      <strong>${plan.area}</strong>
+    </div>
+
+    <div class="chip wide-chip">
+      Finitura
+      <strong>${floorText}</strong>
+    </div>
+
+    <div class="chip">
+      Gialli
+      <strong>${plan.yellowEnabled?plan.yellow.totalPieces:0}</strong>
+    </div>
+
+    <div class="chip">
+      Orientamento
+      <strong>${orientationText}</strong>
+    </div>
+
+    <div class="chip wide-chip">
+      Giunte allineate
+      <strong>${plan.yellowEnabled?plan.yellow.alignedJoints:"—"}</strong>
+    </div>
+  `;
+
+  document.getElementById("yellowDrawingBox").style.display=
+    plan.yellowEnabled?"":"none";
+
+  const signature=planSignature(plan);
+
+  const alreadyCommitted=allocations.some(
+    allocation=>
+      allocation.source==="pedane"&&
+      allocation.signature===signature
+  );
+
+  document.getElementById("commit").disabled=
+    alreadyCommitted||
+    signature===lastCommittedSignature;
+}
+
+
+function planSignature(plan){
+  if(!plan?.valid)return "";
+
+  return JSON.stringify({
+    name:plan.name,
+    length:plan.length,
+    width:plan.width,
+    requirements:plan.requirements,
+    checker:document.getElementById("checkerEnabled").checked,
+    color:document.getElementById("singleColor").value,
+    colorA:document.getElementById("checkerA").value,
+    colorB:document.getElementById("checkerB").value,
+    yellow:plan.yellowEnabled,
+    orientation:plan.yellow?.orientation
+  });
+}
+
+
+function deckSvgMarkup(widthPx,heightPx){
+  const plan=currentPlan;
+
+  const margin=widthPx>=900?42:36;
+  const dimensionFont=widthPx>=900?25:18;
+
+  const scale=Math.min(
+    (widthPx-margin*2)/plan.length,
+    (heightPx-margin*2)/plan.width
+  );
+
+  const totalW=plan.length*scale;
+  const totalH=plan.width*scale;
+
+  const originX=(widthPx-totalW)/2;
+  const originY=(heightPx-totalH)/2;
+
+  let html="";
+
+  for(const cell of plan.deck.cells){
+    const color=COLOR_INFO[cell.color];
+
+    html+=`
+      <rect
+        x="${originX+cell.x*scale}"
+        y="${originY+cell.y*scale}"
+        width="${scale}"
+        height="${scale}"
+        fill="${color.css}"
+        stroke="#444"
+        stroke-width="${widthPx>=900?2:1.4}"
+      />
+    `;
+  }
+
+  html+=`
+    <text
+      x="${widthPx/2}"
+      y="${originY-12}"
+      text-anchor="middle"
+      font-family="Arial, Helvetica, sans-serif"
+      font-size="${dimensionFont}"
+      font-weight="800"
+      fill="#111"
+    >
+      ${plan.length.toFixed(2)} m
+    </text>
+
+    <text
+      x="${originX-15}"
+      y="${heightPx/2}"
+      text-anchor="middle"
+      font-family="Arial, Helvetica, sans-serif"
+      font-size="${dimensionFont}"
+      font-weight="800"
+      fill="#111"
+      transform="rotate(-90 ${originX-15} ${heightPx/2})"
+    >
+      ${plan.width.toFixed(2)} m
+    </text>
+  `;
+
+  return html;
+}
+
+
+function renderDeckPlan(){
+  const svg=document.getElementById("deckPlan");
+  svg.setAttribute("viewBox","0 0 560 560");
+  svg.innerHTML=deckSvgMarkup(560,560);
+}
+
+
+function renderDeckTechnical(){
+  const svg=document.getElementById("deckTechnical");
+  svg.setAttribute("viewBox","0 0 900 900");
+  svg.innerHTML=deckSvgMarkup(900,900);
+}
+
+
+function yellowPlanMarkup(widthPx,heightPx,technical=false){
+  if(!currentPlan.yellowEnabled){
+    return `
+      <text
+        x="${widthPx/2}"
+        y="${heightPx/2}"
+        text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="${technical?24:18}"
+        font-weight="700"
+        fill="#777"
+      >
+        Pannelli gialli non utilizzati
+      </text>
+    `;
+  }
+
+  const plan=currentPlan;
+  const yellow=plan.yellow;
+
+  const margin=technical?48:30;
+
+  const scale=Math.min(
+    (widthPx-margin*2)/plan.length,
+    (heightPx-margin*2)/plan.width
+  );
+
+  const originX=(widthPx-plan.length*scale)/2;
+  const originY=(heightPx-plan.width*scale)/2;
+
+  const pieceFont=technical?23:17;
+  const titleFont=technical?22:16;
+  const lateralFont=technical?19:14;
+
+  let html="";
+
+  yellow.strips.forEach(strip=>{
+    let offset=0;
+
+    strip.sequence.forEach(piece=>{
+      let x,y,w,h;
+
+      if(yellow.orientation==="length"){
+        x=originX+offset*scale;
+        y=originY+strip.index*YELLOW_WIDTH*scale;
+
+        w=piece*scale;
+        h=YELLOW_WIDTH*scale;
+      }else{
+        x=originX+strip.index*YELLOW_WIDTH*scale;
+        y=originY+offset*scale;
+
+        w=YELLOW_WIDTH*scale;
+        h=piece*scale;
+      }
+
+      html+=`
+        <rect
+          x="${x}"
+          y="${y}"
+          width="${w}"
+          height="${h}"
+          fill="${strip.lateral?"#ffd84a":"#f0c729"}"
+          stroke="${strip.lateral?"#8d3d00":"#6b5a00"}"
+          stroke-width="${
+            strip.lateral
+              ? (technical?5:3.5)
+              : (technical?2:1.4)
+          }"
+        />
+      `;
+
+      /*
+        MISURE:
+
+        quando i pannelli sono orientati
+        lungo la larghezza, anche il testo
+        viene ruotato verticalmente.
+      */
+
+      const rotated=
+        yellow.orientation==="width";
+
+      const alongPx=
+        rotated?h:w;
+
+      const acrossPx=
+        rotated?w:h;
+
+      const measureFont=Math.min(
+        pieceFont,
+        Math.max(10,acrossPx*.58)
+      );
+
+      if(
+        alongPx>measureFont*1.45&&
+        acrossPx>10
+      ){
+        const centerX=x+w/2;
+        const centerY=y+h/2;
+
+        html+=`
+          <text
+            x="${centerX}"
+            y="${centerY}"
+            text-anchor="middle"
+            dominant-baseline="middle"
+            font-family="Arial, Helvetica, sans-serif"
+            font-size="${measureFont}"
+            font-weight="800"
+            fill="#111"
+            ${
+              rotated
+                ? `transform="rotate(-90 ${centerX} ${centerY})"`
+                : ""
+            }
+          >
+            ${piece} m
+          </text>
+        `;
+      }
+
+      offset+=piece;
+    });
+
+    if(strip.lateral){
+      if(yellow.orientation==="length"){
+        const outerY=
+          strip.index===0
+            ? originY
+            : originY+plan.width*scale;
+
+        html+=`
+          <line
+            x1="${originX}"
+            y1="${outerY}"
+            x2="${originX+plan.length*scale}"
+            y2="${outerY}"
+            stroke="#712d00"
+            stroke-width="${technical?11:8}"
+            stroke-linecap="round"
+          />
+        `;
+      }else{
+        const outerX=
+          strip.index===0
+            ? originX
+            : originX+plan.length*scale;
+
+        html+=`
+          <line
+            x1="${outerX}"
+            y1="${originY}"
+            x2="${outerX}"
+            y2="${originY+plan.width*scale}"
+            stroke="#712d00"
+            stroke-width="${technical?11:8}"
+            stroke-linecap="round"
+          />
+        `;
+      }
+    }
+  });
+
+  if(yellow.orientation==="length"){
+    html+=`
+      <text
+        x="${widthPx/2}"
+        y="${originY-5}"
+        text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="${lateralFont}"
+        font-weight="900"
+        fill="#712d00"
+      >
+        LATERALE · BORDO LISCIO
+      </text>
+
+      <text
+        x="${widthPx/2}"
+        y="${originY+plan.width*scale+lateralFont+8}"
+        text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="${lateralFont}"
+        font-weight="900"
+        fill="#712d00"
+      >
+        LATERALE · BORDO LISCIO
+      </text>
+    `;
+  }else{
+    html+=`
+      <text
+        x="${originX-17}"
+        y="${heightPx/2}"
+        text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="${lateralFont}"
+        font-weight="900"
+        fill="#712d00"
+        transform="rotate(-90 ${originX-17} ${heightPx/2})"
+      >
+        LATERALE · BORDO LISCIO
+      </text>
+
+      <text
+        x="${originX+plan.length*scale+17}"
+        y="${heightPx/2}"
+        text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="${lateralFont}"
+        font-weight="900"
+        fill="#712d00"
+        transform="rotate(90 ${originX+plan.length*scale+17} ${heightPx/2})"
+      >
+        LATERALE · BORDO LISCIO
+      </text>
+    `;
+  }
+
+  if(technical){
+    html+=`
+      <text
+        x="${widthPx/2}"
+        y="26"
+        text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="${titleFont}"
+        font-weight="800"
+        fill="#111"
+      >
+        ${
+          yellow.orientation==="length"
+            ? "Pannelli orientati lungo la lunghezza"
+            : "Pannelli orientati lungo la larghezza"
+        }
+      </text>
+    `;
+  }
+
+  return html;
+}
+
+
+function renderYellowPlan(){
+  const preview=document.getElementById("yellowPlanPreview");
+  preview.setAttribute("viewBox","0 0 560 560");
+  preview.innerHTML=yellowPlanMarkup(560,560,false);
+
+  const technical=document.getElementById("yellowPlanTechnical");
+  technical.setAttribute("viewBox","0 0 900 900");
+  technical.innerHTML=yellowPlanMarkup(900,900,true);
+}
+
+
+function init3D(){
+  const container=document.getElementById("viewer");
+
+  renderer=new THREE.WebGLRenderer({
+    antialias:true,
+    preserveDrawingBuffer:true
+  });
+
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  renderer.setSize(container.clientWidth,container.clientHeight);
+  container.appendChild(renderer.domElement);
+
+  camera=new THREE.PerspectiveCamera(
+    45,
+    container.clientWidth/container.clientHeight,
+    .1,
+    1000
+  );
+
+  controls=new OrbitControls(camera,renderer.domElement);
+  controls.enableDamping=true;
+
+  controls.addEventListener("start",()=>{
+    cameraUserAdjusted=true;
+  });
+
+  window.addEventListener("resize",resize3D);
+
+  animate();
+}
+
+
+function resize3D(){
+  const container=document.getElementById("viewer");
+
+  renderer.setSize(
+    container.clientWidth,
+    container.clientHeight
+  );
+
+  camera.aspect=
+    container.clientWidth/
+    container.clientHeight;
+
+  camera.updateProjectionMatrix();
+}
+
+
+function animate(){
+  requestAnimationFrame(animate);
+
+  controls?.update();
+
+  if(renderer&&scene&&camera){
+    renderer.render(scene,camera);
+  }
+}
+
+
+function render3D(){
+  const plan=currentPlan;
+
+  if(!plan?.valid||!renderer||!camera||!controls){
+    return;
+  }
+
+  scene=new THREE.Scene();
+  scene.background=new THREE.Color(0xf1f2f3);
+
+  scene.add(
+    new THREE.HemisphereLight(
+      0xffffff,
+      0x777777,
+      2.4
+    )
+  );
+
+  const maxDimension=Math.max(
+    plan.length,
+    plan.width,
+    4
+  );
+
+  let gridSize=Math.ceil(maxDimension+8);
+
+  if(gridSize%2!==0){
+    gridSize++;
+  }
+
+  const grid=new THREE.GridHelper(
+    gridSize,
+    gridSize
+  );
+
+  grid.position.set(
+    Math.round(plan.length/2),
+    -.01,
+    Math.round(plan.width/2)
+  );
+
+  scene.add(grid);
+
+  if(plan.yellowEnabled){
+    const yellowMaterial=
+      new THREE.MeshStandardMaterial({
+        color:0xe6bc20,
+        roughness:.76
+      });
+
+    const lateralMaterial=
+      new THREE.MeshStandardMaterial({
+        color:0xffcb28,
+        roughness:.72
+      });
+
+    const smoothEdgeMaterial=
+      new THREE.MeshStandardMaterial({
+        color:0x712d00,
+        roughness:.8
+      });
+
+    plan.yellow.strips.forEach(strip=>{
+      let offset=0;
+
+      strip.sequence.forEach(piece=>{
+        let geometry;
+        let x;
+        let z;
+
+        if(plan.yellow.orientation==="length"){
+          geometry=
+            new THREE.BoxGeometry(
+              piece-.018,
+              .075,
+              YELLOW_WIDTH-.018
+            );
+
+          x=offset+piece/2;
+
+          z=
+            strip.index*YELLOW_WIDTH+
+            YELLOW_WIDTH/2;
+        }else{
+          geometry=
+            new THREE.BoxGeometry(
+              YELLOW_WIDTH-.018,
+              .075,
+              piece-.018
+            );
+
+          x=
+            strip.index*YELLOW_WIDTH+
+            YELLOW_WIDTH/2;
+
+          z=offset+piece/2;
+        }
+
+        const mesh=
+          new THREE.Mesh(
+            geometry,
+            strip.lateral
+              ? lateralMaterial
+              : yellowMaterial
+          );
+
+        mesh.position.set(
+          x,
+          .048,
+          z
+        );
+
+        scene.add(mesh);
+
+        if(strip.lateral){
+          let edgeGeometry;
+          let edgeX;
+          let edgeZ;
+
+          if(plan.yellow.orientation==="length"){
+            edgeGeometry=
+              new THREE.BoxGeometry(
+                piece-.015,
+                .115,
+                .075
+              );
+
+            edgeX=x;
+
+            edgeZ=
+              strip.index===0
+                ? 0
+                : plan.width;
+          }else{
+            edgeGeometry=
+              new THREE.BoxGeometry(
+                .075,
+                .115,
+                piece-.015
+              );
+
+            edgeX=
+              strip.index===0
+                ? 0
+                : plan.length;
+
+            edgeZ=z;
+          }
+
+          const edgeMesh=
+            new THREE.Mesh(
+              edgeGeometry,
+              smoothEdgeMaterial
+            );
+
+          edgeMesh.position.set(
+            edgeX,
+            .074,
+            edgeZ
+          );
+
+          scene.add(edgeMesh);
+        }
+
+        offset+=piece;
+      });
+    });
+  }
+
+  if(showDeck){
+    const materialCache={};
+
+    Object.entries(COLOR_INFO)
+      .forEach(([key,value])=>{
+        materialCache[key]=
+          new THREE.MeshStandardMaterial({
+            color:value.three,
+            roughness:.84
+          });
+      });
+
+    for(const cell of plan.deck.cells){
+      const geometry=
+        new THREE.BoxGeometry(
+          .97,
+          .09,
+          .97
+        );
+
+      const mesh=
+        new THREE.Mesh(
+          geometry,
+          materialCache[cell.color]
+        );
+
+      mesh.position.set(
+        cell.x+.5,
+        plan.yellowEnabled?.148:.055,
+        cell.y+.5
+      );
+
+      scene.add(mesh);
+    }
+  }
+
+  if(!hasRendered3D||!cameraUserAdjusted){
+    const center=
+      new THREE.Vector3(
+        plan.length/2,
+        0,
+        plan.width/2
+      );
+
+    const distance=Math.max(
+      plan.length,
+      plan.width,
+      5
+    );
+
+    camera.position.set(
+      center.x+distance*.72,
+      distance*.70,
+      center.z+distance*.90
+    );
+
+    controls.target.set(
+      center.x,
+      0,
+      center.z
+    );
+
+    controls.update();
+
+    hasRendered3D=true;
+  }
+}
+
+
+function toggleDeckVisibility(){
+  showDeck=!showDeck;
+
+  document.getElementById("toggleDeck").textContent=
+    showDeck
+      ? "Piano ON"
+      : "Piano OFF";
+
+  document.getElementById("toggleDeck").classList.toggle(
+    "active-button",
+    !showDeck
+  );
+
+  render3D();
+}
+
+
+function commitPlan(){
+  if(!currentPlan?.valid)return;
+
+  syncSharedStorage();
+
+  if(!warehouseConfigured){
+    alert("Prima imposta il magazzino nelle Impostazioni.");
+    return;
+  }
+
+  calculatePlan();
+
+  if(currentPlan.deficits.length){
+    alert("Materiale insufficiente.");
+    return;
+  }
+
+  const signature=planSignature(currentPlan);
+
+  const result=commitSharedLoad({
+    source:"pedane",
+    name:currentPlan.name,
+    length:currentPlan.length,
+    width:currentPlan.width,
+    requirements:currentPlan.requirements,
+    signature
+  });
+
+  if(!result.ok){
+    if(result.reason==="duplicate"){
+      alert("Questo carico è già stato confermato.");
+    }else if(result.reason==="insufficient"){
+      alert("Nel frattempo il materiale disponibile non è più sufficiente.");
+    }else{
+      alert("Imposta prima il magazzino.");
+    }
+
+    syncSharedStorage();
+    calculatePlan();
+    return;
+  }
+
+  warehouse={...result.state.warehouse};
+  remaining={...result.state.remaining};
+  allocations=[...result.state.allocations];
+
+  lastCommittedSignature=signature;
+
+  renderRemaining();
+  renderAllocations();
+  calculatePlan();
+}
+
+
+function renderAllocations(){
+  syncSharedStorage();
+
+  const root=document.getElementById("allocations");
+  if(!root)return;
+
+  if(!allocations.length){
+    root.textContent="Nessuno.";
+    return;
+  }
+
+  root.innerHTML=
+    allocations
+      .map((item,index)=>`
+        <div class="allocation">
+          <strong>
+            ${
+              item.source==="pedane"
+                ? "PEDANA"
+                : "STRUTTURA"
+            }
+            · ${index+1}. ${item.name}
+          </strong>
+
+          ${item.length?` · ${item.length}`:""}
+          ${item.width?` × ${item.width} m`:""}
+        </div>
+      `)
+      .join("");
+}
+
+
+function capturePrint3D(){
+  const originalSize=
+    renderer.getSize(
+      new THREE.Vector2()
+    );
+  const originalPixelRatio=
+    renderer.getPixelRatio();
+  const printWidth=1400;
+  const printHeight=800;
+  const printCamera=
+    camera.clone();
+
+  printCamera.aspect=
+    printWidth/printHeight;
+  printCamera.updateProjectionMatrix();
+
+  renderer.setPixelRatio(1.5);
+  renderer.setSize(
+    printWidth,
+    printHeight,
+    false
+  );
+  renderer.render(
+    scene,
+    printCamera
+  );
+
+  const image=
+    renderer.domElement
+      .toDataURL(
+        "image/png"
+      );
+
+  renderer.setPixelRatio(
+    originalPixelRatio
+  );
+  renderer.setSize(
+    originalSize.x,
+    originalSize.y,
+    false
+  );
+  renderer.render(
+    scene,
+    camera
+  );
+
+  return image;
+}
+
+
+function printReport(){
+  if(!currentPlan?.valid)return;
+
+  preparePrintPreview();
+
+  setTimeout(
+    ()=>window.print(),
+    100
+  );
+}
+
+
+function preparePrintPreview(){
+  if(!currentPlan?.valid)return;
+
+  document.getElementById("print3d").src=
+    capturePrint3D();
+}
+
+
+window.addEventListener(
+  "beforeprint",
+  preparePrintPreview
+);
+
+
+function openSettings(){
+  createStockInputs();
+  renderAllocations();
+
+  document.getElementById("settingsModal")
+    .classList.add("open");
+}
+
+
+function closeSettings(){
+  document.getElementById("settingsModal")
+    .classList.remove("open");
+}
+
+
+function updateOptionVisibility(){
+  const checker=
+    document.getElementById("checkerEnabled").checked;
+
+  document.getElementById("checkerOptions")
+    .classList.toggle("hidden",!checker);
+
+  document.getElementById("singleColor").disabled=
+    checker;
+
+  const yellow=
+    document.getElementById("yellowEnabled").checked;
+
+  document.getElementById("yellowOptions")
+    .classList.toggle("hidden",!yellow);
+}
+
+
+document.getElementById("openSettings")
+  .addEventListener("click",openSettings);
+
+document.getElementById("closeSettings")
+  .addEventListener("click",closeSettings);
+
+document.getElementById("closeSettings2")
+  .addEventListener("click",closeSettings);
+
+document.getElementById("applyStock")
+  .addEventListener("click",applyWarehouse);
+
+document.getElementById("commit")
+  .addEventListener("click",commitPlan);
+
+document.getElementById("print")
+  .addEventListener("click",printReport);
+
+document.getElementById("toggleDeck")
+  .addEventListener("click",toggleDeckVisibility);
+
+
+[
+  "projectName",
+  "length",
+  "width"
+].forEach(id=>{
+  document.getElementById(id)
+    .addEventListener(
+      "input",
+      calculatePlan
+    );
+});
+
+
+[
+  "singleColor",
+  "checkerA",
+  "checkerB",
+  "yellowOrientation"
+].forEach(id=>{
+  document.getElementById(id)
+    .addEventListener(
+      "change",
+      calculatePlan
+    );
+});
+
+
+document.getElementById("checkerEnabled")
+  .addEventListener("change",()=>{
+    updateOptionVisibility();
+    calculatePlan();
+  });
+
+
+document.getElementById("yellowEnabled")
+  .addEventListener("change",()=>{
+    updateOptionVisibility();
+    calculatePlan();
+  });
+
+
+window.addEventListener("focus",()=>{
+  syncSharedStorage();
+  calculatePlan();
+});
+
+
+syncSharedStorage();
+createStockInputs();
+renderAllocations();
+updateOptionVisibility();
+init3D();
+calculatePlan();
+
+</script>
+
+</body>
+</html>
