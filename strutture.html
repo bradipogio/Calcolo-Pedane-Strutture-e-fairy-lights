@@ -1214,7 +1214,7 @@ select{
           id="modeArch"
           class="matrix-button"
         >
-          ⌒ Archi 180°
+          ⌒ Archi 180° · 2×90°
         </button>
 
         <button
@@ -1589,26 +1589,49 @@ const MATRIX_CELL = 54;
 /*
   ARCO REALE MISURATO.
 
-  Ingombro completo a 180°:
-  1,5 + 1,5 m in altezza,
-  3 + 3 m in larghezza.
+  Ogni modulo da 90° contiene due
+  curve parallele da 3 m, collegate
+  da sbarre da 1,5 m.
+
+  Due moduli formano l'arco a 180°:
+  - sviluppo curvo per lato: 6 m;
+  - profondita: 1,5 m;
+  - luce: 12 / PI, circa 3,82 m;
+  - rialzo: 6 / PI, circa 1,91 m.
 
   Ogni arco selezionato nella matrice
-  rappresenta un assemblato completo.
+  occupa quindi una campata da 1,5 m
+  e usa due profili curvi paralleli.
 */
 
-const ARCH_ANGLE = 180;
+const ARCH_MODULE_ANGLE = 90;
 
-const ARCH_RISE = 3;
+const ARCH_MODULE_CURVE_LENGTH = 3;
 
-const ARCH_SPAN = 6;
+const ARCH_DEPTH = 1.5;
 
-const ARCH_HALF_RISE = 1.5;
+const ARCH_MODULES_PER_ASSEMBLY = 2;
 
-const ARCH_HALF_SPAN = 3;
+const ARCH_ANGLE =
+  ARCH_MODULE_ANGLE*
+  ARCH_MODULES_PER_ASSEMBLY;
+
+const ARCH_CURVE_LENGTH=
+  ARCH_MODULE_CURVE_LENGTH*
+  ARCH_MODULES_PER_ASSEMBLY;
+
+const ARCH_RADIUS=
+  ARCH_MODULE_CURVE_LENGTH/
+  (Math.PI/2);
+
+const ARCH_RISE=
+  ARCH_RADIUS;
+
+const ARCH_SPAN=
+  ARCH_RADIUS*2;
 
 const ARCH_LABEL =
-  `Arco ${ARCH_ANGLE}° · ${ARCH_RISE} × ${ARCH_SPAN} m`;
+  `Arco ${ARCH_ANGLE}° · luce ${ARCH_SPAN.toFixed(2)} m · prof. ${ARCH_DEPTH.toFixed(2)} m`;
 
 const TELESCOPICS = {
 
@@ -1691,7 +1714,7 @@ const ITEMS = [
 
   {
     key:"arch",
-    label:"Arco 180° · 3 × 6 m"
+    label:"Modulo arco 90° · curva 3 m · prof. 1,5 m"
   },
 
   {
@@ -2985,10 +3008,76 @@ function toggleArch(
   const key=
     vKey(r,c);
 
-  if(archEdges.has(key))
+
+  const neighbours=
+    [c-1,c+1]
+      .filter(column=>
+
+        verticalExists(
+          layout,
+          r,
+          column
+        )
+
+      );
+
+
+  if(archEdges.has(key)){
+
+    const pairedColumn=
+      neighbours.find(column=>
+
+        archEdges.has(
+          vKey(r,column)
+        )
+
+      );
+
+
     archEdges.delete(key);
-  else
+
+
+    if(pairedColumn!==undefined){
+
+      archEdges.delete(
+        vKey(r,pairedColumn)
+      );
+
+    }
+
+  }
+
+  else{
+
+    const freeColumn=
+
+      neighbours
+        .filter(column=>
+
+          !archEdges.has(
+            vKey(r,column)
+          )
+
+        )
+        .sort((a,b)=>
+
+          Math.abs(a-(c+1))-
+          Math.abs(b-(c+1))
+
+        )[0];
+
+
+    if(freeColumn===undefined)
+      return;
+
+
     archEdges.add(key);
+
+    archEdges.add(
+      vKey(r,freeColumn)
+    );
+
+  }
 
   scheduleCalculate();
 
@@ -3063,6 +3152,93 @@ function toggleFairy(
 /* =========================================================
    STATS
 ========================================================= */
+
+function archAssemblyData(
+  target,
+  arches
+){
+
+  const pairs=[];
+
+  const pairedKeys=
+    new Set();
+
+
+  for(
+    let r=0;
+    r<target.rows-1;
+    r++
+  ){
+
+    for(
+      let c=0;
+      c<target.cols-1;
+      c++
+    ){
+
+      const first=
+        vKey(r,c);
+
+      const second=
+        vKey(r,c+1);
+
+
+      if(
+        arches.has(first)
+        &&
+        arches.has(second)
+        &&
+        !pairedKeys.has(first)
+        &&
+        !pairedKeys.has(second)
+        &&
+        verticalExists(
+          target,
+          r,
+          c
+        )
+        &&
+        verticalExists(
+          target,
+          r,
+          c+1
+        )
+      ){
+
+        pairs.push({
+          r,
+          c
+        });
+
+        pairedKeys.add(first);
+
+        pairedKeys.add(second);
+
+        c++;
+
+      }
+
+    }
+
+  }
+
+
+  const orphaned=
+
+    [...arches]
+      .filter(key=>
+
+        !pairedKeys.has(key)
+
+      );
+
+
+  return {
+    pairs,
+    orphaned
+  };
+
+}
 
 function layoutStats(
   target=layout,
@@ -3144,6 +3320,13 @@ function layoutStats(
       .length;
 
 
+  const assemblyData=
+    archAssemblyData(
+      target,
+      arches
+    );
+
+
   return {
 
     nodes,
@@ -3161,6 +3344,15 @@ function layoutStats(
     arches:
       archCount,
 
+    archAssemblies:
+      assemblyData.pairs.length,
+
+    archPairs:
+      assemblyData.pairs,
+
+    orphanArchEdges:
+      assemblyData.orphaned.length,
+
     normalVerticalEdges:
       vertical.length-
       archCount
@@ -3172,32 +3364,67 @@ function layoutStats(
 
 function archGeometryIssue(
   stats,
-  moduleWidth
+  moduleWidth,
+  bayLength
 ){
 
-  if(
-    !stats.arches
-    ||
-    closeEnough(
-      moduleWidth,
-      ARCH_SPAN
-    )
-  ){
+  if(!stats.arches){
 
     return null;
 
   }
 
 
-  return (
+  if(stats.orphanArchEdges){
 
-    `L’arco ${ARCH_ANGLE}° misura ${ARCH_RISE.toFixed(2)} m in altezza × ${ARCH_SPAN.toFixed(2)} m in larghezza. `
+    return (
+      "L’arco è incompleto: servono sempre due profili curvi paralleli."
+    );
 
-    +
+  }
 
-    `Il modulo trasversale attuale è ${moduleWidth.toFixed(2)} m: impostalo a ${ARCH_SPAN.toFixed(2)} m.`
 
-  );
+  if(
+    !closeEnough(
+      moduleWidth,
+      ARCH_SPAN
+    )
+  ){
+
+    return (
+
+      `L’arco ${ARCH_ANGLE}° ha una luce di ${ARCH_SPAN.toFixed(2)} m, ricavata dai 6,00 m di curva. `
+
+      +
+
+      `Il modulo trasversale attuale è ${moduleWidth.toFixed(2)} m: impostalo a ${ARCH_SPAN.toFixed(2)} m.`
+
+    );
+
+  }
+
+
+  if(
+    !closeEnough(
+      bayLength,
+      ARCH_DEPTH
+    )
+  ){
+
+    return (
+
+      `I due profili dell’arco devono essere distanti ${ARCH_DEPTH.toFixed(2)} m. `
+
+      +
+
+      `La campata attuale è ${bayLength.toFixed(2)} m: impostala a ${ARCH_DEPTH.toFixed(2)} m.`
+
+    );
+
+  }
+
+
+  return null;
 
 }
 
@@ -4198,7 +4425,8 @@ function buildRequirements(
 
 
   req.arch+=
-    stats.arches;
+    stats.archAssemblies*
+    ARCH_MODULES_PER_ASSEMBLY;
 
 
   if(
@@ -4560,7 +4788,8 @@ function geometryCandidates(
     const archIssue=
       archGeometryIssue(
         stats,
-        moduleWidth
+        moduleWidth,
+        side.bayLength
       );
 
 
@@ -6320,7 +6549,7 @@ function planSignature(
       fairySlackMeters,
 
     archModel:
-      `${ARCH_ANGLE}-${ARCH_RISE}x${ARCH_SPAN}`,
+      `${ARCH_MODULES_PER_ASSEMBLY}x${ARCH_MODULE_ANGLE}-curve${ARCH_MODULE_CURVE_LENGTH}-depth${ARCH_DEPTH}`,
 
     requirements:
       plan.requirements
@@ -6589,17 +6818,17 @@ function renderSummary(){
 
   const archDataHtml=
 
-    summaryStats.arches
+    summaryStats.archAssemblies
 
     ?
 
     `
       <div class="chip wide-chip">
 
-        Archi 180°
+        Archi 180° · due profili paralleli
 
         <strong>
-          ${summaryStats.arches} × (${ARCH_HALF_RISE} + ${ARCH_HALF_RISE}) m H × (${ARCH_HALF_SPAN} + ${ARCH_HALF_SPAN}) m L
+          ${summaryStats.archAssemblies} completi · ${summaryStats.archAssemblies*ARCH_MODULES_PER_ASSEMBLY} moduli da 90° · curva ${ARCH_CURVE_LENGTH.toFixed(2)} m/lato · luce ${ARCH_SPAN.toFixed(2)} m · rialzo ${ARCH_RISE.toFixed(2)} m · prof. ${ARCH_DEPTH.toFixed(2)} m
         </strong>
 
       </div>
@@ -7698,6 +7927,87 @@ function drawArch3D(
 }
 
 
+function drawArchBraces3D(
+  x1,
+  x2,
+  z1,
+  z2,
+  material
+){
+
+  const center=
+    (z1+z2)/2;
+
+
+  const halfSpan=
+    Math.abs(z2-z1)/2;
+
+
+  /*
+    Suddivisione solo grafica:
+    le sbarre fanno parte del modulo.
+  */
+
+  const divisions=6;
+
+
+  for(
+    let i=0;
+    i<=divisions;
+    i++
+  ){
+
+    const theta=
+
+      Math.PI
+
+      -
+
+      (i/divisions)*
+      Math.PI;
+
+
+    const y=
+
+      HEIGHT
+
+      +
+
+      Math.sin(theta)*
+      ARCH_RISE;
+
+
+    const z=
+
+      center
+
+      +
+
+      Math.cos(theta)*
+      halfSpan;
+
+
+    cylinderBetween(
+
+      new THREE.Vector3(
+        x1,y,z
+      ),
+
+      new THREE.Vector3(
+        x2,y,z
+      ),
+
+      .028,
+
+      material
+
+    );
+
+  }
+
+}
+
+
 
 /* =========================================================
    RENDER 3D
@@ -8085,6 +8395,34 @@ function render3D(
         );
 
       }
+
+    });
+
+
+  stats.archPairs
+    .forEach(pair=>{
+
+      drawArchBraces3D(
+
+        xForCol(
+          pair.c
+        ),
+
+        xForCol(
+          pair.c+1
+        ),
+
+        zForRow(
+          pair.r
+        ),
+
+        zForRow(
+          pair.r+1
+        ),
+
+        archMat
+
+      );
 
     });
 
