@@ -228,7 +228,7 @@ input[type=text],input[type=number],select{
 }
 </style>
 
-<link rel="stylesheet" href="./ui.css?v=17">
+<link rel="stylesheet" href="./ui.css?v=18">
 
 <script type="importmap">
 {
@@ -267,7 +267,7 @@ input[type=text],input[type=number],select{
 
   <div class="workspace-grid">
 
-    <div class="panel no-print">
+    <div id="deckConfigPanel" class="panel no-print">
       <h3>Nuova pedana</h3>
 
       <label for="projectName">Nome evento</label>
@@ -284,6 +284,13 @@ input[type=text],input[type=number],select{
           <input id="width" type="number" min="1" step="1" value="5" data-stepper data-unit="m" aria-label="Larghezza massima pedana">
         </div>
       </div>
+
+      <label for="baseColor">Colore base</label>
+      <select id="baseColor">
+        <option value="black">Nero</option>
+        <option value="white">Bianco</option>
+        <option value="wood">Legno</option>
+      </select>
 
       <label class="checkbox-row">
         <input id="checkerEnabled" type="checkbox" checked>
@@ -353,19 +360,19 @@ input[type=text],input[type=number],select{
       <div class="preview-toolbar deck-editor-toolbar">
         <h3 style="margin:0">Pianta pedana</h3>
         <div class="deck-editor-tools no-print" aria-label="Strumenti disegno pedana">
-          <label class="visually-hidden" for="singleColor">Colore quadrotti</label>
-          <select id="singleColor" aria-label="Colore quadrotti" title="Colore dei nuovi quadrotti">
+          <label class="visually-hidden" for="paintColor">Colore pennello</label>
+          <select id="paintColor" aria-label="Colore pennello" title="Colore da applicare manualmente">
             <option value="black">Nero</option>
             <option value="white">Bianco</option>
             <option value="wood">Legno</option>
           </select>
-          <button id="deckAddMode" class="deck-tool active-button" type="button" aria-pressed="true" title="Aggiungi quadrotti">＋ Aggiungi</button>
+          <button id="deckAddMode" class="deck-tool active-button" type="button" aria-pressed="true" title="Aggiungi o colora quadrotti">✎ Disegna</button>
           <button id="deckEraseMode" class="deck-tool" type="button" aria-pressed="false" title="Cancella quadrotti">⌫ Gomma</button>
         </div>
       </div>
 
       <svg id="deckPlan"></svg>
-      <div id="deckEditorHint" class="deck-editor-hint no-print">Aggiungi: seleziona un riquadro tratteggiato accanto alla pedana.</div>
+      <div id="deckEditorHint" class="deck-editor-hint no-print">Disegna: scegli il colore, poi seleziona un quadrotto o uno spazio adiacente.</div>
     </div>
 
     <div class="panel">
@@ -513,7 +520,7 @@ input[type=text],input[type=number],select{
   </div>
 </div>
 
-<script src="./ui.js?v=17" defer></script>
+<script src="./ui.js?v=18" defer></script>
 <script type="module">
 
 import * as THREE from "three";
@@ -569,6 +576,7 @@ let cameraUserAdjusted=false;
 let hasRendered3D=false;
 let showDeck=true;
 let deckCells=new Set();
+let deckCellColors=new Map();
 let deckEditorMode="add";
 let syncingDeckDimensions=false;
 
@@ -803,6 +811,7 @@ function rebuildDeckFromDimensionInputs(){
   }
 
   deckCells=rectangleDeckCells(length,width);
+  deckCellColors.clear();
   calculatePlan();
 }
 
@@ -817,7 +826,7 @@ function calculateDeckColors(){
     return {cells,counts,length:0,width:0,bounds:null};
   }
 
-  const singleColor=document.getElementById("singleColor").value;
+  const baseColor=document.getElementById("baseColor").value;
   const colorA=document.getElementById("checkerA").value;
   const colorB=document.getElementById("checkerB").value;
 
@@ -825,9 +834,11 @@ function calculateDeckColors(){
     .map(parseDeckCellKey)
     .sort((a,b)=>a.y-b.y||a.x-b.x)
     .forEach(rawCell=>{
-      const color=checker
+      const key=deckCellKey(rawCell.x,rawCell.y);
+      const base=checker
         ? ((rawCell.x+rawCell.y)%2===0?colorA:colorB)
-        : singleColor;
+        : baseColor;
+      const color=deckCellColors.get(key)??base;
 
       cells.push({
         x:rawCell.x-bounds.minX,
@@ -1248,6 +1259,10 @@ function renderInvalidPlan(){
   document.getElementById("deckTechnical").innerHTML="";
   document.getElementById("yellowPlanPreview").innerHTML="";
   document.getElementById("yellowPlanTechnical").innerHTML="";
+  document.getElementById("deckConfigPanel")
+    .classList.add("config-panel-invalid");
+  document.querySelector(".material-box")
+    .classList.add("material-unavailable");
   document.getElementById("print").disabled=true;
 }
 
@@ -1279,6 +1294,8 @@ function updateOrientationAutoLabel(){
 
 function renderSummary(){
   const plan=currentPlan;
+  const materialUnavailable=
+    warehouseConfigured&&plan.deficits.length>0;
 
   document.getElementById("printEventTitle").textContent=plan.name;
 
@@ -1310,7 +1327,12 @@ function renderSummary(){
 
   document.querySelector(".material-box").classList.toggle(
     "material-unavailable",
-    warehouseConfigured&&plan.deficits.length>0
+    materialUnavailable
+  );
+
+  document.getElementById("deckConfigPanel").classList.toggle(
+    "config-panel-invalid",
+    materialUnavailable
   );
 
   const materialHtml=ITEMS
@@ -1340,7 +1362,11 @@ function renderSummary(){
       `${COLOR_INFO[document.getElementById("checkerB").value].label}`;
   }else{
     floorText=
-      COLOR_INFO[document.getElementById("singleColor").value].label;
+      COLOR_INFO[document.getElementById("baseColor").value].label;
+  }
+
+  if(deckCellColors.size){
+    floorText+=" · modifiche manuali";
   }
 
   const orientationText=plan.yellowEnabled
@@ -1396,30 +1422,12 @@ function renderSummary(){
   document.getElementById("yellowDrawingBox").style.display=
     plan.yellowEnabled?"":"none";
 
-  document.getElementById("print").disabled=false;
+  document.getElementById("print").disabled=materialUnavailable;
 }
 
 
 function formatMetres(value){
   return `${Number.isInteger(value)?value:value.toFixed(2)} m`;
-}
-
-
-function contiguousRuns(values){
-  const sorted=[...new Set(values)].sort((a,b)=>a-b);
-  const runs=[];
-
-  for(const value of sorted){
-    const last=runs[runs.length-1];
-
-    if(last&&value===last.end+1){
-      last.end=value;
-    }else{
-      runs.push({start:value,end:value});
-    }
-  }
-
-  return runs;
 }
 
 
@@ -1439,73 +1447,6 @@ function deckAdjacentCells(){
   return [...adjacent]
     .map(parseDeckCellKey)
     .sort((a,b)=>a.y-b.y||a.x-b.x);
-}
-
-
-function deckSectionMeasurements(scale,originX,originY,fontSize){
-  const plan=currentPlan;
-
-  if(plan.area===plan.length*plan.width){
-    return "";
-  }
-
-  let html="";
-  const horizontalSeen=new Set();
-  const verticalSeen=new Set();
-
-  for(let y=0;y<plan.width;y++){
-    const runs=contiguousRuns(
-      plan.deck.cells
-        .filter(cell=>cell.y===y)
-        .map(cell=>cell.x)
-    );
-
-    for(const run of runs){
-      const signature=`${run.start}:${run.end}`;
-      if(horizontalSeen.has(signature))continue;
-      horizontalSeen.add(signature);
-
-      const length=run.end-run.start+1;
-      const centerX=originX+(run.start+length/2)*scale;
-      const centerY=originY+(y+.5)*scale;
-
-      html+=`
-        <text class="deck-section-measure" x="${centerX}" y="${centerY}"
-          text-anchor="middle" dominant-baseline="middle"
-          font-family="Arial, Helvetica, sans-serif" font-size="${fontSize}"
-          font-weight="900" fill="#111" stroke="#fff" stroke-width="${Math.max(3,fontSize*.25)}"
-          paint-order="stroke">${formatMetres(length)}</text>
-      `;
-    }
-  }
-
-  for(let x=0;x<plan.length;x++){
-    const runs=contiguousRuns(
-      plan.deck.cells
-        .filter(cell=>cell.x===x)
-        .map(cell=>cell.y)
-    );
-
-    for(const run of runs){
-      const signature=`${run.start}:${run.end}`;
-      if(verticalSeen.has(signature))continue;
-      verticalSeen.add(signature);
-
-      const length=run.end-run.start+1;
-      const centerX=originX+(x+.5)*scale;
-      const centerY=originY+(run.start+length/2)*scale;
-
-      html+=`
-        <text class="deck-section-measure" x="${centerX}" y="${centerY}"
-          text-anchor="middle" dominant-baseline="middle"
-          font-family="Arial, Helvetica, sans-serif" font-size="${fontSize}"
-          font-weight="900" fill="#111" stroke="#fff" stroke-width="${Math.max(3,fontSize*.25)}"
-          paint-order="stroke" transform="rotate(-90 ${centerX} ${centerY})">${formatMetres(length)}</text>
-      `;
-    }
-  }
-
-  return html;
 }
 
 
@@ -1558,6 +1499,17 @@ function deckSvgMarkup(widthPx,heightPx,{interactive=false}={}){
           </g>
         `;
       }
+
+      for(const cell of plan.deck.cells){
+        const x=originX+cell.x*scale;
+        const y=originY+cell.y*scale;
+
+        html+=`
+          <g class="deck-editor-target deck-paint-target" data-deck-x="${cell.rawX}" data-deck-y="${cell.rawY}" tabindex="0" role="button" aria-label="Colora quadrotto">
+            <rect x="${x}" y="${y}" width="${scale}" height="${scale}" />
+          </g>
+        `;
+      }
     }else{
       for(const cell of plan.deck.cells){
         const x=originX+cell.x*scale;
@@ -1600,13 +1552,6 @@ function deckSvgMarkup(widthPx,heightPx,{interactive=false}={}){
     </text>
   `;
 
-  html+=deckSectionMeasurements(
-    scale,
-    originX,
-    originY,
-    widthPx>=900?20:Math.max(11,Math.min(16,scale*.19))
-  );
-
   return html;
 }
 
@@ -1618,8 +1563,13 @@ function applyDeckEditorAction(target){
 
   if(deckEditorMode==="add"){
     deckCells.add(key);
+    deckCellColors.set(
+      key,
+      document.getElementById("paintColor").value
+    );
   }else if(deckCells.has(key)&&deckCells.size>1){
     deckCells.delete(key);
+    deckCellColors.delete(key);
   }
 
   calculatePlan();
@@ -2258,7 +2208,10 @@ function capturePrint3D(){
 
 
 async function printReport(){
-  if(!currentPlan?.valid)return;
+  if(
+    !currentPlan?.valid||
+    (warehouseConfigured&&currentPlan.deficits.length)
+  )return;
 
   await preparePrintPreview();
 
@@ -2331,7 +2284,7 @@ function setDeckEditorMode(mode){
   eraseButton.setAttribute("aria-pressed",String(!isAdd));
 
   document.getElementById("deckEditorHint").textContent=isAdd
-    ? "Aggiungi: seleziona un riquadro tratteggiato accanto alla pedana."
+    ? "Disegna: scegli il colore, poi seleziona un quadrotto o uno spazio adiacente."
     : "Gomma: seleziona il quadrotto da eliminare.";
 
   if(currentPlan?.valid)renderDeckPlan();
@@ -2345,7 +2298,7 @@ function updateOptionVisibility(){
   document.getElementById("checkerOptions")
     .classList.toggle("hidden",!checker);
 
-  document.getElementById("singleColor").disabled=
+  document.getElementById("baseColor").disabled=
     checker;
 
   const yellow=
@@ -2393,7 +2346,7 @@ document.getElementById("width")
 
 
 [
-  "singleColor",
+  "baseColor",
   "checkerA",
   "checkerB",
   "yellowOrientation"
@@ -2404,6 +2357,10 @@ document.getElementById("width")
       calculatePlan
     );
 });
+
+
+document.getElementById("paintColor")
+  .addEventListener("change",()=>setDeckEditorMode("add"));
 
 
 document.getElementById("checkerEnabled")

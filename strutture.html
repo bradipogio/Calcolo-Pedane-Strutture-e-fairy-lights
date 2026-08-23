@@ -1000,7 +1000,7 @@ select{
 
 </style>
 
-<link rel="stylesheet" href="./ui.css?v=16">
+<link rel="stylesheet" href="./ui.css?v=18">
 
 
 <script type="importmap">
@@ -1078,7 +1078,7 @@ select{
 
     <!-- NUOVA STRUTTURA -->
 
-    <div class="panel no-print">
+    <div id="structureConfigPanel" class="panel no-print">
 
       <h3>
         Nuova struttura
@@ -1730,7 +1730,7 @@ select{
 </div>
 
 
-<script src="./ui.js?v=16" defer></script>
+<script src="./ui.js?v=18" defer></script>
 
 <script type="module">
 
@@ -7159,6 +7159,26 @@ function renderStructureInputError(
     )
     .disabled=true;
 
+
+  document
+    .getElementById(
+      "structureConfigPanel"
+    )
+    .classList
+    .add(
+      "config-panel-invalid"
+    );
+
+
+  document
+    .querySelector(
+      ".material-box"
+    )
+    .classList
+    .add(
+      "material-unavailable"
+    );
+
 }
 
 function calculatePlan(){
@@ -7883,6 +7903,25 @@ function renderSummary(){
       "material-unavailable",
       materialUnavailable
     );
+
+
+  document
+    .getElementById(
+      "structureConfigPanel"
+    )
+    .classList
+    .toggle(
+      "config-panel-invalid",
+      materialUnavailable
+    );
+
+
+  document
+    .getElementById(
+      "print"
+    )
+    .disabled=
+      materialUnavailable;
 
 
   /*
@@ -11829,10 +11868,20 @@ async function printReport(){
     !currentPlan
     ||
     currentPlan.invalid
+    ||
+    (
+      warehouseConfigured
+      &&
+      (
+        currentPlan.deficits.length
+        ||
+        !currentPlan.fairyAvailable
+      )
+    )
   ){
 
     alert(
-      "Configurazione non valida."
+      "Configurazione non realizzabile con il materiale disponibile."
     );
 
     return;
