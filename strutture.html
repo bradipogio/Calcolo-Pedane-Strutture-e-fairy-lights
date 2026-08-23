@@ -1000,7 +1000,7 @@ select{
 
 </style>
 
-<link rel="stylesheet" href="./ui.css?v=18">
+<link rel="stylesheet" href="./ui.css?v=19">
 
 
 <script type="importmap">
@@ -1730,7 +1730,7 @@ select{
 </div>
 
 
-<script src="./ui.js?v=18" defer></script>
+<script src="./ui.js?v=19" defer></script>
 
 <script type="module">
 
@@ -6256,18 +6256,21 @@ function buildFairyCrossSection(
     const visualPoints=[];
 
 
-    function addBoth(
+    function addCountAndVisual(
       point
     ){
 
-      points.push({
-        ...point
-      });
+      points.push({...point});
+      visualPoints.push({...point});
+
+    }
 
 
-      visualPoints.push({
-        ...point
-      });
+    function addVisualOnly(
+      point
+    ){
+
+      visualPoints.push({...point});
 
     }
 
@@ -6285,7 +6288,7 @@ function buildFairyCrossSection(
       )
     ){
 
-      addBoth({
+      addVisualOnly({
         y:.04,
         z:startZ
       });
@@ -6293,7 +6296,7 @@ function buildFairyCrossSection(
     }
 
 
-    addBoth({
+    addCountAndVisual({
       y:HEIGHT,
       z:startZ
     });
@@ -6367,13 +6370,13 @@ function buildFairyCrossSection(
           );
 
 
-        addBoth({
+        addVisualOnly({
           y:.04,
           z
         });
 
 
-        addBoth({
+        addVisualOnly({
           y:HEIGHT,
           z
         });
@@ -6396,7 +6399,7 @@ function buildFairyCrossSection(
       )
     ){
 
-      addBoth({
+      addVisualOnly({
 
         y:.04,
 
@@ -6788,18 +6791,11 @@ function calculateFairyAlongLength(
           archWave;
 
 
-        points.push(
-          {
-            x:startX,
-            y:.04,
-            z
-          },
-          {
-            x:startX,
-            y:startY,
-            z
-          }
-        );
+        points.push({
+          x:startX,
+          y:startY,
+          z
+        });
 
 
         visualPoints.push(
@@ -6891,13 +6887,6 @@ function calculateFairyAlongLength(
         const endX=
           (run.end-bounds.minC)*
           bayLength;
-
-
-        points.push({
-          x:endX,
-          y:.04,
-          z
-        });
 
 
         visualPoints.push({
