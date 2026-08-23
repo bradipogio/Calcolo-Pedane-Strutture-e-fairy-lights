@@ -293,6 +293,90 @@
     gap: 9px;
   }
 
+  .fairy-project-options {
+    margin-top: 7px;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 11px;
+    background: var(--surface-soft);
+  }
+
+  .arch-project-options {
+    margin-top: 9px;
+    padding: 12px;
+    border: 1px solid #d3b04b;
+    border-radius: 11px;
+    background: #fffaf0;
+  }
+
+  .arch-project-options[hidden] {
+    display: none;
+  }
+
+  .arch-project-options label {
+    margin-top: 0;
+  }
+
+  .arch-size-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 9px;
+  }
+
+  .arch-size-times {
+    color: var(--muted);
+    font-size: 18px;
+    font-weight: 850;
+  }
+
+  .arch-fixed-span {
+    min-width: 0;
+    min-height: 44px;
+    margin-top: 5px;
+    padding: 9px 11px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #cbd3db;
+    border-radius: 10px;
+    background: #fff;
+    color: var(--ink);
+    font-size: 15px;
+    font-weight: 800;
+  }
+
+  .width-breakdown {
+    display: grid;
+    gap: 6px;
+    margin-top: 10px;
+    padding-top: 9px;
+    border-top: 1px solid #e5d7ac;
+    font-size: 12px;
+  }
+
+  .width-breakdown > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .width-breakdown > div strong {
+    text-align: right;
+  }
+
+  .width-breakdown-total {
+    font-size: 14px;
+    font-weight: 800;
+  }
+
+  .fairy-project-options[hidden] {
+    display: none;
+  }
+
+  .fairy-project-options label {
+    margin-top: 0;
+  }
+
   .two-cols,
   .inline-selects {
     gap: 10px;
@@ -309,6 +393,30 @@
   .actions {
     gap: 8px;
     margin-top: 16px;
+  }
+
+  .pdf-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-width: 82px;
+    border-color: #b71c1c;
+    background: #c62828;
+    color: #fff;
+    box-shadow: 0 5px 14px rgba(198, 40, 40, .22);
+  }
+
+  .pdf-button:hover:not(:disabled) {
+    border-color: #9f1919;
+    background: #a91f1f;
+    box-shadow: 0 7px 18px rgba(198, 40, 40, .28);
+  }
+
+  .pdf-button svg {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
   }
 
   .number-control {
@@ -752,8 +860,9 @@
     align-self: center;
     margin: 0;
     color: #394653;
-    font-size: 13px;
-    font-weight: 650;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.35;
   }
 
   .stock-group-title {
@@ -762,7 +871,7 @@
     padding: 14px 0 2px;
     border-top: 1px solid var(--line);
     color: var(--ink);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 850;
     letter-spacing: .09em;
     text-transform: uppercase;
@@ -978,6 +1087,110 @@
     aspect-ratio: 1;
   }
 
+  .visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+
+  .page-pedane .deck-editor-toolbar {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .page-pedane .deck-editor-tools {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .page-pedane .deck-editor-tools select {
+    width: auto;
+    min-width: 92px;
+    min-height: 34px;
+    margin: 0;
+    padding: 6px 28px 6px 9px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 750;
+  }
+
+  .page-pedane .deck-tool {
+    min-height: 34px;
+    padding: 6px 9px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface-soft);
+    color: var(--ink);
+  }
+
+  .page-pedane .deck-editor-hint {
+    min-height: 19px;
+    margin-top: 7px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .page-pedane .deck-editor-target {
+    cursor: pointer;
+  }
+
+  .page-pedane .deck-editor-target rect {
+    vector-effect: non-scaling-stroke;
+  }
+
+  .page-pedane .deck-editor-target text {
+    pointer-events: none;
+  }
+
+  .page-pedane .deck-add-target rect {
+    fill: rgba(231, 174, 32, .09);
+    stroke: #b88300;
+    stroke-width: 2;
+    stroke-dasharray: 7 5;
+  }
+
+  .page-pedane .deck-add-target text {
+    fill: #8c6500;
+    opacity: .72;
+  }
+
+  .page-pedane .deck-add-target:hover rect,
+  .page-pedane .deck-add-target:focus rect {
+    fill: rgba(255, 205, 75, .38);
+    stroke-width: 3;
+  }
+
+  .page-pedane .deck-add-target:hover text,
+  .page-pedane .deck-add-target:focus text {
+    opacity: 1;
+  }
+
+  .page-pedane .deck-erase-target rect {
+    fill: rgba(190, 24, 38, .22);
+    stroke: #b51226;
+    stroke-width: 2;
+  }
+
+  .page-pedane .deck-erase-target text {
+    fill: #8e0718;
+  }
+
+  .page-pedane .deck-erase-target:hover rect,
+  .page-pedane .deck-erase-target:focus rect {
+    fill: rgba(210, 26, 43, .42);
+    stroke-width: 3;
+  }
+
   .page-pedane .drawing svg {
     height: 520px;
   }
@@ -995,8 +1208,26 @@
   }
 }
 
+@media screen {
+  .page-pedane .technical-section {
+    display: none;
+  }
+}
+
+@page {
+  size: A4 portrait;
+  margin: 12mm;
+}
+
 @media print {
+  html,
+  body {
+    width: auto !important;
+    overflow: visible !important;
+  }
+
   .technical-section {
+    display: block !important;
     break-before: page !important;
     page-break-before: always !important;
   }
@@ -1013,19 +1244,48 @@
   }
 
   #print3d {
+    display: block !important;
     width: 100% !important;
     height: 340px !important;
     object-fit: contain !important;
     object-position: center !important;
     background: #f4f6f8;
+    break-inside: avoid-page !important;
+    page-break-inside: avoid !important;
+  }
+
+  .technical-section .drawing,
+  .technical-section .drawing svg {
+    overflow: visible !important;
+  }
+
+  .technical-section .drawing {
+    break-inside: avoid-page !important;
+    page-break-inside: avoid !important;
+  }
+
+  .page-pedane .drawings {
+    display: block !important;
+  }
+
+  .page-pedane .drawing {
+    margin: 0 0 12px !important;
+  }
+
+  .page-pedane .drawing + .drawing {
+    break-before: page !important;
+    page-break-before: always !important;
   }
 
   .page-pedane .drawing svg {
-    height: 470px !important;
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
   }
 
   .page-structures .drawing svg {
     height: auto !important;
+    max-height: 680px !important;
   }
 
   .page-structures #sideView {
@@ -1103,6 +1363,20 @@
 
   .page-structures .config-line {
     grid-template-columns: 82px minmax(0, 1fr);
+  }
+
+  .page-pedane .deck-editor-toolbar {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .page-pedane .deck-editor-tools {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .page-pedane .deck-editor-tools select {
+    flex: 1 1 100px;
   }
 
   .page-structures select {

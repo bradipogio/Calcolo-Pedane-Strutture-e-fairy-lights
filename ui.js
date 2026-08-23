@@ -129,9 +129,9 @@
     localStorage.setItem(FAIRY_SETTINGS_KEY, JSON.stringify({fairySlackCm:value}));
 
     if(feedback){
-      feedback.textContent = "Scarto salvato.";
+      feedback.textContent = "Margine salvato.";
       window.setTimeout(()=>{
-        if(feedback.textContent === "Scarto salvato.") feedback.textContent = "";
+        if(feedback.textContent === "Margine salvato.") feedback.textContent = "";
       }, 1800);
     }
   }

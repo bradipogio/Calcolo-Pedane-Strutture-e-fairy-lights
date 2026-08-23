@@ -7,6 +7,9 @@
 const STORAGE_KEY =
   "plannerTecnicoSharedStorage_v1";
 
+const WAREHOUSE_DRAFT_KEY =
+  "plannerTecnicoWarehouseDraft_v1";
+
 
 /* =========================================================
    INVENTARIO COMPLETO
@@ -52,31 +55,31 @@ export const SHARED_ITEMS = [
   {
     group:"Strutture",
     key:"tel15",
-    label:"Telescopica 1,5 m"
+    label:"Telescopica 1.50 m"
   },
 
   {
     group:"Strutture",
     key:"tel3",
-    label:"Telescopica 3 → 5,5 m"
+    label:"Telescopica 3 → 5.50 m"
   },
 
   {
     group:"Strutture",
     key:"tel4",
-    label:"Telescopica 4 → 7,5 m"
+    label:"Telescopica 4 → 7.50 m"
   },
 
   {
     group:"Strutture",
     key:"arch",
-    label:"Arco 180° · 3 × 6 m"
+    label:"Modulo arco"
   },
 
   {
     group:"Strutture",
     key:"pole",
-    label:"Palo 2,5 m"
+    label:"Palo 2.50 m"
   },
 
   {
@@ -654,18 +657,81 @@ function saveState(
 
 
 /* =========================================================
-   NUOVA GIORNATA / IMPOSTA MAGAZZINO
+   BOZZA MAGAZZINO
 
-   Il pulsante:
-   "Salva / nuova giornata"
-
-   fa questo:
-   - salva quantità iniziali
-   - residuo = quantità iniziali
-   - cancella i carichi precedenti
+   Ricorda anche i valori digitati prima
+   di premere "Salva magazzino".
 ========================================================= */
 
-export function startSharedDay(
+export function getSharedWarehouseDraft(){
+
+  const saved=
+    localStorage.getItem(
+      WAREHOUSE_DRAFT_KEY
+    );
+
+
+  if(!saved)
+    return null;
+
+
+  try{
+
+    return normalizeStock(
+      JSON.parse(saved)
+    );
+
+  }
+  catch(error){
+
+    console.warn(
+      "Bozza magazzino non leggibile.",
+      error
+    );
+
+    return null;
+
+  }
+
+}
+
+
+export function saveSharedWarehouseDraft(
+  stock
+){
+
+  const normalized=
+    normalizeStock(stock);
+
+
+  localStorage.setItem(
+
+    WAREHOUSE_DRAFT_KEY,
+
+    JSON.stringify(
+      normalized
+    )
+
+  );
+
+
+  return {
+    ...normalized
+  };
+
+}
+
+
+
+/* =========================================================
+   SALVA MAGAZZINO
+
+   Non esiste alcun azzeramento giornaliero:
+   le quantità restano nel browser finché
+   l'utente non le modifica esplicitamente.
+========================================================= */
+
+export function saveSharedWarehouse(
   stock
 ){
 
@@ -694,11 +760,19 @@ export function startSharedDay(
   };
 
 
-  return saveState(
-    state
+  saveSharedWarehouseDraft(
+    normalized
   );
 
+
+  return saveState(state);
+
 }
+
+
+/* Compatibilità con le versioni precedenti. */
+export const startSharedDay=
+  saveSharedWarehouse;
 
 
 
