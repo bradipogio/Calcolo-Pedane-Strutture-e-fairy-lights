@@ -649,6 +649,17 @@ select{
   font-size:18px;
 }
 
+.fairy-total-value{
+  font-size:24px!important;
+}
+
+.fairy-total-breakdown{
+  margin-left:7px;
+  color:#777;
+  font-size:12px;
+  font-weight:600;
+}
+
 
 /* =========================================================
    DISEGNI
@@ -1000,7 +1011,7 @@ select{
 
 </style>
 
-<link rel="stylesheet" href="./ui.css?v=19">
+<link rel="stylesheet" href="./ui.css?v=20">
 
 
 <script type="importmap">
@@ -1254,7 +1265,7 @@ select{
           <div>
 
             <label for="fairyMarginCm">
-              Margine
+              Margine per percorso
             </label>
 
             <input
@@ -1266,7 +1277,8 @@ select{
               data-stepper
               data-stepper-step="5"
               data-unit="cm"
-              aria-label="Margine fairy lights"
+              aria-label="Margine per ogni percorso fairy lights"
+              title="Centimetri aggiunti separatamente a ogni percorso"
             >
 
           </div>
@@ -1730,7 +1742,7 @@ select{
 </div>
 
 
-<script src="./ui.js?v=19" defer></script>
+<script src="./ui.js?v=20" defer></script>
 
 <script type="module">
 
@@ -5162,6 +5174,19 @@ function telescopicUsageForPlan(
   }
 
 
+  (plan.substitutions??[])
+    .filter(item=>item.kind==="structure")
+    .forEach(item=>{
+
+      addUsage(
+        item.toKey,
+        item.count,
+        item.length
+      );
+
+    });
+
+
   return usage;
 
 }
@@ -5299,6 +5324,155 @@ function deficitsFor(
 }
 
 
+const FIXED_TRAVERSE_LENGTHS={
+  high3:3,
+  low3:3,
+  high4:4,
+  low4:4
+};
+
+
+function compatibleTelescopicsForLength(
+  length
+){
+
+  return Object.values(TELESCOPICS)
+    .filter(item=>
+      length>=item.min-.001
+      &&
+      length<=item.max+.001
+    )
+    .sort((a,b)=>
+      Math.abs(length-a.nominal)-Math.abs(length-b.nominal)
+      ||
+      a.max-b.max
+    );
+
+}
+
+
+function resolveStructureRequirements(
+  nominalRequirements
+){
+
+  const nominal={
+    ...nominalRequirements
+  };
+
+
+  if(!warehouseConfigured){
+
+    return {
+      nominalRequirements:nominal,
+      requirements:{...nominal},
+      substitutions:[],
+      deficits:[],
+      missing:0
+    };
+
+  }
+
+
+  const requirements={
+    ...nominal
+  };
+
+  const substitutions=[];
+
+  const telescopicRemaining={};
+
+
+  Object.keys(TELESCOPICS)
+    .forEach(key=>{
+
+      telescopicRemaining[key]=Math.max(
+        0,
+        (remaining[key]??0)-(nominal[key]??0)
+      );
+
+    });
+
+
+  Object.entries(FIXED_TRAVERSE_LENGTHS)
+    .forEach(([fromKey,length])=>{
+
+      const needed=nominal[fromKey]??0;
+
+      if(needed<=0)
+        return;
+
+
+      const exactUsed=Math.min(
+        needed,
+        remaining[fromKey]??0
+      );
+
+      let missing=needed-exactUsed;
+
+      requirements[fromKey]=exactUsed;
+
+
+      for(const telescopic of compatibleTelescopicsForLength(length)){
+
+        if(missing<=0)
+          break;
+
+
+        const available=telescopicRemaining[telescopic.key]??0;
+
+        const used=Math.min(
+          missing,
+          available
+        );
+
+        if(used<=0)
+          continue;
+
+
+        requirements[telescopic.key]=
+          (requirements[telescopic.key]??0)+used;
+
+        telescopicRemaining[telescopic.key]-=used;
+
+        missing-=used;
+
+        substitutions.push({
+          kind:"structure",
+          fromKey,
+          toKey:telescopic.key,
+          count:used,
+          length
+        });
+
+      }
+
+
+      /*
+        Se resta una mancanza la rimettiamo sulla traversa originale:
+        deficitsFor mostrerà soltanto la parte davvero irrisolta.
+      */
+      requirements[fromKey]+=missing;
+
+    });
+
+
+  const deficits=deficitsFor(requirements);
+
+
+  return {
+    nominalRequirements:nominal,
+    requirements,
+    substitutions,
+    deficits,
+    missing:deficits.reduce(
+      (sum,item)=>sum+item.missing,
+      0
+    )
+  };
+
+}
+
+
 
 /* =========================================================
    CONFIGURAZIONI
@@ -5390,19 +5564,9 @@ function geometryCandidates(
         );
 
 
-      const deficits=
-        deficitsFor(
+      const resolution=
+        resolveStructureRequirements(
           requirements
-        );
-
-
-      const missing=
-
-        deficits.reduce(
-          (sum,item)=>
-            sum+
-            item.missing,
-          0
         );
 
 
@@ -5423,11 +5587,20 @@ function geometryCandidates(
 
         widths,
 
-        requirements,
+        nominalRequirements:
+          resolution.nominalRequirements,
 
-        deficits,
+        requirements:
+          resolution.requirements,
 
-        missing,
+        substitutions:
+          resolution.substitutions,
+
+        deficits:
+          resolution.deficits,
+
+        missing:
+          resolution.missing,
 
         invalid:
           Boolean(archIssue),
@@ -5460,24 +5633,6 @@ function geometryCandidates(
     if(aInvalid!==bInvalid)
       return aInvalid-bInvalid;
 
-    if(
-      preferredSections!==null
-      ||
-      sectionsManual
-    ){
-
-      if(a.score!==b.score)
-        return a.score-b.score;
-
-
-      return (
-        a.missing-
-        b.missing
-      );
-
-    }
-
-
     if(warehouseConfigured){
 
       const aBad=
@@ -5500,8 +5655,27 @@ function geometryCandidates(
         return aBad-bBad;
 
 
-      if(a.missing!==b.missing)
-        return a.missing-b.missing;
+      if(!aBad){
+
+        if(a.score!==b.score)
+          return a.score-b.score;
+
+
+        if(a.substitutions.length!==b.substitutions.length)
+          return a.substitutions.length-b.substitutions.length;
+
+      }
+
+      else{
+
+        if(a.missing!==b.missing)
+          return a.missing-b.missing;
+
+
+        if(a.score!==b.score)
+          return a.score-b.score;
+
+      }
 
     }
 
@@ -6413,17 +6587,25 @@ function buildFairyCrossSection(
     }
 
 
+    const baseLength=
+      polylineLength(
+        points
+      );
+
+
     paths.push({
 
       points,
 
       visualPoints,
 
+      baseLength,
+
+      margin:
+        fairyMarginMeters,
+
       length:
-        polylineLength(
-          points
-        )
-        +
+        baseLength+
         fairyMarginMeters
 
     });
@@ -6458,7 +6640,7 @@ function calculateFairyAcrossWidth(
     activeBounds(target);
 
 
-  let total=0;
+  let baseTotal=0;
 
   let pathsCount=0;
 
@@ -6559,8 +6741,8 @@ function calculateFairyAcrossWidth(
 
       for(const path of paths){
 
-        total+=
-          path.length;
+        baseTotal+=
+          path.baseLength;
 
 
         pathsCount++;
@@ -6601,6 +6783,12 @@ function calculateFairyAcrossWidth(
               z:point.z
             })),
 
+          baseLength:
+            path.baseLength,
+
+          margin:
+            path.margin,
+
           length:
             path.length
 
@@ -6620,7 +6808,19 @@ function calculateFairyAcrossWidth(
     paths:
       pathsCount,
 
-    total
+    baseTotal,
+
+    marginPerPath:
+      fairyMarginMeters,
+
+    marginTotal:
+      pathsCount*
+      fairyMarginMeters,
+
+    total:
+      baseTotal+
+      pathsCount*
+      fairyMarginMeters
 
   };
 
@@ -6629,7 +6829,8 @@ function calculateFairyAcrossWidth(
 
 function fairyRunsForRow(
   target,
-  row
+  row,
+  fairyOff
 ){
 
   const runs=[];
@@ -6644,6 +6845,13 @@ function fairyRunsForRow(
         target,
         row,
         c
+      )
+      ||
+      fairyOff.has(
+        hKey(
+          row,
+          c
+        )
       )
     ){
 
@@ -6663,6 +6871,13 @@ function fairyRunsForRow(
         target,
         row,
         c
+      )
+      &&
+      !fairyOff.has(
+        hKey(
+          row,
+          c
+        )
       )
     ){
 
@@ -6695,6 +6910,8 @@ function calculateFairyAlongLength(
 
   arches,
 
+  fairyOff,
+
   spacing
 
 ){
@@ -6704,7 +6921,7 @@ function calculateFairyAlongLength(
   const bounds=
     activeBounds(target);
 
-  let total=0;
+  let baseTotal=0;
 
   let pathsCount=0;
 
@@ -6718,7 +6935,8 @@ function calculateFairyAlongLength(
     const runs=
       fairyRunsForRow(
         target,
-        r
+        r,
+        fairyOff
       );
 
 
@@ -6896,13 +7114,16 @@ function calculateFairyAlongLength(
         });
 
 
+        const baseLength=
+          polylineLength(points);
+
+
         const length=
-          polylineLength(points)
-          +
+          baseLength+
           fairyMarginMeters;
 
 
-        total+=length;
+        baseTotal+=baseLength;
 
         pathsCount++;
 
@@ -6910,6 +7131,8 @@ function calculateFairyAlongLength(
         samples.push({
           worldPoints:points,
           worldVisualPoints:visualPoints,
+          baseLength,
+          margin:fairyMarginMeters,
           length
         });
 
@@ -6923,7 +7146,12 @@ function calculateFairyAlongLength(
   return {
     samples,
     paths:pathsCount,
-    total
+    baseTotal,
+    marginPerPath:fairyMarginMeters,
+    marginTotal:pathsCount*fairyMarginMeters,
+    total:
+      baseTotal+
+      pathsCount*fairyMarginMeters
   };
 
 }
@@ -6971,6 +7199,7 @@ function calculateFairy(
       bayLength,
       widths,
       arches,
+      fairyOff,
       spacing
     );
 
@@ -7160,12 +7389,32 @@ function renderStructureInputError(
 
 
   document
+    .getElementById(
+      "structureConfigPanel"
+    )
+    .classList
+    .remove(
+      "config-panel-alternative"
+    );
+
+
+  document
     .querySelector(
       ".material-box"
     )
     .classList
     .add(
       "material-unavailable"
+    );
+
+
+  document
+    .querySelector(
+      ".material-box"
+    )
+    .classList
+    .remove(
+      "material-alternative"
     );
 
 }
@@ -7380,6 +7629,20 @@ function calculatePlan(){
   };
 
 
+  const nominalRequirements={
+    ...(
+      chosen.nominalRequirements
+      ??
+      chosen.requirements
+    )
+  };
+
+
+  const substitutions=[
+    ...(chosen.substitutions??[])
+  ];
+
+
   let fairy=null;
 
   let baskets=null;
@@ -7498,6 +7761,10 @@ function calculatePlan(){
 
 
     requirements,
+
+    nominalRequirements,
+
+    substitutions,
 
     deficits,
 
@@ -7726,6 +7993,21 @@ function planSignature(
    SUMMARY
 ========================================================= */
 
+function structureSubstitutionText(
+  substitution
+){
+
+  return (
+    `${substitution.count} × ${itemLabel(substitution.toKey)} `
+    +
+    `@ ${formatNumber(substitution.length)} m al posto di `
+    +
+    itemLabel(substitution.fromKey)
+  );
+
+}
+
+
 function renderSummary(){
 
   const plan=
@@ -7785,13 +8067,37 @@ function renderSummary(){
     plan.fairyAvailable
   ){
 
-    status=`
+    if(plan.substitutions.length){
 
-      <span class="good">
-        ✓ Materiale disponibile
-      </span>
+      status=`
 
-    `;
+        <span class="status-alternative">
+          ◐ Realizzabile con materiale alternativo
+        </span>
+
+        <div class="warning warning-alternative">
+          ${
+            plan.substitutions
+              .map(structureSubstitutionText)
+              .join(" &nbsp; · &nbsp; ")
+          }
+        </div>
+
+      `;
+
+    }
+
+    else{
+
+      status=`
+
+        <span class="good">
+          ✓ Materiale disponibile
+        </span>
+
+      `;
+
+    }
 
   }
 
@@ -7883,6 +8189,15 @@ function renderSummary(){
     );
 
 
+  const materialAlternative=
+
+    !materialUnavailable
+    &&
+    warehouseConfigured
+    &&
+    plan.substitutions.length>0;
+
+
   document
     .querySelector(
       ".material-box"
@@ -7895,6 +8210,17 @@ function renderSummary(){
 
 
   document
+    .querySelector(
+      ".material-box"
+    )
+    .classList
+    .toggle(
+      "material-alternative",
+      materialAlternative
+    );
+
+
+  document
     .getElementById(
       "structureConfigPanel"
     )
@@ -7902,6 +8228,17 @@ function renderSummary(){
     .toggle(
       "config-panel-invalid",
       materialUnavailable
+    );
+
+
+  document
+    .getElementById(
+      "structureConfigPanel"
+    )
+    .classList
+    .toggle(
+      "config-panel-alternative",
+      materialAlternative
     );
 
 
@@ -7922,6 +8259,11 @@ function renderSummary(){
     telescopicUsageForPlan(
       plan
     );
+
+
+  const substituteKeys=new Set(
+    plan.substitutions.map(item=>item.toKey)
+  );
 
 
   const materialHtml=
@@ -7948,7 +8290,7 @@ function renderSummary(){
 
         return `
 
-          <div class="material-row">
+          <div class="material-row${substituteKeys.has(item.key)?" material-substitute":""}">
 
             <div class="material-qty">
               ${quantity}
@@ -7983,7 +8325,7 @@ function renderSummary(){
       `;
 
 
-  const fairyTotalText=
+  const fairyTotalHtml=
 
     plan.fairyEnabled
     &&
@@ -7991,7 +8333,12 @@ function renderSummary(){
 
     ?
 
-    `${formatNumber(plan.fairy.total)} m`
+    `
+      ${formatNumber(plan.fairy.total)} m
+      <small class="fairy-total-breakdown">
+        (${formatNumber(plan.fairy.baseTotal)} + ${formatNumber(plan.fairy.marginTotal)})
+      </small>
+    `
 
     :
 
@@ -8129,8 +8476,8 @@ function renderSummary(){
 
         Fairy totale
 
-        <strong>
-          ${fairyTotalText}
+        <strong class="fairy-total-value">
+          ${fairyTotalHtml}
         </strong>
 
       </div>

@@ -228,7 +228,7 @@ input[type=text],input[type=number],select{
 }
 </style>
 
-<link rel="stylesheet" href="./ui.css?v=19">
+<link rel="stylesheet" href="./ui.css?v=20">
 
 <script type="importmap">
 {
@@ -550,7 +550,7 @@ input[type=text],input[type=number],select{
   </div>
 </div>
 
-<script src="./ui.js?v=19" defer></script>
+<script src="./ui.js?v=20" defer></script>
 <script type="module">
 
 import * as THREE from "three";
@@ -1136,6 +1136,330 @@ function requirementsFromYellow(yellow){
 }
 
 
+function panelCountsForSequence(sequence){
+  const counts={1:0,2:0,4:0};
+
+  sequence.forEach(piece=>{
+    counts[piece]=(counts[piece]??0)+1;
+  });
+
+  return counts;
+}
+
+
+function panelInventoryKey(lateral,size){
+  return `${lateral?"yellowSide":"yellowNormal"}${size}`;
+}
+
+
+function choosePanelInventoryCounts(segments,lateral){
+  const nominal={1:0,2:0,4:0};
+  let totalLength=0;
+  let minimumOnes=0;
+  let fourCapacity=0;
+
+  segments.forEach(segment=>{
+    const counts=panelCountsForSequence(segment.sequence);
+    const length=segment.sequence.reduce((sum,piece)=>sum+piece,0);
+    const evenLength=length-(length%2);
+
+    nominal[1]+=counts[1];
+    nominal[2]+=counts[2];
+    nominal[4]+=counts[4];
+    totalLength+=length;
+    minimumOnes+=length%2;
+    fourCapacity+=Math.floor(evenLength/4);
+  });
+
+  const stock={
+    1:remaining[panelInventoryKey(lateral,1)]??0,
+    2:remaining[panelInventoryKey(lateral,2)]??0,
+    4:remaining[panelInventoryKey(lateral,4)]??0
+  };
+
+  let best=null;
+  const maxFour=Math.min(stock[4],fourCapacity,Math.floor(totalLength/4));
+
+  for(let four=0;four<=maxFour;four++){
+    const afterFour=totalLength-four*4;
+    const maxTwo=Math.min(stock[2],Math.floor(afterFour/2));
+
+    for(let two=0;two<=maxTwo;two++){
+      const one=afterFour-two*2;
+
+      if(one<minimumOnes||one>stock[1])continue;
+
+      const changes=
+        Math.abs(four-nominal[4])+
+        Math.abs(two-nominal[2])+
+        Math.abs(one-nominal[1]);
+
+      const pieces=four+two+one;
+      const score=
+        changes*100000+
+        pieces*100+
+        Math.abs(four-nominal[4])*10+
+        Math.abs(two-nominal[2]);
+
+      if(!best||score<best.score){
+        best={counts:{1:one,2:two,4:four},nominal,score};
+      }
+    }
+  }
+
+  return best;
+}
+
+
+function distributePanelCounts(segments,target){
+  const allocations=segments.map(segment=>{
+    const length=segment.sequence.reduce((sum,piece)=>sum+piece,0);
+    const nominal=panelCountsForSequence(segment.sequence);
+
+    return {
+      segment,
+      length,
+      nominal,
+      counts:{1:length%2,2:0,4:0},
+      fourCapacity:Math.floor((length-(length%2))/4)
+    };
+  });
+
+  let fourLeft=target[4];
+
+  allocations.forEach(item=>{
+    const used=Math.min(fourLeft,item.nominal[4],item.fourCapacity);
+    item.counts[4]+=used;
+    fourLeft-=used;
+  });
+
+  allocations.forEach(item=>{
+    if(fourLeft<=0)return;
+    const free=item.fourCapacity-item.counts[4];
+    const used=Math.min(fourLeft,free);
+    item.counts[4]+=used;
+    fourLeft-=used;
+  });
+
+  let twoLeft=target[2];
+
+  allocations.forEach(item=>{
+    const capacity=Math.floor(
+      (item.length-item.counts[1]-item.counts[4]*4)/2
+    );
+    const used=Math.min(twoLeft,item.nominal[2],capacity);
+    item.counts[2]+=used;
+    twoLeft-=used;
+  });
+
+  allocations.forEach(item=>{
+    if(twoLeft<=0)return;
+    const capacity=Math.floor(
+      (item.length-item.counts[1]-item.counts[4]*4)/2
+    );
+    const free=capacity-item.counts[2];
+    const used=Math.min(twoLeft,free);
+    item.counts[2]+=used;
+    twoLeft-=used;
+  });
+
+  allocations.forEach(item=>{
+    item.counts[1]=
+      item.length-item.counts[4]*4-item.counts[2]*2;
+  });
+
+  const used={1:0,2:0,4:0};
+  allocations.forEach(item=>{
+    used[1]+=item.counts[1];
+    used[2]+=item.counts[2];
+    used[4]+=item.counts[4];
+  });
+
+  if(fourLeft||twoLeft||used[1]!==target[1])return null;
+
+  return allocations;
+}
+
+
+function orderedPanelSequence(counts,offset,previousSegments,reverseBias){
+  const available={...counts};
+  const total=available[1]+available[2]*2+available[4]*4;
+  const previousJoints=globalJointSet(previousSegments);
+  const sequence=[];
+  let position=0;
+
+  while(position<total){
+    const candidates=[4,2,1]
+      .filter(piece=>available[piece]>0)
+      .map(piece=>{
+        const next=position+piece;
+        const aligned=
+          next<total&&previousJoints.has(offset+next)
+          ? 1
+          : 0;
+        const edgeBias=reverseBias?piece:-piece;
+
+        return {piece,score:aligned*1000+edgeBias};
+      })
+      .sort((a,b)=>a.score-b.score||b.piece-a.piece);
+
+    const piece=candidates[0].piece;
+    sequence.push(piece);
+    available[piece]--;
+    position+=piece;
+  }
+
+  return sequence;
+}
+
+
+function alignedJointsForStrips(strips,stripCount){
+  let total=0;
+  let previous=[];
+
+  for(let index=0;index<stripCount;index++){
+    const current=strips.filter(strip=>strip.index===index);
+    const previousJoints=globalJointSet(previous);
+
+    current.forEach(strip=>{
+      total+=sequenceJoints(strip.sequence)
+        .filter(joint=>previousJoints.has(strip.offset+joint))
+        .length;
+    });
+
+    previous=current;
+  }
+
+  return total;
+}
+
+
+function yellowSubstitutionChanges(nominal,requirements,lateral){
+  const removed=[];
+  const added=[];
+
+  [4,2,1].forEach(size=>{
+    const key=panelInventoryKey(lateral,size);
+    const before=nominal[key]??0;
+    const after=requirements[key]??0;
+
+    if(after<before){
+      removed.push({key,size,count:before-after});
+    }else if(after>before){
+      added.push({key,size,count:after-before});
+    }
+  });
+
+  if(!removed.length&&!added.length)return null;
+
+  return {
+    kind:"yellow",
+    lateral,
+    removed,
+    added
+  };
+}
+
+
+function resolveYellowInventory(arrangement){
+  const nominalRequirements=requirementsFromYellow(arrangement);
+
+  if(!warehouseConfigured||!deficitsFor(nominalRequirements).length){
+    return {
+      strips:arrangement.strips,
+      alignedJoints:arrangement.totalAligned,
+      nominalRequirements,
+      requirements:{...nominalRequirements},
+      substitutions:[]
+    };
+  }
+
+  const indexed=arrangement.strips.map((segment,index)=>({segment,index}));
+  const allocationByIndex=new Map();
+
+  for(const lateral of [false,true]){
+    const group=indexed.filter(item=>item.segment.lateral===lateral);
+    if(!group.length)continue;
+
+    const choice=choosePanelInventoryCounts(
+      group.map(item=>item.segment),
+      lateral
+    );
+
+    if(!choice){
+      return {
+        strips:arrangement.strips,
+        alignedJoints:arrangement.totalAligned,
+        nominalRequirements,
+        requirements:{...nominalRequirements},
+        substitutions:[]
+      };
+    }
+
+    const distributed=distributePanelCounts(
+      group.map(item=>item.segment),
+      choice.counts
+    );
+
+    if(!distributed){
+      return {
+        strips:arrangement.strips,
+        alignedJoints:arrangement.totalAligned,
+        nominalRequirements,
+        requirements:{...nominalRequirements},
+        substitutions:[]
+      };
+    }
+
+    distributed.forEach((allocation,index)=>{
+      allocationByIndex.set(group[index].index,allocation.counts);
+    });
+  }
+
+  const strips=[];
+  let previous=[];
+
+  for(let stripIndex=0;stripIndex<arrangement.stripCount;stripIndex++){
+    const current=[];
+
+    indexed
+      .filter(item=>item.segment.index===stripIndex)
+      .forEach(item=>{
+        const sequence=orderedPanelSequence(
+          allocationByIndex.get(item.index),
+          item.segment.offset,
+          previous,
+          stripIndex%2===1
+        );
+
+        current.push({...item.segment,sequence});
+      });
+
+    strips.push(...current);
+    previous=current;
+  }
+
+  const requirements=requirementsFromYellow({strips});
+  const substitutions=[false,true]
+    .map(lateral=>
+      yellowSubstitutionChanges(
+        nominalRequirements,
+        requirements,
+        lateral
+      )
+    )
+    .filter(Boolean);
+
+  return {
+    strips,
+    alignedJoints:alignedJointsForStrips(strips,arrangement.stripCount),
+    nominalRequirements,
+    requirements,
+    substitutions
+  };
+}
+
+
 function calculateYellowOrientation(deck,orientation){
   const stripLength=orientation==="length"
     ? deck.length
@@ -1199,6 +1523,21 @@ function chooseYellowLayout(deck){
       ];
 
   candidates.forEach(candidate=>{
+    const resolution=resolveYellowInventory({
+      strips:candidate.strips,
+      totalAligned:candidate.alignedJoints,
+      stripCount:candidate.stripCount
+    });
+
+    candidate.strips=resolution.strips;
+    candidate.alignedJoints=resolution.alignedJoints;
+    candidate.nominalRequirements=resolution.nominalRequirements;
+    candidate.requirements=resolution.requirements;
+    candidate.substitutions=resolution.substitutions;
+    candidate.totalPieces=Object.values(candidate.requirements)
+      .reduce((sum,value)=>sum+value,0);
+    candidate.distinctSizes=Object.values(candidate.requirements)
+      .filter(value=>value>0).length;
     candidate.deficits=deficitsFor(candidate.requirements);
     candidate.missing=candidate.deficits
       .reduce((sum,item)=>sum+item.missing,0);
@@ -1211,7 +1550,8 @@ function chooseYellowLayout(deck){
       const bBad=b.deficits.length?1:0;
 
       if(aBad!==bBad)return aBad-bBad;
-      if(a.missing!==b.missing)return a.missing-b.missing;
+
+      if(aBad&&a.missing!==b.missing)return a.missing-b.missing;
     }
 
     if(a.alignedJoints!==b.alignedJoints){
@@ -1220,6 +1560,10 @@ function chooseYellowLayout(deck){
 
     if(a.totalPieces!==b.totalPieces){
       return a.totalPieces-b.totalPieces;
+    }
+
+    if(a.substitutions.length!==b.substitutions.length){
+      return a.substitutions.length-b.substitutions.length;
     }
 
     return a.distinctSizes-b.distinctSizes;
@@ -1252,6 +1596,8 @@ function calculatePlan(){
 
   const yellowEnabled=document.getElementById("yellowEnabled").checked;
   let yellow=null;
+  const nominalRequirements={...requirements};
+  let substitutions=[];
 
   if(yellowEnabled){
     yellow=chooseYellowLayout(deck);
@@ -1260,6 +1606,13 @@ function calculatePlan(){
       .forEach(([key,value])=>{
         requirements[key]+=value;
       });
+
+    Object.entries(yellow.nominalRequirements)
+      .forEach(([key,value])=>{
+        nominalRequirements[key]+=value;
+      });
+
+    substitutions=[...yellow.substitutions];
   }
 
   const deficits=deficitsFor(requirements);
@@ -1274,6 +1627,8 @@ function calculatePlan(){
     yellowEnabled,
     yellow,
     requirements,
+    nominalRequirements,
+    substitutions,
     deficits
   };
 
@@ -1298,8 +1653,12 @@ function renderInvalidPlan(){
   document.getElementById("yellowPlanTechnical").innerHTML="";
   document.getElementById("deckConfigPanel")
     .classList.add("config-panel-invalid");
+  document.getElementById("deckConfigPanel")
+    .classList.remove("config-panel-alternative");
   document.querySelector(".material-box")
     .classList.add("material-unavailable");
+  document.querySelector(".material-box")
+    .classList.remove("material-alternative");
   document.getElementById("print").disabled=true;
 }
 
@@ -1329,10 +1688,25 @@ function updateOrientationAutoLabel(){
 }
 
 
+function yellowSubstitutionText(substitution){
+  const group=substitution.lateral?"laterali":"normali";
+  const removed=substitution.removed
+    .map(item=>`${item.count} × ${item.size} m`)
+    .join(" + ");
+  const added=substitution.added
+    .map(item=>`${item.count} × ${item.size} m`)
+    .join(" + ");
+
+  return `Pannelli ${group}: ${removed} → ${added}`;
+}
+
+
 function renderSummary(){
   const plan=currentPlan;
   const materialUnavailable=
     warehouseConfigured&&plan.deficits.length>0;
+  const materialAlternative=
+    !materialUnavailable&&warehouseConfigured&&plan.substitutions.length>0;
 
   document.getElementById("printEventTitle").textContent=plan.name;
 
@@ -1344,7 +1718,16 @@ function renderSummary(){
       <span class="small">· imposta il magazzino per verificare il carico</span>
     `;
   }else if(!plan.deficits.length){
-    status=`<span class="good">✓ Materiale disponibile</span>`;
+    if(plan.substitutions.length){
+      status=`
+        <span class="status-alternative">◐ Realizzabile con pannelli alternativi</span>
+        <div class="warning warning-alternative">
+          ${plan.substitutions.map(yellowSubstitutionText).join(" · ")}
+        </div>
+      `;
+    }else{
+      status=`<span class="good">✓ Materiale disponibile</span>`;
+    }
   }else{
     status=`
       <span class="bad">⚠ Materiale insufficiente</span>
@@ -1367,9 +1750,23 @@ function renderSummary(){
     materialUnavailable
   );
 
+  document.querySelector(".material-box").classList.toggle(
+    "material-alternative",
+    materialAlternative
+  );
+
   document.getElementById("deckConfigPanel").classList.toggle(
     "config-panel-invalid",
     materialUnavailable
+  );
+
+  document.getElementById("deckConfigPanel").classList.toggle(
+    "config-panel-alternative",
+    materialAlternative
+  );
+
+  const substituteKeys=new Set(
+    plan.substitutions.flatMap(item=>item.added.map(change=>change.key))
   );
 
   const materialHtml=ITEMS
@@ -1379,7 +1776,7 @@ function renderSummary(){
       if(!quantity)return "";
 
       return `
-        <div class="material-row">
+        <div class="material-row${substituteKeys.has(item.key)?" material-substitute":""}">
           <div class="material-qty">${quantity}</div>
           <div class="material-name">${item.label}</div>
         </div>
