@@ -346,49 +346,48 @@ select{
   background:#f7f8fa;
 }
 
-.current-code-text strong,
-.code-reservations-title{
+.current-code-text strong{
   display:block;
   margin:0;
 
-  font-size:12px;
+  font-size:11px;
   font-weight:800;
 }
 
 .project-code-row{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) auto;
-  gap:6px;
+  display:flex;
+  gap:4px;
   align-items:center;
+  justify-content:space-between;
+}
+
+.project-code-left{
+  display:flex;
+  align-items:center;
+  gap:3px;
 }
 
 .project-code-actions{
   display:flex;
-  gap:4px;
-  margin-top:5px;
+  gap:3px;
+  margin:0 0 0 auto;
 }
 
+.project-code-left button,
 .project-code-actions button{
   min-width:0;
-  padding:6px 8px;
-  font-size:11px;
-}
-
-.code-import{
-  margin-top:7px;
-  padding-top:7px;
-  border-top:1px solid #d7dce1;
-}
-
-.code-import-label{
-  font-size:12px;
-  font-weight:800;
+  padding:5px;
+  font-size:10px;
 }
 
 .reserved-structures{
   display:grid;
   gap:4px;
-  margin-top:5px;
+  margin-top:6px;
+}
+
+.reserved-structures:empty{
+  display:none;
 }
 
 .reserved-structure{
@@ -1494,30 +1493,26 @@ select{
 
         <div class="project-code-row">
 
-          <div class="current-code-text">
-            <strong>Codice</strong>
-          </div>
+          <div class="project-code-left">
 
-          <input
-            id="currentStructureCode"
-            type="hidden"
-            aria-label="Codice aggiornato della struttura corrente"
-          >
+            <div class="current-code-text">
+              <strong>Codice</strong>
+            </div>
 
-          <button
-            id="copyStructureCode"
-            type="button"
-            class="secondary"
-          >
-            Copia
-          </button>
+            <input
+              id="currentStructureCode"
+              type="hidden"
+              aria-label="Codice aggiornato della struttura corrente"
+            >
 
-        </div>
+            <button
+              id="copyStructureCode"
+              type="button"
+              class="secondary"
+            >
+              Copia
+            </button>
 
-        <div class="code-import">
-
-          <div class="code-import-label">
-            Apri o aggiungi codice
           </div>
 
           <input
@@ -1556,20 +1551,12 @@ select{
 
           </div>
 
-          <div class="code-import">
-
-            <span class="code-reservations-title">
-              Altre strutture
-            </span>
-
-            <div
-              id="reservedStructures"
-              class="reserved-structures"
-            ></div>
-
-          </div>
-
         </div>
+
+        <div
+          id="reservedStructures"
+          class="reserved-structures"
+        ></div>
 
       </div>
 
@@ -4717,7 +4704,7 @@ function renderStructureReservations(){
     return;
 
   if(!structureReservations.length){
-    root.innerHTML='<span class="small">Nessuna struttura aggiunta.</span>';
+    root.innerHTML="";
     return;
   }
 
