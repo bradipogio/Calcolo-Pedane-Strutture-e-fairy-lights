@@ -336,6 +336,108 @@ select{
   background:#a91f1f;
 }
 
+.project-code-box{
+  margin-top:12px;
+  padding:10px;
+
+  border:1px solid #d7dce1;
+  border-radius:8px;
+
+  background:#f7f8fa;
+}
+
+.project-code-box > label,
+.code-reservations-title{
+  display:block;
+  margin:0 0 6px;
+
+  font-size:12px;
+  font-weight:800;
+}
+
+.project-code-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:6px;
+  align-items:stretch;
+}
+
+.project-code-row textarea,
+.code-import textarea{
+  width:100%;
+  min-height:50px;
+  margin:0;
+  padding:7px;
+
+  resize:vertical;
+
+  border:1px solid #c7cdd3;
+  border-radius:6px;
+
+  background:white;
+
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:10px;
+  line-height:1.3;
+}
+
+.project-code-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:7px;
+}
+
+.code-import{
+  margin-top:9px;
+  padding-top:9px;
+  border-top:1px solid #d7dce1;
+}
+
+.code-import summary{
+  cursor:pointer;
+  font-size:12px;
+  font-weight:800;
+}
+
+.code-import textarea{
+  min-height:62px;
+  margin-top:8px;
+}
+
+.reserved-structures{
+  display:grid;
+  gap:5px;
+  margin-top:8px;
+}
+
+.reserved-structure{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:7px;
+  align-items:center;
+
+  padding:7px;
+  border:1px solid #ead39a;
+  border-radius:6px;
+  background:#fff8df;
+
+  font-size:11px;
+}
+
+.reserved-structure strong{
+  display:block;
+  margin-bottom:2px;
+}
+
+.reserved-structure button{
+  padding:5px 7px;
+}
+
+.print-project-code{
+  display:none;
+}
+
 .small{
   color:#666;
   font-size:12px;
@@ -923,6 +1025,28 @@ select{
     line-height:1.1;
   }
 
+  .print-project-code{
+    display:block;
+
+    margin:0 0 10px;
+    padding:7px 9px;
+
+    border:1px solid #777;
+    border-radius:5px;
+
+    color:#444;
+    font-size:8px;
+    line-height:1.25;
+    overflow-wrap:anywhere;
+  }
+
+  .print-project-code strong{
+    display:block;
+    margin-bottom:3px;
+    color:#111;
+    font-size:11px;
+  }
+
   /*
     PRIMA RIGA:
     3D GRANDE
@@ -1082,6 +1206,11 @@ select{
 
 
   <div id="printEventTitle"></div>
+
+  <div id="printProjectCode" class="print-project-code">
+    <strong>Codice struttura</strong>
+    <span></span>
+  </div>
 
 
   <div class="workspace-grid">
@@ -1309,6 +1438,84 @@ select{
           </svg>
           Salva PDF
         </button>
+
+      </div>
+
+
+      <div class="project-code-box">
+
+        <label for="currentStructureCode">
+          Codice di questa struttura
+        </label>
+
+        <div class="project-code-row">
+
+          <textarea
+            id="currentStructureCode"
+            rows="2"
+            readonly
+            spellcheck="false"
+            aria-label="Codice aggiornato della struttura corrente"
+          ></textarea>
+
+          <button
+            id="copyStructureCode"
+            type="button"
+            class="secondary"
+          >
+            Copia
+          </button>
+
+        </div>
+
+        <details class="code-import">
+
+          <summary>
+            Apri un codice o aggiungi strutture dello stesso giorno
+          </summary>
+
+          <textarea
+            id="structureCodeInput"
+            rows="3"
+            spellcheck="false"
+            placeholder="Incolla qui il codice STR1…"
+            aria-label="Codice struttura da aprire o impegnare"
+          ></textarea>
+
+          <div class="project-code-actions">
+
+            <button
+              id="loadStructureCode"
+              type="button"
+              class="secondary"
+            >
+              Apri struttura
+            </button>
+
+            <button
+              id="reserveStructureCode"
+              type="button"
+              class="primary"
+            >
+              Impegna materiale
+            </button>
+
+          </div>
+
+          <div class="code-import">
+
+            <span class="code-reservations-title">
+              Strutture già impegnate
+            </span>
+
+            <div
+              id="reservedStructures"
+              class="reserved-structures"
+            ></div>
+
+          </div>
+
+        </details>
 
       </div>
 
@@ -1775,6 +1982,13 @@ import {
 from "./storage.js";
 
 
+import {
+  encodeStructureCode,
+  decodeStructureCode
+}
+from "./project-code.js";
+
+
 
 /* =========================================================
    COSTANTI
@@ -2075,6 +2289,8 @@ const TOP_METHODS = {
 
 let warehouse = {};
 
+let sharedRemaining = {};
+
 let remaining = {};
 
 let warehouseConfigured = false;
@@ -2129,6 +2345,14 @@ let fairySpacingMeters =
   DEFAULT_FAIRY_SPACING;
 
 let fairyOrientation = "A";
+
+const STRUCTURE_RESERVATIONS_KEY =
+  "plannerStructureReservations_v1";
+
+let structureReservations = [];
+
+let currentProjectId =
+  makeProjectId();
 
 
 
@@ -4076,6 +4300,466 @@ function syncFairyProjectOptions(){
 
 
 /* =========================================================
+   CODICE STRUTTURA E PRENOTAZIONI
+========================================================= */
+
+function makeProjectId(){
+
+  if(globalThis.crypto?.randomUUID){
+    return crypto.randomUUID().replaceAll("-","").slice(0,12);
+  }
+
+  return (
+    Date.now().toString(36)
+    +
+    Math.random().toString(36).slice(2,8)
+  );
+
+}
+
+
+function sparseRequirements(requirements={}){
+
+  const result={};
+
+  ITEMS.forEach(item=>{
+
+    const quantity=Math.max(
+      0,
+      Math.floor(Number(requirements[item.key])||0)
+    );
+
+    if(quantity>0)
+      result[item.key]=quantity;
+
+  });
+
+  return result;
+
+}
+
+
+function compactLayout(target){
+
+  return target.nodes
+    .map(row=>row.map(Boolean).map(Number).join(""))
+    .join(".");
+
+}
+
+
+function projectPayload(plan){
+
+  return {
+    v:1,
+    k:"struttura",
+    i:currentProjectId,
+    l:plan.length,
+    w:plan.normalWidthTotal,
+    z:plan.totalWidth,
+    s:plan.geometry.side.sections,
+    sm:sectionsManual?1:0,
+    c:customLayout?1:0,
+    so:document.getElementById("sideMethod").value,
+    to:document.getElementById("topMethod").value,
+    ab:archBayLength,
+    e:plan.fairyEnabled?1:0,
+    o:plan.fairyOrientation,
+    d:Math.round(plan.fairySpacing*100),
+    m:Math.round(plan.fairyMargin*100),
+    n:compactLayout(plan.layout),
+    a:[...plan.archEdges].sort(),
+    lo:[...plan.lowerOffEdges].sort(),
+    ff:[...plan.fairyOffEdges].sort(),
+    r:sparseRequirements(plan.requirements),
+    q:(
+      !plan.invalid
+      && warehouseConfigured
+      && !plan.deficits.length
+      && plan.fairyAvailable
+    )?1:0
+  };
+
+}
+
+
+function currentStructureCode(){
+
+  if(!currentPlan)
+    return "";
+
+  return encodeStructureCode(
+    projectPayload(currentPlan)
+  );
+
+}
+
+
+function updateStructureCode(){
+
+  const code=currentStructureCode();
+
+  const field=document.getElementById(
+    "currentStructureCode"
+  );
+
+  if(field)
+    field.value=code;
+
+  const printCode=document.querySelector(
+    "#printProjectCode span"
+  );
+
+  if(printCode)
+    printCode.textContent=code;
+
+}
+
+
+function validatedProjectData(payload){
+
+  const length=Number(payload.l);
+  const width=Number(payload.w);
+  const sections=Math.round(Number(payload.s));
+
+  if(
+    !(length>0 && length<=1000)
+    || !(width>=0 && width<=1000)
+    || !(sections>=2 && sections<=100)
+  ){
+    throw new Error("Le misure contenute nel codice non sono valide.");
+  }
+
+  const rows=String(payload.n??"").split(".");
+
+  if(
+    rows.length<2
+    || rows.length>102
+    || !rows[0]
+    || rows[0].length>102
+    || rows.some(row=>
+      row.length!==rows[0].length
+      || !/^[01]+$/.test(row)
+    )
+  ){
+    throw new Error("Lo schema contenuto nel codice non e valido.");
+  }
+
+  const allowedSide=new Set([
+    "auto","fixed3","fixed4","tel1","tel15","tel3","tel4"
+  ]);
+
+  const allowedTop=new Set(allowedSide);
+
+  const side=allowedSide.has(payload.so)?payload.so:"auto";
+  const top=allowedTop.has(payload.to)?payload.to:"auto";
+
+  const edgeList=value=>{
+
+    if(!Array.isArray(value) || value.length>10000)
+      return [];
+
+    return value.filter(key=>/^\d+,\d+$/.test(String(key)));
+
+  };
+
+  return {
+    id:/^[0-9a-z]{6,40}$/i.test(String(payload.i??""))
+      ? String(payload.i)
+      : makeProjectId(),
+    length,
+    width,
+    totalWidth:Number(payload.z)||width,
+    sections,
+    sectionsManual:Boolean(payload.sm),
+    customLayout:Boolean(payload.c),
+    side,
+    top,
+    archBay:[1.5,3].includes(Number(payload.ab))
+      ? Number(payload.ab)
+      : DEFAULT_ARCH_BAY_LENGTH,
+    fairyEnabled:Boolean(payload.e),
+    fairyOrientation:payload.o==="B"?"B":"A",
+    spacingCm:Math.min(1000,Math.max(5,Number(payload.d)||30)),
+    marginCm:Math.min(10000,Math.max(0,Number(payload.m)||0)),
+    layout:{
+      rows:rows.length,
+      cols:rows[0].length,
+      nodes:rows.map(row=>[...row].map(value=>value==="1"))
+    },
+    arches:edgeList(payload.a),
+    lower:edgeList(payload.lo),
+    fairyOff:edgeList(payload.ff),
+    requirements:sparseRequirements(payload.r),
+    reservable:Boolean(payload.q)
+  };
+
+}
+
+
+function decodeValidatedStructure(rawCode){
+
+  const decoded=decodeStructureCode(rawCode);
+
+  return {
+    ...decoded,
+    data:validatedProjectData(decoded.payload)
+  };
+
+}
+
+
+function readStructureReservations(){
+
+  let saved=[];
+
+  try{
+    saved=JSON.parse(
+      localStorage.getItem(STRUCTURE_RESERVATIONS_KEY)
+      || "[]"
+    );
+  }
+  catch(error){
+    saved=[];
+  }
+
+  const unique=new Map();
+
+  (Array.isArray(saved)?saved:[])
+    .forEach(rawCode=>{
+
+      try{
+        const decoded=decodeValidatedStructure(rawCode);
+        unique.set(decoded.data.id,decoded);
+      }
+      catch(error){}
+
+    });
+
+  structureReservations=[...unique.values()];
+
+}
+
+
+function saveStructureReservations(){
+
+  localStorage.setItem(
+    STRUCTURE_RESERVATIONS_KEY,
+    JSON.stringify(
+      structureReservations.map(item=>item.code)
+    )
+  );
+
+}
+
+
+function reservedTotals(){
+
+  const totals={};
+
+  SHARED_ITEMS.forEach(item=>{
+    totals[item.key]=0;
+  });
+
+  structureReservations.forEach(reservation=>{
+
+    Object.entries(reservation.data.requirements)
+      .forEach(([key,quantity])=>{
+        if(key in totals)
+          totals[key]+=quantity;
+      });
+
+  });
+
+  return totals;
+
+}
+
+
+function applyStructureReservations(){
+
+  const totals=reservedTotals();
+
+  remaining={...sharedRemaining};
+
+  SHARED_ITEMS.forEach(item=>{
+    remaining[item.key]=Math.max(
+      0,
+      (sharedRemaining[item.key]??0)-(totals[item.key]??0)
+    );
+  });
+
+}
+
+
+function renderStructureReservations(){
+
+  const root=document.getElementById(
+    "reservedStructures"
+  );
+
+  if(!root)
+    return;
+
+  if(!structureReservations.length){
+    root.innerHTML='<span class="small">Nessuna struttura aggiunta.</span>';
+    return;
+  }
+
+  root.innerHTML=structureReservations
+    .map((reservation,index)=>`
+      <div class="reserved-structure">
+        <div>
+          <strong>Codice ${reservation.shortId}</strong>
+          ${formatNumber(reservation.data.length)} × ${formatNumber(reservation.data.totalWidth)} m
+        </div>
+        <button
+          type="button"
+          class="secondary"
+          data-remove-reservation="${index}"
+          aria-label="Rimuovi struttura ${reservation.shortId}"
+        >
+          Rimuovi
+        </button>
+      </div>
+    `)
+    .join("");
+
+}
+
+
+function codeFromImportField(){
+
+  const field=document.getElementById(
+    "structureCodeInput"
+  );
+
+  if(!field.value.trim())
+    throw new Error("Prima incolla un codice struttura.");
+
+  return decodeValidatedStructure(field.value);
+
+}
+
+
+function loadStructureFromCode(){
+
+  try{
+
+    const decoded=codeFromImportField();
+    const data=decoded.data;
+
+    currentProjectId=data.id;
+
+    document.getElementById("length").value=data.length;
+    document.getElementById("totalWidth").value=data.width;
+    document.getElementById("sections").value=data.sections;
+    document.getElementById("sideMethod").value=data.side;
+    document.getElementById("topMethod").value=data.top;
+    document.getElementById("archBaySize").value=String(data.archBay);
+    document.getElementById("fairyEnabled").checked=data.fairyEnabled;
+    document.getElementById("fairyOrientation").value=data.fairyOrientation;
+    document.getElementById("fairySpacingCm").value=data.spacingCm;
+    document.getElementById("fairyMarginCm").value=data.marginCm;
+
+    layout=cloneLayout(data.layout);
+    archEdges=new Set(data.arches);
+    lowerOffEdges=new Set(data.lower);
+    fairyOffEdges=new Set(data.fairyOff);
+    archBayLength=data.archBay;
+    sectionsManual=data.sectionsManual;
+    customLayout=data.customLayout;
+    preferredSections=data.sections;
+
+    cleanOverrides();
+
+    document.getElementById("sectionsAuto")
+      .classList.toggle("active-button",!sectionsManual);
+
+    document.getElementById("structureCodeInput").value="";
+
+    syncFairyProjectOptions();
+    scheduleCalculate();
+
+  }
+  catch(error){
+    alert(error.message);
+  }
+
+}
+
+
+function reserveStructureFromCode(){
+
+  try{
+
+    const decoded=codeFromImportField();
+
+    if(decoded.data.id===currentProjectId){
+      throw new Error("Questo e il codice della struttura che stai modificando: non va aggiunto anche tra quelle impegnate.");
+    }
+
+    if(!decoded.data.reservable){
+      throw new Error("Questo codice non proviene da una struttura verificata con il magazzino disponibile.");
+    }
+
+    const existingIndex=structureReservations.findIndex(
+      item=>item.data.id===decoded.data.id
+    );
+
+    if(existingIndex>=0)
+      structureReservations[existingIndex]=decoded;
+    else
+      structureReservations.push(decoded);
+
+    saveStructureReservations();
+    document.getElementById("structureCodeInput").value="";
+
+    syncSharedStorage();
+    renderStructureReservations();
+    scheduleCalculate();
+
+  }
+  catch(error){
+    alert(error.message);
+  }
+
+}
+
+
+async function copyCurrentStructureCode(){
+
+  const field=document.getElementById(
+    "currentStructureCode"
+  );
+
+  if(!field.value)
+    return;
+
+  try{
+    await navigator.clipboard.writeText(field.value);
+  }
+  catch(error){
+    field.focus();
+    field.select();
+    document.execCommand("copy");
+  }
+
+  const button=document.getElementById(
+    "copyStructureCode"
+  );
+
+  button.textContent="Copiato";
+
+  setTimeout(()=>{
+    button.textContent="Copia";
+  },1200);
+
+}
+
+
+
+/* =========================================================
    MAGAZZINO CONDIVISO
 ========================================================= */
 
@@ -4090,7 +4774,7 @@ function syncSharedStorage(){
   };
 
 
-  remaining = {
+  sharedRemaining = {
     ...state.remaining
   };
 
@@ -4102,6 +4786,11 @@ function syncSharedStorage(){
 
   warehouseConfigured =
     state.configured;
+
+
+  readStructureReservations();
+
+  applyStructureReservations();
 
 }
 
@@ -7380,6 +8069,20 @@ function renderStructureInputError(
 
   document
     .getElementById(
+      "currentStructureCode"
+    )
+    .value="";
+
+
+  document
+    .querySelector(
+      "#printProjectCode span"
+    )
+    .textContent="";
+
+
+  document
+    .getElementById(
       "structureConfigPanel"
     )
     .classList
@@ -7827,6 +8530,10 @@ function renderAll(){
   renderTechnicalViews(
     currentPlan
   );
+
+  updateStructureCode();
+
+  renderStructureReservations();
 
 }
 
@@ -12225,6 +12932,9 @@ async function printReport(){
   }
 
 
+  updateStructureCode();
+
+
   await preparePrintPreview();
 
 
@@ -12471,6 +13181,68 @@ document
   .addEventListener(
     "click",
     printReport
+  );
+
+
+document
+  .getElementById(
+    "copyStructureCode"
+  )
+  .addEventListener(
+    "click",
+    copyCurrentStructureCode
+  );
+
+
+document
+  .getElementById(
+    "loadStructureCode"
+  )
+  .addEventListener(
+    "click",
+    loadStructureFromCode
+  );
+
+
+document
+  .getElementById(
+    "reserveStructureCode"
+  )
+  .addEventListener(
+    "click",
+    reserveStructureFromCode
+  );
+
+
+document
+  .getElementById(
+    "reservedStructures"
+  )
+  .addEventListener(
+    "click",
+    event=>{
+
+      const button=event.target.closest(
+        "[data-remove-reservation]"
+      );
+
+      if(!button)
+        return;
+
+      const index=Number(
+        button.dataset.removeReservation
+      );
+
+      if(!Number.isInteger(index))
+        return;
+
+      structureReservations.splice(index,1);
+      saveStructureReservations();
+      syncSharedStorage();
+      renderStructureReservations();
+      scheduleCalculate();
+
+    }
   );
 
 
@@ -12889,6 +13661,23 @@ window.addEventListener(
     syncSharedStorage();
 
     scheduleCalculate();
+
+  }
+);
+
+
+window.addEventListener(
+  "storage",
+  event=>{
+
+    if(
+      event.key===STRUCTURE_RESERVATIONS_KEY
+      || event.key==="plannerTecnicoSharedStorage_v1"
+    ){
+      syncSharedStorage();
+      renderStructureReservations();
+      scheduleCalculate();
+    }
 
   }
 );
