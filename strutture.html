@@ -337,8 +337,8 @@ select{
 }
 
 .project-code-box{
-  margin-top:12px;
-  padding:10px;
+  margin-top:9px;
+  padding:7px;
 
   border:1px solid #d7dce1;
   border-radius:8px;
@@ -346,10 +346,10 @@ select{
   background:#f7f8fa;
 }
 
-.project-code-box > label,
+.current-code-text strong,
 .code-reservations-title{
   display:block;
-  margin:0 0 6px;
+  margin:0;
 
   font-size:12px;
   font-weight:800;
@@ -359,65 +359,45 @@ select{
   display:grid;
   grid-template-columns:minmax(0,1fr) auto;
   gap:6px;
-  align-items:stretch;
-}
-
-.project-code-row textarea,
-.code-import textarea{
-  width:100%;
-  min-height:50px;
-  margin:0;
-  padding:7px;
-
-  resize:vertical;
-
-  border:1px solid #c7cdd3;
-  border-radius:6px;
-
-  background:white;
-
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:10px;
-  line-height:1.3;
+  align-items:center;
 }
 
 .project-code-actions{
   display:flex;
-  flex-wrap:wrap;
-  gap:6px;
-  margin-top:7px;
+  gap:4px;
+  margin-top:5px;
+}
+
+.project-code-actions button{
+  min-width:0;
+  padding:6px 8px;
+  font-size:11px;
 }
 
 .code-import{
-  margin-top:9px;
-  padding-top:9px;
+  margin-top:7px;
+  padding-top:7px;
   border-top:1px solid #d7dce1;
 }
 
-.code-import summary{
-  cursor:pointer;
+.code-import-label{
   font-size:12px;
   font-weight:800;
 }
 
-.code-import textarea{
-  min-height:62px;
-  margin-top:8px;
-}
-
 .reserved-structures{
   display:grid;
-  gap:5px;
-  margin-top:8px;
+  gap:4px;
+  margin-top:5px;
 }
 
 .reserved-structure{
   display:grid;
-  grid-template-columns:minmax(0,1fr) auto;
-  gap:7px;
+  grid-template-columns:minmax(0,1fr) auto auto;
+  gap:6px;
   align-items:center;
 
-  padding:7px;
+  padding:5px 6px;
   border:1px solid #ead39a;
   border-radius:6px;
   background:#fff8df;
@@ -425,13 +405,86 @@ select{
   font-size:11px;
 }
 
-.reserved-structure strong{
+.reservation-toggle{
+  position:relative;
   display:block;
-  margin-bottom:2px;
+  margin:0;
+  cursor:pointer;
 }
 
-.reserved-structure button{
-  padding:5px 7px;
+.reservation-toggle input{
+  position:absolute;
+  width:1px;
+  height:1px;
+  opacity:0;
+}
+
+.reservation-track{
+  display:block;
+
+  width:32px;
+  height:18px;
+
+  border-radius:999px;
+  background:#aeb5bc;
+
+  transition:background .15s ease;
+}
+
+.reservation-knob{
+  display:block;
+
+  width:14px;
+  height:14px;
+
+  transform:translate(2px,2px);
+
+  border-radius:50%;
+  background:white;
+  box-shadow:0 1px 2px rgba(0,0,0,.25);
+
+  transition:transform .15s ease;
+}
+
+.reservation-toggle input:checked + .reservation-track{
+  background:#198754;
+}
+
+.reservation-toggle input:checked + .reservation-track .reservation-knob{
+  transform:translate(16px,2px);
+}
+
+.reservation-toggle input:focus-visible + .reservation-track{
+  outline:2px solid #111;
+  outline-offset:2px;
+}
+
+.reserved-structure.reservation-problem{
+  border-color:#c62828;
+  background:#fff1f1;
+}
+
+.reserved-structure strong{
+  display:block;
+  margin:0;
+}
+
+.reserved-structure .reservation-remove{
+  width:26px;
+  height:26px;
+  padding:0;
+
+  border-radius:50%;
+  background:transparent;
+  color:#6c737b;
+
+  font-size:16px;
+  line-height:1;
+}
+
+.reserved-structure .reservation-remove:hover{
+  background:#f1dddd;
+  color:#a91f1f;
 }
 
 .print-project-code{
@@ -1028,7 +1081,7 @@ select{
   .print-project-code{
     display:block;
 
-    margin:0 0 10px;
+    margin:10px 0 0;
     padding:7px 9px;
 
     border:1px solid #777;
@@ -1038,6 +1091,7 @@ select{
     font-size:8px;
     line-height:1.25;
     overflow-wrap:anywhere;
+    break-inside:avoid;
   }
 
   .print-project-code strong{
@@ -1206,12 +1260,6 @@ select{
 
 
   <div id="printEventTitle"></div>
-
-  <div id="printProjectCode" class="print-project-code">
-    <strong>Codice struttura</strong>
-    <span></span>
-  </div>
-
 
   <div class="workspace-grid">
 
@@ -1444,19 +1492,17 @@ select{
 
       <div class="project-code-box">
 
-        <label for="currentStructureCode">
-          Codice di questa struttura
-        </label>
-
         <div class="project-code-row">
 
-          <textarea
+          <div class="current-code-text">
+            <strong>Codice</strong>
+          </div>
+
+          <input
             id="currentStructureCode"
-            rows="2"
-            readonly
-            spellcheck="false"
+            type="hidden"
             aria-label="Codice aggiornato della struttura corrente"
-          ></textarea>
+          >
 
           <button
             id="copyStructureCode"
@@ -1468,36 +1514,44 @@ select{
 
         </div>
 
-        <details class="code-import">
+        <div class="code-import">
 
-          <summary>
-            Apri un codice o aggiungi strutture dello stesso giorno
-          </summary>
+          <div class="code-import-label">
+            Apri o aggiungi codice
+          </div>
 
-          <textarea
+          <input
             id="structureCodeInput"
-            rows="3"
-            spellcheck="false"
-            placeholder="Incolla qui il codice STR1…"
+            type="hidden"
             aria-label="Codice struttura da aprire o impegnare"
-          ></textarea>
+          >
 
           <div class="project-code-actions">
 
             <button
-              id="loadStructureCode"
+              id="pasteStructureCode"
               type="button"
               class="secondary"
             >
-              Apri struttura
+              Incolla
             </button>
 
             <button
               id="reserveStructureCode"
               type="button"
               class="primary"
+              disabled
             >
-              Impegna materiale
+              Aggiungi
+            </button>
+
+            <button
+              id="loadStructureCode"
+              type="button"
+              class="secondary"
+              disabled
+            >
+              Apri
             </button>
 
           </div>
@@ -1505,7 +1559,7 @@ select{
           <div class="code-import">
 
             <span class="code-reservations-title">
-              Strutture già impegnate
+              Altre strutture
             </span>
 
             <div
@@ -1515,7 +1569,7 @@ select{
 
           </div>
 
-        </details>
+        </div>
 
       </div>
 
@@ -1863,6 +1917,12 @@ select{
 
   </div>
 
+</div>
+
+
+<div id="printProjectCode" class="print-project-code">
+  <strong>Codice struttura</strong>
+  <span></span>
 </div>
 
 
@@ -2350,9 +2410,6 @@ const STRUCTURE_RESERVATIONS_KEY =
   "plannerStructureReservations_v1";
 
 let structureReservations = [];
-
-let currentProjectId =
-  makeProjectId();
 
 
 
@@ -4303,21 +4360,6 @@ function syncFairyProjectOptions(){
    CODICE STRUTTURA E PRENOTAZIONI
 ========================================================= */
 
-function makeProjectId(){
-
-  if(globalThis.crypto?.randomUUID){
-    return crypto.randomUUID().replaceAll("-","").slice(0,12);
-  }
-
-  return (
-    Date.now().toString(36)
-    +
-    Math.random().toString(36).slice(2,8)
-  );
-
-}
-
-
 function sparseRequirements(requirements={}){
 
   const result={};
@@ -4351,12 +4393,10 @@ function compactLayout(target){
 function projectPayload(plan){
 
   return {
-    v:1,
+    v:2,
     k:"struttura",
-    i:currentProjectId,
     l:plan.length,
     w:plan.normalWidthTotal,
-    z:plan.totalWidth,
     s:plan.geometry.side.sections,
     sm:sectionsManual?1:0,
     c:customLayout?1:0,
@@ -4371,13 +4411,11 @@ function projectPayload(plan){
     a:[...plan.archEdges].sort(),
     lo:[...plan.lowerOffEdges].sort(),
     ff:[...plan.fairyOffEdges].sort(),
-    r:sparseRequirements(plan.requirements),
-    q:(
-      !plan.invalid
-      && warehouseConfigured
-      && !plan.deficits.length
-      && plan.fairyAvailable
-    )?1:0
+    r:sparseRequirements(plan.nominalRequirements),
+    f:plan.fairyEnabled&&plan.fairy
+      ? Math.round(plan.fairy.total*100)
+      : 0,
+    q:plan.invalid?0:1
   };
 
 }
@@ -4464,12 +4502,8 @@ function validatedProjectData(payload){
   };
 
   return {
-    id:/^[0-9a-z]{6,40}$/i.test(String(payload.i??""))
-      ? String(payload.i)
-      : makeProjectId(),
     length,
     width,
-    totalWidth:Number(payload.z)||width,
     sections,
     sectionsManual:Boolean(payload.sm),
     customLayout:Boolean(payload.c),
@@ -4491,7 +4525,9 @@ function validatedProjectData(payload){
     lower:edgeList(payload.lo),
     fairyOff:edgeList(payload.ff),
     requirements:sparseRequirements(payload.r),
-    reservable:Boolean(payload.q)
+    fairyMeters:Math.max(0,(Number(payload.f)||0)/100),
+    legacy:payload.v===1,
+    geometryValid:payload.v===1?true:Boolean(payload.q)
   };
 
 }
@@ -4513,6 +4549,8 @@ function readStructureReservations(){
 
   let saved=[];
 
+  structureReservations=[];
+
   try{
     saved=JSON.parse(
       localStorage.getItem(STRUCTURE_RESERVATIONS_KEY)
@@ -4523,20 +4561,25 @@ function readStructureReservations(){
     saved=[];
   }
 
-  const unique=new Map();
-
   (Array.isArray(saved)?saved:[])
-    .forEach(rawCode=>{
+    .forEach(entry=>{
 
       try{
+        const rawCode=typeof entry==="string"
+          ? entry
+          : entry?.code;
+
         const decoded=decodeValidatedStructure(rawCode);
-        unique.set(decoded.data.id,decoded);
+
+        decoded.active=typeof entry==="object"
+          ? entry.active!==false
+          : true;
+
+        structureReservations.push(decoded);
       }
       catch(error){}
 
     });
-
-  structureReservations=[...unique.values()];
 
 }
 
@@ -4546,48 +4589,120 @@ function saveStructureReservations(){
   localStorage.setItem(
     STRUCTURE_RESERVATIONS_KEY,
     JSON.stringify(
-      structureReservations.map(item=>item.code)
+      structureReservations.map(item=>({
+        code:item.code,
+        active:item.active!==false
+      }))
     )
   );
 
 }
 
 
-function reservedTotals(){
+function reservationMaterialPlan(
+  reservation,
+  availableStock
+){
 
-  const totals={};
+  if(reservation.data.legacy){
 
-  SHARED_ITEMS.forEach(item=>{
-    totals[item.key]=0;
-  });
+    const requirements={
+      ...reservation.data.requirements
+    };
 
-  structureReservations.forEach(reservation=>{
+    return {
+      requirements,
+      deficits:deficitsFor(requirements,availableStock),
+      fairyAvailable:true
+    };
 
-    Object.entries(reservation.data.requirements)
-      .forEach(([key,quantity])=>{
-        if(key in totals)
-          totals[key]+=quantity;
-      });
+  }
 
-  });
+  const resolution=resolveStructureRequirements(
+    reservation.data.requirements,
+    availableStock
+  );
 
-  return totals;
+  const requirements={
+    ...resolution.requirements
+  };
+
+  let fairyAvailable=true;
+
+  if(reservation.data.fairyMeters>0){
+
+    const baskets=chooseFairyBaskets(
+      reservation.data.fairyMeters,
+      availableStock
+    );
+
+    if(baskets){
+      requirements.fairy100=baskets.fairy100;
+      requirements.fairy200=baskets.fairy200;
+    }
+    else{
+      fairyAvailable=false;
+    }
+
+  }
+
+  return {
+    requirements,
+    deficits:deficitsFor(requirements,availableStock),
+    fairyAvailable
+  };
 
 }
 
 
 function applyStructureReservations(){
 
-  const totals=reservedTotals();
-
   remaining={...sharedRemaining};
 
-  SHARED_ITEMS.forEach(item=>{
-    remaining[item.key]=Math.max(
-      0,
-      (sharedRemaining[item.key]??0)-(totals[item.key]??0)
+  structureReservations.forEach(reservation=>{
+
+    reservation.materialPlan=null;
+
+    if(reservation.active===false)
+      return;
+
+    const materialPlan=reservationMaterialPlan(
+      reservation,
+      remaining
     );
+
+    reservation.materialPlan=materialPlan;
+
+    Object.entries(materialPlan.requirements)
+      .forEach(([key,quantity])=>{
+
+        if(!(key in remaining))
+          return;
+
+        remaining[key]=Math.max(
+          0,
+          remaining[key]-quantity
+        );
+
+      });
+
   });
+
+}
+
+
+function structureLetter(index){
+
+  let value=index+2;
+  let label="";
+
+  while(value>0){
+    value--;
+    label=String.fromCharCode(65+(value%26))+label;
+    value=Math.floor(value/26);
+  }
+
+  return label;
 
 }
 
@@ -4607,22 +4722,44 @@ function renderStructureReservations(){
   }
 
   root.innerHTML=structureReservations
-    .map((reservation,index)=>`
-      <div class="reserved-structure">
+    .map((reservation,index)=>{
+
+      const problem=Boolean(
+        reservation.materialPlan
+        &&(
+          reservation.materialPlan.deficits.length
+          || !reservation.materialPlan.fairyAvailable
+        )
+      );
+
+      return `
+      <div class="reserved-structure${problem?" reservation-problem":""}">
         <div>
-          <strong>Codice ${reservation.shortId}</strong>
-          ${formatNumber(reservation.data.length)} × ${formatNumber(reservation.data.totalWidth)} m
+          <strong>Struttura ${structureLetter(index)}</strong>
         </div>
+        <label class="reservation-toggle">
+          <input
+            type="checkbox"
+            data-toggle-reservation="${index}"
+            ${reservation.active===false?"":"checked"}
+            aria-label="Impegna materiale della struttura ${structureLetter(index)}"
+          >
+          <span class="reservation-track" aria-hidden="true">
+            <span class="reservation-knob"></span>
+          </span>
+        </label>
         <button
           type="button"
-          class="secondary"
+          class="reservation-remove"
           data-remove-reservation="${index}"
-          aria-label="Rimuovi struttura ${reservation.shortId}"
+          aria-label="Rimuovi struttura ${structureLetter(index)}"
         >
-          Rimuovi
+          ×
         </button>
       </div>
-    `)
+    `;
+
+    })
     .join("");
 
 }
@@ -4642,14 +4779,83 @@ function codeFromImportField(){
 }
 
 
+function setImportedStructureCode(
+  code=""
+){
+
+  const value=String(code).trim();
+
+  document.getElementById(
+    "structureCodeInput"
+  ).value=value;
+
+  const ready=Boolean(value);
+
+  document.getElementById(
+    "reserveStructureCode"
+  ).disabled=!ready;
+
+  document.getElementById(
+    "loadStructureCode"
+  ).disabled=!ready;
+
+}
+
+
+async function pasteStructureCode(){
+
+  let code="";
+
+  if(navigator.clipboard?.readText){
+
+    try{
+      code=await navigator.clipboard.readText();
+    }
+    catch(error){}
+
+  }
+
+  if(!String(code).trim()){
+    code=window.prompt("Incolla il codice struttura:")??"";
+  }
+
+  code=String(code).trim();
+
+  if(!code){
+    setImportedStructureCode();
+    return;
+  }
+
+  try{
+    decodeValidatedStructure(code);
+  }
+  catch(error){
+    setImportedStructureCode();
+    alert(error.message);
+    return;
+  }
+
+  setImportedStructureCode(code);
+
+  const button=document.getElementById(
+    "pasteStructureCode"
+  );
+
+  button.textContent="Incollato";
+
+  setTimeout(()=>{
+    button.textContent="Incolla";
+  },900);
+
+}
+
+
 function loadStructureFromCode(){
 
   try{
 
     const decoded=codeFromImportField();
     const data=decoded.data;
-
-    currentProjectId=data.id;
 
     document.getElementById("length").value=data.length;
     document.getElementById("totalWidth").value=data.width;
@@ -4676,7 +4882,7 @@ function loadStructureFromCode(){
     document.getElementById("sectionsAuto")
       .classList.toggle("active-button",!sectionsManual);
 
-    document.getElementById("structureCodeInput").value="";
+    setImportedStructureCode();
 
     syncFairyProjectOptions();
     scheduleCalculate();
@@ -4695,25 +4901,16 @@ function reserveStructureFromCode(){
 
     const decoded=codeFromImportField();
 
-    if(decoded.data.id===currentProjectId){
-      throw new Error("Questo e il codice della struttura che stai modificando: non va aggiunto anche tra quelle impegnate.");
+    if(!decoded.data.geometryValid){
+      throw new Error("Questa struttura non ha una geometria realizzabile.");
     }
 
-    if(!decoded.data.reservable){
-      throw new Error("Questo codice non proviene da una struttura verificata con il magazzino disponibile.");
-    }
+    decoded.active=true;
 
-    const existingIndex=structureReservations.findIndex(
-      item=>item.data.id===decoded.data.id
-    );
-
-    if(existingIndex>=0)
-      structureReservations[existingIndex]=decoded;
-    else
-      structureReservations.push(decoded);
+    structureReservations.push(decoded);
 
     saveStructureReservations();
-    document.getElementById("structureCodeInput").value="";
+    setImportedStructureCode();
 
     syncSharedStorage();
     renderStructureReservations();
@@ -4733,23 +4930,57 @@ async function copyCurrentStructureCode(){
     "currentStructureCode"
   );
 
-  if(!field.value)
+  if(!field.value){
+    alert("Il codice non e ancora disponibile.");
     return;
-
-  try{
-    await navigator.clipboard.writeText(field.value);
   }
-  catch(error){
-    field.focus();
-    field.select();
-    document.execCommand("copy");
+
+  let copied=false;
+
+  if(navigator.clipboard?.writeText){
+
+    try{
+      await navigator.clipboard.writeText(field.value);
+      copied=true;
+    }
+    catch(error){}
+
+  }
+
+  if(!copied){
+
+    const helper=document.createElement("textarea");
+    helper.value=field.value;
+    helper.style.position="fixed";
+    helper.style.left="-9999px";
+    helper.style.top="0";
+    helper.setAttribute("readonly","");
+    document.body.appendChild(helper);
+    helper.focus();
+    helper.select();
+    helper.setSelectionRange(0,helper.value.length);
+
+    try{
+      copied=document.execCommand("copy");
+    }
+    catch(error){}
+
+    helper.remove();
+
+  }
+
+  if(!copied){
+    window.prompt(
+      "Copia il codice con Cmd+C:",
+      field.value
+    );
   }
 
   const button=document.getElementById(
     "copyStructureCode"
   );
 
-  button.textContent="Copiato";
+  button.textContent=copied?"Copiato":"Copia manuale";
 
   setTimeout(()=>{
     button.textContent="Copia";
@@ -5959,7 +6190,8 @@ function materialDisplayName(
 ========================================================= */
 
 function deficitsFor(
-  req
+  req,
+  availableStock=remaining
 ){
 
   if(!warehouseConfigured)
@@ -5978,7 +6210,7 @@ function deficitsFor(
 
 
         const available=
-          remaining[key]
+          availableStock[key]
           ??
           0;
 
@@ -6041,7 +6273,8 @@ function compatibleTelescopicsForLength(
 
 
 function resolveStructureRequirements(
-  nominalRequirements
+  nominalRequirements,
+  availableStock=remaining
 ){
 
   const nominal={
@@ -6076,7 +6309,7 @@ function resolveStructureRequirements(
 
       telescopicRemaining[key]=Math.max(
         0,
-        (remaining[key]??0)-(nominal[key]??0)
+        (availableStock[key]??0)-(nominal[key]??0)
       );
 
     });
@@ -6093,7 +6326,7 @@ function resolveStructureRequirements(
 
       const exactUsed=Math.min(
         needed,
-        remaining[fromKey]??0
+        availableStock[fromKey]??0
       );
 
       let missing=needed-exactUsed;
@@ -6145,7 +6378,10 @@ function resolveStructureRequirements(
     });
 
 
-  const deficits=deficitsFor(requirements);
+  const deficits=deficitsFor(
+    requirements,
+    availableStock
+  );
 
 
   return {
@@ -7913,7 +8149,8 @@ function calculateFairy(
 ========================================================= */
 
 function chooseFairyBaskets(
-  required
+  required,
+  availableStock=remaining
 ){
 
   if(!warehouseConfigured)
@@ -7940,13 +8177,13 @@ function chooseFairyBaskets(
 
 
   const max100=
-    remaining.fairy100
+    availableStock.fairy100
     ??
     0;
 
 
   const max200=
-    remaining.fairy200
+    availableStock.fairy200
     ??
     0;
 
@@ -13196,6 +13433,16 @@ document
 
 document
   .getElementById(
+    "pasteStructureCode"
+  )
+  .addEventListener(
+    "click",
+    pasteStructureCode
+  );
+
+
+document
+  .getElementById(
     "loadStructureCode"
   )
   .addEventListener(
@@ -13221,6 +13468,28 @@ document
   .addEventListener(
     "click",
     event=>{
+
+      const toggle=event.target.closest(
+        "[data-toggle-reservation]"
+      );
+
+      if(toggle){
+
+        const index=Number(
+          toggle.dataset.toggleReservation
+        );
+
+        if(Number.isInteger(index) && structureReservations[index]){
+          structureReservations[index].active=toggle.checked;
+          saveStructureReservations();
+          syncSharedStorage();
+          renderStructureReservations();
+          scheduleCalculate();
+        }
+
+        return;
+
+      }
 
       const button=event.target.closest(
         "[data-remove-reservation]"
