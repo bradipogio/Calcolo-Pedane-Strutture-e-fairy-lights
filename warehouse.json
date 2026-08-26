@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "configured": false,
+  "updatedAt": "2026-08-26",
+  "warehouse": {
+    "high3": 0,
+    "low3": 0,
+    "high4": 0,
+    "low4": 0,
+    "tel1": 0,
+    "tel15": 0,
+    "tel3": 0,
+    "tel4": 0,
+    "arch": 0,
+    "pole": 0,
+    "base": 0,
+    "fairy100": 0,
+    "fairy200": 0,
+    "deckBlack": 0,
+    "deckWhite": 0,
+    "deckWood": 0,
+    "yellowNormal4": 0,
+    "yellowNormal2": 0,
+    "yellowNormal1": 0,
+    "yellowSide4": 0,
+    "yellowSide2": 0,
+    "yellowSide1": 0
+  }
+}

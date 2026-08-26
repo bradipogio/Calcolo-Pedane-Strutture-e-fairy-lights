@@ -538,7 +538,7 @@ input[type=text],input[type=number],select{
 
     <div class="settings-section">
       <h3>Magazzino</h3>
-      <p class="settings-help">Inserisci le quantità totali disponibili. Restano memorizzate anche chiudendo la pagina e il magazzino è condiviso con il planner Strutture.</p>
+      <p class="settings-help">Inserisci le quantità totali disponibili. Online il planner parte dalla lista comune pubblicata su GitHub; le modifiche fatte qui restano su questo dispositivo finché non viene aggiornato il file comune.</p>
       <div id="stockInputs" class="stock-grid"></div>
     </div>
 
@@ -564,13 +564,13 @@ import {
   getSharedState,
   getSharedWarehouseDraft,
   saveSharedWarehouseDraft,
-  saveSharedWarehouse
+  saveSharedWarehouse,
+  loadSharedWarehouseDefaults
 } from "./storage.js";
 
 
 const YELLOW_WIDTH=.5;
 const YELLOW_LENGTHS=[4,2,1];
-const panelPatternCache=new Map();
 
 const ITEMS=[
   {key:"deckBlack",label:"Quadrotto nero 1 × 1 m"},
@@ -633,11 +633,6 @@ function emptyRequirements(){
 function validIntegerDimension(value){
   return Number.isInteger(value)&&value>=1;
 }
-
-function uniqueCount(sequence){
-  return new Set(sequence).size;
-}
-
 
 function syncSharedStorage(){
   const state=getSharedState();
@@ -913,56 +908,6 @@ function minimumPieceCount(length){
 }
 
 
-function generatePanelPatterns(length){
-  if(panelPatternCache.has(length)){
-    return panelPatternCache.get(length);
-  }
-
-  const minPieces=minimumPieceCount(length);
-  const maxPieces=minPieces+1;
-
-  const results=[];
-  const signatures=new Set();
-
-  const MAX_RESULTS=2500;
-
-  function dfs(sum,sequence){
-    if(results.length>=MAX_RESULTS)return;
-
-    if(sum===length){
-      if(sequence.length<=maxPieces){
-        const signature=sequence.join(",");
-
-        if(!signatures.has(signature)){
-          signatures.add(signature);
-          results.push([...sequence]);
-        }
-      }
-      return;
-    }
-
-    if(sum>length||sequence.length>=maxPieces)return;
-
-    for(const piece of [4,2,1]){
-      if(sum+piece<=length){
-        sequence.push(piece);
-        dfs(sum+piece,sequence);
-        sequence.pop();
-      }
-    }
-  }
-
-  dfs(0,[]);
-
-  if(!results.length){
-    results.push(Array(length).fill(1));
-  }
-
-  panelPatternCache.set(length,results);
-  return results;
-}
-
-
 function sequenceJoints(sequence){
   const joints=[];
   let sum=0;
@@ -973,20 +918,6 @@ function sequenceJoints(sequence){
   }
 
   return joints;
-}
-
-
-function alignedJointCount(sequenceA,sequenceB){
-  if(!sequenceA||!sequenceB)return 0;
-
-  const a=new Set(sequenceJoints(sequenceA));
-  let count=0;
-
-  for(const joint of sequenceJoints(sequenceB)){
-    if(a.has(joint))count++;
-  }
-
-  return count;
 }
 
 
@@ -1004,31 +935,103 @@ function globalJointSet(segments){
 
 
 function bestPanelPattern(length,offset,previousSegments,reverseBias){
-  const patterns=generatePanelPatterns(length);
   const previousJoints=globalJointSet(previousSegments);
-  let best=null;
+  const minPieces=minimumPieceCount(length);
+  const maxPieces=minPieces+1;
+  const states=Array.from({length:length+1},()=>new Map());
 
-  patterns.forEach((sequence,index)=>{
-    const aligned=sequenceJoints(sequence)
-      .filter(joint=>previousJoints.has(offset+joint))
-      .length;
-
-    const edgeBias=reverseBias
-      ? (patterns.length-index)*.000001
-      : index*.000001;
-
-    const score=
-      aligned*10000+
-      sequence.length*100+
-      uniqueCount(sequence)+
-      edgeBias;
-
-    if(!best||score<best.score){
-      best={sequence:[...sequence],aligned,score};
-    }
+  states[0].set("0:0",{
+    sequence:[],
+    aligned:0,
+    count:0,
+    mask:0
   });
 
-  return best;
+  const sequencePreference=(left,right)=>{
+    const compared=Math.min(left.length,right.length);
+
+    for(let index=0;index<compared;index++){
+      if(left[index]===right[index])continue;
+
+      return reverseBias
+        ? left[index]-right[index]
+        : right[index]-left[index];
+    }
+
+    return left.length-right.length;
+  };
+
+  const preferState=(candidate,current)=>{
+    if(!current)return true;
+    if(candidate.aligned!==current.aligned){
+      return candidate.aligned<current.aligned;
+    }
+    return sequencePreference(candidate.sequence,current.sequence)<0;
+  };
+
+  for(let position=0;position<length;position++){
+    for(const state of states[position].values()){
+      if(state.count>=maxPieces)continue;
+
+      YELLOW_LENGTHS.forEach((piece,pieceIndex)=>{
+        const nextPosition=position+piece;
+        if(nextPosition>length)return;
+
+        const nextState={
+          sequence:[...state.sequence,piece],
+          aligned:state.aligned+
+            (nextPosition<length&&previousJoints.has(offset+nextPosition)?1:0),
+          count:state.count+1,
+          mask:state.mask|(1<<pieceIndex)
+        };
+        const key=`${nextState.count}:${nextState.mask}`;
+        const current=states[nextPosition].get(key);
+
+        if(preferState(nextState,current)){
+          states[nextPosition].set(key,nextState);
+        }
+      });
+    }
+  }
+
+  const bitCount=value=>{
+    let count=0;
+    while(value){
+      count+=value&1;
+      value>>=1;
+    }
+    return count;
+  };
+
+  let best=null;
+
+  for(const candidate of states[length].values()){
+    const score=
+      candidate.aligned*10000+
+      candidate.count*100+
+      bitCount(candidate.mask);
+
+    if(
+      !best
+      || score<best.score
+      || (
+        score===best.score
+        && sequencePreference(candidate.sequence,best.sequence)<0
+      )
+    ){
+      best={
+        sequence:[...candidate.sequence],
+        aligned:candidate.aligned,
+        score
+      };
+    }
+  }
+
+  return best||{
+    sequence:Array(length).fill(1),
+    aligned:0,
+    score:length*100+1
+  };
 }
 
 
@@ -2941,6 +2944,7 @@ window.addEventListener("focus",()=>{
 });
 
 
+await loadSharedWarehouseDefaults();
 syncSharedStorage();
 createStockInputs();
 renderAllocations();

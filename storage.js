@@ -10,6 +10,9 @@ const STORAGE_KEY =
 const WAREHOUSE_DRAFT_KEY =
   "plannerTecnicoWarehouseDraft_v1";
 
+const REMOTE_WAREHOUSE_SIGNATURE_KEY =
+  "plannerTecnicoRemoteWarehouseSignature_v1";
+
 
 /* =========================================================
    INVENTARIO COMPLETO
@@ -651,6 +654,161 @@ function saveState(
   return cloneState(
     state
   );
+
+}
+
+
+
+/* =========================================================
+   MAGAZZINO COMUNE PUBBLICATO ONLINE
+
+   GitHub Pages non può scrivere nel repository senza una
+   credenziale privata. Legge quindi warehouse.json: quando
+   quel file cambia, la nuova lista diventa il riferimento
+   comune per tutti i dispositivi.
+========================================================= */
+
+export async function loadSharedWarehouseDefaults(){
+
+  const protocol=
+    globalThis.location
+    ?.protocol;
+
+
+  if(
+    protocol!=="http:"
+    && protocol!=="https:"
+  ){
+
+    return {
+      loaded:false,
+      reason:"local"
+    };
+
+  }
+
+
+  try{
+
+    const response=
+      await fetch(
+        new URL(
+          "./warehouse.json",
+          globalThis.location.href
+        ),
+        {
+          cache:"no-store"
+        }
+      );
+
+
+    if(!response.ok){
+
+      return {
+        loaded:false,
+        reason:"unavailable"
+      };
+
+    }
+
+
+    const remote=
+      await response.json();
+
+
+    if(
+      !remote
+      || remote.configured!==true
+      || !remote.warehouse
+      || typeof remote.warehouse!=="object"
+    ){
+
+      return {
+        loaded:false,
+        reason:"not-configured"
+      };
+
+    }
+
+
+    const normalized=
+      normalizeStock(
+        remote.warehouse
+      );
+
+    const signature=
+      JSON.stringify(
+        normalized
+      );
+
+    const previousSignature=
+      localStorage.getItem(
+        REMOTE_WAREHOUSE_SIGNATURE_KEY
+      );
+
+
+    if(
+      previousSignature===signature
+    ){
+
+      return {
+        loaded:false,
+        reason:"unchanged"
+      };
+
+    }
+
+
+    const state={
+
+      version:1,
+
+      configured:true,
+
+      warehouse:{
+        ...normalized
+      },
+
+      remaining:{
+        ...normalized
+      },
+
+      allocations:[]
+
+    };
+
+
+    saveState(state);
+    saveSharedWarehouseDraft(
+      normalized
+    );
+
+    localStorage.setItem(
+      REMOTE_WAREHOUSE_SIGNATURE_KEY,
+      signature
+    );
+
+
+    return {
+      loaded:true,
+      state:cloneState(state)
+    };
+
+  }
+
+  catch(error){
+
+    console.warn(
+      "Lista magazzino online non disponibile: uso la copia locale.",
+      error
+    );
+
+    return {
+      loaded:false,
+      reason:"error"
+    };
+
+  }
 
 }
 

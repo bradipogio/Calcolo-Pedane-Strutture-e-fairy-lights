@@ -1,4 +1,4 @@
-const CACHE_NAME = "planner-tecnico-v27";
+const CACHE_NAME = "planner-tecnico-v28";
 
 const APP_SHELL = [
   "./",
@@ -8,6 +8,7 @@ const APP_SHELL = [
   "./ui.css",
   "./ui.js",
   "./storage.js",
+  "./warehouse.json",
   "./project-code.js",
   "./manifest.webmanifest",
   "./icons/icon-180.png",
@@ -37,6 +38,23 @@ self.addEventListener("activate", event => {
 
 self.addEventListener("fetch", event => {
   if(event.request.method !== "GET") return;
+
+  const requestUrl = new URL(event.request.url);
+
+  if(requestUrl.pathname.endsWith("/warehouse.json")){
+    event.respondWith(
+      fetch(event.request, {cache:"no-store"})
+        .then(response => {
+          if(response.ok){
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
+          }
+          return response;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
 
   if(event.request.mode === "navigate"){
     event.respondWith(

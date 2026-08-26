@@ -1961,7 +1961,7 @@ select{
     </h3>
 
     <p class="settings-help">
-      Inserisci le quantità totali disponibili. Restano memorizzate anche chiudendo la pagina e il magazzino è condiviso con il planner Pedane.
+      Inserisci le quantità totali disponibili. Online il planner parte dalla lista comune pubblicata su GitHub; le modifiche fatte qui restano su questo dispositivo finché non viene aggiornato il file comune.
     </p>
 
     <div
@@ -2022,6 +2022,8 @@ import {
   saveSharedWarehouseDraft,
 
   saveSharedWarehouse,
+
+  loadSharedWarehouseDefaults,
 
   commitSharedLoad
 
@@ -14525,6 +14527,7 @@ window.addEventListener(
    START
 ========================================================= */
 
+await loadSharedWarehouseDefaults();
 syncSharedStorage();
 
 createStockInputs();
