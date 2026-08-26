@@ -9907,7 +9907,9 @@ function applyMatrixViewport(){
 
   if(output){
     output.textContent=
-      `${Math.round(matrixZoom*100)}%`;
+      matrixZoom>=10
+      ? `${Math.round(matrixZoom*10)/10}×`
+      : `${Math.round(matrixZoom*100)}%`;
   }
 
 
@@ -9930,14 +9932,57 @@ function applyMatrixViewport(){
 }
 
 
+function readableMatrixZoom(){
+
+  const viewport=
+    document.getElementById(
+      "matrixViewport"
+    );
+
+  const svg=
+    document.getElementById(
+      "matrixView"
+    );
+
+
+  if(!viewport||!svg)
+    return 1;
+
+
+  const viewBox=
+    svg.viewBox.baseVal;
+
+  const fitScale=
+    Math.min(
+      viewport.clientWidth/Math.max(1,viewBox.width),
+      viewport.clientHeight/Math.max(1,viewBox.height)
+    );
+
+  const cellPixels=
+    Math.max(.001,MATRIX_CELL*fitScale);
+
+
+  return Math.max(1,46/cellPixels);
+
+}
+
+
 function changeMatrixZoom(action){
+
+  const readableZoom=
+    readableMatrixZoom();
+
+  const maximumZoom=
+    Math.max(256,readableZoom*4);
 
   if(action==="reset"){
     matrixZoom=1;
   }
   else if(action==="in"){
     matrixZoom=
-      Math.min(12,matrixZoom*1.5);
+      matrixZoom<readableZoom*.98
+      ? readableZoom
+      : Math.min(maximumZoom,matrixZoom*1.5);
   }
   else if(action==="out"){
     matrixZoom=

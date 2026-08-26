@@ -1891,6 +1891,7 @@ function deckSvgMarkup(widthPx,heightPx,{interactive=false}={}){
         fill="${color.css}"
         stroke="#444"
         stroke-width="${widthPx>=900?2:1.4}"
+        vector-effect="non-scaling-stroke"
       />
     `;
   }
@@ -1904,7 +1905,7 @@ function deckSvgMarkup(widthPx,heightPx,{interactive=false}={}){
         html+=`
           <g class="deck-editor-target deck-add-target" data-deck-x="${rawCell.x}" data-deck-y="${rawCell.y}" tabindex="0" role="button" aria-label="Aggiungi quadrotto">
             <rect x="${x}" y="${y}" width="${scale}" height="${scale}" rx="${Math.min(7,scale*.09)}" />
-            <text x="${x+scale/2}" y="${y+scale/2}" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="${Math.max(17,scale*.30)}" font-weight="900">＋</text>
+            <text x="${x+scale/2}" y="${y+scale/2}" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="${scale*.42}" font-weight="900">＋</text>
           </g>
         `;
       }
@@ -1927,39 +1928,41 @@ function deckSvgMarkup(widthPx,heightPx,{interactive=false}={}){
         html+=`
           <g class="deck-editor-target deck-erase-target" data-deck-x="${cell.rawX}" data-deck-y="${cell.rawY}" tabindex="0" role="button" aria-label="Cancella quadrotto">
             <rect x="${x}" y="${y}" width="${scale}" height="${scale}" />
-            <text x="${x+scale/2}" y="${y+scale/2}" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="${Math.max(16,scale*.28)}" font-weight="900">×</text>
+            <text x="${x+scale/2}" y="${y+scale/2}" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="${scale*.38}" font-weight="900">×</text>
           </g>
         `;
       }
     }
   }
 
-  html+=`
-    <text
-      x="${widthPx/2}"
-      y="${originY-(interactive?scale:0)-12}"
-      text-anchor="middle"
-      font-family="Arial, Helvetica, sans-serif"
-      font-size="${dimensionFont}"
-      font-weight="800"
-      fill="#111"
-    >
-      ${formatMetres(plan.length)}
-    </text>
+  if(!interactive){
+    html+=`
+      <text
+        x="${widthPx/2}"
+        y="${originY-12}"
+        text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="${dimensionFont}"
+        font-weight="800"
+        fill="#111"
+      >
+        ${formatMetres(plan.length)}
+      </text>
 
-    <text
-      x="${originX-(interactive?scale:0)-15}"
-      y="${heightPx/2}"
-      text-anchor="middle"
-      font-family="Arial, Helvetica, sans-serif"
-      font-size="${dimensionFont}"
-      font-weight="800"
-      fill="#111"
-      transform="rotate(-90 ${originX-(interactive?scale:0)-15} ${heightPx/2})"
-    >
-      ${formatMetres(plan.width)}
-    </text>
-  `;
+      <text
+        x="${originX-15}"
+        y="${heightPx/2}"
+        text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="${dimensionFont}"
+        font-weight="800"
+        fill="#111"
+        transform="rotate(-90 ${originX-15} ${heightPx/2})"
+      >
+        ${formatMetres(plan.width)}
+      </text>
+    `;
+  }
 
   return html;
 }
@@ -2023,7 +2026,11 @@ function applyPlanViewport(view){
   viewport.classList.toggle("is-zoomed",state.zoom>1);
 
   const output=document.getElementById(state.outputId);
-  if(output)output.textContent=`${Math.round(state.zoom*100)}%`;
+  if(output){
+    output.textContent=state.zoom>=10
+      ? `${Math.round(state.zoom*10)/10}×`
+      : `${Math.round(state.zoom*100)}%`;
+  }
 
   requestAnimationFrame(()=>{
     if(state.zoom<=1){
@@ -2040,14 +2047,40 @@ function applyPlanViewport(view){
 }
 
 
+function readablePlanZoom(view){
+  if(!currentPlan)return 1;
+
+  const state=planViewStates[view];
+  const viewport=document.getElementById(state.viewportId);
+  if(!viewport)return 1;
+
+  const margin=42;
+  const extraCells=view==="deck"?2:0;
+  const drawingScale=Math.min(
+    (PLAN_VIEW_SIZE-margin*2)/(currentPlan.length+extraCells),
+    (PLAN_VIEW_SIZE-margin*2)/(currentPlan.width+extraCells)
+  );
+  const cssScale=
+    Math.min(viewport.clientWidth,viewport.clientHeight)/PLAN_VIEW_SIZE;
+  const pixelsPerMetre=Math.max(.001,drawingScale*cssScale);
+
+  return Math.max(1,28/pixelsPerMetre);
+}
+
+
 function changePlanZoom(view,action){
   const state=planViewStates[view];
   if(!state)return;
 
+  const readableZoom=readablePlanZoom(view);
+  const maximumZoom=Math.max(256,readableZoom*4);
+
   if(action==="reset"){
     state.zoom=1;
   }else if(action==="in"){
-    state.zoom=Math.min(12,state.zoom*1.5);
+    state.zoom=state.zoom<readableZoom*.98
+      ? readableZoom
+      : Math.min(maximumZoom,state.zoom*1.5);
   }else if(action==="out"){
     state.zoom=Math.max(1,state.zoom/1.5);
   }
@@ -2206,6 +2239,7 @@ function yellowPlanMarkup(widthPx,heightPx,technical=false){
               ? (technical?5:3.5)
               : (technical?2:1.4)
           }"
+          vector-effect="non-scaling-stroke"
         />
       `;
 
@@ -2226,14 +2260,13 @@ function yellowPlanMarkup(widthPx,heightPx,technical=false){
       const acrossPx=
         rotated?w:h;
 
-      const measureFont=Math.min(
-        pieceFont,
-        Math.max(10,acrossPx*.58)
-      );
+      const measureFont=technical
+        ? Math.min(pieceFont,Math.max(10,acrossPx*.58))
+        : Math.min(pieceFont,acrossPx*.58);
 
       if(
         alongPx>measureFont*1.45&&
-        acrossPx>10
+        (technical?acrossPx>10:true)
       ){
         const centerX=x+w/2;
         const centerY=y+h/2;
@@ -2279,6 +2312,7 @@ function yellowPlanMarkup(widthPx,heightPx,technical=false){
             stroke="#712d00"
             stroke-width="${technical?11:8}"
             stroke-linecap="round"
+            vector-effect="non-scaling-stroke"
           />
         `;
       }else{
@@ -2295,24 +2329,23 @@ function yellowPlanMarkup(widthPx,heightPx,technical=false){
             stroke="#712d00"
             stroke-width="${technical?11:8}"
             stroke-linecap="round"
+            vector-effect="non-scaling-stroke"
           />
         `;
       }
     }
   });
 
-  html+=`
-    <text x="${widthPx/2}" y="${originY-8}" text-anchor="middle"
-      font-family="Arial, Helvetica, sans-serif" font-size="${lateralFont}"
-      font-weight="900" fill="#111">${formatMetres(plan.length)}</text>
-    <text x="${originX-13}" y="${heightPx/2}" text-anchor="middle"
-      font-family="Arial, Helvetica, sans-serif" font-size="${lateralFont}"
-      font-weight="900" fill="#111"
-      transform="rotate(-90 ${originX-13} ${heightPx/2})">${formatMetres(plan.width)}</text>
-  `;
-
   if(technical){
     html+=`
+      <text x="${widthPx/2}" y="${originY-8}" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif" font-size="${lateralFont}"
+        font-weight="900" fill="#111">${formatMetres(plan.length)}</text>
+      <text x="${originX-13}" y="${heightPx/2}" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif" font-size="${lateralFont}"
+        font-weight="900" fill="#111"
+        transform="rotate(-90 ${originX-13} ${heightPx/2})">${formatMetres(plan.width)}</text>
+
       <text
         x="${widthPx/2}"
         y="26"
