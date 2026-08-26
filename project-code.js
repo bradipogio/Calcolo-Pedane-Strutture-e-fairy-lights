@@ -1,13 +1,15 @@
 /* =========================================================
    CODICI STRUTTURA COMPATTI
 
-   S2 non contiene identificativi casuali: lo stesso progetto
+   S3 non contiene identificativi casuali: lo stesso progetto
    produce sempre lo stesso codice. I valori numerici, la
    matrice e gli interruttori vengono salvati in forma binaria
    per usare il minor numero possibile di caratteri.
 ========================================================= */
 
-const CURRENT_PREFIX="S2";
+const CURRENT_PREFIX="S3";
+
+const PREVIOUS_PREFIX="S2";
 
 const LEGACY_PREFIX="STR1";
 
@@ -278,6 +280,14 @@ function encodeCurrent(payload){
   const rowCount=rows.length;
   const columnCount=rows[0].length;
 
+  const longitudinalFairyBits=
+    edgeBits(
+      payload.fv,
+      rowCount,
+      columnCount,
+      true
+    );
+
   const writer=new ByteWriter();
 
   writer.uint(Math.round(Number(payload.l)*1000));
@@ -291,6 +301,7 @@ function encodeCurrent(payload){
   if(payload.o==="B") flags|=8;
   if(Number(payload.ab)===1.5) flags|=16;
   if(payload.q) flags|=32;
+  if(longitudinalFairyBits.some(Boolean)) flags|=64;
 
   writer.byte(flags);
 
@@ -310,6 +321,7 @@ function encodeCurrent(payload){
   writer.bits(edgeBits(payload.a,rowCount,columnCount,true));
   writer.bits(edgeBits(payload.lo,rowCount,columnCount,false));
   writer.bits(edgeBits(payload.ff,rowCount,columnCount,false));
+  if(flags&64) writer.bits(longitudinalFairyBits);
 
   REQUIREMENT_KEYS.forEach(key=>{
     writer.uint(payload.r?.[key]??0);
@@ -324,10 +336,17 @@ function encodeCurrent(payload){
 }
 
 
-function decodeCurrent(code){
+function decodeBinary(
+  code,
+  prefix,
+  includesLongitudinalFairy
+){
 
   const match=code.match(
-    /^S2-([0-9a-z_-]+)-([0-9a-z]{7})$/i
+    new RegExp(
+      `^${prefix}-([0-9a-z_-]+)-([0-9a-z]{7})$`,
+      "i"
+    )
   );
 
   if(!match)
@@ -366,6 +385,12 @@ function decodeCurrent(code){
   const arches=reader.bits((rows-1)*cols);
   const lower=reader.bits(rows*(cols-1));
   const fairyOff=reader.bits(rows*(cols-1));
+  const fairyLongitudinalOff=
+    includesLongitudinalFairy
+    &&
+    flags&64
+    ? reader.bits((rows-1)*cols)
+    : Array((rows-1)*cols).fill(false);
 
   const requirements={};
 
@@ -392,7 +417,7 @@ function decodeCurrent(code){
   }
 
   const payload={
-    v:2,
+    v:includesLongitudinalFairy?3:2,
     k:"struttura",
     l:length,
     w:width,
@@ -410,6 +435,7 @@ function decodeCurrent(code){
     a:bitsToEdges(arches,rows,cols,true),
     lo:bitsToEdges(lower,rows,cols,false),
     ff:bitsToEdges(fairyOff,rows,cols,false),
+    fv:bitsToEdges(fairyLongitudinalOff,rows,cols,true),
     r:requirements,
     f:fairyCentimeters,
     q:flags&32?1:0
@@ -421,6 +447,24 @@ function decodeCurrent(code){
     shortId:match[2].toUpperCase()
   };
 
+}
+
+
+function decodeCurrent(code){
+  return decodeBinary(
+    code,
+    CURRENT_PREFIX,
+    true
+  );
+}
+
+
+function decodePrevious(code){
+  return decodeBinary(
+    code,
+    PREVIOUS_PREFIX,
+    false
+  );
 }
 
 
@@ -469,6 +513,9 @@ export function decodeStructureCode(rawCode){
 
   if(code.toUpperCase().startsWith(`${CURRENT_PREFIX}-`))
     return decodeCurrent(code);
+
+  if(code.toUpperCase().startsWith(`${PREVIOUS_PREFIX}-`))
+    return decodePrevious(code);
 
   if(code.toUpperCase().startsWith(`${LEGACY_PREFIX}-`))
     return decodeLegacy(code);
