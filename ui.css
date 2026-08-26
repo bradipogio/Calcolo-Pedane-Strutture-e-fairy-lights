@@ -795,13 +795,16 @@
     flex: 0 0 auto;
   }
 
-  .fullscreen-view[data-mode="plan"] .plan-view-panel #deckPlan,
-  .fullscreen-view[data-mode="plan"] .plan-view-panel #yellowPlanPreview {
+  .fullscreen-view[data-mode="plan"] .plan-view-panel .plan-canvas {
     width: 100%;
     height: 100% !important;
     min-height: 0;
     flex: 1 1 auto;
     aspect-ratio: auto;
+  }
+
+  .fullscreen-view[data-mode="plan"] .plan-view-panel .plan-canvas svg {
+    flex: none;
   }
 
   .fullscreen-view[data-mode="drawings"] .is-expanded-view {
@@ -1180,6 +1183,19 @@
     flex-wrap: wrap;
   }
 
+  .page-pedane .plan-heading {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 5px 10px;
+  }
+
+  .page-pedane .plan-size-value {
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 800;
+  }
+
   .page-pedane .plan-zoom-controls {
     display: inline-flex;
     align-items: center;
@@ -1226,15 +1242,13 @@
     cursor: pointer;
   }
 
-  .page-pedane #deckPlan.is-zoomed,
-  .page-pedane #yellowPlanPreview.is-zoomed {
+  .page-pedane .plan-canvas.is-zoomed {
     cursor: grab;
-    touch-action: none;
   }
 
-  .page-pedane #deckPlan.is-panning,
-  .page-pedane #yellowPlanPreview.is-panning {
+  .page-pedane .plan-canvas.is-panning {
     cursor: grabbing;
+    user-select: none;
   }
 
   .page-pedane .deck-editor-target rect {

@@ -558,16 +558,64 @@ select{
   font-size:11px;
 }
 
-#matrixView{
-  display:block;
-
+#matrixViewport{
   width:100%;
   height:195px;
-
+  overflow:auto;
   background:#fafafa;
-
   border:1px solid #ddd;
   border-radius:6px;
+
+  overscroll-behavior:contain;
+}
+
+#matrixView{
+  display:block;
+  width:100%;
+  height:100%;
+  min-width:100%;
+  min-height:100%;
+  background:#fafafa;
+}
+
+#matrixViewport.matrix-zoomed{
+  cursor:grab;
+}
+
+#matrixViewport.matrix-panning{
+  cursor:grabbing;
+  user-select:none;
+}
+
+.matrix-zoom-controls{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+}
+
+.matrix-zoom-controls output{
+  min-width:44px;
+  color:#666;
+  font-size:11px;
+  font-weight:800;
+  text-align:center;
+}
+
+.matrix-size-label{
+  color:#666;
+  font-size:11px;
+  font-weight:800;
+  white-space:nowrap;
+}
+
+#matrixView .matrix-node,
+#matrixView .arch-hit,
+#matrixView .horizontal-hit,
+#matrixView .fairy-vertical-hit{
+  cursor:pointer;
+}
+
+#matrixView{
 
   touch-action:none;
 }
@@ -588,7 +636,7 @@ select{
     rgba(0,0,0,.65);
 }
 
-#matrixPanel.matrix-fullscreen #matrixView{
+#matrixPanel.matrix-fullscreen #matrixViewport{
   height:calc(100vh - 175px);
 }
 
@@ -1731,6 +1779,23 @@ select{
 
         <div class="spacer"></div>
 
+        <span
+          id="matrixSizeLabel"
+          class="matrix-size-label"
+          aria-live="polite"
+        ></span>
+
+        <div
+          class="matrix-zoom-controls"
+          role="group"
+          aria-label="Zoom schema struttura"
+        >
+          <button id="matrixZoomOut" class="matrix-button" type="button" aria-label="Riduci zoom">−</button>
+          <output id="matrixZoomValue" aria-live="polite">100%</output>
+          <button id="matrixZoomIn" class="matrix-button" type="button" aria-label="Aumenta zoom">＋</button>
+          <button id="matrixZoomReset" class="matrix-button" type="button" aria-label="Adatta schema" title="Adatta alla finestra">↺</button>
+        </div>
+
         <button
           id="matrixFullscreen"
           class="matrix-button"
@@ -1748,7 +1813,9 @@ select{
       </div>
 
 
-      <svg id="matrixView"></svg>
+      <div id="matrixViewport">
+        <svg id="matrixView"></svg>
+      </div>
 
     </div>
 
@@ -2344,6 +2411,8 @@ let customLayout = false;
 let preferredSections = null;
 
 let matrixMode = "points";
+
+let matrixZoom = 1;
 
 let matrixBayLength = 4;
 
@@ -9788,6 +9857,217 @@ function matrixCoordinates(
 }
 
 
+function applyMatrixViewport(){
+
+  const viewport=
+    document.getElementById(
+      "matrixViewport"
+    );
+
+  const svg=
+    document.getElementById(
+      "matrixView"
+    );
+
+
+  if(!viewport||!svg)
+    return;
+
+
+  const oldWidth=
+    Math.max(1,viewport.scrollWidth);
+
+  const oldHeight=
+    Math.max(1,viewport.scrollHeight);
+
+  const centerRatioX=
+    (viewport.scrollLeft+viewport.clientWidth/2)/oldWidth;
+
+  const centerRatioY=
+    (viewport.scrollTop+viewport.clientHeight/2)/oldHeight;
+
+
+  svg.style.width=
+    `${matrixZoom*100}%`;
+
+  svg.style.height=
+    `${matrixZoom*100}%`;
+
+
+  viewport.classList.toggle(
+    "matrix-zoomed",
+    matrixZoom>1
+  );
+
+
+  const output=
+    document.getElementById(
+      "matrixZoomValue"
+    );
+
+  if(output){
+    output.textContent=
+      `${Math.round(matrixZoom*100)}%`;
+  }
+
+
+  requestAnimationFrame(()=>{
+
+    if(matrixZoom<=1){
+      viewport.scrollLeft=0;
+      viewport.scrollTop=0;
+      return;
+    }
+
+    viewport.scrollLeft=
+      centerRatioX*viewport.scrollWidth-viewport.clientWidth/2;
+
+    viewport.scrollTop=
+      centerRatioY*viewport.scrollHeight-viewport.clientHeight/2;
+
+  });
+
+}
+
+
+function changeMatrixZoom(action){
+
+  if(action==="reset"){
+    matrixZoom=1;
+  }
+  else if(action==="in"){
+    matrixZoom=
+      Math.min(12,matrixZoom*1.5);
+  }
+  else if(action==="out"){
+    matrixZoom=
+      Math.max(1,matrixZoom/1.5);
+  }
+
+
+  applyMatrixViewport();
+
+}
+
+
+function bindMatrixViewport(){
+
+  const viewport=
+    document.getElementById(
+      "matrixViewport"
+    );
+
+
+  if(!viewport)
+    return;
+
+
+  let drag=null;
+
+
+  viewport.addEventListener(
+    "pointerdown",
+    event=>{
+
+      if(
+        matrixZoom<=1
+        || event.button!==0
+        || event.target.closest?.(
+          ".matrix-node, .arch-hit, .horizontal-hit, .fairy-vertical-hit"
+        )
+      ){
+        return;
+      }
+
+
+      drag={
+        pointerId:event.pointerId,
+        startX:event.clientX,
+        startY:event.clientY,
+        scrollLeft:viewport.scrollLeft,
+        scrollTop:viewport.scrollTop
+      };
+
+
+      viewport.setPointerCapture(
+        event.pointerId
+      );
+
+      viewport.classList.add(
+        "matrix-panning"
+      );
+
+      event.preventDefault();
+
+    }
+  );
+
+
+  viewport.addEventListener(
+    "pointermove",
+    event=>{
+
+      if(
+        !drag
+        || event.pointerId!==drag.pointerId
+      ){
+        return;
+      }
+
+
+      viewport.scrollLeft=
+        drag.scrollLeft-(event.clientX-drag.startX);
+
+      viewport.scrollTop=
+        drag.scrollTop-(event.clientY-drag.startY);
+
+    }
+  );
+
+
+  const finishPan=event=>{
+
+    if(
+      !drag
+      || event.pointerId!==drag.pointerId
+    ){
+      return;
+    }
+
+
+    if(
+      viewport.hasPointerCapture?.(
+        event.pointerId
+      )
+    ){
+      viewport.releasePointerCapture(
+        event.pointerId
+      );
+    }
+
+
+    viewport.classList.remove(
+      "matrix-panning"
+    );
+
+    drag=null;
+
+  };
+
+
+  viewport.addEventListener(
+    "pointerup",
+    finishPan
+  );
+
+  viewport.addEventListener(
+    "pointercancel",
+    finishPan
+  );
+
+}
+
+
 function renderMatrix(){
 
   const svg=
@@ -10331,6 +10611,17 @@ function renderMatrix(){
     html;
 
 
+  const sizeLabel=
+    document.getElementById(
+      "matrixSizeLabel"
+    );
+
+  if(sizeLabel&&currentPlan){
+    sizeLabel.textContent=
+      `${formatNumber(currentPlan.length)} × ${formatNumber(currentPlan.totalWidth)} m`;
+  }
+
+
   if(matrixMode==="points"){
 
     svg
@@ -10463,6 +10754,9 @@ function renderMatrix(){
       });
 
   }
+
+
+  applyMatrixViewport();
 
 }
 
@@ -14276,6 +14570,36 @@ document
 
 document
   .getElementById(
+    "matrixZoomOut"
+  )
+  .addEventListener(
+    "click",
+    ()=>changeMatrixZoom("out")
+  );
+
+
+document
+  .getElementById(
+    "matrixZoomIn"
+  )
+  .addEventListener(
+    "click",
+    ()=>changeMatrixZoom("in")
+  );
+
+
+document
+  .getElementById(
+    "matrixZoomReset"
+  )
+  .addEventListener(
+    "click",
+    ()=>changeMatrixZoom("reset")
+  );
+
+
+document
+  .getElementById(
     "matrixFullscreen"
   )
   .addEventListener(
@@ -14435,6 +14759,8 @@ loadLegacyFairyMargin();
 syncFairyProjectOptions();
 
 init3D();
+
+bindMatrixViewport();
 
 setMatrixMode(
   "points"

@@ -80,9 +80,13 @@ input[type=text],input[type=number],select{
 }
 .preview-toolbar span{color:#666;font-size:12px}
 
-#deckPlan,#yellowPlanPreview{
-  display:block;width:100%;height:315px;border:1px solid #ddd;
-  border-radius:6px;background:#fafafa
+.plan-canvas{
+  width:100%;height:315px;overflow:auto;border:1px solid #ddd;
+  border-radius:6px;background:#fafafa;overscroll-behavior:contain
+}
+.plan-canvas svg{
+  display:block;width:100%;height:100%;min-width:100%;min-height:100%;
+  border:0;background:#fafafa
 }
 
 .legend{
@@ -358,7 +362,10 @@ input[type=text],input[type=number],select{
 
     <div id="deckPlanPanel" class="panel plan-view-panel">
       <div class="preview-toolbar deck-editor-toolbar">
-        <h3 style="margin:0">Pianta pedana</h3>
+        <div class="plan-heading">
+          <h3 style="margin:0">Pianta pedana</h3>
+          <output id="deckSizeValue" class="plan-size-value"></output>
+        </div>
         <div class="deck-editor-tools no-print" aria-label="Strumenti disegno pedana">
           <label class="visually-hidden" for="paintColor">Colore pennello</label>
           <select id="paintColor" aria-label="Colore pennello" title="Colore da applicare manualmente">
@@ -386,13 +393,18 @@ input[type=text],input[type=number],select{
         </div>
       </div>
 
-      <svg id="deckPlan"></svg>
+      <div id="deckPlanViewport" class="plan-canvas">
+        <svg id="deckPlan"></svg>
+      </div>
       <div id="deckEditorHint" class="deck-editor-hint no-print">Disegna: scegli il colore, poi seleziona un quadrotto o uno spazio adiacente.</div>
     </div>
 
     <div id="yellowPlanPanel" class="panel plan-view-panel">
       <div class="preview-toolbar">
-        <h3 style="margin:0">Pianta pannelli gialli</h3>
+        <div class="plan-heading">
+          <h3 style="margin:0">Pianta pannelli gialli</h3>
+          <output id="yellowSizeValue" class="plan-size-value"></output>
+        </div>
         <div class="plan-zoom-controls no-print" role="group" aria-label="Zoom pannelli gialli">
           <button type="button" class="deck-tool" data-plan-view="yellow" data-plan-action="out" aria-label="Riduci zoom pannelli gialli">−</button>
           <output id="yellowZoomValue" aria-live="polite">100%</output>
@@ -410,7 +422,9 @@ input[type=text],input[type=number],select{
         </div>
       </div>
 
-      <svg id="yellowPlanPreview"></svg>
+      <div id="yellowPlanViewport" class="plan-canvas">
+        <svg id="yellowPlanPreview"></svg>
+      </div>
 
       <div class="legend">
         <div class="legend-item">
@@ -606,12 +620,11 @@ let deckCells=new Set();
 let deckCellColors=new Map();
 let deckEditorMode="add";
 let syncingDeckDimensions=false;
-let suppressDeckClickUntil=0;
 
 const PLAN_VIEW_SIZE=560;
 const planViewStates={
-  deck:{zoom:1,centerX:280,centerY:280,svgId:"deckPlan",outputId:"deckZoomValue"},
-  yellow:{zoom:1,centerX:280,centerY:280,svgId:"yellowPlanPreview",outputId:"yellowZoomValue"}
+  deck:{zoom:1,svgId:"deckPlan",viewportId:"deckPlanViewport",outputId:"deckZoomValue"},
+  yellow:{zoom:1,svgId:"yellowPlanPreview",viewportId:"yellowPlanViewport",outputId:"yellowZoomValue"}
 };
 
 
@@ -1608,8 +1621,10 @@ function renderInvalidPlan(){
   document.getElementById("materialResult").innerHTML="";
   document.getElementById("quickResult").innerHTML="";
   document.getElementById("deckPlan").innerHTML="";
+  document.getElementById("deckSizeValue").textContent="";
   document.getElementById("deckTechnical").innerHTML="";
   document.getElementById("yellowPlanPreview").innerHTML="";
+  document.getElementById("yellowSizeValue").textContent="";
   document.getElementById("yellowPlanTechnical").innerHTML="";
   document.getElementById("deckConfigPanel")
     .classList.add("config-panel-invalid");
@@ -1976,7 +1991,6 @@ function applyDeckEditorAction(target){
 function bindDeckEditorTargets(svg){
   svg.querySelectorAll(".deck-editor-target").forEach(target=>{
     target.addEventListener("click",()=>{
-      if(performance.now()<suppressDeckClickUntil)return;
       applyDeckEditorAction(target);
     });
     target.addEventListener("keydown",event=>{
@@ -1992,27 +2006,37 @@ function bindDeckEditorTargets(svg){
 function applyPlanViewport(view){
   const state=planViewStates[view];
   const svg=document.getElementById(state.svgId);
-  if(!svg)return;
+  const viewport=document.getElementById(state.viewportId);
+  if(!svg||!viewport)return;
 
-  const span=PLAN_VIEW_SIZE/state.zoom;
-  const half=span/2;
+  const oldWidth=Math.max(1,viewport.scrollWidth);
+  const oldHeight=Math.max(1,viewport.scrollHeight);
+  const centerRatioX=
+    (viewport.scrollLeft+viewport.clientWidth/2)/oldWidth;
+  const centerRatioY=
+    (viewport.scrollTop+viewport.clientHeight/2)/oldHeight;
 
-  if(state.zoom<=1){
-    state.centerX=PLAN_VIEW_SIZE/2;
-    state.centerY=PLAN_VIEW_SIZE/2;
-  }else{
-    state.centerX=Math.max(half,Math.min(PLAN_VIEW_SIZE-half,state.centerX));
-    state.centerY=Math.max(half,Math.min(PLAN_VIEW_SIZE-half,state.centerY));
-  }
-
-  svg.setAttribute(
-    "viewBox",
-    `${state.centerX-half} ${state.centerY-half} ${span} ${span}`
-  );
+  svg.setAttribute("viewBox",`0 0 ${PLAN_VIEW_SIZE} ${PLAN_VIEW_SIZE}`);
+  svg.style.width=`${state.zoom*100}%`;
+  svg.style.height=`${state.zoom*100}%`;
   svg.classList.toggle("is-zoomed",state.zoom>1);
+  viewport.classList.toggle("is-zoomed",state.zoom>1);
 
   const output=document.getElementById(state.outputId);
   if(output)output.textContent=`${Math.round(state.zoom*100)}%`;
+
+  requestAnimationFrame(()=>{
+    if(state.zoom<=1){
+      viewport.scrollLeft=0;
+      viewport.scrollTop=0;
+      return;
+    }
+
+    viewport.scrollLeft=
+      centerRatioX*viewport.scrollWidth-viewport.clientWidth/2;
+    viewport.scrollTop=
+      centerRatioY*viewport.scrollHeight-viewport.clientHeight/2;
+  });
 }
 
 
@@ -2022,12 +2046,10 @@ function changePlanZoom(view,action){
 
   if(action==="reset"){
     state.zoom=1;
-    state.centerX=PLAN_VIEW_SIZE/2;
-    state.centerY=PLAN_VIEW_SIZE/2;
   }else if(action==="in"){
-    state.zoom=Math.min(8,state.zoom*1.5);
+    state.zoom=Math.min(12,state.zoom*1.5);
   }else if(action==="out"){
-    state.zoom=Math.max(.5,state.zoom/1.5);
+    state.zoom=Math.max(1,state.zoom/1.5);
   }
 
   applyPlanViewport(view);
@@ -2037,55 +2059,49 @@ function changePlanZoom(view,action){
 function bindPlanPan(view){
   const state=planViewStates[view];
   const svg=document.getElementById(state.svgId);
-  if(!svg)return;
+  const viewport=document.getElementById(state.viewportId);
+  if(!svg||!viewport)return;
 
   let drag=null;
 
-  svg.addEventListener("pointerdown",event=>{
-    if(state.zoom<=1||event.button!==0)return;
+  viewport.addEventListener("pointerdown",event=>{
+    if(
+      state.zoom<=1
+      || event.button!==0
+      || event.target.closest?.(".deck-editor-target")
+    )return;
 
     drag={
       pointerId:event.pointerId,
       startX:event.clientX,
       startY:event.clientY,
-      centerX:state.centerX,
-      centerY:state.centerY,
-      moved:false
+      scrollLeft:viewport.scrollLeft,
+      scrollTop:viewport.scrollTop
     };
-    svg.setPointerCapture(event.pointerId);
-    svg.classList.add("is-panning");
+    viewport.setPointerCapture(event.pointerId);
+    viewport.classList.add("is-panning");
+    event.preventDefault();
   });
 
-  svg.addEventListener("pointermove",event=>{
+  viewport.addEventListener("pointermove",event=>{
     if(!drag||event.pointerId!==drag.pointerId)return;
 
-    const dx=event.clientX-drag.startX;
-    const dy=event.clientY-drag.startY;
-    const span=PLAN_VIEW_SIZE/state.zoom;
-
-    if(Math.hypot(dx,dy)>4)drag.moved=true;
-
-    state.centerX=drag.centerX-dx*span/Math.max(1,svg.clientWidth);
-    state.centerY=drag.centerY-dy*span/Math.max(1,svg.clientHeight);
-    applyPlanViewport(view);
+    viewport.scrollLeft=drag.scrollLeft-(event.clientX-drag.startX);
+    viewport.scrollTop=drag.scrollTop-(event.clientY-drag.startY);
   });
 
   const finishPan=event=>{
     if(!drag||event.pointerId!==drag.pointerId)return;
 
-    if(drag.moved&&view==="deck"){
-      suppressDeckClickUntil=performance.now()+300;
+    if(viewport.hasPointerCapture?.(event.pointerId)){
+      viewport.releasePointerCapture(event.pointerId);
     }
-
-    if(svg.hasPointerCapture?.(event.pointerId)){
-      svg.releasePointerCapture(event.pointerId);
-    }
-    svg.classList.remove("is-panning");
+    viewport.classList.remove("is-panning");
     drag=null;
   };
 
-  svg.addEventListener("pointerup",finishPan);
-  svg.addEventListener("pointercancel",finishPan);
+  viewport.addEventListener("pointerup",finishPan);
+  viewport.addEventListener("pointercancel",finishPan);
 }
 
 
@@ -2107,6 +2123,8 @@ function bindPlanViewControls(){
 function renderDeckPlan(){
   const svg=document.getElementById("deckPlan");
   svg.innerHTML=deckSvgMarkup(560,560,{interactive:true});
+  document.getElementById("deckSizeValue").textContent=
+    `${formatMetres(currentPlan.length)} × ${formatMetres(currentPlan.width)}`;
   bindDeckEditorTargets(svg);
   applyPlanViewport("deck");
 }
@@ -2320,6 +2338,8 @@ function yellowPlanMarkup(widthPx,heightPx,technical=false){
 function renderYellowPlan(){
   const preview=document.getElementById("yellowPlanPreview");
   preview.innerHTML=yellowPlanMarkup(560,560,false);
+  document.getElementById("yellowSizeValue").textContent=
+    `${formatMetres(currentPlan.length)} × ${formatMetres(currentPlan.width)}`;
   applyPlanViewport("yellow");
 
   const technical=document.getElementById("yellowPlanTechnical");
