@@ -36,14 +36,14 @@ async function loadModule(suffix){
   const storage=await loadModule(Date.now());
   let result=await storage.loadSharedWarehouseDefaults();
 
-  if(result.loaded||storage.getSharedState().configured){
+  if(result.available||result.loaded||storage.getSharedState().configured){
     throw new Error("Un file non configurato non deve azzerare il magazzino locale.");
   }
 
   remote={configured:true,warehouse:{high3:90,yellowNormal4:16}};
   result=await storage.loadSharedWarehouseDefaults();
 
-  if(!result.loaded){
+  if(!result.available||!result.loaded){
     throw new Error("La prima lista online configurata non è stata caricata.");
   }
 
@@ -56,19 +56,31 @@ async function loadModule(suffix){
   localStorage.setItem("plannerTecnicoSharedStorage_v1",JSON.stringify(state));
   result=await storage.loadSharedWarehouseDefaults();
 
-  if(result.loaded||storage.getSharedState().warehouse.high3!==75){
-    throw new Error("La lista online invariata non deve cancellare una modifica locale.");
+  if(!result.available||result.loaded||storage.getSharedState().warehouse.high3!==90){
+    throw new Error("La lista online deve restare l'unica fonte anche se non è cambiata.");
   }
 
   remote={configured:true,warehouse:{high3:100,yellowNormal4:18}};
   result=await storage.loadSharedWarehouseDefaults();
   state=storage.getSharedState();
 
-  if(!result.loaded||state.warehouse.high3!==100||state.warehouse.yellowNormal4!==18){
+  if(!result.available||!result.loaded||state.warehouse.high3!==100||state.warehouse.yellowNormal4!==18){
     throw new Error("Una nuova lista online deve aggiornare tutti i dispositivi.");
   }
 
-  console.log("Magazzino online OK: prima lettura, fallback locale e aggiornamento comune.");
+  globalThis.fetch=async()=>{
+    throw new Error("offline");
+  };
+  const originalWarn=console.warn;
+  console.warn=()=>{};
+  result=await storage.loadSharedWarehouseDefaults();
+  console.warn=originalWarn;
+
+  if(result.available){
+    throw new Error("Senza GitHub il magazzino non deve risultare verificato.");
+  }
+
+  console.log("Magazzino online OK: GitHub è l'unica fonte e in sua assenza si blocca.");
 })().catch(error=>{
   console.error(error);
   process.exitCode=1;

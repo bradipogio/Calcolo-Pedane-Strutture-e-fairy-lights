@@ -538,13 +538,12 @@ input[type=text],input[type=number],select{
 
     <div class="settings-section">
       <h3>Magazzino</h3>
-      <p class="settings-help">Inserisci le quantità totali disponibili. Online il planner parte dalla lista comune pubblicata su GitHub; le modifiche fatte qui restano su questo dispositivo finché non viene aggiornato il file comune.</p>
+      <p class="settings-help">Lista ufficiale caricata da GitHub. Per aggiornarla modifica e pubblica il file comune del magazzino.</p>
       <div id="stockInputs" class="stock-grid"></div>
     </div>
 
     <div class="modal-actions">
       <button id="closeSettings2" class="secondary">Chiudi</button>
-      <button id="applyStock" class="primary">Salva magazzino</button>
     </div>
 
   </div>
@@ -562,9 +561,6 @@ import {
 import {
   SHARED_ITEMS,
   getSharedState,
-  getSharedWarehouseDraft,
-  saveSharedWarehouseDraft,
-  saveSharedWarehouse,
   loadSharedWarehouseDefaults
 } from "./storage.js";
 
@@ -594,6 +590,7 @@ let warehouse={};
 let remaining={};
 let allocations=[];
 let warehouseConfigured=false;
+let warehouseOnlineAvailable=false;
 
 let currentPlan=null;
 
@@ -639,15 +636,14 @@ function syncSharedStorage(){
 
   warehouse={...state.warehouse};
   remaining={...state.remaining};
-  allocations=[...state.allocations];
-  warehouseConfigured=state.configured;
+  warehouseConfigured=
+    warehouseOnlineAvailable&&state.configured;
+  allocations=warehouseConfigured?[...state.allocations]:[];
 }
 
 
 function createStockInputs(){
   syncSharedStorage();
-
-  const draft=getSharedWarehouseDraft();
 
   const root=document.getElementById("stockInputs");
   root.innerHTML="";
@@ -676,53 +672,14 @@ function createStockInputs(){
     input.dataset.stepper="compact";
     input.setAttribute("aria-label",item.label);
     label.htmlFor=input.id;
-    input.value=draft?.[item.key]??warehouse[item.key]??0;
-
-    input.addEventListener("input",preserveStockDraft);
+    input.value=warehouseConfigured?(warehouse[item.key]??0):"";
+    input.placeholder="Non disponibile";
+    input.disabled=true;
 
     root.append(label,input);
   });
 
   renderRemaining();
-}
-
-
-function stockFromInputs(){
-  const stock={};
-
-  SHARED_ITEMS.forEach(item=>{
-    stock[item.key]=Math.max(
-      0,
-      Math.floor(
-        Number(document.getElementById("stock_"+item.key)?.value)||0
-      )
-    );
-  });
-
-  return stock;
-}
-
-
-function preserveStockDraft(){
-  saveSharedWarehouseDraft(stockFromInputs());
-}
-
-
-function applyWarehouse(){
-  const stock=stockFromInputs();
-
-  const state=saveSharedWarehouse(stock);
-
-  warehouse={...state.warehouse};
-  remaining={...state.remaining};
-  allocations=[...state.allocations];
-
-  warehouseConfigured=true;
-
-  renderRemaining();
-  renderAllocations();
-  closeSettings();
-  calculatePlan();
 }
 
 
@@ -733,7 +690,7 @@ function renderRemaining(){
   if(!root)return;
 
   if(!warehouseConfigured){
-    root.textContent="Magazzino non impostato.";
+    root.textContent="Magazzino online non disponibile.";
     return;
   }
 
@@ -1707,7 +1664,7 @@ function yellowSubstitutionText(substitution){
 function renderSummary(){
   const plan=currentPlan;
   const materialUnavailable=
-    warehouseConfigured&&plan.deficits.length>0;
+    !warehouseConfigured||plan.deficits.length>0;
   const materialAlternative=
     !materialUnavailable&&warehouseConfigured&&plan.substitutions.length>0;
 
@@ -1717,8 +1674,8 @@ function renderSummary(){
 
   if(!warehouseConfigured){
     status=`
-      <span class="good">✓ Geometria valida</span>
-      <span class="small">· imposta il magazzino per verificare il carico</span>
+      <span class="bad">⚠ Magazzino online non disponibile</span>
+      <div class="warning">Impossibile verificare il materiale: il PDF è disabilitato.</div>
     `;
   }else if(!plan.deficits.length){
     if(plan.substitutions.length){
@@ -2768,7 +2725,8 @@ function capturePrint3D(){
 async function printReport(){
   if(
     !currentPlan?.valid||
-    (warehouseConfigured&&currentPlan.deficits.length)
+    !warehouseConfigured||
+    currentPlan.deficits.length
   )return;
 
   await preparePrintPreview();
@@ -2876,9 +2834,6 @@ document.getElementById("closeSettings")
 document.getElementById("closeSettings2")
   .addEventListener("click",closeSettings);
 
-document.getElementById("applyStock")
-  .addEventListener("click",applyWarehouse);
-
 document.getElementById("print")
   .addEventListener("click",printReport);
 
@@ -2938,13 +2893,17 @@ document.getElementById("yellowEnabled")
   });
 
 
-window.addEventListener("focus",()=>{
+window.addEventListener("focus",async()=>{
+  const result=await loadSharedWarehouseDefaults();
+  warehouseOnlineAvailable=result.available===true;
   syncSharedStorage();
+  createStockInputs();
   calculatePlan();
 });
 
 
-await loadSharedWarehouseDefaults();
+const warehouseLoadResult=await loadSharedWarehouseDefaults();
+warehouseOnlineAvailable=warehouseLoadResult.available===true;
 syncSharedStorage();
 createStockInputs();
 renderAllocations();

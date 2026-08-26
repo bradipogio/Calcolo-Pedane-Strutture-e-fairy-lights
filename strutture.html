@@ -1949,7 +1949,7 @@ select{
 
 
   <p class="modal-intro">
-    Gestisci le quantità disponibili in magazzino.
+    Consulta le quantità ufficiali disponibili online.
   </p>
 
 
@@ -1961,7 +1961,7 @@ select{
     </h3>
 
     <p class="settings-help">
-      Inserisci le quantità totali disponibili. Online il planner parte dalla lista comune pubblicata su GitHub; le modifiche fatte qui restano su questo dispositivo finché non viene aggiornato il file comune.
+      Lista ufficiale caricata da GitHub. Per aggiornarla modifica e pubblica il file comune del magazzino.
     </p>
 
     <div
@@ -1979,13 +1979,6 @@ select{
       class="secondary"
     >
       Chiudi
-    </button>
-
-    <button
-      id="applyStock"
-      class="primary"
-    >
-      Salva magazzino
     </button>
 
   </div>
@@ -2016,12 +2009,6 @@ import {
   SHARED_ITEMS,
 
   getSharedState,
-
-  getSharedWarehouseDraft,
-
-  saveSharedWarehouseDraft,
-
-  saveSharedWarehouse,
 
   loadSharedWarehouseDefaults,
 
@@ -2343,6 +2330,8 @@ let sharedRemaining = {};
 let remaining = {};
 
 let warehouseConfigured = false;
+
+let warehouseOnlineAvailable = false;
 
 let allocations = [];
 
@@ -5139,13 +5128,15 @@ function syncSharedStorage(){
   };
 
 
-  allocations = [
-    ...state.allocations
-  ];
-
-
   warehouseConfigured =
-    state.configured;
+    warehouseOnlineAvailable
+    && state.configured;
+
+
+  allocations =
+    warehouseConfigured
+    ? [...state.allocations]
+    : [];
 
 
   readStructureReservations();
@@ -5158,10 +5149,6 @@ function syncSharedStorage(){
 function createStockInputs(){
 
   syncSharedStorage();
-
-
-  const draft=
-    getSharedWarehouseDraft();
 
 
   const root=
@@ -5233,13 +5220,16 @@ function createStockInputs(){
 
 
     input.value=
-      draft?.[item.key]
+      warehouseConfigured
+      ? (warehouse[item.key]??0)
+      : "";
 
-      ??
 
-      warehouse[item.key]
-      ??
-      0;
+    input.placeholder=
+      "Non disponibile";
+
+
+    input.disabled=true;
 
 
     input.id=
@@ -5261,12 +5251,6 @@ function createStockInputs(){
       input.id;
 
 
-    input.addEventListener(
-      "input",
-      preserveStockDraft
-    );
-
-
     root.append(
       name,
       input
@@ -5276,101 +5260,6 @@ function createStockInputs(){
 
 
   renderRemaining();
-
-}
-
-
-function stockFromInputs(){
-
-  const stock={};
-
-
-  SHARED_ITEMS.forEach(item=>{
-
-    stock[item.key]=
-
-      Math.max(
-
-        0,
-
-        Math.floor(
-
-          Number(
-
-            document
-              .getElementById(
-                "stock_"+
-                item.key
-              )
-              ?.value
-
-          )
-
-          ||
-
-          0
-
-        )
-
-      );
-
-  });
-
-
-  return stock;
-
-}
-
-
-function preserveStockDraft(){
-
-  saveSharedWarehouseDraft(
-    stockFromInputs()
-  );
-
-}
-
-
-function applyWarehouse(){
-
-  const stock=
-    stockFromInputs();
-
-
-  const state=
-    saveSharedWarehouse(
-      stock
-    );
-
-
-  warehouse={
-    ...state.warehouse
-  };
-
-
-  remaining={
-    ...state.remaining
-  };
-
-
-  allocations=[
-    ...state.allocations
-  ];
-
-
-  warehouseConfigured=true;
-
-
-  lastCommittedSignature=null;
-
-
-  renderRemaining();
-
-  renderAllocations();
-
-  closeSettings();
-
-  scheduleCalculate();
 
 }
 
@@ -5394,7 +5283,7 @@ function renderRemaining(){
   if(!warehouseConfigured){
 
     root.innerHTML=
-      "Magazzino non impostato.";
+      "Magazzino online non disponibile.";
 
     return;
 
@@ -9431,13 +9320,13 @@ function renderSummary(){
 
     status=`
 
-      <span class="good">
-        ✓ Geometria valida
+      <span class="bad">
+        ⚠ Magazzino online non disponibile
       </span>
 
-      <span class="small">
-        · imposta il magazzino per controllare il carico
-      </span>
+      <div class="warning">
+        Impossibile verificare il materiale: il PDF è disabilitato.
+      </div>
 
     `;
 
@@ -9560,9 +9449,11 @@ function renderSummary(){
 
     ||
 
+    !warehouseConfigured
+
+    ||
+
     (
-      warehouseConfigured
-      &&
       (
         plan.deficits.length>0
         ||
@@ -13708,6 +13599,8 @@ async function printReport(){
   if(
     !currentPlan
     ||
+    !warehouseConfigured
+    ||
     currentPlan.invalid
     ||
     (
@@ -13959,16 +13852,6 @@ document
   .addEventListener(
     "click",
     closeSettings
-  );
-
-
-document
-  .getElementById(
-    "applyStock"
-  )
-  .addEventListener(
-    "click",
-    applyWarehouse
   );
 
 
@@ -14495,9 +14378,17 @@ window
 
 window.addEventListener(
   "focus",
-  ()=>{
+  async()=>{
+
+    const result=
+      await loadSharedWarehouseDefaults();
+
+    warehouseOnlineAvailable=
+      result.available===true;
 
     syncSharedStorage();
+
+    createStockInputs();
 
     scheduleCalculate();
 
@@ -14527,7 +14418,12 @@ window.addEventListener(
    START
 ========================================================= */
 
-await loadSharedWarehouseDefaults();
+const warehouseLoadResult=
+  await loadSharedWarehouseDefaults();
+
+warehouseOnlineAvailable=
+  warehouseLoadResult.available===true;
+
 syncSharedStorage();
 
 createStockInputs();

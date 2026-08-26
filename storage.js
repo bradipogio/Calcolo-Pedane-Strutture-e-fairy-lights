@@ -682,6 +682,7 @@ export async function loadSharedWarehouseDefaults(){
 
     return {
       loaded:false,
+      available:false,
       reason:"local"
     };
 
@@ -706,6 +707,7 @@ export async function loadSharedWarehouseDefaults(){
 
       return {
         loaded:false,
+        available:false,
         reason:"unavailable"
       };
 
@@ -725,6 +727,7 @@ export async function loadSharedWarehouseDefaults(){
 
       return {
         loaded:false,
+        available:false,
         reason:"not-configured"
       };
 
@@ -745,18 +748,6 @@ export async function loadSharedWarehouseDefaults(){
       localStorage.getItem(
         REMOTE_WAREHOUSE_SIGNATURE_KEY
       );
-
-
-    if(
-      previousSignature===signature
-    ){
-
-      return {
-        loaded:false,
-        reason:"unchanged"
-      };
-
-    }
 
 
     const state={
@@ -790,7 +781,13 @@ export async function loadSharedWarehouseDefaults(){
 
 
     return {
-      loaded:true,
+      loaded:
+        previousSignature!==signature,
+      available:true,
+      reason:
+        previousSignature===signature
+        ? "unchanged"
+        : "updated",
       state:cloneState(state)
     };
 
@@ -799,12 +796,13 @@ export async function loadSharedWarehouseDefaults(){
   catch(error){
 
     console.warn(
-      "Lista magazzino online non disponibile: uso la copia locale.",
+      "Lista magazzino online non disponibile.",
       error
     );
 
     return {
       loaded:false,
+      available:false,
       reason:"error"
     };
 
